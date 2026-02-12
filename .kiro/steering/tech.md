@@ -1,5 +1,10 @@
 # Technology Stack
-- **Primary Cloud:** AWS (Focus on Security Services: KMS, GuardDuty, WAF, Security Hub, IAM, Cognito).
+- **Primary Cloud:** AWS
+  - **Identity:** IAM, Cognito, IAM Identity Center, Verified Permissions.
+  - **Detection:** GuardDuty, Security Hub, Macie, Config, Security Lake (OCSF).
+  - **Infrastructure:** WAF, Shield, Network Firewall, VPC Endpoints, PrivateLink.
+  - **Data Protection:** KMS (CMK vs AWS Managed, Symmetric vs Asymmetric), CloudHSM, Secrets Manager.
+  - **Governance:** AWS Organizations, Control Tower, SCPs, Resource Control Policies (RCPs).
 - **Infrastructure as Code:** Terraform or AWS CDK (TypeScript).
 - **Container Security:** Kubernetes (EKS) + Istio (Service Mesh).
 - **Diagramming:** Mermaid.js (for logical flows) and AWS Architecture Icons.
