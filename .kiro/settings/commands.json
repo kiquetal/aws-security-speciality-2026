@@ -1,0 +1,12 @@
+{
+  "commands": {
+    "quiz-me": {
+      "description": "Generates a practical exercise based on the current note file.",
+      "prompt": "I have finished studying the topic in this active file (@activeFile). \n\n1. First, cross-reference this content with 'blueprint.md' to ensure I haven't missed any key 'Task Statements' related to this service.\n2. If the note is complete, generate a **Scenario-Based Question** (similar to the SCS-C03 exam format) that tests a specific detail from this note.\n3. Do NOT reveal the answer yet. Wait for me to provide my solution.\n4. Once I answer, evaluate if I am 'Correct' or 'Incorrect' and explain the 'Why' using official AWS documentation logic."
+    },
+    "lab-gen": {
+      "description": "Creates a Terraform/CLI challenge based on the current note.",
+      "prompt": "Read the active note (@activeFile). Based on the security concepts described here, generate a `challenge.md` file in the `/labs` folder.\n\nThe challenge should be: 'You are a Security Engineer. You need to implement [Concept from Note] using Terraform.'\n\nOnly provide the requirements. Do NOT write the solution code until I ask for 'Review'."
+    }
+  }
+}
