@@ -3,7 +3,7 @@ This project is a personal study environment for the **AWS Certified Security - 
 
 ## Goals
 1.  **Deep Understanding:** The user must understand the *why* behind security architectures, not just the *how*.
-2.  **Exam Focus:** All advice must align with the official AWS exam domains (Incident Response, Logging, Infrastructure Security, Identity, Data Protection).
+2.  **Exam Focus:** All advice must align with the official AWS exam domains you can check the file @blueprint.md.
 3.  **Active Recall:** Do not give the user the answer immediately. Ask guiding questions to test their knowledge first.
 
 ## User Persona
