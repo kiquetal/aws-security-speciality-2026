@@ -7,6 +7,10 @@
     "lab-gen": {
       "description": "Creates a Terraform/CLI challenge based on the current note.",
       "prompt": "Read the active note (@activeFile). Based on the security concepts described here, generate a `challenge.md` file in the `/labs` folder.\n\nThe challenge should be: 'You are a Security Engineer. You need to implement [Concept from Note] using Terraform.'\n\nOnly provide the requirements. Do NOT write the solution code until I ask for 'Review'."
+    },
+    "auto-faq": {
+      "description": "Scans the current note for AWS services and generates specific FAQ files for each.",
+      "prompt": "Analyze the content of the active file (@activeFile). \n\n1. **Extract Entities:** Identify all AWS services mentioned (e.g., 'KMS', 'GuardDuty', 'Macie'). Ignore generic terms like 'cloud' or 'server'.\n\n2. **Execution Plan:** For EACH identified service:\n   a. Check if a file named `faq-[service-name].md` already exists. If yes, skip it.\n   b. If no, use the **Browser Tool** to search for 'AWS [Service Name] official FAQs'.\n   c. **Fetch** the content from the official aws.amazon.com page.\n   d. **Create** a new file named `faq-[service-name].md` in the `/notes` folder.\n\n3. **Content Structure:** Inside the new FAQ file, summarize the content into these three headers:\n   - **## Security Use Cases** (Critical for the SCS-C03 exam)\n   - **## Key Limits/Quotas**\n   - **## Exam Gotchas** (Confusing points)\n\nConstraint: Do not dump the whole text. Synthesize it for a Staff Engineer preparing for the Security Specialty."
     }
   }
 }
