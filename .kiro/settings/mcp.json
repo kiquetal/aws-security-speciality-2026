@@ -9,6 +9,15 @@
       "disabled": false,
       "autoApprove": []
     },
+    "mermaid": {
+      "command": "uvx",
+      "args": ["mcp-package-mermaid"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
     "excalidraw": {
       "command": "docker",
       "args": [
