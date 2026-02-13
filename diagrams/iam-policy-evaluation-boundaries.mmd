@@ -1,0 +1,41 @@
+graph TD
+    Start([API Request]) --> ExplicitDeny{Explicit Deny in ANY policy?}
+    
+    ExplicitDeny -->|Yes| Denied[❌ DENY]
+    ExplicitDeny -->|No| Layer1Title
+    
+    Layer1Title["🏢 LAYER 1: SERVICE CONTROL POLICY"]
+    Layer1Title --> SCP["SCP Check<br/>Organization/OU Level<br/>❌ Cannot grant only restrict<br/>✅ Applies to ALL including root"]
+    
+    SCP --> SCPCheck{SCP Allows?}
+    SCPCheck -->|No| Denied
+    SCPCheck -->|Yes| Layer2Title
+    
+    Layer2Title["🟠 LAYER 2: PERMISSIONS BOUNDARY"]
+    Layer2Title --> PermBoundary["Permissions Boundary Check<br/>Maximum permissions for identity<br/>❌ Cannot grant only restrict<br/>Does NOT grant by itself<br/>Example: iam:CreateUser in boundary<br/>but NOT in identity policy = DENY"]
+    
+    PermBoundary --> BoundaryCheck{Boundary Allows?}
+    BoundaryCheck -->|No| Denied
+    BoundaryCheck -->|Yes| Layer3Title
+    
+    Layer3Title["🟢 LAYER 3: IDENTITY & RESOURCE POLICIES"]
+    Layer3Title --> PolicyChoice{Which Policy?}
+    
+    PolicyChoice -->|Identity| Identity["Identity-Based Policy<br/>Attached to user/role/group<br/>✅ Grants permissions"]
+    PolicyChoice -->|Resource| ResourcePolicy["Resource-Based Policy<br/>Attached to resource<br/>✅ Grants cross-account access"]
+    
+    Identity --> FinalCheck{Policy Allows?}
+    ResourcePolicy --> FinalCheck
+    
+    FinalCheck -->|No| Denied
+    FinalCheck -->|Yes| Allowed[✅ ALLOW]
+    
+    style Layer1Title fill:#ffe0e0,stroke:#c92a2a,stroke-width:3px,color:#000
+    style Layer2Title fill:#fff3e0,stroke:#e67700,stroke-width:3px,color:#000
+    style Layer3Title fill:#e0ffe0,stroke:#2f9e44,stroke-width:3px,color:#000
+    style SCP fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style PermBoundary fill:#ffa94d,stroke:#e67700,color:#000
+    style Identity fill:#51cf66,stroke:#2f9e44,color:#000
+    style ResourcePolicy fill:#339af0,stroke:#1864ab,color:#fff
+    style Denied fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style Allowed fill:#51cf66,stroke:#2f9e44,color:#fff
