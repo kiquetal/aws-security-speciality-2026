@@ -13,22 +13,12 @@ The primary objective of this repository is to facilitate a deep understanding o
 ## 🛠️ MCP Tools
 This project integrates with Model Context Protocol (MCP) servers to enhance the learning experience:
 - **Fetch**: Retrieve documentation and external web content.
-- **Excalidraw**: Create and visualize architectural diagrams directly through the CLI.
+- **Mermaid**: Create and visualize architectural diagrams using Mermaid syntax directly through the CLI.
 
 ## 🚀 Getting Started
 1. **Explore the Notes**: Start with `notes/iam-overview.md` or dive into specific service FAQs.
 2. **Review the Blueprint**: Check `blueprint.md` to align your study path with exam domains.
-3. **Run the Excalidraw Canvas**:
-   To use the architectural diagramming tools, you need to run the Excalidraw Canvas. You can do this using Docker:
-   ```bash
-   docker run -d -p 3000:3000 --name mcp-excalidraw-canvas ghcr.io/yctimlin/mcp_excalidraw-canvas:latest
-   ```
-   Alternatively, use the provided `docker-compose.yml`:
-   ```bash
-   docker compose up -d
-   ```
-4. **Configure MCP Tools**:
-   The Excalidraw MCP server is configured in `.kiro/settings/mcp.json`. Ensure the `EXPRESS_SERVER_URL` environment variable matches your running canvas instance (defaulting to `http://localhost:3000`).
+3. **Create Diagrams**: Use the Mermaid MCP tool to generate security architecture diagrams, data flow visualizations, and logical flows directly from the CLI.
 
 ## 🛡️ Best Practices
 When contributing or studying:
