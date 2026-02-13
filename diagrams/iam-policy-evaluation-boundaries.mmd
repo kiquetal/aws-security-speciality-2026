@@ -5,7 +5,7 @@ graph TD
     ExplicitDeny -->|No| Layer1Title
     
     Layer1Title["🏢 LAYER 1: SERVICE CONTROL POLICY"]
-    Layer1Title --> SCP["SCP Check<br/>Organization/OU Level<br/>❌ Cannot grant only restrict<br/>✅ Applies to ALL including root"]
+    Layer1Title --> SCP["SCP Check<br/>Organization/OU Level<br/>❌ Cannot grant only restrict<br/>✅ Applies to ALL including root<br/>Example: Deny ec2:* for entire OU"]
     
     SCP --> SCPCheck{SCP Allows?}
     SCPCheck -->|No| Denied
