@@ -5,7 +5,7 @@ This directory contains practical, production-ready examples for AWS Security Sp
 ## Available Examples
 
 ### IAM Policies
-- **[iam-policy-examples.md](./iam-policy-examples.md)** - Comprehensive examples of all IAM policy types
+  - [IAM Policy Examples](./iam-policy-examples.md) - Comprehensive examples of all IAM policy types
   - [Identity-based policies](./iam-policy-examples.md#1-identity-based-policies) - S3 read-only, EC2 management with MFA
   - [Resource-based policies](./iam-policy-examples.md#2-resource-based-policies) - S3 bucket policies, KMS key policies, Lambda resource policies
   - [Permission boundaries](./iam-policy-examples.md#3-permission-boundaries) - Developer limits, third-party contractor restrictions
