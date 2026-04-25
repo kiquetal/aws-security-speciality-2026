@@ -254,6 +254,57 @@ Attached directly to AWS resources. Define who can access the resource.
 
 Set the maximum permissions an identity can have, even if their identity-based policy grants more.
 
+### How Permission Boundaries Work
+
+A permission boundary **is a regular IAM policy** — same JSON syntax, same `create-policy` command. The only difference is **how you attach it**:
+
+```bash
+# Step 1: Create the policy (identical to any IAM policy)
+aws iam create-policy \
+  --policy-name DeveloperBoundary \
+  --policy-document file://developer-boundary.json
+# Returns: arn:aws:iam::123456789012:policy/DeveloperBoundary
+
+# Step 2a: Attach as IDENTITY POLICY → grants permissions
+aws iam attach-user-policy \
+  --user-name alice \
+  --policy-arn arn:aws:iam::123456789012:policy/DeveloperBoundary
+
+# Step 2b: Attach as PERMISSION BOUNDARY → sets ceiling (max allowed)
+aws iam put-user-permissions-boundary \
+  --user-name alice \
+  --permissions-boundary arn:aws:iam::123456789012:policy/DeveloperBoundary
+
+# For roles, use:
+aws iam put-role-permissions-boundary \
+  --role-name MyRole \
+  --permissions-boundary arn:aws:iam::123456789012:policy/DeveloperBoundary
+```
+
+**Same JSON. Same ARN. The attachment point changes the semantics:**
+
+| Attached as | API | Effect |
+|---|---|---|
+| Identity policy | `attach-user-policy` / `attach-role-policy` | **Grants** permissions |
+| Permission boundary | `put-user-permissions-boundary` / `put-role-permissions-boundary` | **Caps** maximum permissions |
+
+**Effective permissions = Identity Policy ∩ Permission Boundary** (intersection only).
+
+```
+┌─────────────────────────────────┐
+│     Permission Boundary         │
+│   (ceiling: S3 + Lambda + CW)  │
+│                                 │
+│   ┌───────────────────┐        │
+│   │  Identity Policy  │        │
+│   │  (Allow S3 + EC2) │        │
+│   └───────────────────┘        │
+│                                 │
+│   Effective: S3 only            │
+│   (EC2 blocked by boundary)     │
+└─────────────────────────────────┘
+```
+
 ### Example 3.1: Developer Permission Boundary
 
 ```json
