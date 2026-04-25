@@ -6,6 +6,8 @@
 - **Passing Score:** 750/1000
 - **Strategy:** Domain-weighted study → Hands-on labs → Exam simulation
 
+![Study Plan Timeline](./diagrams/study-plan-gantt.png)
+
 ## Progress Tracker
 
 | Week | Domain / Focus | Status | Notes |

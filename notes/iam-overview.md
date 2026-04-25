@@ -39,4 +39,6 @@ IAM integrates deeply with:
 
 ## Cross-Account Access
 
+![IAM Roles Sequence — AssumeRole Flow](../diagrams/iam-roles-sequence.png)
+
 Use IAM roles with trust policies to enable secure cross-account access without sharing credentials.

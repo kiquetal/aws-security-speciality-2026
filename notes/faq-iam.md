@@ -40,6 +40,9 @@
 ## Exam Gotchas
 
 ### Policy Evaluation Logic
+
+![IAM Policy Evaluation with Boundaries](../diagrams/iam-policy-evaluation-boundaries.png)
+
 - **Explicit Deny always wins** over Allow statements
 - SCPs affect all IAM users, roles, AND the root user of member accounts
 - SCPs don't grant permissions - they set boundaries on what can be allowed
