@@ -2,7 +2,7 @@
 
 ## Overview
 - **Exam:** AWS Certified Security - Specialty (SCS-C03)
-- **Duration:** 12 weeks
+- **Target:** ~12 topics (self-paced, no calendar deadlines)
 - **Passing Score:** 750/1000
 - **Strategy:** Domain-weighted study → Hands-on labs → Exam simulation
 
@@ -27,13 +27,13 @@
 
 ## Weekly Rhythm
 
-Each week follows this pattern:
-1. **Day 1-2:** Read/create FAQ notes for the week's services
-2. **Day 3:** Build architectural diagrams (Mermaid) for key flows
-3. **Day 4:** Hands-on lab (Terraform/CLI challenge)
-4. **Day 5:** Scenario-based quiz (exam-style questions)
-5. **Day 6:** Review mistakes, fill gaps, update notes
-6. **Day 7:** Rest or light review of previous weeks
+Each topic follows this pattern (at your own pace):
+1. Read/create FAQ notes for the topic's services
+2. Build architectural diagrams (Mermaid) for key flows
+3. Hands-on lab (Terraform/CLI challenge)
+4. Scenario-based quiz (exam-style questions, 10+ per domain)
+5. Review mistakes, fill gaps, update notes
+6. Mark topic ✅ when completion criteria met
 
 ## Domain Weight Alignment
 
@@ -52,7 +52,7 @@ A week is ✅ complete when:
 - [ ] FAQ notes exist for all key services of that domain
 - [ ] At least 1 architectural diagram created
 - [ ] At least 1 hands-on lab completed
-- [ ] Scored ≥80% on scenario-based quiz (5+ questions)
+- [ ] Scored ≥80% on scenario-based quiz (10+ questions)
 - [ ] Weak areas documented in notes
 
 ## IAM Policy JSON Best Practices (Exam Critical)
