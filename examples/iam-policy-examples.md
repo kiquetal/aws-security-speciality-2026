@@ -720,32 +720,31 @@ Define who can assume an IAM role. Attached to roles, not identities.
 
 ## 6. Resource Control Policies (RCPs)
 
-**Note:** RCPs are a newer feature in AWS Organizations that provide resource-level guardrails.
+> **New for SCS-C03** (launched Nov 2024). RCPs are resource-centric org policies — they restrict what *anyone* can do to resources in your member accounts, including external principals that SCPs can't reach. See [faq-rcp.md](../notes/faq-rcp.md) for full details.
 
-### Example 6.1: Prevent Resource Sharing Outside Organization
+**RCP syntax rules:**
+- `Principal` must always be `"*"` — scope with Conditions
+- Only write `Deny` statements (default `RCPFullAWSAccess` handles Allow)
+- `NotPrincipal` is not supported
+
+### Example 6.1: Restrict S3 Access to Org Principals Only (Data Perimeter)
 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "PreventExternalResourceSharing",
+      "Sid": "EnforceS3OrgIdentitiesOnly",
       "Effect": "Deny",
       "Principal": "*",
-      "Action": [
-        "ram:CreateResourceShare",
-        "ram:UpdateResourceShare"
-      ],
+      "Action": "s3:*",
       "Resource": "*",
       "Condition": {
         "StringNotEqualsIfExists": {
-          "ram:RequestedResourceType": [
-            "route53resolver:ResolverRule",
-            "ec2:TransitGateway"
-          ]
+          "aws:PrincipalOrgID": "o-abc123def4"
         },
-        "Bool": {
-          "ram:RequestedAllowsExternalPrincipals": "true"
+        "BoolIfExists": {
+          "aws:PrincipalIsAWSService": "false"
         }
       }
     }
@@ -754,9 +753,79 @@ Define who can assume an IAM role. Attached to roles, not identities.
 ```
 
 **Key Points:**
-- Prevents sharing resources outside the organization
-- Allows specific resource types if needed
-- Complements SCPs for resource-level control
+- Both conditions must be true to deny (AND logic)
+- `aws:PrincipalIsAWSService` exempts AWS services (CloudTrail, Config writing to your bucket)
+- `IfExists` avoids accidental denials when condition key is absent from request context
+- Does NOT block `PutBucketPolicy` — blocks the *subsequent access* by external callers
+
+### Example 6.2: Restrict KMS Key Usage to Org Only
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnforceKMSOrgIdentitiesOnly",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:DescribeKey",
+        "kms:CreateGrant"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEqualsIfExists": {
+          "aws:PrincipalOrgID": "o-abc123def4"
+        },
+        "BoolIfExists": {
+          "aws:PrincipalIsAWSService": "false"
+        }
+      }
+    }
+  ]
+}
+```
+
+**Key Points:**
+- Only affects **customer managed keys** — AWS managed keys (`aws/s3`, `aws/ebs`) are exempt from RCPs
+- Specific KMS actions listed (not `kms:*`) for clarity
+- `kms:RetireGrant` is specifically exempt from RCPs
+
+### Example 6.3: Prevent External STS Role Assumption
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnforceSTSOrgIdentitiesOnly",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "sts:AssumeRole",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEqualsIfExists": {
+          "aws:PrincipalOrgID": "o-abc123def4"
+        },
+        "BoolIfExists": {
+          "aws:PrincipalIsAWSService": "false"
+        }
+      }
+    }
+  ]
+}
+```
+
+**Key Points:**
+- Even if a role's trust policy allows an external account, this RCP blocks the assumption
+- Closes the "permissive trust policy" gap that SCPs alone cannot address
+- Critical for preventing lateral movement from compromised external accounts
 
 ---
 
@@ -765,12 +834,19 @@ Define who can assume an IAM role. Attached to roles, not identities.
 When multiple policies apply, AWS evaluates them in this order:
 
 1. **Explicit Deny** (in any policy) → Access denied
-2. **SCP Deny** → Access denied
-3. **Permission Boundary Deny** → Access denied
-4. **Explicit Allow** (in identity-based or resource-based policy) → Access allowed
-5. **Default** → Access denied (implicit deny)
+2. **SCP** (principal-side ceiling) → If not allowed, denied
+3. **RCP** (resource-side ceiling) → If not allowed, denied
+4. **Permission Boundary** → If not allowed, denied
+5. **Session Policy** → If not allowed, denied
+6. **Identity-based OR Resource-based policy grants Allow** → Access allowed
+7. **Default** → Access denied (implicit deny)
 
-### Key Principle: "Deny Always Wins"
+**Effective permissions = SCP ∩ RCP ∩ Permission Boundary ∩ (Identity policy ∪ Resource policy)**
+
+### Key Principles
+- **Deny Always Wins** — explicit deny in ANY policy type overrides all allows
+- **SCPs** restrict your org's principals; **RCPs** restrict access to your org's resources
+- **External callers bypass SCPs** but NOT RCPs — this is the core exam distinction
 
 ---
 
