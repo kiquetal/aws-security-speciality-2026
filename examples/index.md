@@ -32,7 +32,7 @@ Practical, production-ready examples organized by SCS-C03 exam domain.
 - [Permission boundaries](./iam-policy-examples.md#3-permission-boundaries) — How boundaries work, developer limits, contractor restrictions
 - [Service Control Policies (SCPs)](./iam-policy-examples.md#4-service-control-policies-scps) — Root user denial, encryption enforcement, security service protection
 - [Trust policies](./iam-policy-examples.md#5-trust-policies-assumerole-policies) — Cross-account access, service roles, OIDC/SAML federation
-- [Resource Control Policies (RCPs)](./iam-policy-examples.md#6-resource-control-policies-rcps) — Prevent external resource sharing
+- [Resource Control Policies (RCPs)](./iam-policy-examples.md#6-resource-control-policies-rcps) — Data perimeter: S3 org-only access, KMS org-only usage, STS external assumption block
 
 ### Policy Mechanics
 - [Policy evaluation logic](./iam-policy-examples.md#policy-evaluation-logic) — How AWS evaluates multiple policies
