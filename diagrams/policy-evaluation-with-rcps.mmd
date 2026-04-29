@@ -1,0 +1,23 @@
+%% SCS-C03: Updated Policy Evaluation with RCPs (Task 4.2, Task 6.1)
+%% RCPs add a resource-side check that SCPs alone don't cover
+
+flowchart TD
+    REQ["🔑 API Request"] --> EXPLICIT_DENY{"Explicit Deny<br/>in ANY policy?"}
+    EXPLICIT_DENY -->|Yes| DENIED["❌ DENIED"]
+    EXPLICIT_DENY -->|No| SCP_CHECK{"SCP allows?<br/>(principal-side ceiling)<br/>━━━━━━━━━━━━━━━━<br/>Only affects principals<br/>INSIDE your org"}
+    SCP_CHECK -->|No| DENIED
+    SCP_CHECK -->|Yes| RCP_CHECK{"RCP allows?<br/>(resource-side ceiling)<br/>━━━━━━━━━━━━━━━━<br/>Affects ALL callers<br/>including EXTERNAL"}
+    RCP_CHECK -->|No| DENIED
+    RCP_CHECK -->|Yes| PB_CHECK{"Permission<br/>Boundary allows?"}
+    PB_CHECK -->|No| DENIED
+    PB_CHECK -->|Yes| SESSION{"Session<br/>Policy allows?<br/>(if applicable)"}
+    SESSION -->|No| DENIED
+    SESSION -->|Yes| GRANT{"Identity-based OR<br/>Resource-based policy<br/>grants Allow?"}
+    GRANT -->|No| DENIED
+    GRANT -->|Yes| ALLOWED["✅ ALLOWED"]
+
+    style DENIED fill:#ff4444,color:#fff
+    style ALLOWED fill:#44bb44,color:#fff
+    style RCP_CHECK fill:#ff9900,color:#fff,stroke:#ff9900
+    style SCP_CHECK fill:#3366cc,color:#fff
+    style REQ fill:#232f3e,color:#fff
