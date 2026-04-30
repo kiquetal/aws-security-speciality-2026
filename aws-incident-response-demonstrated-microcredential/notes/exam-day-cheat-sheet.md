@@ -59,6 +59,30 @@ Detect → Contain → Eradicate → Recover
 | S3 | **Preserve** — store logs, snapshots |
 | RDS | **Protect** — encryption, auth, audit |
 
+## RDS Recovery Quick Reference
+
+```bash
+# PITR — creates a NEW running instance from a point before the incident
+aws rds restore-db-instance-to-point-in-time \
+  --source-db-instance-identifier compromised-db \
+  --target-db-instance-identifier clean-db-restored \
+  --restore-time "2026-04-30T02:00:00Z"
+```
+
+| | Manual Snapshot | PITR |
+|--|----------------|------|
+| Result | Storage (evidence) | New running instance (recovery) |
+| Use in IR | Forensic preservation | Production recovery |
+| Order | Take FIRST (before PITR) | Run SECOND |
+
+## Weak Spots to Memorize
+
+| Item | Remember |
+|------|----------|
+| **Remediation chain** | Config → EventBridge → **SNS** → Lambda (SNS = fan-out, don't skip it) |
+| **`aws:PrincipalOrgID`** | SCP condition key to restrict actions to your org boundary |
+| **`AmazonSSMManagedInstanceCore`** | Exact IAM policy name for SSM. #1 reason instances don't appear in Systems Manager |
+
 ## Common Traps
 
 1. **Stopping an EC2 instance is NOT containment** — it destroys volatile evidence
