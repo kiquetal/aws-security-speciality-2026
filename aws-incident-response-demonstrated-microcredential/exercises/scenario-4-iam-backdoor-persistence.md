@@ -156,6 +156,8 @@ However, you CAN use an SCP to prevent principals **in your org** from creating 
 | **IAM Access Analyzer** | Continuously scans for resources shared with external entities — would have flagged this backdoor role |
 | **Config rule** `iam-role-no-external-trust` (custom) | Detects roles with trust policies referencing accounts outside your org |
 
+**See diagram:** `diagrams/scp-external-trust-prevention.png`
+
 ---
 
 ## Common Exam Traps
