@@ -167,3 +167,7 @@ aws rds restore-db-instance-to-point-in-time \
 | Use in IR | Forensic evidence | Production recovery |
 
 **See diagram:** `diagrams/rds-incident-response-flow.png`
+
+---
+
+**Next:** [Scenario 3 — Automated Remediation of a Public S3 Bucket + Network Hardening Recovery](scenario-3-automated-remediation.md)
