@@ -171,3 +171,5 @@ aws rds restore-db-instance-to-point-in-time \
 ---
 
 **Next:** [Scenario 3 — Automated Remediation of a Public S3 Bucket + Network Hardening Recovery](scenario-3-automated-remediation.md)
+
+**Next:** [Scenario 4 — IAM Backdoor Persistence After a Breach](scenario-4-iam-backdoor-persistence.md)
