@@ -97,11 +97,73 @@
 - **Additional cost**: Charged per 100,000 events analyzed
 - **Use cases**: Detect compromised credentials, resource provisioning spikes
 
-### Event Selectors
-- **Read-only**: GetObject, DescribeInstances
-- **Write-only**: PutObject, RunInstances
-- **All**: Both read and write
-- **Advanced event selectors**: Fine-grained filtering (e.g., by resource tag)
+### Event Selectors — Basic vs Advanced (Task 1.2)
+
+> ⚠️ **Exam signal:** Any question mentioning "prefix," "subset of functions," or "most flexibly" with data events → **advanced event selectors**.
+
+#### Comparison
+
+| Capability | Basic | Advanced |
+|---|---|---|
+| Toggle management events on/off | ✅ | ✅ |
+| Toggle data events on/off per service | ✅ | ✅ |
+| Filter by **exact** resource ARN | ✅ | ✅ |
+| Filter by ARN **prefix** (`StartsWith`) | ❌ | ✅ |
+| Exclude by ARN prefix (`NotStartsWith`) | ❌ | ✅ |
+| Filter by `eventName` (e.g., Invoke only) | ❌ | ✅ |
+| Filter by `readOnly` (true/false) | ✅ (read/write toggle) | ✅ (field selector) |
+| Combine multiple field conditions | ❌ | ✅ |
+| Max selectors per trail | 5 | 500 conditions |
+| Required for CloudTrail Lake | — | ✅ (Lake only supports advanced) |
+
+#### When to Use Which
+
+- **Basic:** Simple "log all S3 data events" or "log one specific bucket"
+- **Advanced:** Prefix-based filtering, event name filtering, cost optimization on high-volume workloads, CloudTrail Lake
+
+#### Advanced Event Selector Fields
+
+| Field | Operators | Example |
+|---|---|---|
+| `eventCategory` | `Equals` | `Data`, `Management` |
+| `resources.type` | `Equals` | `AWS::S3::Object`, `AWS::Lambda::Function`, `AWS::DynamoDB::Table` |
+| `resources.ARN` | `Equals`, `StartsWith`, `NotEquals`, `NotStartsWith` | `arn:aws:lambda:...:function:UpdProdCount` |
+| `eventName` | `Equals`, `StartsWith` | `GetObject`, `Invoke` |
+| `readOnly` | `Equals` | `true`, `false` |
+
+#### Example: Log Only Invoke Events for Lambda Functions with a Name Prefix
+
+```json
+{
+  "Name": "LambdaPrefixFilter",
+  "FieldSelectors": [
+    { "Field": "eventCategory", "Equals": ["Data"] },
+    { "Field": "resources.type", "Equals": ["AWS::Lambda::Function"] },
+    { "Field": "resources.ARN", "StartsWith": ["arn:aws:lambda:us-east-1:123456789012:function:UpdProdCount"] },
+    { "Field": "eventName", "Equals": ["Invoke"] }
+  ]
+}
+```
+
+#### Example: Log S3 Data Events for All Buckets Except a High-Volume One
+
+```json
+{
+  "Name": "S3ExcludeHighVolume",
+  "FieldSelectors": [
+    { "Field": "eventCategory", "Equals": ["Data"] },
+    { "Field": "resources.type", "Equals": ["AWS::S3::Object"] },
+    { "Field": "resources.ARN", "NotStartsWith": ["arn:aws:s3:::high-volume-logs-bucket/"] }
+  ]
+}
+```
+
+#### Exam Gotchas — Event Selectors
+- **Basic selectors force all-or-nothing** per resource type — you can't say "only Invoke, not GetFunction"
+- **Advanced selectors are required for CloudTrail Lake** event data stores
+- **You cannot mix basic and advanced** on the same trail — it's one or the other
+- **Switching from basic to advanced is one-way** — you can't go back to basic
+- **Read/write filtering**: Basic uses a toggle; advanced uses `readOnly` field selector (same result, different syntax)
 
 ### CloudTrail Lake Pricing
 - **Ingestion**: Per GB ingested
