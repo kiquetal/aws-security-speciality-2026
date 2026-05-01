@@ -1,0 +1,53 @@
+%% KMS Grants — Dynamic Cross-Account Access
+%% Blueprint refs: Task 5.2 (key management), Task 4.2 (authorization)
+%%
+%% Key policy = static, 32KB limit, manual edits
+%% KMS Grant = dynamic, no limit, API call per customer
+%% RAM = does NOT support KMS
+
+flowchart TB
+    subgraph PRIMARY["Primary Account (key owner)"]
+        KEY["🔑 KMS Key<br/>(customer managed)<br/>──────────<br/>Key Policy (static, set once):<br/>Allow OnboardingService<br/>to kms:CreateGrant"]
+        
+        ONBOARD["⚙️ Onboarding Service<br/>──────────<br/>Calls kms:CreateGrant<br/>for each new customer<br/>No key policy edit needed"]
+    end
+
+    subgraph GRANTS["KMS Grants (dynamic, per customer)"]
+        G1["Grant 1<br/>Customer A → Decrypt"]
+        G2["Grant 2<br/>Customer B → Decrypt"]
+        G3["Grant 3<br/>Customer C → Decrypt"]
+        G4["Grant N<br/>New customer → one API call"]
+    end
+
+    subgraph CUSTOMERS["Customer Accounts (independent)"]
+        C1["Customer A<br/>IAM Role"]
+        C2["Customer B<br/>IAM Role"]
+        C3["Customer C<br/>IAM Role"]
+    end
+
+    subgraph WRONG["❌ Why NOT RAM?"]
+        RAM["AWS RAM<br/>──────────<br/>Does NOT support KMS<br/>Shares whole resources<br/>No per-operation control"]
+    end
+
+    ONBOARD -->|"kms:CreateGrant"| G1
+    ONBOARD -->|"kms:CreateGrant"| G2
+    ONBOARD -->|"kms:CreateGrant"| G3
+    ONBOARD -->|"kms:CreateGrant"| G4
+
+    G1 -->|"kms:Decrypt"| C1
+    G2 -->|"kms:Decrypt"| C2
+    G3 -->|"kms:Decrypt"| C3
+
+    C1 -->|"Decrypt data"| KEY
+    C2 -->|"Decrypt data"| KEY
+    C3 -->|"Decrypt data"| KEY
+
+    RAM -.->|"❌ Not supported<br/>for KMS"| KEY
+
+    style KEY fill:#ff9900,color:#fff
+    style ONBOARD fill:#44bb44,color:#fff
+    style RAM fill:#ff4444,color:#fff
+    style G1 fill:#3366cc,color:#fff
+    style G2 fill:#3366cc,color:#fff
+    style G3 fill:#3366cc,color:#fff
+    style G4 fill:#3366cc,color:#fff
