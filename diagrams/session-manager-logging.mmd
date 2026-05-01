@@ -1,3 +1,4 @@
+flowchart TB
 %% Session Manager Logging Architecture
 %% Blueprint refs: Task 3.2 (secure admin access), Task 1.2 (logging)
 %% 
@@ -5,8 +6,6 @@
 %%   CloudTrail  → WHO connected (API calls)
 %%   S3          → WHAT they did (full transcript, after session)
 %%   CloudWatch  → WHAT they did (real-time streaming)
-
-flowchart TB
     subgraph ADMIN["Admin Access"]
         USER["👤 Admin<br/>(IAM authenticated)"]
     end

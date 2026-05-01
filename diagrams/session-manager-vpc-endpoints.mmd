@@ -1,10 +1,9 @@
+flowchart LR
 %% Session Manager — VPC Endpoints for Private Subnets
 %% Blueprint ref: Task 3.2, Task 3.3
 %%
 %% Exam gotcha: You need ALL THREE SSM endpoints + logging endpoints
 %% Missing any one = connection failure or missing logs
-
-flowchart LR
     subgraph PRIVATE_SUBNET["Private Subnet (no IGW, no NAT)"]
         EC2["🖥️ EC2<br/>SSM Agent"]
     end

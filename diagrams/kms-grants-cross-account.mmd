@@ -1,11 +1,9 @@
+flowchart TB
 %% KMS Grants — Dynamic Cross-Account Access
 %% Blueprint refs: Task 5.2 (key management), Task 4.2 (authorization)
-%%
 %% Key policy = static, 32KB limit, manual edits
 %% KMS Grant = dynamic, no limit, API call per customer
 %% RAM = does NOT support KMS
-
-flowchart TB
     subgraph PRIMARY["Primary Account (key owner)"]
         KEY["🔑 KMS Key<br/>(customer managed)<br/>──────────<br/>Key Policy (static, set once):<br/>Allow OnboardingService<br/>to kms:CreateGrant"]
         

@@ -1,10 +1,9 @@
+flowchart LR
 %% CloudFront OAC — S3 Origin Access Pattern
 %% Blueprint refs: Task 3.1 (edge security), Task 5.2 (data protection)
 %%
 %% OAC keeps S3 private. Only CloudFront can access it.
 %% OAI is deprecated — OAC is always the exam answer.
-
-flowchart LR
     subgraph USERS["Internet"]
         USER["👤 User"]
         ATTACKER["🔴 Attacker"]
