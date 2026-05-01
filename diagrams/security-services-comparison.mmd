@@ -1,0 +1,41 @@
+%% Security Services — Who Does What
+%% Blueprint refs: Task 1.1, 2.2, 3.2
+%%
+%% Exam pattern: these are the top distractors.
+%% Each service has ONE job. Don't confuse them.
+
+flowchart TB
+    subgraph AGGREGATION["Security Hub (AGGREGATOR + COMPLIANCE)"]
+        SH["Collects all findings<br/>Runs compliance standards<br/>Org-wide, cross-region<br/>──────────<br/>🎯 'public S3 bucket?'<br/>🎯 'aggregate findings?'<br/>🎯 'compliance check?'"]
+    end
+
+    subgraph DETECTION["Detection Layer"]
+        GD["🔴 GuardDuty<br/>──────────<br/>THREATS<br/>──────────<br/>Crypto mining<br/>Compromised creds<br/>C2 traffic<br/>Data exfiltration<br/>Malware (EBS/S3)<br/>──────────<br/>ML + threat intel<br/>No agents needed"]
+
+        MACIE["🟡 Macie<br/>──────────<br/>SENSITIVE DATA<br/>──────────<br/>PII in S3<br/>PHI in S3<br/>Credit cards<br/>AWS keys in S3<br/>──────────<br/>S3 ONLY<br/>Not real-time"]
+
+        INSP["🟠 Inspector<br/>──────────<br/>VULNERABILITIES<br/>──────────<br/>EC2 CVEs<br/>Lambda CVEs<br/>Container CVEs<br/>Network exposure<br/>──────────<br/>Needs SSM Agent<br/>on EC2"]
+
+        CFG["🔵 Config<br/>──────────<br/>COMPLIANCE<br/>──────────<br/>Config changes<br/>Managed rules<br/>Conformance packs<br/>Drift detection<br/>──────────<br/>Required by<br/>Security Hub"]
+    end
+
+    subgraph INVESTIGATION["Investigation Layer"]
+        DET["🟣 Detective<br/>──────────<br/>ROOT CAUSE<br/>──────────<br/>Investigate findings<br/>Visualize behavior<br/>Correlate events<br/>──────────<br/>AFTER detection<br/>Not a monitor"]
+    end
+
+    GD -->|"Findings"| SH
+    MACIE -->|"Findings"| SH
+    INSP -->|"Findings"| SH
+    CFG -->|"Compliance events"| SH
+
+    SH -->|"Finding to investigate"| DET
+
+    SH -->|"EventBridge"| ALERT["📧 SNS → Security Team"]
+
+    style SH fill:#ff9900,color:#fff
+    style GD fill:#dd3333,color:#fff
+    style MACIE fill:#ccaa00,color:#fff
+    style INSP fill:#dd7700,color:#fff
+    style CFG fill:#3366cc,color:#fff
+    style DET fill:#8833cc,color:#fff
+    style ALERT fill:#ff4444,color:#fff
