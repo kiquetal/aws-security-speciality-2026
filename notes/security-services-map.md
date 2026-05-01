@@ -87,6 +87,38 @@ Detective    ──requires──► GuardDuty enabled (investigates GuardDuty f
 Config       ──requires──► nothing (records resource configs directly)
 ```
 
+## Agent Requirements (Exam-Critical)
+
+```
+                Foundational     Optional Plans      Agent Needed?
+─────────────   ──────────────   ─────────────────   ──────────────────────
+GuardDuty       agentless ✅     mostly agentless     ONLY Runtime Monitoring
+                                                      (EC2, EKS, ECS)
+Inspector       N/A              N/A                  ALWAYS needs SSM Agent
+                                                      on EC2 (agentless for
+                                                      ECR + Lambda)
+Macie           agentless ✅     N/A                  never
+Config          agentless ✅     N/A                  never
+Detective       agentless ✅     N/A                  never
+Security Hub    agentless ✅     N/A                  never
+```
+
+**GuardDuty foundational = zero setup.** It reads CloudTrail, VPC Flow Logs,
+and DNS logs through AWS internal feeds. You don't need to enable those
+services yourself — GuardDuty has its own direct access.
+
+**GuardDuty Runtime Monitoring is the one exception:**
+- Requires a security agent on EC2/EKS/ECS
+- GuardDuty can auto-deploy it, or you deploy manually
+- Detects runtime threats (process execution, file access, network connections)
+- Without the agent: GuardDuty still detects threats via network/API analysis,
+  but misses container-level and process-level activity
+
+**Inspector always needs SSM Agent on EC2:**
+- No agent = no vulnerability scanning for EC2
+- ECR container images: agentless (scans on push)
+- Lambda functions: agentless (scans on deploy)
+
 ## One-Line Cheat Sheet
 
 ```
