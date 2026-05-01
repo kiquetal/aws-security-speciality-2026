@@ -1,0 +1,57 @@
+%% Session Manager Logging Architecture
+%% Blueprint refs: Task 3.2 (secure admin access), Task 1.2 (logging)
+%% 
+%% Three logging layers:
+%%   CloudTrail  → WHO connected (API calls)
+%%   S3          → WHAT they did (full transcript, after session)
+%%   CloudWatch  → WHAT they did (real-time streaming)
+
+flowchart TB
+    subgraph ADMIN["Admin Access"]
+        USER["👤 Admin<br/>(IAM authenticated)"]
+    end
+
+    subgraph SSM_SERVICE["Systems Manager Service"]
+        SM["Session Manager<br/>API Endpoint"]
+    end
+
+    subgraph VPC["VPC — Private Subnet (no inbound ports)"]
+        EC2["🖥️ EC2 Instance<br/>SSM Agent<br/>(outbound HTTPS 443 only)"]
+    end
+
+    subgraph LOGGING["Three Logging Layers"]
+        CT["📋 CloudTrail<br/>─────────────<br/>StartSession API<br/>TerminateSession API<br/>─────────────<br/>WHO connected<br/>⏱️ ~15 min latency<br/>✅ Enabled by default"]
+        
+        S3["📦 S3 Bucket<br/>─────────────<br/>Full session transcript<br/>(keystrokes + output)<br/>─────────────<br/>WHAT they did<br/>⏱️ After session ends<br/>❌ Must configure"]
+        
+        CW["📊 CloudWatch Logs<br/>─────────────<br/>Full session transcript<br/>(streaming)<br/>─────────────<br/>WHAT they did NOW<br/>⏱️ Near real-time<br/>❌ Must configure"]
+    end
+
+    subgraph ALERTING["Real-Time Alerting"]
+        MF["Metric Filter<br/>'rm -rf' | 'passwd'<br/>'curl' | 'wget'"]
+        ALARM["CloudWatch Alarm<br/>→ SNS → PagerDuty"]
+    end
+
+    subgraph ENCRYPTION["Encryption"]
+        KMS["🔑 KMS CMK<br/>─────────────<br/>Session data channel<br/>S3 logs (SSE-KMS)<br/>CW Logs at rest"]
+    end
+
+    USER -->|"1. ssm:StartSession<br/>(no SSH, no port 22)"| SM
+    SM -->|"2. WebSocket channel<br/>(TLS 1.2+)"| EC2
+    
+    SM -->|"API call logged"| CT
+    EC2 -->|"Session transcript<br/>(after session ends)"| S3
+    EC2 -->|"Session transcript<br/>(streaming)"| CW
+
+    CW --> MF --> ALARM
+
+    KMS -.->|"Encrypts"| S3
+    KMS -.->|"Encrypts"| CW
+    KMS -.->|"Encrypts session<br/>data channel"| SM
+
+    style CT fill:#ff9900,color:#fff
+    style S3 fill:#3366cc,color:#fff
+    style CW fill:#44bb44,color:#fff
+    style EC2 fill:#232f3e,color:#fff
+    style KMS fill:#dd4444,color:#fff
+    style ALARM fill:#dd4444,color:#fff

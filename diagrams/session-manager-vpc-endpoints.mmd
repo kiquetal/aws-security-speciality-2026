@@ -1,0 +1,37 @@
+%% Session Manager — VPC Endpoints for Private Subnets
+%% Blueprint ref: Task 3.2, Task 3.3
+%%
+%% Exam gotcha: You need ALL THREE SSM endpoints + logging endpoints
+%% Missing any one = connection failure or missing logs
+
+flowchart LR
+    subgraph PRIVATE_SUBNET["Private Subnet (no IGW, no NAT)"]
+        EC2["🖥️ EC2<br/>SSM Agent"]
+    end
+
+    subgraph REQUIRED["Required for Session (all 3 needed)"]
+        EP1["com.amazonaws.region.ssm<br/>Interface (PrivateLink)<br/>💰 Charged"]
+        EP2["com.amazonaws.region.ssmmessages<br/>Interface (PrivateLink)<br/>💰 Charged"]
+        EP3["com.amazonaws.region.ec2messages<br/>Interface (PrivateLink)<br/>💰 Charged"]
+    end
+
+    subgraph LOGGING_EP["Required for Logging"]
+        EP4["com.amazonaws.region.s3<br/>Gateway<br/>🆓 Free"]
+        EP5["com.amazonaws.region.logs<br/>Interface (PrivateLink)<br/>💰 Charged"]
+    end
+
+    subgraph ENCRYPTION_EP["Required if KMS Encryption"]
+        EP6["com.amazonaws.region.kms<br/>Interface (PrivateLink)<br/>💰 Charged"]
+    end
+
+    EC2 --> EP1
+    EC2 --> EP2
+    EC2 --> EP3
+    EC2 --> EP4
+    EC2 --> EP5
+    EC2 --> EP6
+
+    style REQUIRED fill:#ff4444,color:#fff
+    style LOGGING_EP fill:#ff9900,color:#fff
+    style ENCRYPTION_EP fill:#3366cc,color:#fff
+    style EC2 fill:#232f3e,color:#fff
