@@ -1,0 +1,42 @@
+flowchart TB
+%% Route 53 Resolver — DNS Firewall + Query Logs
+%% Blueprint refs: Task 3.3 (network security), Task 1.2 (logging)
+
+    subgraph VPC["VPC — Private Subnet"]
+        LAMBDA["Lambda Function"]
+    end
+
+    subgraph DNS_FW["Route 53 Resolver DNS Firewall"]
+        R1["Rule 1: ALLOW<br/>api.partner.com"]
+        R2["Rule 2: ALLOW<br/>*.amazonaws.com"]
+        R3["Rule 3: BLOCK<br/>* (everything else)"]
+    end
+
+    subgraph RESOLVER["Route 53 Resolver"]
+        OUT["Outbound Endpoint<br/>──────────<br/>Forwards queries to<br/>partner's DNS"]
+    end
+
+    subgraph LOGGING["Resolver Query Logs"]
+        CW["CloudWatch Logs<br/>──────────<br/>Real-time alerts<br/>Metric filters"]
+        S3L["S3<br/>──────────<br/>Long-term archive<br/>Athena queries"]
+        KDF["Kinesis Firehose<br/>──────────<br/>Third-party SIEM<br/>Splunk, Datadog"]
+    end
+
+    subgraph RESULTS["Outcomes"]
+        OK["✅ api.partner.com<br/>resolves normally"]
+        BLOCKED["❌ evil.com<br/>NXDOMAIN returned"]
+    end
+
+    LAMBDA -->|"DNS query"| DNS_FW
+    R1 -->|"match"| OK
+    R3 -->|"match"| BLOCKED
+    DNS_FW -->|"allowed queries"| OUT
+    DNS_FW -->|"all queries logged"| CW
+    DNS_FW -->|"all queries logged"| S3L
+    DNS_FW -->|"all queries logged"| KDF
+
+    style DNS_FW fill:#ff9900,color:#fff
+    style BLOCKED fill:#ff4444,color:#fff
+    style OK fill:#44bb44,color:#fff
+    style CW fill:#3366cc,color:#fff
+    style S3L fill:#3366cc,color:#fff
