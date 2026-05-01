@@ -2,6 +2,32 @@
 
 > **Blueprint refs:** Task 3.3 (network security controls), Task 1.2 (logging solutions)
 
+## Where DNS Firewall Lives (Don't Confuse the Names)
+
+```
+Route 53 (the overall service)
+├── Route 53 Hosted Zones     ← DNS records (A, CNAME, etc.)
+├── Route 53 Health Checks    ← endpoint monitoring
+└── Route 53 Resolver         ← VPC DNS resolution
+    ├── Resolver Endpoints    ← inbound/outbound DNS forwarding
+    ├── Resolver Query Logs   ← log every DNS query
+    └── Resolver DNS Firewall ← filter/block DNS queries
+```
+
+Full name: **Amazon Route 53 Resolver DNS Firewall**. Exam and docs shorten it to "DNS Firewall."
+
+### Three AWS "Firewalls" — Don't Confuse Them
+
+| Name | What It Filters | Layer | Scope | Exam Signal |
+|---|---|---|---|---|
+| **Route 53 Resolver DNS Firewall** | DNS queries (domain names) | DNS only | VPC-level | "restrict domain resolution" |
+| **AWS Network Firewall** | Network traffic (IP, port, protocol, DPI) | Layer 3-7 | Subnet-level | "inspect traffic / IDS/IPS" |
+| **AWS WAF** | HTTP/HTTPS requests (headers, body, SQLi, XSS) | Layer 7 (HTTP) | CloudFront, ALB, API GW | "block SQL injection / rate limit" |
+
+> These are three completely different services at different layers. The exam uses them as distractors.
+
+---
+
 ## Route 53 Resolver DNS Firewall (Task 3.3)
 
 ### What Problem It Solves
