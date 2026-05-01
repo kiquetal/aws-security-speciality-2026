@@ -150,6 +150,93 @@ Step 4: Old key still exists — decrypts old ciphertext
 - **CloudHSM**: Single-tenant HSM, full control, PKCS#11/JCE/CNG
 - **Private CA**: PKI infrastructure, X.509 certificates, TLS termination
 
+## KMS Grants — Dynamic Cross-Account Access (Task 5.2)
+
+KMS has THREE access control mechanisms. Grants are unique to KMS — no other AWS service has them.
+
+```
+1. KEY POLICY    — resource-based policy on the key (required, static, 32KB limit)
+2. IAM POLICY    — identity-based on the caller (same-account only, if key policy allows)
+3. KMS GRANT     — programmatic, dynamic, cross-account, no size limit
+```
+
+### When to Use Grants
+
+```
+SCENARIO: SaaS platform, 500 customers, each in their own AWS account
+
+  With Key Policy only:
+    "Principal": {"AWS": [
+      "arn:aws:iam::111111111111:role/CustomerA",
+      "arn:aws:iam::222222222222:role/CustomerB",
+      ... 498 more ...
+    ]}
+    → Hit 32KB limit around customer ~200
+    → Every onboard/offboard = manual policy edit
+
+  With Grants:
+    Key policy (set ONCE, never changes):
+      Allow OnboardingService to kms:CreateGrant
+
+    Onboarding automation:
+      aws kms create-grant \
+        --key-id arn:aws:kms:us-east-1:999999999999:key/abc-123 \
+        --grantee-principal arn:aws:iam::111111111111:role/CustomerA \
+        --operations Decrypt
+
+    New customer = one API call. No policy edit.
+    Customer leaves = kms:RevokeGrant. Done.
+```
+
+### Grant vs Key Policy vs IAM Policy
+
+| Question | Answer |
+|---|---|
+| "Permanent access for your own team" | Key policy or IAM policy |
+| "Cross-account, dynamic, scales to many customers" | **KMS Grant** |
+| "Without modifying the key policy" | **KMS Grant** |
+| "Temporary access for an AWS service" (EBS, RDS) | **KMS Grant** (services use grants internally) |
+| "Revoke one customer without affecting others" | **KMS Grant** |
+
+### Grant Exam Gotchas
+
+| Gotcha | Detail |
+|---|---|
+| **Eventually consistent** | May take up to 5 min. Use **grant token** for immediate use. |
+| **AWS services use grants internally** | EBS, RDS, Lambda create grants on your key. Visible in CloudTrail. |
+| **RetireGrant vs RevokeGrant** | Grantee can retire own grant. Only key admin can revoke. |
+| **RCPs exempt `kms:RetireGrant`** | Even if RCP restricts KMS, RetireGrant still works. |
+| **Grants don't appear in key policy** | Use `aws kms list-grants` to see them. |
+| **Grant token** | Returned by CreateGrant. Pass to subsequent API calls for immediate use before eventual consistency kicks in. |
+
+### Why NOT AWS RAM for KMS Cross-Account Access?
+
+```
+AWS RAM (Resource Access Manager):
+  ├── Purpose: SHARE resources across accounts
+  ├── Supported: Transit Gateways, Subnets, Route 53 Rules,
+  │              License Manager, Aurora DB clusters, etc.
+  ├── NOT supported: KMS keys ← RAM doesn't support KMS
+  └── Even if it did: RAM shares the resource itself,
+      not fine-grained operations (Decrypt only, not Encrypt)
+
+KMS Grants:
+  ├── Purpose: Grant specific KMS OPERATIONS to specific principals
+  ├── Fine-grained: Decrypt only, Encrypt only, GenerateDataKey only
+  ├── Per-principal: Each customer gets exactly the operations they need
+  └── Revocable: Remove one customer without touching others
+```
+
+| Dimension | RAM | KMS Grants |
+|---|---|---|
+| **Supports KMS?** | ❌ No | ✅ Yes |
+| **Granularity** | Share entire resource | Specific operations (Decrypt, Encrypt, etc.) |
+| **Revoke one customer** | Remove from share | RevokeGrant for that principal |
+| **Scale** | Good for infra sharing | Good for data access |
+| **Use case** | "Share my Transit Gateway" | "Let Customer A decrypt with my key" |
+
+> **Exam trap:** If a question says "share KMS key access across accounts" and RAM is an option → **RAM is wrong**. KMS Grants or key policy are the only ways.
+
 ## Best Practices for IAM Policies
 
 1. **Use separate keys** for different data classifications
