@@ -151,6 +151,70 @@ WITH RCP:
   Result:  ❌ DENIED — RCP blocks it, bucket policy doesn't matter
 ```
 
+## The aws:PrincipalIsAWSService Exception (Exam-Critical)
+
+When you write an RCP that denies access based on `PrincipalOrgID`, you must
+exempt AWS services — otherwise you block CloudTrail, Config, GuardDuty, etc.
+
+**Two types of callers exist:**
+
+```
+TYPE 1: PEOPLE (IAM users, roles, root accounts)
+  ├── Your developer (Account A, in your org)
+  ├── External attacker (Account X, not in your org)
+  └── aws:PrincipalIsAWSService = false (or absent)
+
+TYPE 2: AWS SERVICES (service principals)
+  ├── cloudtrail.amazonaws.com  → writes logs to your S3
+  ├── config.amazonaws.com      → writes snapshots to your S3
+  ├── guardduty.amazonaws.com   → writes findings to your S3
+  ├── macie.amazonaws.com       → writes results to your S3
+  └── aws:PrincipalIsAWSService = true
+```
+
+**The RCP uses two conditions (BOTH must be true for Deny to apply):**
+
+```json
+{
+  "Sid": "DenyExternalAccessExceptAWSServices",
+  "Effect": "Deny",
+  "Principal": "*",
+  "Action": "s3:*",
+  "Resource": "*",
+  "Condition": {
+    "StringNotEqualsIfExists": {
+      "aws:PrincipalOrgID": "o-abc123"
+    },
+    "BoolIfExists": {
+      "aws:PrincipalIsAWSService": "false"
+    }
+  }
+}
+```
+
+**Walk through each caller:**
+
+```
+Your developer:
+  Condition 1: OrgID = my-org     → FALSE (they ARE in your org)
+  Condition 2: (doesn't matter — condition 1 already failed)
+  → Deny does NOT apply → ✅ ALLOWED
+
+External attacker:
+  Condition 1: OrgID = (none)     → TRUE  (not in your org)
+  Condition 2: AWS service? No    → TRUE  (it's a person)
+  → Both true → ❌ DENIED
+
+CloudTrail service:
+  Condition 1: OrgID = (none)     → TRUE  (services don't belong to orgs)
+  Condition 2: AWS service? Yes   → FALSE (it IS an AWS service)
+  → Deny does NOT apply → ✅ ALLOWED
+```
+
+**Rule:** Anytime you write a Deny with `PrincipalOrgID` in an RCP or
+resource-based policy, **always add the `PrincipalIsAWSService` exception**
+or you'll break AWS service integrations (CloudTrail, Config, GuardDuty, etc.).
+
 ## Quick Reference
 
 ```
