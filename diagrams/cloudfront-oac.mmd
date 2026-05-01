@@ -1,0 +1,32 @@
+%% CloudFront OAC — S3 Origin Access Pattern
+%% Blueprint refs: Task 3.1 (edge security), Task 5.2 (data protection)
+%%
+%% OAC keeps S3 private. Only CloudFront can access it.
+%% OAI is deprecated — OAC is always the exam answer.
+
+flowchart LR
+    subgraph USERS["Internet"]
+        USER["👤 User"]
+        ATTACKER["🔴 Attacker"]
+    end
+
+    subgraph EDGE["CloudFront Edge"]
+        CF["CloudFront Distribution<br/>+ WAF rules<br/>+ Geo-restrictions<br/>+ Access logging<br/>──────────<br/>OAC configured"]
+    end
+
+    subgraph AWS["AWS (private)"]
+        S3["📦 S3 Bucket<br/>──────────<br/>Block Public Access: ON<br/>Bucket policy: ONLY<br/>CloudFront service principal<br/>+ SourceArn condition"]
+        KMS["🔑 KMS Key<br/>──────────<br/>Key policy allows<br/>CloudFront kms:Decrypt<br/>(for SSE-KMS objects)"]
+    end
+
+    USER -->|"HTTPS"| CF
+    CF -->|"SigV4 signed<br/>request (OAC)"| S3
+    S3 -.->|"Decrypt"| KMS
+
+    ATTACKER -->|"Direct to S3"| S3
+    S3 -->|"❌ DENIED<br/>not CloudFront"| ATTACKER
+
+    style CF fill:#ff9900,color:#fff
+    style S3 fill:#3366cc,color:#fff
+    style KMS fill:#dd4444,color:#fff
+    style ATTACKER fill:#ff4444,color:#fff
