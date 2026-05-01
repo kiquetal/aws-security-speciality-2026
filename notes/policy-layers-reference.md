@@ -95,6 +95,34 @@ Effective access = Gate1 ∩ Gate2 ∩ Gate3 ∩ (Gate4 ∪ Gate5)
 - The `∪` (union) between Gates 4 and 5 means: either the identity policy OR the resource policy can grant access
 - But all three ceilings must allow it
 
+## What Is an RCP?
+
+> Full deep dive: [faq-rcp.md](./faq-rcp.md)
+
+**Resource Control Policy (RCP)** — an AWS Organizations policy type launched November 2024 (new for SCS-C03).
+
+```
+SCP = "What can people IN MY ORG do?"        → controls PRINCIPALS
+RCP = "What can ANYONE do to MY RESOURCES?"   → controls RESOURCES
+```
+
+| Dimension | SCP | RCP |
+|---|---|---|
+| **Controls** | Principals (IAM users/roles) | Resources (S3, KMS, STS, SQS, etc.) |
+| **Affects external callers?** | ❌ No — only your org's principals | ✅ Yes — evaluated on resource regardless of caller |
+| **Affects management account?** | ❌ No | ❌ No (resources in mgmt account exempt) |
+| **Affects service-linked roles?** | ✅ Yes | ❌ No — SLRs are exempt |
+| **Affects AWS managed KMS keys?** | ✅ Yes | ❌ No — only customer managed keys |
+| **Grants permissions?** | ❌ Never | ❌ Never |
+| **Max size** | 5,120 characters | 5,120 characters |
+| **Where it lives** | AWS Organizations | AWS Organizations |
+
+**RCPs only support a subset of services (exam-critical):**
+- ✅ S3, KMS, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito
+- ❌ NOT supported: EC2, RDS, Lambda, IAM, SNS, EBS, EFS
+
+> ⚠️ If a question asks about restricting external access to a service NOT on this list, RCPs won't help — you need resource-based policies or SCPs.
+
 ## Why RCPs Exist — The Gap SCPs Leave Open
 
 ```
