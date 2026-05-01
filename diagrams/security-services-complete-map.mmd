@@ -1,0 +1,70 @@
+flowchart TB
+%% AWS Security Services — Complete Map
+%% What each service does, dependencies, and finding flow
+
+    subgraph DATA_SOURCES["DATA SOURCES (what gets analyzed)"]
+        CT["CloudTrail<br/>───────<br/>API calls<br/>(who did what)"]
+        VFL["VPC Flow Logs<br/>───────<br/>Network traffic<br/>(IP, port, protocol)"]
+        DNS["DNS Logs<br/>───────<br/>DNS queries<br/>(domain lookups)"]
+        S3D["S3 Objects<br/>───────<br/>Stored data<br/>(files, documents)"]
+        EC2D["EC2 / Lambda<br/>Container Images<br/>───────<br/>Running software"]
+        CFGD["Resource Configs<br/>───────<br/>How resources<br/>are configured"]
+    end
+
+    subgraph DETECTION["DETECTION LAYER (finds problems)"]
+        GD["🔴 GuardDuty<br/>═══════════════<br/>THREAT DETECTION<br/>───────<br/>Crypto mining<br/>Compromised creds<br/>C2 traffic<br/>Data exfiltration<br/>Malware<br/>───────<br/>ML + threat intel<br/>No agents needed"]
+
+        MACIE["🟡 Macie<br/>═══════════════<br/>SENSITIVE DATA<br/>───────<br/>PII in S3<br/>PHI in S3<br/>Credit cards<br/>AWS keys in S3<br/>───────<br/>S3 ONLY<br/>ML + pattern match"]
+
+        INSP["🟠 Inspector<br/>═══════════════<br/>VULNERABILITIES<br/>───────<br/>EC2 CVEs<br/>Lambda CVEs<br/>Container CVEs<br/>Network exposure<br/>───────<br/>Needs SSM Agent<br/>on EC2"]
+
+        CFG["🔵 Config<br/>═══════════════<br/>COMPLIANCE<br/>───────<br/>Config changes<br/>Managed rules<br/>Conformance packs<br/>Drift detection<br/>───────<br/>Required by<br/>Security Hub"]
+    end
+
+    subgraph AGGREGATION["AGGREGATION LAYER (central dashboard)"]
+        SH["🟢 Security Hub<br/>═══════════════════════════════════<br/>AGGREGATES all findings + COMPLIANCE checks<br/>───────<br/>Standards: FSBP, CIS, PCI DSS, NIST 800-53<br/>Cross-region aggregation via delegated admin<br/>───────<br/>⚠️ REQUIRES Config enabled"]
+    end
+
+    subgraph INVESTIGATION["INVESTIGATION LAYER (after detection)"]
+        DET["🟣 Detective<br/>═══════════════<br/>ROOT CAUSE<br/>───────<br/>Investigate findings<br/>Visualize behavior<br/>Correlate events<br/>───────<br/>Used AFTER detection<br/>Not a monitor"]
+    end
+
+    subgraph RESPONSE["RESPONSE LAYER (take action)"]
+        EB["EventBridge<br/>───────<br/>Event routing<br/>Rules + targets"]
+        LAMBDA["Lambda<br/>───────<br/>Custom<br/>remediation"]
+        SF["Step Functions<br/>───────<br/>IR runbooks<br/>Orchestration"]
+        SNS["SNS<br/>───────<br/>Notifications<br/>PagerDuty/Slack"]
+    end
+
+    CT -->|"always on"| GD
+    VFL -->|"always on"| GD
+    DNS -->|"always on"| GD
+    S3D -->|"S3 Protection"| GD
+    S3D -->|"scans objects"| MACIE
+    EC2D -->|"SSM Agent"| INSP
+    CFGD -->|"records changes"| CFG
+
+    GD -->|"findings"| SH
+    MACIE -->|"findings"| SH
+    INSP -->|"findings"| SH
+    CFG -->|"compliance events"| SH
+
+    SH -->|"investigate"| DET
+    SH -->|"automate"| EB
+
+    EB --> LAMBDA
+    EB --> SF
+    EB --> SNS
+
+    CFG -.->|"required by"| SH
+
+    style GD fill:#dd3333,color:#fff
+    style MACIE fill:#ccaa00,color:#fff
+    style INSP fill:#dd7700,color:#fff
+    style CFG fill:#3366cc,color:#fff
+    style SH fill:#22aa44,color:#fff
+    style DET fill:#8833cc,color:#fff
+    style EB fill:#ff9900,color:#fff
+    style CT fill:#555,color:#fff
+    style VFL fill:#555,color:#fff
+    style DNS fill:#555,color:#fff
