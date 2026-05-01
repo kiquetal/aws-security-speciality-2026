@@ -76,12 +76,63 @@
 - 500ms timeout per request (including retry)
 - Supports only symmetric encryption operations: Encrypt, Decrypt, ReEncrypt, GenerateDataKey
 
-### Key Material Import
+### Key Material Import (Task 5.3.3 — New in C03)
 - Can import symmetric, asymmetric, and HMAC keys
 - Must be wrapped with KMS-provided public key
 - **You maintain durability** - AWS doesn't back up imported keys
 - Can set expiration time for imported key material
 - Can delete imported material on-demand (key ID remains for re-import)
+
+#### Imported vs AWS-Generated — Side by Side
+
+| Dimension | AWS-Generated (default) | Imported |
+|---|---|---|
+| **Durability** | AWS manages (highly durable) | **YOU manage** — keep a copy or it's gone |
+| **Automatic rotation** | ✅ Yes (90–2560 days) | ❌ No |
+| **On-demand rotation** | ✅ Yes (max 10/key) | ❌ No |
+| **Manual rotation** | Not needed | ✅ Only option (see below) |
+| **Expiration** | Never expires | Optional — you set expiry date |
+| **Delete material only** | ❌ Must delete whole key (7-30 day wait) | ✅ Can delete material, keep key ID for re-import |
+| **Re-import** | N/A | ✅ Same material into same key ID |
+| **Multi-region** | ✅ Supported | ❌ Single region only |
+| **Key origin** | `AWS_KMS` | `EXTERNAL` |
+
+#### How to Manually Rotate Imported Key Material
+
+```
+Step 1: Create a NEW KMS key (origin = EXTERNAL)
+Step 2: Import your new key material into it
+Step 3: Update your key ALIAS to point to the new key
+Step 4: Old key still exists — decrypts old ciphertext
+
+        ┌──────────────┐
+        │  Key Alias    │
+        │  alias/mykey  │──── points to ────► NEW key (key-id-2)
+        └──────────────┘                      + new imported material
+
+        Old key (key-id-1) still exists
+        + old imported material
+        + decrypts old ciphertext
+        (don't delete until all data re-encrypted or expired)
+```
+
+> ⚠️ **Exam scenario:** "Company must generate key material on-premises for compliance.
+> How do they rotate?" → Create new KMS key, import new material, update alias.
+> There is NO automatic option for imported keys.
+
+### Rotation Support Matrix (Exam-Critical)
+
+| Key Type | Auto Rotation | On-Demand | Manual (alias swap) |
+|---|---|---|---|
+| **Symmetric (AWS-generated)** | ✅ 90–2560 days | ✅ Max 10 | ✅ |
+| **Symmetric (imported)** | ❌ | ❌ | ✅ Only option |
+| **Symmetric (CloudHSM store)** | ❌ | ❌ | ✅ Only option |
+| **Symmetric (XKS)** | ❌ | ❌ | ✅ Only option |
+| **Asymmetric (any origin)** | ❌ | ❌ | ✅ Only option |
+| **HMAC (any origin)** | ❌ | ❌ | ✅ Only option |
+
+> **Rule:** Automatic rotation ONLY works for symmetric keys with AWS-generated material.
+> Everything else = manual rotation via alias swap.
 
 ### Multi-Region Keys
 - Single-region keys stay in creation region
