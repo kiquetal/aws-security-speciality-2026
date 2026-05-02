@@ -1,0 +1,22 @@
+flowchart LR
+%% Cross-Account S3 + SSE-KMS Access Pattern
+%% Blueprint refs: Task 4.2, Task 5.2
+%% Three policies required — missing any one = Access Denied
+
+    subgraph ACCOUNT_A["Account A (111111111111) — Resource Owner"]
+        S3["📦 S3 Bucket<br/>──────────<br/>Policy 1: Bucket Policy<br/>Allow RoleB s3:GetObject"]
+        KMS["🔑 KMS Key (CMK)<br/>──────────<br/>Policy 2: Key Policy<br/>Allow RoleB kms:Decrypt"]
+    end
+
+    subgraph ACCOUNT_B["Account B (222222222222) — Caller"]
+        ROLE["👤 RoleB<br/>──────────<br/>Policy 3: Identity Policy<br/>Allow s3:GetObject<br/>Allow kms:Decrypt<br/>(on Account A resources)"]
+    end
+
+    ROLE -->|"1. s3:GetObject"| S3
+    S3 -->|"2. Object encrypted<br/>with KMS"| KMS
+    KMS -->|"3. kms:Decrypt<br/>returns plaintext<br/>data key"| S3
+    S3 -->|"4. Decrypted object<br/>returned to RoleB"| ROLE
+
+    style S3 fill:#3366cc,color:#fff
+    style KMS fill:#dd4444,color:#fff
+    style ROLE fill:#ff9900,color:#fff

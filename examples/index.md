@@ -43,7 +43,11 @@ Practical, production-ready examples organized by SCS-C03 exam domain.
 
 > Encryption, secrets management, data integrity
 
-- _No examples yet_ — KMS key policies, S3 encryption enforcement, Secrets Manager rotation, CloudHSM patterns
+### Cross-Account Patterns
+- [Cross-account S3 + SSE-KMS](./cross-account-s3-kms.md) — Three policies needed: bucket policy, key policy, identity policy
+
+### _Coming Soon_
+- KMS key policies, S3 encryption enforcement, Secrets Manager rotation, CloudHSM patterns
 
 ## Domain 6: Security Foundations and Governance (14%)
 
