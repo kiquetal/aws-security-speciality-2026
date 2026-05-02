@@ -1,6 +1,7 @@
 # FAQ: AWS Systems Manager Session Manager
 
 > **Blueprint refs:** Task 3.2 (secure administrative access to compute), Task 1.2 (logging solutions)
+> **Diagrams:** [session-manager-logging.png](../diagrams/session-manager-logging.png) | [session-manager-vpc-endpoints.png](../diagrams/session-manager-vpc-endpoints.png)
 
 ## Security Use Cases
 

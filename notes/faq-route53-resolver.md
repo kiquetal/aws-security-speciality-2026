@@ -1,6 +1,7 @@
 # FAQ: Route 53 Resolver — DNS Firewall & Resolver Logs
 
 > **Blueprint refs:** Task 3.3 (network security controls), Task 1.2 (logging solutions)
+> **Diagram:** [route53-dns-firewall.png](../diagrams/route53-dns-firewall.png)
 
 ## Where DNS Firewall Lives (Don't Confuse the Names)
 

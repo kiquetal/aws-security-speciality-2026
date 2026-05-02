@@ -152,6 +152,8 @@ Step 4: Old key still exists — decrypts old ciphertext
 
 ## KMS Grants — Dynamic Cross-Account Access (Task 5.2)
 
+> **Diagram:** [kms-grants-cross-account.png](../diagrams/kms-grants-cross-account.png)
+
 KMS has THREE access control mechanisms. Grants are unique to KMS — no other AWS service has them.
 
 ```

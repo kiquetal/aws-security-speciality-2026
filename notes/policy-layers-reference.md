@@ -1,6 +1,7 @@
 # AWS Policy Layers — The 5 Gates
 
 > **Blueprint refs:** Task 4.2 (authorization strategies), Task 6.1 (org policies)
+> **Diagram:** [policy-evaluation-with-rcps.png](../diagrams/policy-evaluation-with-rcps.png)
 > **Exam weight:** This is the #1 hardest topic on SCS-C03. Master this = master the exam.
 
 ## The Mental Model

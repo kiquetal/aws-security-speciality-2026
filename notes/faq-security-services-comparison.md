@@ -1,7 +1,7 @@
 # FAQ: Security Services — When to Use Which
 
 > **Blueprint refs:** Task 1.1 (monitoring/alerting), Task 2.2 (respond to events), Task 3.2 (compute scanning)
-> **Purpose:** The exam constantly uses these as distractors. Know exactly what each one does and doesn't do.
+> **Diagram:** [security-services-comparison.png](../diagrams/security-services-comparison.png)
 
 ## The Big Picture
 

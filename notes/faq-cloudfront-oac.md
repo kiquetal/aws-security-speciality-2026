@@ -1,6 +1,7 @@
 # FAQ: CloudFront Origin Access Control (OAC)
 
 > **Blueprint refs:** Task 3.1 (edge security), Task 5.2 (data protection at rest — S3 encryption)
+> **Diagram:** [cloudfront-oac.png](../diagrams/cloudfront-oac.png)
 
 ## The Problem OAC Solves
 
