@@ -8,18 +8,18 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 23 |
-| **✅ Correct** | 12 (52%) |
-| **⚠️ Partial** | 6 (26%) |
-| **❌ Wrong** | 5 (22%) |
-| **Sessions** | 2 |
-| **Re-tests Passed** | 2 of 2 |
+| **Total Questions** | 25 |
+| **✅ Correct** | 13 (52%) |
+| **⚠️ Partial** | 7 (28%) |
+| **❌ Wrong** | 5 (20%) |
+| **Sessions** | 3 |
+| **Re-tests Passed** | 3 of 4 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 4 | 2 | 4 | 10 | 40% | 🔴 |
+| D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
 | D3: Infrastructure Security | 2 | 0 | 1 | 3 | 67% | 🟡 |
 | D4: Identity & Access Management | 3 | 3 | 0 | 6 | 50% | 🟡 |
@@ -32,9 +32,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
-| 🟡 1 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 2 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 3 | Security services comparison | Q5 | D1 | 1 |
+| 🔴 1 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🟡 2 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 3 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
 | 🟡 4 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
 | 🟡 5 | Policy layers reference | Q7 | D4 | 1 |
 | 🟡 6 | RAM vs KMS Grants | Q11 | D4 | 1 |
@@ -52,6 +52,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 |---|---|---|---|---|---|---|---|
 | 1 | 2025-05-01 | Q1–Q20 | 10 | 6 | 4 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection | [Jump](#session-1--2025-05-01) |
 | 2 | 2025-05-02 | Q21–Q23 | 2 | 0 | 1 | D1 Detection (re-test) | [Jump](#session-2--2025-05-02) |
+| 3 | 2025-05-03 | Q24–Q25 | 1 | 1 | 0 | D1 Detection (re-test) | [Jump](#session-3--2025-05-03) |
 
 ---
 
@@ -97,6 +98,18 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 21 | D1 | Root user API calls from unexpected country — detect + isolate with least overhead? | B: GuardDuty → EventBridge → Step Functions | ✅ | GuardDuty for behavioral threats, Step Functions for orchestration | Q13 | Security services comparison |
 | 22 | D1 | Log only `Prod-*` Lambda invocations, exclude read-only, queryable in Lake? | B: Advanced event selectors with StartsWith + readOnly + eventName | ✅ | Advanced selectors required for prefix, Lake requires advanced | Q2 | CloudTrail advanced selectors |
 | 23 | D1 | What is CloudTrail Lake? What problem does it solve? | Didn't know it existed | ❌ | Managed query engine — replaces S3+Athena plumbing, near real-time, dashboards | — | CloudTrail Lake vs S3+Athena |
+
+---
+
+### Session 3 — 2025-05-03
+
+**Domains:** D1 Detection (re-test)
+**Score:** 1 ✅ · 1 ⚠️ · 0 ❌ (50% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 24 | D1 | 200 accounts, detect public S3 buckets org-wide, least overhead — Config conformance pack vs Security Hub vs Macie vs Lambda? | B: Config conformance pack | ⚠️ | C: **Security Hub** FSBP standard — wraps Config rules with less overhead, one-click org-wide, dashboards | Q5 | Security services comparison |
+| 25 | D1 | Investigate credential compromise across 15 accounts, need SQL + dashboards + fast results — Athena vs Lake vs CloudWatch Logs vs OpenSearch? | B: CloudTrail Lake | ✅ | CloudTrail Lake — near real-time, cross-account, built-in SQL + dashboards | Q23 | CloudTrail Lake vs S3+Athena |
 
 ---
 
