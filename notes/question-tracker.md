@@ -27,6 +27,22 @@
 | 19 | `aws:PrincipalIsAWSService` — when to use? | Understood after explanation | ✅ | Always add when using PrincipalOrgID deny — exempts CloudTrail, Config, etc. | RCP conditions |
 | 20 | VPC endpoints — why 3 for Session Manager? | Understood | ✅ | `ssm` (API) + `ssmmessages` (session) + `ec2messages` (heartbeat) | Session Manager VPC endpoints |
 
+## Session: 2026-05-02
+
+| # | Question / Scenario | Your Answer | Correct? | Correct Answer | Review Topic |
+|---|---|---|---|---|---|
+| 21 | Root user API calls from unexpected country — detect + isolate with least overhead? | B: GuardDuty → EventBridge → Step Functions | ✅ | GuardDuty for behavioral threats, Step Functions for orchestration | Security services comparison (re-test Q13) |
+| 22 | Log only `Prod-*` Lambda invocations, exclude read-only, queryable in Lake? | B: Advanced event selectors with StartsWith + readOnly + eventName | ✅ | Advanced selectors required for prefix, Lake requires advanced | CloudTrail advanced selectors (re-test Q2) |
+| 23 | What is CloudTrail Lake? What problem does it solve? | Didn't know it existed | ❌ | Managed query engine — replaces S3+Athena plumbing, near real-time, dashboards | CloudTrail Lake vs S3+Athena |
+
+## Score Summary (Cumulative)
+
+| Result | Session 1 | Session 2 (re-test) | Total |
+|---|---|---|---|
+| ✅ Correct | 10 | 2 | 12 |
+| ⚠️ Partial | 6 | 0 | 6 |
+| ❌ Wrong | 4 | 1 | 5 |
+
 ## Score Summary
 
 | Result | Count | Percentage |
