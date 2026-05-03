@@ -2,67 +2,113 @@
 
 > Track every question attempted. Review ❌ and ⚠️ items before the exam.
 
-## Session: 2025-05-01
+---
 
-| # | Question / Scenario | Your Answer | Correct? | Correct Answer | Review Topic |
-|---|---|---|---|---|---|
-| 1 | S3 bucket exfiltrated object-by-object — which CloudTrail event type captures it? Is it enabled by default? | "Not enabled by default, PutEvent" | ⚠️ Half right | Data events, **GetObject** (not Put). Not enabled by default. | CloudTrail data vs management events |
-| 2 | Lambda functions with prefix `UpdProdCount` — most flexible way to log invocations? | Didn't know | ❌ | Advanced event selectors with `StartsWith` on resource ARN | Basic vs Advanced event selectors |
-| 3 | Session Manager — what security advantage from a network perspective? | "No open ports" | ✅ | No inbound ports needed — outbound HTTPS only | Session Manager |
-| 4 | NACLs or Security Groups — which is stateless and needs ephemeral ports? | "NACLs, 100% sure" | ✅ | NACLs are stateless | NACLs vs Security Groups |
-| 5 | Detect public S3 buckets org-wide with least overhead (options: Security Hub, Inspector, Detective, CloudWatch) | Didn't know | ❌ | **Security Hub** — built-in S3 controls, org-wide | Security services comparison |
-| 6 | Lambda stopped logging — Config + what? (IAM Access Analyzer vs Security Hub vs CloudWatch Logs Insights) | Confused | ⚠️ | Depends on scenario — if role changed: Config + IAM Access Analyzer. If role is fine: CloudWatch Logs Insights | Troubleshooting (Task 1.3) |
-| 7 | Resource-based policy vs RCP — what's the difference? | Confused them | ⚠️ | RBP = per-resource, grants access. RCP = org-wide ceiling, never grants. | Policy layers reference |
-| 8 | Can you rotate imported KMS key material? | "Yes" | ✅ | Yes, but only manually (alias swap) | KMS rotation matrix |
-| 9 | KMS imported key — who owns durability? | "You" | ✅ | You — AWS doesn't back up imported material | KMS imported keys |
-| 10 | Import NEW material into EXISTING key? | Knew it was wrong | ✅ | ❌ Can't — only re-import SAME material. New material = new key + alias swap. | KMS imported keys |
-| 11 | Why can't you use RAM for KMS cross-account? | "RAM is not for sharing?" | ⚠️ | RAM IS for sharing, but doesn't support KMS. Use KMS Grants. | RAM vs KMS Grants |
-| 12 | RAM vs RCP — what's the difference? | "Didn't remember RCP" | ⚠️ | RAM shares infrastructure. RCP restricts data access. Opposite problems, different services. | faq-ram-vs-rcp.md |
-| 13 | Suspicious root login attempts — GuardDuty vs CloudTrail + CloudWatch? | Chose CloudTrail + CloudWatch | ❌ | **GuardDuty + EventBridge** — "suspicious" = GuardDuty, least overhead | GuardDuty vs CloudTrail |
-| 14 | Lambda in private subnet — restrict domain lookup to one domain? | Didn't know | ❌ | **Route 53 Resolver DNS Firewall** | DNS Firewall |
-| 15 | Cross-account S3 + SSE-KMS — how many policies needed? | Got Account A right, missed Account B | ⚠️ | THREE: bucket policy + key policy + identity policy on caller | Cross-account patterns |
-| 16 | When to use RCP — identify the use case? | Got it after review | ✅ | "Outsiders + my data + org-wide" → RCP | RCP use cases |
-| 17 | GuardDuty — what is it responsible for? | "GuardDuty" (for crypto mining) | ✅ | Threat detection — active malicious behavior | Security services |
-| 18 | Security Hub setup order — 4 steps? | Followed along | ✅ | Enable SH → make admin → enable members → assume roles | Security Hub |
-| 19 | `aws:PrincipalIsAWSService` — when to use? | Understood after explanation | ✅ | Always add when using PrincipalOrgID deny — exempts CloudTrail, Config, etc. | RCP conditions |
-| 20 | VPC endpoints — why 3 for Session Manager? | Understood | ✅ | `ssm` (API) + `ssmmessages` (session) + `ec2messages` (heartbeat) | Session Manager VPC endpoints |
+## Quick Stats (Cumulative)
 
-## Session: 2026-05-02
+| Metric | Value |
+|---|---|
+| **Total Questions** | 23 |
+| **✅ Correct** | 12 (52%) |
+| **⚠️ Partial** | 6 (26%) |
+| **❌ Wrong** | 5 (22%) |
+| **Sessions** | 2 |
+| **Re-tests Passed** | 2 of 3 |
 
-| # | Question / Scenario | Your Answer | Correct? | Correct Answer | Review Topic |
-|---|---|---|---|---|---|
-| 21 | Root user API calls from unexpected country — detect + isolate with least overhead? | B: GuardDuty → EventBridge → Step Functions | ✅ | GuardDuty for behavioral threats, Step Functions for orchestration | Security services comparison (re-test Q13) |
-| 22 | Log only `Prod-*` Lambda invocations, exclude read-only, queryable in Lake? | B: Advanced event selectors with StartsWith + readOnly + eventName | ✅ | Advanced selectors required for prefix, Lake requires advanced | CloudTrail advanced selectors (re-test Q2) |
-| 23 | What is CloudTrail Lake? What problem does it solve? | Didn't know it existed | ❌ | Managed query engine — replaces S3+Athena plumbing, near real-time, dashboards | CloudTrail Lake vs S3+Athena |
+## Domain Breakdown
 
-## Score Summary (Cumulative)
+| Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
+|---|---|---|---|---|---|---|
+| D1: Detection | 3 | 2 | 3 | 8 | 38% | 🔴 |
+| D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
+| D3: Infrastructure Security | 2 | 0 | 1 | 3 | 67% | 🟡 |
+| D4: Identity & Access Management | 5 | 3 | 0 | 8 | 63% | 🟡 |
+| D5: Data Protection | 2 | 1 | 0 | 3 | 67% | 🟡 |
+| D6: Governance | 0 | 0 | 1 | 1 | 0% | 🔴 |
 
-| Result | Session 1 | Session 2 (re-test) | Total |
-|---|---|---|---|
-| ✅ Correct | 10 | 2 | 12 |
-| ⚠️ Partial | 6 | 0 | 6 |
-| ❌ Wrong | 4 | 1 | 5 |
-
-## Score Summary
-
-| Result | Count | Percentage |
-|---|---|---|
-| ✅ Correct | 10 | 50% |
-| ⚠️ Partial / needed help | 6 | 30% |
-| ❌ Wrong / didn't know | 4 | 20% |
+Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
 ## Weak Areas to Review
 
-1. **Security services comparison** — which service for which question (Q5, Q13)
-2. **CloudTrail event types** — data vs management, advanced selectors (Q1, Q2)
-3. **Cross-account access** — all three policies needed (Q15)
-4. **DNS Firewall** — new service, need practice (Q14)
-5. **Policy layers** — RBP vs RCP distinction (Q7, Q12)
+| Priority | Topic | Questions | Domain | Files to Re-Read |
+|---|---|---|---|---|
+| 🔴 1 | Security services comparison | Q5, Q13, Q21 | D1 | `faq-security-services-comparison.md` |
+| 🔴 2 | CloudTrail event types & Lake | Q1, Q2, Q22, Q23 | D1 | `faq-cloudtrail.md` |
+| 🟡 3 | Cross-account access (3-policy) | Q15 | D5 | `examples/cross-account-s3-kms.md` |
+| 🟡 4 | DNS Firewall | Q14 | D3 | `faq-route53-resolver.md` |
+| 🟡 5 | Policy layers (RBP vs RCP) | Q7, Q12, Q19 | D4/D6 | `policy-layers-reference.md` |
 
-## Files to Re-Read
+---
 
-- `notes/faq-security-services-comparison.md` — Q5, Q13
-- `notes/faq-cloudtrail.md` — Q1, Q2
-- `notes/policy-layers-reference.md` — Q7, Q12, Q19
-- `notes/faq-route53-resolver.md` — Q14
-- `examples/cross-account-s3-kms.md` — Q15
+## Session Index
+
+| # | Date | Questions | ✅ | ⚠️ | ❌ | Domains Covered | Link |
+|---|---|---|---|---|---|---|---|
+| 1 | 2025-05-01 | Q1–Q20 | 10 | 6 | 4 | D1, D3, D4, D5 | [Jump](#session-1--2025-05-01) |
+| 2 | 2025-05-02 | Q21–Q23 | 2 | 0 | 1 | D1 (re-test) | [Jump](#session-2--2025-05-02) |
+
+---
+
+## Sessions
+
+### Session 1 — 2025-05-01
+
+**Domains:** D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection
+**Score:** 10 ✅ · 6 ⚠️ · 4 ❌ (50% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Review Topic |
+|---|---|---|---|---|---|---|
+| 1 | D1 | S3 bucket exfiltrated object-by-object — which CloudTrail event type? Enabled by default? | "Not enabled by default, PutEvent" | ⚠️ | Data events, **GetObject** (not Put). Not enabled by default. | CloudTrail data vs management events |
+| 2 | D1 | Lambda `UpdProdCount` — most flexible way to log invocations? | Didn't know | ❌ | Advanced event selectors with `StartsWith` on resource ARN | Basic vs Advanced event selectors |
+| 3 | D3 | Session Manager — security advantage from network perspective? | "No open ports" | ✅ | No inbound ports needed — outbound HTTPS only | Session Manager |
+| 4 | D3 | NACLs or Security Groups — which is stateless and needs ephemeral ports? | "NACLs, 100% sure" | ✅ | NACLs are stateless | NACLs vs Security Groups |
+| 5 | D1 | Detect public S3 buckets org-wide with least overhead? | Didn't know | ❌ | **Security Hub** — built-in S3 controls, org-wide | Security services comparison |
+| 6 | D1 | Lambda stopped logging — Config + what? | Confused | ⚠️ | Depends: role changed → Config + IAM Access Analyzer. Role fine → CloudWatch Logs Insights | Troubleshooting (Task 1.3) |
+| 7 | D4 | Resource-based policy vs RCP — difference? | Confused them | ⚠️ | RBP = per-resource, grants access. RCP = org-wide ceiling, never grants. | Policy layers reference |
+| 8 | D5 | Can you rotate imported KMS key material? | "Yes" | ✅ | Yes, but only manually (alias swap) | KMS rotation matrix |
+| 9 | D5 | KMS imported key — who owns durability? | "You" | ✅ | You — AWS doesn't back up imported material | KMS imported keys |
+| 10 | D5 | Import NEW material into EXISTING key? | Knew it was wrong | ✅ | ❌ Can't — only re-import SAME material. New material = new key + alias swap. | KMS imported keys |
+| 11 | D4 | Why can't you use RAM for KMS cross-account? | "RAM is not for sharing?" | ⚠️ | RAM IS for sharing, but doesn't support KMS. Use KMS Grants. | RAM vs KMS Grants |
+| 12 | D4 | RAM vs RCP — difference? | "Didn't remember RCP" | ⚠️ | RAM shares infrastructure. RCP restricts data access. Opposite problems. | faq-ram-vs-rcp.md |
+| 13 | D1 | Suspicious root login attempts — GuardDuty vs CloudTrail + CloudWatch? | Chose CloudTrail + CloudWatch | ❌ | **GuardDuty + EventBridge** — "suspicious" = GuardDuty, least overhead | GuardDuty vs CloudTrail |
+| 14 | D3 | Lambda in private subnet — restrict domain lookup to one domain? | Didn't know | ❌ | **Route 53 Resolver DNS Firewall** | DNS Firewall |
+| 15 | D5 | Cross-account S3 + SSE-KMS — how many policies needed? | Got Account A right, missed B | ⚠️ | THREE: bucket policy + key policy + identity policy on caller | Cross-account patterns |
+| 16 | D4 | When to use RCP — identify the use case? | Got it after review | ✅ | "Outsiders + my data + org-wide" → RCP | RCP use cases |
+| 17 | D1 | GuardDuty — what is it responsible for? | "GuardDuty" (for crypto mining) | ✅ | Threat detection — active malicious behavior | Security services |
+| 18 | D1 | Security Hub setup order — 4 steps? | Followed along | ✅ | Enable SH → make admin → enable members → assume roles | Security Hub |
+| 19 | D4 | `aws:PrincipalIsAWSService` — when to use? | Understood after explanation | ✅ | Always add when using PrincipalOrgID deny — exempts CloudTrail, Config, etc. | RCP conditions |
+| 20 | D4 | VPC endpoints — why 3 for Session Manager? | Understood | ✅ | `ssm` (API) + `ssmmessages` (session) + `ec2messages` (heartbeat) | Session Manager VPC endpoints |
+
+---
+
+### Session 2 — 2025-05-02
+
+**Domains:** D1 Detection (re-test)
+**Score:** 2 ✅ · 0 ⚠️ · 1 ❌ (67% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 21 | D1 | Root user API calls from unexpected country — detect + isolate with least overhead? | B: GuardDuty → EventBridge → Step Functions | ✅ | GuardDuty for behavioral threats, Step Functions for orchestration | Q13 | Security services comparison |
+| 22 | D1 | Log only `Prod-*` Lambda invocations, exclude read-only, queryable in Lake? | B: Advanced event selectors with StartsWith + readOnly + eventName | ✅ | Advanced selectors required for prefix, Lake requires advanced | Q2 | CloudTrail advanced selectors |
+| 23 | D1 | What is CloudTrail Lake? What problem does it solve? | Didn't know it existed | ❌ | Managed query engine — replaces S3+Athena plumbing, near real-time, dashboards | — | CloudTrail Lake vs S3+Athena |
+
+---
+
+<!-- TEMPLATE: Copy this block for new sessions
+
+### Session N — YYYY-MM-DD
+
+**Domains:** Dx · Dy
+**Score:** X ✅ · Y ⚠️ · Z ❌ (N% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| | | | | | | — | |
+
+After adding a session:
+1. Update the Session Index table above
+2. Update Quick Stats totals
+3. Update Domain Breakdown counts
+4. Move resolved weak areas out, add new ones
+
+-->
