@@ -2,6 +2,16 @@
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
 
+## Table of Contents
+
+- [Exam Snapshot](#exam-snapshot)
+- [Domain Weights](#domain-weights)
+- [Repository Structure](#repository-structure)
+- [Study Approach](#study-approach)
+- [What's New in SCS-C03 (vs C02)](#whats-new-in-scs-c03-vs-c02)
+- [IAM Policy Conventions](#iam-policy-conventions)
+- [Getting Started](#getting-started)
+
 ## Exam Snapshot
 
 | Detail | Value |
