@@ -8,12 +8,57 @@
 - Enables governance, compliance, operational auditing, risk auditing
 - Logs delivered to S3, CloudWatch Logs, EventBridge
 
-### CloudTrail Lake
-- **Audit lake** for querying activity across AWS services
-- SQL-based queries with natural language generation (for non-SQL users)
-- AI-powered query result summarization (preview)
-- Pre-curated and custom dashboards for visualization
-- Near real-time latency for incident investigation
+### CloudTrail Lake (Task 1.2 — Exam-Critical)
+
+> ⚠️ **Know this cold.** The exam tests Lake vs S3+Athena as a decision point.
+
+**Problem Lake solves:** CloudTrail → S3 → Athena works but at scale you manage
+partitioning, schemas, S3 lifecycle, and queries hit raw JSON with ~15 min delay.
+
+**What Lake is:** A fully managed, near real-time query engine for CloudTrail events.
+No S3 buckets, no Athena tables, no partitioning — just SQL.
+
+```
+CloudTrail → S3 + Athena (DIY)          CloudTrail → Lake (managed)
+├── ~15 min delivery delay               ├── Near real-time ingestion
+├── You manage S3, partitions, schemas   ├── Fully managed — zero plumbing
+├── Athena per-scan cost                 ├── SQL built in + dashboards
+├── No dashboards                        ├── Pre-built + custom dashboards
+├── Cross-account = complex              ├── Cross-account in one data store
+└── Unlimited retention (S3 lifecycle)   └── 7yr or 1yr extendable retention
+```
+
+#### Lake vs S3+Athena Decision Table
+
+| Dimension | S3 + Athena | CloudTrail Lake |
+|---|---|---|
+| **Latency** | ~15 min | Near real-time |
+| **Management** | You manage everything | Fully managed |
+| **Cost** | Lower | Higher (ingestion + storage + query GB) |
+| **Retention** | Unlimited (S3 lifecycle) | 7 years or 1 year extendable |
+| **Event selectors** | Basic or advanced | **Advanced only** |
+| **Cross-account** | Multiple buckets or replication | Single event data store |
+| **Import old logs** | N/A | ✅ Copy S3 logs into Lake |
+| **Exam signal** | "cost-effective long-term" | "fast investigation" / "near real-time" / "dashboards" |
+
+#### Lake Data Sources (Not Just CloudTrail)
+- CloudTrail events (management + data)
+- AWS Config configuration items
+- Audit Manager evidence
+- **Non-AWS sources** (custom integrations)
+
+#### Lake Pricing
+- **Ingestion**: Per GB ingested
+- **Storage**: Per GB-month
+- **Queries**: Per GB scanned
+- **Two options**: 7-year retention (higher ingestion, lower query) or 1-year extendable (lower ingestion, higher query)
+
+#### Lake Exam Gotchas
+- **Advanced event selectors REQUIRED** — Lake doesn't support basic selectors
+- **Switching basic → advanced is one-way** — can't go back
+- **Can import S3 logs** — unify historical + new data in one place
+- **Only newly recorded Config CIs** — not historical before enablement
+- **SQL + natural language** — Lake supports both (NL generates SQL for you)
 
 ### Event Types
 - **Management events**: Control plane operations (CreateBucket, TerminateInstance)
