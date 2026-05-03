@@ -13,30 +13,36 @@
 | **⚠️ Partial** | 6 (26%) |
 | **❌ Wrong** | 5 (22%) |
 | **Sessions** | 2 |
-| **Re-tests Passed** | 2 of 3 |
+| **Re-tests Passed** | 2 of 2 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 3 | 2 | 3 | 8 | 38% | 🔴 |
+| D1: Detection | 4 | 2 | 4 | 10 | 40% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
 | D3: Infrastructure Security | 2 | 0 | 1 | 3 | 67% | 🟡 |
-| D4: Identity & Access Management | 5 | 3 | 0 | 8 | 63% | 🟡 |
-| D5: Data Protection | 2 | 1 | 0 | 3 | 67% | 🟡 |
-| D6: Governance | 0 | 0 | 1 | 1 | 0% | 🔴 |
+| D4: Identity & Access Management | 3 | 3 | 0 | 6 | 50% | 🟡 |
+| D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
+| D6: Governance | 0 | 0 | 0 | 0 | — | — |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
 ## Weak Areas to Review
 
-| Priority | Topic | Questions | Domain | Files to Re-Read |
+| Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
-| 🔴 1 | Security services comparison | Q5, Q13, Q21 | D1 | `faq-security-services-comparison.md` |
-| 🔴 2 | CloudTrail event types & Lake | Q1, Q2, Q22, Q23 | D1 | `faq-cloudtrail.md` |
-| 🟡 3 | Cross-account access (3-policy) | Q15 | D5 | `examples/cross-account-s3-kms.md` |
-| 🟡 4 | DNS Firewall | Q14 | D3 | `faq-route53-resolver.md` |
-| 🟡 5 | Policy layers (RBP vs RCP) | Q7, Q12, Q19 | D4/D6 | `policy-layers-reference.md` |
+| 🟡 1 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 2 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 3 | Security services comparison | Q5 | D1 | 1 |
+| 🟡 4 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 5 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 6 | RAM vs KMS Grants | Q11 | D4 | 1 |
+| 🟡 7 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 8 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 9 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 10 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 11 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
 
 ---
 
@@ -44,8 +50,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
 | # | Date | Questions | ✅ | ⚠️ | ❌ | Domains Covered | Link |
 |---|---|---|---|---|---|---|---|
-| 1 | 2025-05-01 | Q1–Q20 | 10 | 6 | 4 | D1, D3, D4, D5 | [Jump](#session-1--2025-05-01) |
-| 2 | 2025-05-02 | Q21–Q23 | 2 | 0 | 1 | D1 (re-test) | [Jump](#session-2--2025-05-02) |
+| 1 | 2025-05-01 | Q1–Q20 | 10 | 6 | 4 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection | [Jump](#session-1--2025-05-01) |
+| 2 | 2025-05-02 | Q21–Q23 | 2 | 0 | 1 | D1 Detection (re-test) | [Jump](#session-2--2025-05-02) |
 
 ---
 
