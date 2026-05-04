@@ -1,0 +1,49 @@
+flowchart TB
+    INTERNET["🌐 Internet"]
+
+    subgraph EDGE["Edge Layer"]
+        SHIELD["🛡️ Shield<br/>DDoS Protection<br/>L3/4/7<br/>Standard=FREE / Advanced=$3K"]
+        WAF["🔥 WAF<br/>HTTP Filtering L7<br/>SQLi · XSS · Bots · Geo<br/>On: CloudFront, ALB, APIGW"]
+    end
+
+    subgraph VPC["VPC"]
+        subgraph PUB["Public Subnet"]
+            ALB["ALB"]
+            NACL_PUB["NACL (stateless)<br/>Allow+Deny · Ephemeral ports"]
+        end
+
+        subgraph FW_SUB["Firewall Subnet (per AZ)"]
+            NFW["🔍 Network Firewall<br/>IDS/IPS · Suricata · DPI<br/>L3-7 · ~$288/mo per AZ"]
+        end
+
+        subgraph PRIV["Private Subnet"]
+            SG["🔒 Security Group<br/>Stateful · Allow-only<br/>Per-ENI · FREE"]
+            EC2["EC2 / EKS"]
+            NACL_PRIV["NACL (stateless)"]
+        end
+
+        DNS_FW["🌐 DNS Firewall<br/>Block bad domains<br/>VPC-wide · Low cost"]
+    end
+
+    subgraph ORG["AWS Organizations"]
+        FW_MGR["📋 Firewall Manager<br/>NOT a firewall!<br/>Deploys ALL above<br/>across ALL accounts"]
+    end
+
+    INTERNET --> SHIELD --> WAF --> ALB
+    ALB --> NACL_PUB --> NFW --> NACL_PRIV --> SG --> EC2
+    EC2 -.->|"DNS queries"| DNS_FW
+
+    FW_MGR -.->|"manages"| WAF
+    FW_MGR -.->|"manages"| SHIELD
+    FW_MGR -.->|"manages"| NFW
+    FW_MGR -.->|"manages"| SG
+    FW_MGR -.->|"manages"| DNS_FW
+
+    style SHIELD fill:#ff6666,color:#fff
+    style WAF fill:#ff9900,color:#fff
+    style NFW fill:#9933cc,color:#fff
+    style SG fill:#3366cc,color:#fff
+    style DNS_FW fill:#339966,color:#fff
+    style FW_MGR fill:#666,color:#fff
+    style NACL_PUB fill:#888,color:#fff
+    style NACL_PRIV fill:#888,color:#fff
