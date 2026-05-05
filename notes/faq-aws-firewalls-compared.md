@@ -261,3 +261,122 @@ Firewall Manager: deploys ALL of the above
 | Network Firewall | Cost per AZ | ~$288/month + $0.065/GB |
 | DNS Firewall | Rule groups per VPC | 1 (but group can have many rules) |
 | Firewall Manager | Cost per policy per region | ~$100/month |
+
+## DNS Firewall vs Network Firewall — "Block Unapproved Domains"
+
+This is a common exam distractor. Both can filter by domain, but at different layers.
+
+```
+DNS Firewall (kill at DNS — cheapest, simplest):
+  Lambda → "resolve evil.com" → DNS Firewall → NXDOMAIN → connection never happens
+  ✅ No traffic flows. No IP obtained. Dead before it starts.
+
+Network Firewall (kill at traffic — expensive, deeper):
+  Lambda → "resolve evil.com" → gets IP 1.2.3.4 → sends traffic
+    → Network Firewall inspects SNI in TLS handshake → blocks
+  ✅ Works, but traffic already started. ~$288/mo per AZ.
+```
+
+### When to Use Which
+
+| Scenario | Answer | Why |
+|---|---|---|
+| "Restrict which domains Lambda can resolve" | **DNS Firewall** | Block at DNS = no IP = no connection |
+| "Prevent DNS exfiltration (long subdomain queries)" | **DNS Firewall** | Exfil happens in the DNS query itself |
+| Attacker hardcodes an IP (bypasses DNS) | **Network Firewall** | No DNS query to block |
+| "Inspect traffic content" / "IDS/IPS signatures" | **Network Firewall** | DNS Firewall can't see packet content |
+| "TLS inspection (decrypt + inspect)" | **Network Firewall** | Requires inline decryption |
+| "Block bad domains AND inspect traffic" | **Both together** | Defense in depth |
+
+### K8s Mapping
+
+```
+DNS Firewall  ≈  Istio ServiceEntry with NONE resolution
+                 Pod can't even look up the address.
+
+Network Firewall  ≈  Calico Enterprise DPI
+                     Inspects packets after connection starts.
+```
+
+> **Exam rule:** If the question says "domain" and doesn't mention IP bypass or traffic inspection → **DNS Firewall** (cheaper, simpler, sufficient).
+
+## IDS/IPS — What It Means
+
+```
+IDS = Intrusion Detection System  → DETECTS and ALERTS (passive)
+IPS = Intrusion Prevention System → DETECTS and BLOCKS (active)
+
+Network Firewall does BOTH — it's an IDS/IPS.
+```
+
+K8s mapping:
+- IDS ≈ Falco → watches traffic, sends alerts, doesn't block
+- IPS ≈ Calico DPI → watches traffic AND drops malicious packets inline
+
+In Network Firewall:
+- Suricata rule with `alert` action → IDS mode (log, let pass)
+- Suricata rule with `drop` action → IPS mode (log, kill packet)
+
+> **Exam signal:** "IDS," "IPS," "intrusion detection," "intrusion prevention" → **Network Firewall**. No other AWS service does this.
+
+## Attack Layers — Which Service Blocks What
+
+| Layer | Attack Type | Who Blocks It |
+|---|---|---|
+| **L3** (IP) | IP spoofing, ICMP flood | **Shield** + **SG/NACL** + **Network Firewall** |
+| **L4** (TCP/UDP) | SYN flood, UDP reflection, port scan | **Shield** + **SG/NACL** + **Network Firewall** |
+| **L3-4 volumetric** (DDoS) | Massive traffic flood | **Shield Standard** (free, auto) |
+| **L7 HTTP** | SQLi, XSS, bad bots, credential stuffing | **WAF** |
+| **L7 DDoS** | Application-layer HTTP flood | **Shield Advanced** ($3K) |
+| **L7 DNS** | DNS exfil, C2 domains | **DNS Firewall** |
+| **L3-7 deep** | Malware signatures, Suricata rules, TLS inspection | **Network Firewall** |
+
+Network Firewall has two engines:
+```
+Network Firewall
+├── Stateless engine (L3-4) — evaluated FIRST
+│   └── IP, port, protocol rules (like a fast NACL)
+└── Stateful engine (L3-7) — evaluated SECOND
+    ├── 5-tuple rules (IP+port with connection tracking)
+    ├── Domain filtering (SNI inspection)
+    └── Suricata IPS rules (deep packet inspection)
+```
+
+> **Exam rule:** If SG/NACL can solve it → don't pick Network Firewall (overkill + expensive). Network Firewall is the answer only when you need IDS/IPS, Suricata, domain filtering in traffic, or TLS inspection.
+
+## Shield Standard vs Shield Advanced
+
+```
+Shield Standard (FREE — already on every AWS account):
+├── ✅ Always on, zero config
+├── ✅ L3/L4 DDoS protection (SYN floods, UDP reflection)
+├── ❌ No visibility — you don't even know you're being attacked
+├── ❌ No cost protection — auto-scaling bill is YOUR problem
+├── ❌ No DDoS Response Team access
+├── ❌ No L7 (application layer) protection
+└── ❌ No health-based detection
+
+Shield Advanced ($3,000/month + 1-year commitment):
+├── ✅ Everything in Standard, plus:
+├── ✅ L7 DDoS protection (application layer — HTTP floods)
+├── ✅ DDoS COST PROTECTION — AWS credits scaling costs during attack
+│     (CloudFront, ALB, Route 53, EIP, Global Accelerator)
+├── ✅ 24/7 DDoS Response Team (DRT) — AWS experts manage your WAF
+├── ✅ Real-time attack visibility + CloudWatch metrics
+├── ✅ Health-based detection (Route 53 health checks = faster detection)
+├── ✅ WAF included at no extra cost
+├── ✅ Proactive engagement — AWS contacts YOU when attack detected
+└── ❌ 1-year commitment, cannot cancel early
+```
+
+### Shield Decision Table
+
+| Exam Question Says | Answer |
+|---|---|
+| "DDoS protection" (no cost concern) | **Shield Advanced** |
+| "DDoS protection, **cost-sensitive** / startup" | **Shield Standard** (free) |
+| "Protect against **scaling costs** during DDoS" | **Shield Advanced** (cost protection) |
+| "Need **DDoS Response Team**" | **Shield Advanced** |
+| "**Application-layer** DDoS (HTTP floods)" | **Shield Advanced** |
+| "What's **free and automatic**?" | **Shield Standard** |
+| "**Rate limit** single IP / credential stuffing" | **WAF** (not Shield) |
