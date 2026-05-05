@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 25 |
-| **✅ Correct** | 13 (52%) |
-| **⚠️ Partial** | 7 (28%) |
-| **❌ Wrong** | 5 (20%) |
-| **Sessions** | 3 |
+| **Total Questions** | 35 |
+| **✅ Correct** | 21 (60%) |
+| **⚠️ Partial** | 8 (23%) |
+| **❌ Wrong** | 6 (17%) |
+| **Sessions** | 4 |
 | **Re-tests Passed** | 3 of 4 |
 
 ## Domain Breakdown
@@ -21,7 +21,7 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
-| D3: Infrastructure Security | 2 | 0 | 1 | 3 | 67% | 🟡 |
+| D3: Infrastructure Security | 10 | 1 | 2 | 13 | 77% | 🟡 |
 | D4: Identity & Access Management | 3 | 3 | 0 | 6 | 50% | 🟡 |
 | D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
 | D6: Governance | 0 | 0 | 0 | 0 | — | — |
@@ -43,6 +43,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 9 | DNS Firewall | Q14 | D3 | 1 |
 | 🟡 10 | Cross-account patterns | Q15 | D5 | 1 |
 | 🟡 11 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 12 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 13 | Network Firewall TLS inspection | Q35 | D3 | 1 |
 
 ---
 
@@ -53,6 +55,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1 | 2025-05-01 | Q1–Q20 | 10 | 6 | 4 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection | [Jump](#session-1--2025-05-01) |
 | 2 | 2025-05-02 | Q21–Q23 | 2 | 0 | 1 | D1 Detection (re-test) | [Jump](#session-2--2025-05-02) |
 | 3 | 2025-05-03 | Q24–Q25 | 1 | 1 | 0 | D1 Detection (re-test) | [Jump](#session-3--2025-05-03) |
+| 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 
 ---
 
@@ -131,3 +134,22 @@ After adding a session:
 4. Move resolved weak areas out, add new ones
 
 -->
+
+### Session 4 — 2025-05-04
+
+**Domains:** D3 Infrastructure Security (firewalls comparison)
+**Score:** 8 ✅ · 1 ⚠️ · 1 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 26 | D3 | Lambda in private subnet making DNS queries to C2 domains — block immediately? | DNS Firewall | ✅ | DNS Firewall — block at DNS, connection never happens | — | DNS Firewall |
+| 27 | D3 | ALB receiving credential-stuffing from single IP — block? | WAF | ✅ | WAF rate-based rules — single IP, not volumetric DDoS | — | WAF vs Shield |
+| 28 | D3 | Detect malware signatures in egress traffic, have Suricata rules? | Network Firewall | ✅ | Network Firewall — Suricata = Network Firewall always | — | Network Firewall |
+| 29 | D3 | SG opened to 0.0.0.0/0 in 150 accounts — auto-detect and fix org-wide? | Firewall Manager | ✅ | Firewall Manager SG audit policy — org-wide, auto-remediate | — | Firewall Manager |
+| 30 | D3 | 40 Gbps UDP DDoS, bill spiking, want AWS to credit scaling costs? | Shield Advanced | ✅ | Shield Advanced — DDoS cost protection | — | Shield Advanced |
+| 31 | D3 | EC2 needs to reach only api.stripe.com, cheapest layer to block? | DNS Firewall | ✅ | DNS Firewall — cheapest, block all except allowed domain | — | DNS Firewall |
+| 32 | D3 | Ensure all 300 accounts have same WAF rules on ALBs, auto for new accounts? | Firewall Manager | ✅ | Firewall Manager WAF policy — org-wide, auto-applies | — | Firewall Manager |
+| 33 | D3 | Data encoded in DNS subdomain queries (exfiltration) — block? | DNS Firewall | ✅ | DNS Firewall — exfil is in the query itself, block the domain | — | DNS Firewall |
+| 34 | D3 | NACL allows inbound 443, SG allows 443, web server not responding? | Ephemeral ports | ⚠️ | NACL needs outbound ephemeral ports (1024-65535) — stateless, must allow response | — | NACLs stateless |
+| 35 | D3 | Decrypt TLS traffic, inspect plaintext for malware, re-encrypt? | WAF Advanced | ❌ | **Network Firewall** — TLS inspection is Network Firewall only, WAF never decrypts | — | Network Firewall TLS inspection |
+
