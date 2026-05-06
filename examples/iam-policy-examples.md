@@ -893,3 +893,69 @@ aws iam simulate-custom-policy \
 6. **Regional restrictions**: Use `aws:RequestedRegion` condition
 7. **MFA enforcement**: Use `aws:MultiFactorAuthPresent` condition
 
+---
+
+## Creating & Attaching Policy Types (CLI)
+
+> Where each policy type lives, who manages it, and how to deploy it.
+
+### Permission Boundary (IAM — per account)
+
+```bash
+# Create the policy (it's a regular IAM policy used as a boundary)
+aws iam create-policy \
+  --policy-name DevBoundary \
+  --policy-document file://boundary.json
+
+# Attach as boundary to a role
+aws iam put-role-permissions-boundary \
+  --role-name DevRole \
+  --permissions-boundary "arn:aws:iam::123456789012:policy/DevBoundary"
+
+# Attach as boundary to a user
+aws iam put-user-permissions-boundary \
+  --user-name DevUser \
+  --permissions-boundary "arn:aws:iam::123456789012:policy/DevBoundary"
+```
+
+### SCP (Organizations — principal side)
+
+```bash
+# Create SCP
+aws organizations create-policy \
+  --name "DenyDisableGuardDuty" \
+  --type SERVICE_CONTROL_POLICY \
+  --content file://scp.json \
+  --description "Prevent disabling GuardDuty in member accounts"
+
+# Attach to OU
+aws organizations attach-policy \
+  --policy-id p-abc123 \
+  --target-id ou-root-devou
+```
+
+### RCP (Organizations — resource side)
+
+```bash
+# Create RCP
+aws organizations create-policy \
+  --name "DenyExternalS3Access" \
+  --type RESOURCE_CONTROL_POLICY \
+  --content file://rcp.json \
+  --description "Block external principals from S3 org-wide"
+
+# Attach to org root (covers all accounts)
+aws organizations attach-policy \
+  --policy-id p-xyz789 \
+  --target-id r-root
+```
+
+### Quick Reference
+
+| Policy Type | Service | CLI prefix | Attached to |
+|---|---|---|---|
+| Identity-based | `iam` | `put-role-policy` / `attach-role-policy` | User, group, role |
+| Resource-based | Service-specific | `s3api put-bucket-policy` / `kms put-key-policy` | The resource |
+| Permission boundary | `iam` | `put-role-permissions-boundary` | One user or role |
+| SCP | `organizations` | `create-policy --type SERVICE_CONTROL_POLICY` | Root, OU, account |
+| RCP | `organizations` | `create-policy --type RESOURCE_CONTROL_POLICY` | Root, OU, account |
