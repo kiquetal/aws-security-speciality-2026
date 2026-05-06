@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 35 |
-| **✅ Correct** | 21 (60%) |
-| **⚠️ Partial** | 8 (23%) |
-| **❌ Wrong** | 6 (17%) |
-| **Sessions** | 4 |
-| **Re-tests Passed** | 3 of 4 |
+| **Total Questions** | 38 |
+| **✅ Correct** | 22 (58%) |
+| **⚠️ Partial** | 10 (26%) |
+| **❌ Wrong** | 6 (16%) |
+| **Sessions** | 5 |
+| **Re-tests Passed** | 4 of 7 |
 
 ## Domain Breakdown
 
@@ -22,7 +22,7 @@
 | D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
 | D3: Infrastructure Security | 10 | 1 | 2 | 13 | 77% | 🟡 |
-| D4: Identity & Access Management | 3 | 3 | 0 | 6 | 50% | 🟡 |
+| D4: Identity & Access Management | 4 | 5 | 0 | 9 | 44% | 🔴 |
 | D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
 | D6: Governance | 0 | 0 | 0 | 0 | — | — |
 
@@ -33,11 +33,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
 | 🔴 1 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🟡 2 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 3 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 4 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 5 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 6 | RAM vs KMS Grants | Q11 | D4 | 1 |
+| 🔴 2 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🟡 3 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 4 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 5 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 6 | Policy layers reference | Q7 | D4 | 1 |
 | 🟡 7 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
 | 🟡 8 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
 | 🟡 9 | DNS Firewall | Q14 | D3 | 1 |
@@ -45,6 +45,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 11 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
 | 🟡 12 | NACLs stateless | Q34 | D3 | 1 |
 | 🟡 13 | Network Firewall TLS inspection | Q35 | D3 | 1 |
+| 🟡 14 | RAM vs RCP | Q38 | D4 | 1 |
 
 ---
 
@@ -56,6 +57,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 2 | 2025-05-02 | Q21–Q23 | 2 | 0 | 1 | D1 Detection (re-test) | [Jump](#session-2--2025-05-02) |
 | 3 | 2025-05-03 | Q24–Q25 | 1 | 1 | 0 | D1 Detection (re-test) | [Jump](#session-3--2025-05-03) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
+| 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 
 ---
 
@@ -153,3 +155,14 @@ After adding a session:
 | 34 | D3 | NACL allows inbound 443, SG allows 443, web server not responding? | Ephemeral ports | ⚠️ | NACL needs outbound ephemeral ports (1024-65535) — stateless, must allow response | — | NACLs stateless |
 | 35 | D3 | Decrypt TLS traffic, inspect plaintext for malware, re-encrypt? | WAF Advanced | ❌ | **Network Firewall** — TLS inspection is Network Firewall only, WAF never decrypts | — | Network Firewall TLS inspection |
 
+
+### Session 5 — 2025-05-05
+
+**Domains:** D4 Identity & Access Management (re-test)
+**Score:** 1 ✅ · 2 ⚠️ · 0 ❌ (33% correct, 100% partial+)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 36 | D4 | Dev puts Principal:* on bucket policy, external attacker reads objects. Block all external S3 access org-wide without modifying bucket policies — which policy type and why not SCP? | "SCP can't stop external accounts, RCP is the answer" + knew PrincipalIsAWSService condition | ✅ | RCP — evaluated on resource side regardless of caller. SCP only governs principals inside your org. Conditions: PrincipalOrgID + PrincipalIsAWSService:false with IfExists. | Q7 | Policy layers — RCP vs SCP |
+| 37 | D4 | 300 customers need Decrypt on your KMS key, onboard/offboard weekly. Junior suggests RAM — why won't it work? | "Limitations maybe? KMS Grants is the answer" — didn't know RAM's service list excludes KMS | ⚠️ | RAM doesn't support KMS (infrastructure only: TGW, subnets, Route 53). Even if it did, RAM shares entire resource — Grants give per-operation control (Decrypt only). Key policy 32KB limit ~200 principals; Grants unlimited. | Q11 | RAM vs KMS Grants |
+| 38 | D4 | One sentence each: what problem does RAM solve vs RCP? | "RAM shares resources between accounts. RCP manage control?" — RCP answer too vague | ⚠️ | RAM = OPENS access (share infrastructure cross-account). RCP = CLOSES access (deny external principals from data org-wide). Opposite problems, different service lists, zero overlap. | Q12 | RAM vs RCP |
