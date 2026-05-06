@@ -171,3 +171,9 @@ aws ram create-resource-share \
 | **RAM within org = auto-accept** | No invitation needed if sharing within same org |
 | **RAM outside org = invitation** | Recipient must accept the resource share invitation |
 | **RCP affects external callers** | RAM shares don't bypass RCPs — if RCP denies, access is denied |
+
+## 🧠 Cheat-Sheet One-Liners
+
+- **RAM opens, RCP closes.** RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.
+- **RAM doesn't support KMS.** Use KMS Grants for per-operation, per-principal, revocable cross-account key access.
+- **SCP can't stop external callers.** Only RCP blocks outsiders — it's evaluated on the resource regardless of who's calling.
