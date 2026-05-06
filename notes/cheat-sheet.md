@@ -13,6 +13,7 @@
 ### Cross-Account
 - RAM opens, RCP closes. RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.
 - RAM doesn't support KMS. Use KMS Grants for per-operation, per-principal, revocable cross-account key access.
+- RCP DOES support KMS (also S3, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito). Don't confuse with RAM's list.
 
 ### STS
 -
