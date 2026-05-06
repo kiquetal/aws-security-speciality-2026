@@ -1,0 +1,19 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ff9900'}}}%%
+flowchart TD
+    REQ["API Request to Resource"] --> WHO{"Who is the caller?"}
+    
+    WHO -->|"Service-Linked Role"| EXEMPT1["🟢 RCP EXEMPT<br/>SLRs bypass RCPs entirely"]
+    WHO -->|"AWS Service Principal<br/>(CloudTrail, Config, etc.)"| CHECK_COND{"RCP condition:<br/>PrincipalIsAWSService?"}
+    WHO -->|"IAM User/Role<br/>(internal or external)"| RCP_EVAL{"RCP Deny<br/>conditions met?"}
+    
+    CHECK_COND -->|"Condition = false<br/>(doesn't match service)"| EXEMPT2["🟢 Deny doesn't fire<br/>Service proceeds"]
+    CHECK_COND -->|"No IfExists condition<br/>(badly written RCP)"| BLOCKED["🔴 BLOCKED<br/>Breaks AWS services!"]
+    
+    RCP_EVAL -->|"PrincipalOrgID matches"| PASS["🟢 Passes RCP"]
+    RCP_EVAL -->|"PrincipalOrgID doesn't match"| DENIED["🔴 DENIED by RCP"]
+
+    style EXEMPT1 fill:#44bb44,color:#fff
+    style EXEMPT2 fill:#44bb44,color:#fff
+    style PASS fill:#44bb44,color:#fff
+    style BLOCKED fill:#ff4444,color:#fff
+    style DENIED fill:#ff4444,color:#fff
