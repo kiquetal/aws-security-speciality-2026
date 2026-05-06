@@ -78,3 +78,5 @@
 | `aws:PrincipalIsAWSService` | Exempt AWS services from org-deny rules |
 | `aws:SourceArn` | Confused deputy prevention |
 | `sts:ExternalId` | Third-party cross-account roles |
+| `aws:PrincipalServiceName` | Identify which AWS service is calling |
+| `aws:TokenIssueTime` | Revoke STS sessions issued before a timestamp |
