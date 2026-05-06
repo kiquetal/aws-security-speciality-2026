@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 38 |
-| **✅ Correct** | 22 (58%) |
-| **⚠️ Partial** | 10 (26%) |
-| **❌ Wrong** | 6 (16%) |
-| **Sessions** | 5 |
+| **Total Questions** | 43 |
+| **✅ Correct** | 25 (58%) |
+| **⚠️ Partial** | 10 (23%) |
+| **❌ Wrong** | 8 (19%) |
+| **Sessions** | 6 |
 | **Re-tests Passed** | 4 of 7 |
 
 ## Domain Breakdown
@@ -22,7 +22,7 @@
 | D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
 | D3: Infrastructure Security | 10 | 1 | 2 | 13 | 77% | 🟡 |
-| D4: Identity & Access Management | 4 | 5 | 0 | 9 | 44% | 🔴 |
+| D4: Identity & Access Management | 7 | 5 | 2 | 14 | 50% | 🟡 |
 | D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
 | D6: Governance | 0 | 0 | 0 | 0 | — | — |
 
@@ -46,6 +46,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 12 | NACLs stateless | Q34 | D3 | 1 |
 | 🟡 13 | Network Firewall TLS inspection | Q35 | D3 | 1 |
 | 🟡 14 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 15 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 16 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
 
 ---
 
@@ -58,6 +60,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 3 | 2025-05-03 | Q24–Q25 | 1 | 1 | 0 | D1 Detection (re-test) | [Jump](#session-3--2025-05-03) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
+| 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
 
 ---
 
@@ -166,3 +169,16 @@ After adding a session:
 | 36 | D4 | Dev puts Principal:* on bucket policy, external attacker reads objects. Block all external S3 access org-wide without modifying bucket policies — which policy type and why not SCP? | "SCP can't stop external accounts, RCP is the answer" + knew PrincipalIsAWSService condition | ✅ | RCP — evaluated on resource side regardless of caller. SCP only governs principals inside your org. Conditions: PrincipalOrgID + PrincipalIsAWSService:false with IfExists. | Q7 | Policy layers — RCP vs SCP |
 | 37 | D4 | 300 customers need Decrypt on your KMS key, onboard/offboard weekly. Junior suggests RAM — why won't it work? | "Limitations maybe? KMS Grants is the answer" — didn't know RAM's service list excludes KMS | ⚠️ | RAM doesn't support KMS (infrastructure only: TGW, subnets, Route 53). Even if it did, RAM shares entire resource — Grants give per-operation control (Decrypt only). Key policy 32KB limit ~200 principals; Grants unlimited. | Q11 | RAM vs KMS Grants |
 | 38 | D4 | One sentence each: what problem does RAM solve vs RCP? | "RAM shares resources between accounts. RCP manage control?" — RCP answer too vague | ⚠️ | RAM = OPENS access (share infrastructure cross-account). RCP = CLOSES access (deny external principals from data org-wide). Opposite problems, different service lists, zero overlap. | Q12 | RAM vs RCP |
+
+### Session 6 — 2025-05-05
+
+**Domains:** D4 Identity & Access Management (policy layers quiz)
+**Score:** 3 ✅ · 0 ⚠️ · 2 ❌ (60% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 39 | D4 | SLR in Account A does PutObject, RCP denies non-org principals — does SLR succeed? | "Fails — RCP needs PrincipalIsAWSService rule" | ❌ | **Succeeds** — SLRs are completely exempt from RCPs (separate mechanism from PrincipalIsAWSService). | — | RCP exemptions (SLR vs service principal) |
+| 40 | D4 | Role identity policy allows kms:Decrypt, boundary only allows s3:* and ec2:* — what happens? | "Denied — boundary doesn't include KMS" | ✅ | Denied. Permission boundary is a ceiling; kms:Decrypt outside boundary = blocked at Gate 3. | — | Permission boundary as ceiling |
+| 41 | D4 | External Account B assumes role in Account A, role allows s3:GetObject, SCP allows all, no RCP — succeeds? | "Succeeds — evaluated against Account A's role policies" | ✅ | Succeeds. Once role is assumed, evaluation uses Account A's SCP + role's identity policy + boundary. | — | Cross-account evaluation |
+| 42 | D4 | RCP denies kms:Decrypt for external principals. CloudTrail needs to decrypt — blocked? | "RCP doesn't support KMS?" | ❌ | **Succeeds** — RCP condition `PrincipalIsAWSService: false` doesn't match CloudTrail (it IS a service), so Deny doesn't fire. RCP does support KMS. | — | RCP exemptions (PrincipalIsAWSService) |
+| 43 | D4 | Role: identity=Allow s3:*, boundary=Allow GetObject+ListBucket only. Calls PutObject? | "Denied — boundary limits" | ✅ | Denied. Boundary ceiling doesn't include PutObject. Gate 3 blocks. | — | Permission boundary as ceiling |
