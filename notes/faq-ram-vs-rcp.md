@@ -177,3 +177,4 @@ aws ram create-resource-share \
 - **RAM opens, RCP closes.** RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.
 - **RAM doesn't support KMS.** Use KMS Grants for per-operation, per-principal, revocable cross-account key access.
 - **SCP can't stop external callers.** Only RCP blocks outsiders — it's evaluated on the resource regardless of who's calling.
+- **SLRs are exempt from RCPs.** Service-linked roles bypass RCPs entirely. AWS service principals bypass via `PrincipalIsAWSService` condition. Different mechanisms — don't confuse them.
