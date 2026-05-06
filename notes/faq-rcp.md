@@ -1,6 +1,7 @@
 # FAQ: Resource Control Policies (RCPs)
 
 > **Blueprint refs:** Task 6.1 (centrally deploy/manage accounts), Task 4.2 (authorization strategies)
+> **Diagram:** [rcp-exemption-paths.mmd](../diagrams/rcp-exemption-paths.mmd)
 > **Launched:** November 2024 — new for SCS-C03
 
 ## What Problem Do RCPs Solve?
