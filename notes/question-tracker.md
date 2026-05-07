@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 43 |
-| **✅ Correct** | 25 (58%) |
-| **⚠️ Partial** | 10 (23%) |
-| **❌ Wrong** | 8 (19%) |
-| **Sessions** | 6 |
-| **Re-tests Passed** | 4 of 7 |
+| **Total Questions** | 48 |
+| **✅ Correct** | 30 (62%) |
+| **⚠️ Partial** | 10 (21%) |
+| **❌ Wrong** | 8 (17%) |
+| **Sessions** | 7 |
+| **Re-tests Passed** | 6 of 9 |
 
 ## Domain Breakdown
 
@@ -22,7 +22,7 @@
 | D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
 | D3: Infrastructure Security | 10 | 1 | 2 | 13 | 77% | 🟡 |
-| D4: Identity & Access Management | 7 | 5 | 2 | 14 | 50% | 🟡 |
+| D4: Identity & Access Management | 12 | 5 | 2 | 19 | 63% | 🟡 |
 | D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
 | D6: Governance | 0 | 0 | 0 | 0 | — | — |
 
@@ -61,6 +61,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
+| 7 | 2025-05-05 | Q44–Q48 | 5 | 0 | 0 | D4 Identity & Access Management (rapid fire — post hyperfocus) | [Jump](#session-7--2025-05-05) |
 
 ---
 
@@ -182,3 +183,16 @@ After adding a session:
 | 41 | D4 | External Account B assumes role in Account A, role allows s3:GetObject, SCP allows all, no RCP — succeeds? | "Succeeds — evaluated against Account A's role policies" | ✅ | Succeeds. Once role is assumed, evaluation uses Account A's SCP + role's identity policy + boundary. | — | Cross-account evaluation |
 | 42 | D4 | RCP denies kms:Decrypt for external principals. CloudTrail needs to decrypt — blocked? | "RCP doesn't support KMS?" | ❌ | **Succeeds** — RCP condition `PrincipalIsAWSService: false` doesn't match CloudTrail (it IS a service), so Deny doesn't fire. RCP does support KMS. | — | RCP exemptions (PrincipalIsAWSService) |
 | 43 | D4 | Role: identity=Allow s3:*, boundary=Allow GetObject+ListBucket only. Calls PutObject? | "Denied — boundary limits" | ✅ | Denied. Boundary ceiling doesn't include PutObject. Gate 3 blocks. | — | Permission boundary as ceiling |
+
+### Session 7 — 2025-05-05
+
+**Domains:** D4 Identity & Access Management (rapid fire — post hyperfocus)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 44 | D4 | RCP denies s3:* for non-org. ELB SLR writes access logs to S3 — blocked? | "RCP can't block service-linked role" | ✅ | Allowed — SLRs are structurally exempt from RCPs | Q39 | RCP exemptions (SLR) |
+| 45 | D4 | Identity allows s3:*, boundary allows s3:Get* only. Calls s3:DeleteObject? | "Permission boundary blocks it" | ✅ | Denied — Gate 3 (boundary) doesn't include DeleteObject | — | Permission boundary |
+| 46 | D4 | 400 external accounts need Decrypt, key policy at 30KB — mechanism? | "KMS Grants" | ✅ | KMS Grants — key policy near 32KB limit, grants scale without policy edits | Q37 | KMS Grants |
+| 47 | D4 | Role chaining A→B→C, Role C MaxSessionDuration=12hr — actual max? | "1 hour" | ✅ | 1 hour — role chaining always resets to 1hr max | — | Role chaining |
+| 48 | D4 | External account calls s3:GetObject, bucket policy grants access, no RCP — need identity policy? | "No" | ✅ | No — resource-based policy alone grants cross-account (except KMS) | — | Cross-account evaluation |
