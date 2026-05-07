@@ -1,0 +1,25 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ff9900'}}}%%
+flowchart LR
+    subgraph CALLER["Caller (IAM Role)"]
+        ROLE["Role: DevRole<br/>Tag: Project=Phoenix"]
+    end
+
+    subgraph API_CALL["API Call"]
+        REQ["ec2:RunInstances<br/>RequestTag: Project=Phoenix"]
+    end
+
+    subgraph RESOURCES["Resources"]
+        S3_YES["S3 Bucket<br/>Tag: Project=Phoenix<br/>🟢 Access Granted"]
+        S3_NO["S3 Bucket<br/>Tag: Project=Atlas<br/>🔴 Access Denied"]
+        EC2["New EC2 Instance<br/>Must tag: Project=Phoenix<br/>🟢 Enforced by RequestTag"]
+    end
+
+    ROLE -->|"aws:PrincipalTag/Project = Phoenix"| REQ
+    REQ -->|"aws:ResourceTag matches PrincipalTag"| S3_YES
+    REQ -->|"aws:ResourceTag ≠ PrincipalTag"| S3_NO
+    REQ -->|"aws:RequestTag must = PrincipalTag"| EC2
+
+    style S3_YES fill:#44bb44,color:#fff
+    style S3_NO fill:#ff4444,color:#fff
+    style EC2 fill:#44bb44,color:#fff
+    style ROLE fill:#ff9900,color:#fff
