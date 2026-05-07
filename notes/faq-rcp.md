@@ -130,6 +130,18 @@ RCPs only apply to a **subset** of AWS services. Key ones for the exam:
 4. **`kms:RetireGrant`** — specifically exempt
 5. **Delegated admin accounts are NOT exempt** — RCPs apply to them (unlike management account)
 
+### SLR vs AWS Service Principal — Two Different Bypass Mechanisms
+
+| | Service-Linked Role | AWS Service Principal |
+|---|---|---|
+| **Example** | `AWSServiceRoleForElasticLoadBalancing` | `cloudtrail.amazonaws.com` |
+| **Who it is** | A role in YOUR account that AWS manages | AWS itself calling your resource |
+| **How it bypasses RCP** | Structural exemption — RCP skips it entirely | Condition-based — `PrincipalIsAWSService: false` doesn't match |
+| **Has an ARN in your account?** | ✅ Yes (`arn:aws:iam::123:role/aws-service-role/...`) | ❌ No — it's a service principal |
+| **SCP applies?** | ✅ Yes | N/A (not in your account) |
+
+> ⚠️ The exam exploits this confusion. Both involve "AWS services" but they're different principals with different bypass paths.
+
 ### RCPs Don't Prevent Saving Permissive Policies
 A developer CAN still save a bucket policy with `Principal: "*"`. The RCP doesn't block the `PutBucketPolicy` call. It blocks the *subsequent access* by external principals at evaluation time.
 
