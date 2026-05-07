@@ -12,7 +12,7 @@
 
 | Week | Domain / Focus | Status | Notes |
 |------|---------------|--------|-------|
-| 1 | D4: IAM fundamentals, policy evaluation logic | ⬜ | |
+| 1 | D4: IAM fundamentals, policy evaluation logic | ✅ | 90% on final quiz, all FAQs + diagrams done |
 | 2 | D4: IAM advanced (ABAC, boundaries, cross-account, Verified Permissions) | ⬜ | |
 | 3 | D5: KMS (key types, grants, policies, multi-region) | ⬜ | |
 | 4 | D5: Data protection (S3 encryption, CloudHSM, Secrets Manager, ACM) | ⬜ | |
