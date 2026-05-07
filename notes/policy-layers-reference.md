@@ -247,12 +247,20 @@ CROSS-ACCOUNT REQUEST (Role in Account B → Bucket in Account A):
 | Resource | Policy Name | Common Use |
 |---|---|---|
 | S3 Bucket | Bucket policy | Cross-account access, enforce encryption |
-| KMS Key | Key policy | Control who can use/manage the key |
+| KMS Key | Key policy | Control who can use/manage the key (REQUIRED — unique to KMS) |
 | Lambda Function | Function policy | Allow API Gateway/S3/EventBridge to invoke |
 | SQS Queue | Queue policy | Allow SNS/S3/Lambda to send messages |
 | SNS Topic | Topic policy | Allow cross-account publish |
 | Secrets Manager | Resource policy | Cross-account secret access |
 | CloudWatch Log Group | Resource policy | Allow services to write logs |
+| API Gateway | Resource policy | IP/VPC/account-based access control |
+| ECR Repository | Repository policy | Cross-account image pulls |
+| EventBridge Event Bus | Event bus policy | Cross-account event routing |
+| IAM Role | Trust policy | Controls who can AssumeRole (special — Gate 5 for STS) |
+
+> ⚠️ **KMS is the only service where the resource policy is mandatory.** All others: identity policy alone can grant access (same-account). KMS always requires key policy participation.
+
+> **Cross-account rule:** Resource-based policy alone can grant cross-account access (no identity policy needed on caller side) — EXCEPT KMS, which needs both.
 | ECR Repository | Repository policy | Cross-account image pulls |
 
 ## Exam Gotchas
