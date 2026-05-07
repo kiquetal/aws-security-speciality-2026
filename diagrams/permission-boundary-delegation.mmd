@@ -1,0 +1,19 @@
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ff9900'}}}%%
+flowchart TD
+    DEV["Developer<br/>Has: iam:CreateRole, s3:*, ec2:*"]
+    
+    DEV -->|"CreateRole WITHOUT boundary"| DENY1["❌ DENIED<br/>iam:PermissionsBoundary<br/>condition not met"]
+    DEV -->|"CreateRole WITH DevBoundary"| ALLOW["✅ Role Created<br/>Boundary attached"]
+    
+    ALLOW --> ROLE["New Role<br/>Identity: AdministratorAccess<br/>Boundary: DevBoundary (s3:*, ec2:*)"]
+    
+    ROLE -->|"Effective = Identity ∩ Boundary"| EFF["Effective: s3:* + ec2:* ONLY<br/>Admin policy capped by boundary"]
+    
+    ROLE -->|"Try remove boundary"| DENY2["❌ DENIED<br/>DenyRemoveBoundary"]
+    ROLE -->|"Try swap boundary"| DENY3["❌ DENIED<br/>DenySwapBoundary"]
+
+    style DENY1 fill:#ff4444,color:#fff
+    style DENY2 fill:#ff4444,color:#fff
+    style DENY3 fill:#ff4444,color:#fff
+    style ALLOW fill:#44bb44,color:#fff
+    style EFF fill:#44bb44,color:#fff
