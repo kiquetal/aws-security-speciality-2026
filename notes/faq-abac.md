@@ -32,6 +32,10 @@ WHAT are they sending?   → aws:RequestTag/Key      (tag in the API call itself
 | `aws:ResourceTag/Project` | "What resource is being accessed?" | Only access resources matching your project |
 | `aws:RequestTag/Project` | "What tags are being applied?" | Enforce tagging at resource creation |
 
+**Two different moments:**
+- **RequestTag** = enforcement at **creation** (what tags are you sending right now?)
+- **ResourceTag** = enforcement at **access** (what tags does the target already have?)
+
 ### Concrete Example
 
 ```bash
