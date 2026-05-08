@@ -716,6 +716,36 @@ Define who can assume an IAM role. Attached to roles, not identities.
 - SAML 2.0 federation for corporate SSO
 - Validates SAML audience
 
+### Example 5.5: Revoke All Active STS Sessions
+
+> Use when a role is compromised and you need to invalidate all existing tokens immediately.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RevokeSessionsIssuedBeforeThisTime",
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "DateLessThan": {
+          "aws:TokenIssueTime": "2025-05-05T15:00:00Z"
+        }
+      }
+    }
+  ]
+}
+```
+
+**Key Points:**
+- Attach as **inline policy** on the compromised role
+- All sessions issued before the timestamp → denied
+- New sessions (after timestamp) → work normally
+- This is the ONLY way to revoke active STS tokens
+- Deleting the role or removing policies does NOT invalidate already-issued tokens
+
 ---
 
 ## 6. Resource Control Policies (RCPs)
