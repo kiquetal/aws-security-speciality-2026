@@ -28,6 +28,11 @@
 - PrincipalTag = who. ResourceTag = what. RequestTag = what you're sending. Three different tags, three different moments.
 - RequestTag = creation time ("must tag"). ResourceTag = access time ("can only touch matching"). Don't confuse them.
 
+### Identity Center
+- Identity Center = workforce SSO. Cognito = customer apps. Never mix them.
+- Only ONE identity source at a time: built-in OR AD OR external IdP (SAML 2.0).
+- Permission set = IAM role auto-created in target accounts. No manual role management.
+
 ---
 
 ## D5: Data Protection (18%)
