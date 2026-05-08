@@ -101,6 +101,49 @@ Cognito User Pool (authentication)
 
 **Cognito authenticates (who are you?). Verified Permissions authorizes (what can you do?).**
 
+### How Claims Map to Cedar (Exam-Critical)
+
+```
+1. User signs into Cognito User Pool
+   → Gets ID token with claims:
+      {
+        "sub": "user-123",
+        "cognito:groups": ["admin"],
+        "custom:tenant": "acme",
+        "email": "alice@acme.com"
+      }
+
+2. Your app calls VP with token directly:
+      IsAuthorizedWithToken(
+        identityToken: "<raw Cognito ID token>",
+        action: Action::"editDocument",
+        resource: Document::"doc-456"
+      )
+
+3. VP automatically extracts:
+      principal  ← from "sub" claim
+      groups     ← from "cognito:groups"
+      attributes ← from custom claims
+
+4. Cedar policy evaluates against extracted claims:
+      permit (
+        principal in Group::"admin",
+        action == Action::"editDocument",
+        resource
+      ) when {
+        principal.tenant == resource.tenant
+      };
+
+5. VP returns: ALLOW or DENY
+```
+
+**Two ways to call VP:**
+
+| Method | How | When |
+|---|---|---|
+| `IsAuthorized` | Your app parses token, maps claims manually | Full control over mapping |
+| `IsAuthorizedWithToken` | Pass raw Cognito token, VP extracts claims | Less code, direct integration |
+
 ## Key Limits/Quotas
 
 | Limit | Value |
