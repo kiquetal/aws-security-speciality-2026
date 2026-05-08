@@ -24,6 +24,10 @@
 - Session tags from IdP (SAML/OIDC) land in `aws:PrincipalTag/Key`. Same key used for ABAC matching.
 - Session policy = temporary scope-down passed at AssumeRole time. Filters down, never escalates. Effective = role ∩ session policy ∩ boundary ∩ SCP.
 
+### ABAC
+- PrincipalTag = who. ResourceTag = what. RequestTag = what you're sending. Three different tags, three different moments.
+- RequestTag = creation time ("must tag"). ResourceTag = access time ("can only touch matching"). Don't confuse them.
+
 ---
 
 ## D5: Data Protection (18%)
