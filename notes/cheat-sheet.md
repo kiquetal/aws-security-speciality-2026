@@ -20,6 +20,7 @@
 
 ### STS
 - Cross-account KMS always needs BOTH sides: key policy (Account A) + identity policy (Account B). Resource policy alone is never enough for KMS.
+- Direct cross-account (no AssumeRole): caller's SCP applies, not resource owner's. SCP governs the principal's account, period.
 - Revoke active STS sessions: inline Deny with `aws:TokenIssueTime` < timestamp. Only way — can't invalidate individual tokens.
 - Session tags from IdP (SAML/OIDC) land in `aws:PrincipalTag/Key`. Same key used for ABAC matching.
 - Session policy = temporary scope-down passed at AssumeRole time. Filters down, never escalates. Effective = role ∩ session policy ∩ boundary ∩ SCP.
@@ -27,6 +28,7 @@
 ### ABAC
 - PrincipalTag = who. ResourceTag = what. RequestTag = what you're sending. Three different tags, three different moments.
 - RequestTag = creation time ("must tag"). ResourceTag = access time ("can only touch matching"). Don't confuse them.
+- ResourceTag for access control (StartInstances, StopInstances). RequestTag for creation enforcement (RunInstances). They are NOT interchangeable.
 
 ### Identity Center
 - Identity Center = workforce SSO. Cognito = customer apps. Never mix them.
