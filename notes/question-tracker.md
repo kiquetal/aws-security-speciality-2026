@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 73 |
-| **✅ Correct** | 49 (67%) |
-| **⚠️ Partial** | 12 (16%) |
-| **❌ Wrong** | 12 (16%) |
-| **Sessions** | 11 |
+| **Total Questions** | 78 |
+| **✅ Correct** | 53 (68%) |
+| **⚠️ Partial** | 12 (15%) |
+| **❌ Wrong** | 13 (17%) |
+| **Sessions** | 12 |
 | **Re-tests Passed** | 11 of 16 |
 
 ## Domain Breakdown
@@ -22,7 +22,7 @@
 | D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
 | D3: Infrastructure Security | 10 | 1 | 2 | 13 | 77% | 🟡 |
-| D4: Identity & Access Management | 31 | 7 | 6 | 44 | 70% | 🟡 |
+| D4: Identity & Access Management | 35 | 7 | 7 | 49 | 71% | 🟡 |
 | D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
 | D6: Governance | 0 | 0 | 0 | 0 | — | — |
 
@@ -54,6 +54,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 20 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
 | 🟡 21 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
 | 🟡 22 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
+| 🟡 23 | Session policy as ceiling | Q78 | D4 | 1 |
 
 ---
 
@@ -72,6 +73,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 9 | 2025-05-08 | Q59–Q63 | 3 | 0 | 2 | D4 Identity & Access Management (Week 2 — cross-account, VP, STS) | [Jump](#session-9--2025-05-08) |
 | 10 | 2025-05-08 | Q64–Q68 | 4 | 1 | 0 | D4 Identity & Access Management (Week 2 — Identity Center, session policies, VP, ABAC) | [Jump](#session-10--2025-05-08) |
 | 11 | 2025-05-09 | Q69–Q73 | 3 | 0 | 2 | D4 Identity & Access Management (re-test — cross-account KMS, STS revocation, ABAC, RAM) | [Jump](#session-11--2025-05-09) |
+| 12 | 2025-05-09 | Q74–Q78 | 4 | 0 | 1 | D4 Identity & Access Management (Week 2 quiz — data perimeter, VP, boundaries, session policies) | [Jump](#session-12--2025-05-09) |
 
 ---
 
@@ -263,3 +265,16 @@ After adding a session:
 | 71 | D4 | Exfiltrated role credentials, active sessions making calls — revoke immediately? | B: Inline Deny with TokenIssueTime | ✅ | Inline Deny with `aws:TokenIssueTime` < current timestamp — only way to revoke active sessions | Q62 | STS session revocation |
 | 72 | D4 | Okta team attribute → EC2 access by team tag, no per-team policies — which two? | D: RequestTag | ❌ | **A + C**: Map Okta attribute to session tag (A) + policy with `ec2:ResourceTag/Team = ${aws:PrincipalTag/Team}` (C). RequestTag is creation-time only. | Q63 | Session tags + ABAC (ResourceTag vs RequestTag) |
 | 73 | D4 | Enforce CostCenter tag on all EC2 launches org-wide? | A: SCP Deny RunInstances if RequestTag missing | ✅ | SCP + `aws:RequestTag/CostCenter` with Null condition — org-wide preventive control | Q68 | SCP + RequestTag enforcement |
+
+### Session 12 — 2025-05-09
+
+**Domains:** D4 Identity & Access Management (Week 2 quiz — data perimeter, VP, boundaries, session policies)
+**Score:** 4 ✅ · 0 ⚠️ · 1 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 74 | D4 | 80 accounts, block external S3 access org-wide, exempt AWS services — which two? | A+C: RCP + PrincipalIsAWSService condition | ✅ | RCP (not SCP) blocks external callers + PrincipalIsAWSService:false exempts AWS services | — | Data perimeter (RCP) |
+| 75 | D4 | Multi-tenant SaaS "editors edit own tenant docs" — centralized authz? | B: Verified Permissions with Cedar | ✅ | VP + Cedar policies evaluating tenant claims from Cognito token | — | Verified Permissions |
+| 76 | D4 | Boundary delegation + must tag with own team — how many Deny statements? | C: 4 | ✅ | 4: force boundary + force team tag + deny remove + deny swap | — | Permission boundaries + ABAC |
+| 77 | D4 | RCP denies non-org KMS access, same-org Account B calls Decrypt — blocked? | B: No, PrincipalOrgID matches | ✅ | Same-org caller matches condition → Deny doesn't fire → allowed | — | RCP cross-account same-org |
+| 78 | D4 | Identity=s3:*, boundary=s3:*+ec2:*, session=GetObject+PutObject — DeleteObject? | A: Allowed (identity grants s3:*) | ❌ | **C: Denied — session policy only allows GetObject+PutObject.** Session policy is a ceiling like boundary. Effective = identity ∩ boundary ∩ session ∩ SCP. ALL must allow. | — | Session policy as ceiling |
