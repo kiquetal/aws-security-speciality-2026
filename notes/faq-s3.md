@@ -80,6 +80,10 @@
 - **Legal hold**: Independent of retention period
 - **Requires versioning** to be enabled
 
+### s3:prefix Condition Key
+- **Only valid for `s3:ListBucket`** (bucket-level action) — does NOT work with object-level actions like GetObject, PutObject, DeleteObject
+- For object-level path restriction, use a variable in the `Resource` ARN instead (e.g., `arn:aws:s3:::bucket/${aws:PrincipalTag/Department}/*`)
+
 ### VPC Endpoints
 - **Gateway endpoint**: Free, for S3 and DynamoDB
 - **Interface endpoint**: Charged, uses PrivateLink

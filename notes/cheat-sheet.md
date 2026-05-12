@@ -42,6 +42,9 @@
 
 ## D5: Data Protection (18%)
 
+### S3
+- `s3:prefix` condition key ONLY works with `s3:ListBucket` (bucket-level). For object-level path restriction (GetObject, PutObject), use a variable in the Resource ARN instead.
+
 ### KMS
 -
 
