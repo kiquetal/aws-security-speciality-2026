@@ -44,6 +44,7 @@
 - Cannot escalate beyond the role's identity policies
 - Use case: vend narrower credentials to downstream services
 - Effective permissions = role policy ∩ session policy ∩ boundary ∩ SCP
+- ⚠️ **Resource-based policy bypass:** If a resource policy (e.g., bucket policy) names the session ARN directly, the session policy ceiling does NOT apply — access is granted regardless of session policy restrictions
 
 ## Key Limits/Quotas
 
