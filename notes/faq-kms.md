@@ -73,6 +73,7 @@
 | **HMAC** | ❌ | ❌ | ✅ | GenerateMac / VerifyMac only |
 
 > **Rule:** One key = one purpose. You cannot change key usage after creation.
+> **RSA trap:** RSA CAN do signing OR encryption — but you must choose ONE at creation. A single RSA key cannot do both. ECC is even more restrictive: signing only, never encryption.
 
 ### Custom Key Store (CloudHSM)
 - Requires **minimum 2 HSMs** in CloudHSM cluster
@@ -80,13 +81,28 @@
 - **No automatic rotation** - must rotate manually
 - Lower performance than default KMS key store
 - You control availability and durability
+- **Symmetric encryption only** when accessed through KMS — no asymmetric, no signing, no HMAC
+- CloudHSM **directly** (bypassing KMS) supports everything: symmetric, asymmetric, signing, HMAC via PKCS#11/JCE/CNG
+
+#### CloudHSM Direct vs CloudHSM Custom Key Store (through KMS)
+
+| | CloudHSM Direct | CloudHSM Custom Key Store (via KMS) |
+|---|---|---|
+| **Symmetric** | ✅ | ✅ |
+| **Asymmetric** | ✅ | ❌ |
+| **Signing** | ✅ | ❌ |
+| **HMAC** | ✅ | ❌ |
+| **Interface** | PKCS#11, JCE, CNG | KMS API |
+| **Use case** | Full HSM control, legacy apps | Single-tenant + KMS integration |
+
+> **Exam gotcha:** "Need asymmetric keys on single-tenant HSM" → CloudHSM **directly**, not through KMS custom key store.
 
 ### External Key Store (XKS)
 - **Double encryption**: First by KMS internal key, then by your external key
 - **You are responsible** for availability, durability, and performance
 - **No SLA** for XKS operations (excluded from KMS SLA)
 - 500ms timeout per request (including retry)
-- Supports only symmetric encryption operations: Encrypt, Decrypt, ReEncrypt, GenerateDataKey
+- **Symmetric encryption only**: Encrypt, Decrypt, ReEncrypt, GenerateDataKey — no asymmetric, no signing, no HMAC
 
 ### Key Material Import (Task 5.3.3 — New in C03)
 - Can import symmetric, asymmetric, and HMAC keys
