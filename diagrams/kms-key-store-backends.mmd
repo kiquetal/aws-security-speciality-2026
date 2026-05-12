@@ -1,0 +1,31 @@
+graph LR
+    subgraph "Your Application"
+        APP[App calls KMS API<br/>kms:Encrypt / kms:Decrypt]
+    end
+
+    subgraph "AWS KMS Service"
+        KMS[KMS API Layer<br/>Policies, Grants, CloudTrail]
+    end
+
+    APP --> KMS
+
+    subgraph "Backend 1: Default (Multi-tenant)"
+        HSM1[AWS Shared HSMs<br/>Multi-tenant<br/>AWS manages everything<br/>Best performance]
+    end
+
+    subgraph "Backend 2: Custom Key Store (Single-tenant)"
+        HSM2[YOUR CloudHSM Cluster<br/>Inside AWS, but dedicated to YOU<br/>You manage the cluster<br/>Lower performance<br/>Symmetric only via KMS]
+    end
+
+    subgraph "Backend 3: XKS (External)"
+        PROXY[XKS Proxy<br/>HTTPS endpoint] --> HSM3[YOUR HSM<br/>Outside AWS entirely<br/>On-premises / other cloud<br/>You own availability + durability<br/>500ms timeout, no SLA<br/>Symmetric only via KMS]
+    end
+
+    KMS --> |"Option 1"| HSM1
+    KMS --> |"Option 2"| HSM2
+    KMS --> |"Option 3"| PROXY
+
+    style HSM1 fill:#22c55e,color:#fff
+    style HSM2 fill:#f59e0b,color:#000
+    style HSM3 fill:#ef4444,color:#fff
+    style PROXY fill:#fbbf24,color:#000
