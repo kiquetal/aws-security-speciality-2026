@@ -150,6 +150,24 @@ Step 4: Old key still exists — decrypts old ciphertext
 - Single-region keys stay in creation region
 - Multi-region keys can be replicated within same AWS partition
 - Each replica is independent but shares key material
+- **Same key ID** across regions (prefix `mrk-`) — only the ARN differs (region part)
+- Encrypt in one region, decrypt in another **locally** — no cross-region KMS call needed
+- **Imported key material cannot be multi-region** — single region only
+- Use case: DynamoDB Global Tables, S3 cross-region replication with SSE-KMS
+- AWS managed keys (`aws/dynamodb`, `aws/s3`) are single-region — cannot replicate
+
+### Key Deletion Protection (Exam-Critical)
+
+| Layer | Mechanism | How |
+|---|---|---|
+| **Preventive** | SCP/IAM Deny `kms:ScheduleKeyDeletion` | Only break-glass admin can delete |
+| **Detective** | CloudTrail + EventBridge + Lambda | Auto-cancel + alert in near real-time |
+| **Reactive** | `CancelKeyDeletion` during waiting period | Key returns to Disabled state |
+
+- Waiting period: **7 days (min) — 30 days (max, default)**
+- During `PendingDeletion`: key cannot encrypt/decrypt (helps find dependencies)
+- `CancelKeyDeletion` → key moves to `Disabled` (must re-enable manually)
+- Once waiting period expires: key material destroyed **permanently**, data unrecoverable
 
 ### Encryption Context
 - Additional authenticated data (AAD) for AES-GCM
