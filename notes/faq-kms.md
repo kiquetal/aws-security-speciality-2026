@@ -84,18 +84,24 @@
 - **Symmetric encryption only** when accessed through KMS — no asymmetric, no signing, no HMAC
 - CloudHSM **directly** (bypassing KMS) supports everything: symmetric, asymmetric, signing, HMAC via PKCS#11/JCE/CNG
 
-#### CloudHSM Direct vs CloudHSM Custom Key Store (through KMS)
+#### CloudHSM Direct vs Custom Key Store vs XKS
 
-| | CloudHSM Direct | CloudHSM Custom Key Store (via KMS) |
-|---|---|---|
-| **Symmetric** | ✅ | ✅ |
-| **Asymmetric** | ✅ | ❌ |
-| **Signing** | ✅ | ❌ |
-| **HMAC** | ✅ | ❌ |
-| **Interface** | PKCS#11, JCE, CNG | KMS API |
-| **Use case** | Full HSM control, legacy apps | Single-tenant + KMS integration |
+| | CloudHSM Direct | Custom Key Store (CloudHSM via KMS) | XKS (External via KMS) |
+|---|---|---|---|
+| **Symmetric** | ✅ | ✅ | ✅ |
+| **Asymmetric** | ✅ | ❌ | ❌ |
+| **Signing** | ✅ | ❌ | ❌ |
+| **HMAC** | ✅ | ❌ | ❌ |
+| **Interface** | PKCS#11, JCE, CNG | KMS API | KMS API |
+| **Key material lives** | Your CloudHSM (in AWS) | Your CloudHSM (in AWS) | Your HSM (outside AWS) |
+| **AWS service integration** | ❌ Manual | ✅ Native (S3, EBS, RDS) | ✅ Native (S3, EBS, RDS) |
+| **KMS features (policies, grants, CloudTrail)** | ❌ | ✅ | ✅ |
+| **Performance** | High | Lower than default KMS | Worst (500ms timeout) |
+| **Availability SLA** | You manage | You manage | You manage, no AWS SLA |
+| **Use case** | Full control, PKCS#11, signing | Single-tenant + KMS integration | "Keys never in AWS" regulation |
 
 > **Exam gotcha:** "Need asymmetric keys on single-tenant HSM" → CloudHSM **directly**, not through KMS custom key store.
+> **Exam gotcha:** Custom key store and XKS both = symmetric only through KMS. The limitation is KMS, not the HSM.
 
 ### External Key Store (XKS)
 - **Double encryption**: First by KMS internal key, then by your external key
