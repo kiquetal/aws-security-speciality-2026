@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant SaaS as SaaS Platform<br/>(Account A)
+    participant KMS as KMS<br/>(Account A)
+    participant Customer as Customer Role<br/>(Account B)
+    participant S3 as S3 Bucket<br/>(Account A)
+
+    Note over SaaS,Customer: Onboarding: Create Grant
+    SaaS->>KMS: CreateGrant(keyId, grantee=CustomerRole, ops=[Decrypt])
+    KMS-->>SaaS: GrantToken + GrantId
+    Note over KMS: Grant is EVENTUALLY CONSISTENT<br/>(up to 5 min to propagate)
+
+    Note over Customer,S3: Immediate Use: Decrypt via Grant Token
+    Customer->>S3: GetObject (encrypted with CMK)
+    S3-->>Customer: Encrypted object + encrypted data key
+    Customer->>KMS: Decrypt(encryptedDataKey, grantTokens=[token],<br/>encryptionContext={"tenant":"customer-123"})
+    KMS-->>Customer: Plaintext data key
+    Note over Customer: Decrypt object locally
+
+    Note over Customer,S3: After ~5 min: No Token Needed
+    Customer->>KMS: Decrypt(encryptedDataKey,<br/>encryptionContext={"tenant":"customer-123"})
+    KMS-->>Customer: Plaintext data key
+
+    Note over SaaS,Customer: Offboarding: Revoke Grant
+    SaaS->>KMS: RevokeGrant(keyId, grantId)
+    KMS-->>SaaS: Success
+    Customer->>KMS: Decrypt(encryptedDataKey)
+    KMS--xCustomer: AccessDenied

@@ -62,6 +62,18 @@
 - RSA keys: Can be used for signing OR encryption (not both)
 - **No automatic rotation** for asymmetric or HMAC keys
 
+#### Key Type → Allowed Operations Matrix
+
+| Key Type | Encrypt/Decrypt | Sign/Verify | HMAC | Notes |
+|---|---|---|---|---|
+| **Symmetric (AES-256)** | ✅ | ❌ | ❌ | Envelope encryption, S3/EBS/RDS |
+| **RSA (SIGN_VERIFY)** | ❌ | ✅ | ❌ | JWTs, code signing |
+| **RSA (ENCRYPT_DECRYPT)** | ✅ | ❌ | ❌ | Wrap external keys, encrypt small data |
+| **ECC (SIGN_VERIFY)** | ❌ | ✅ | ❌ | Signing ONLY — never encrypts |
+| **HMAC** | ❌ | ❌ | ✅ | GenerateMac / VerifyMac only |
+
+> **Rule:** One key = one purpose. You cannot change key usage after creation.
+
 ### Custom Key Store (CloudHSM)
 - Requires **minimum 2 HSMs** in CloudHSM cluster
 - **Cannot import key material** into custom key store
