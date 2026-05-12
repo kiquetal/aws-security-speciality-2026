@@ -80,6 +80,29 @@
 - **Legal hold**: Independent of retention period
 - **Requires versioning** to be enabled
 
+### S3 Encryption Decision Tree (Exam-Critical)
+
+| Signal in question | Answer |
+|---|---|
+| "Least overhead" or "default encryption" | SSE-S3 |
+| "Audit decryption" or "control who decrypts" or "cross-account" | SSE-KMS (CMK) |
+| "Keys must never be stored in AWS" | SSE-C |
+| "Encrypt before upload, AWS never sees plaintext" | Client-side encryption |
+
+#### SSE-S3 vs SSE-KMS vs SSE-C
+
+| | SSE-S3 | SSE-KMS | SSE-C |
+|---|---|---|---|
+| **Who manages key** | AWS (invisible to you) | You (via KMS) | You (entirely outside AWS) |
+| **CloudTrail audit of decrypt** | ❌ | ✅ | ❌ |
+| **Control who can decrypt** | ❌ (same as GetObject) | ✅ (separate kms:Decrypt permission) | ❌ (whoever has the key) |
+| **Cross-account access** | ✅ (just S3 permissions) | ✅ (S3 + KMS permissions) | ✅ (share the key yourself) |
+| **Key rotation** | AWS handles | Automatic (CMK) or manual | You rotate manually |
+| **Risk if key lost** | N/A | Can disable/delete key → data unreadable | Data gone permanently |
+| **HTTPS required** | No (recommended) | No (recommended) | **Yes (mandatory)** |
+| **Permissions to read** | `s3:GetObject` | `s3:GetObject` + `kms:Decrypt` | `s3:GetObject` + you provide key |
+| **Permissions to write** | `s3:PutObject` | `s3:PutObject` + `kms:GenerateDataKey` | `s3:PutObject` + you provide key |
+
 ### s3:prefix Condition Key
 - **Only valid for `s3:ListBucket`** (bucket-level action) — does NOT work with object-level actions like GetObject, PutObject, DeleteObject
 - For object-level path restriction, use a variable in the `Resource` ARN instead (e.g., `arn:aws:s3:::bucket/${aws:PrincipalTag/Department}/*`)
