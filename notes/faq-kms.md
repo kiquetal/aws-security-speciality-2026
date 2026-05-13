@@ -321,6 +321,30 @@ KMS Grants:
 
 > **Exam trap:** If a question says "share KMS key access across accounts" and RAM is an option → **RAM is wrong**. KMS Grants or key policy are the only ways.
 
+### Key Deletion Protection (Exam-Critical)
+
+| Layer | Mechanism | How |
+|---|---|---|
+| **Preventive** | SCP/IAM Deny `kms:ScheduleKeyDeletion` | Only break-glass admin can delete |
+| **Detective** | CloudTrail + EventBridge + Lambda | Auto-cancel + alert in near real-time |
+| **Reactive** | `CancelKeyDeletion` during waiting period | Key returns to Disabled state |
+
+- Waiting period: **7 days (min) — 30 days (max, default)**
+- During `PendingDeletion`: key cannot encrypt/decrypt (helps find dependencies)
+- `CancelKeyDeletion` → key moves to `Disabled` (must re-enable manually)
+- Once waiting period expires: key material destroyed **permanently**, data unrecoverable
+
+### Encryption Context
+- Additional authenticated data (AAD) for AES-GCM
+- Not secret, but must match for decryption
+- Logged in CloudTrail for audit
+- Use for access control in key policies
+
+### KMS vs CloudHSM vs Private CA
+- **KMS**: Managed service, encryption/signing, no certificates
+- **CloudHSM**: Single-tenant HSM, full control, PKCS#11/JCE/CNG
+- **Private CA**: PKI infrastructure, X.509 certificates, TLS termination
+
 ## Best Practices for IAM Policies
 
 1. **Use separate keys** for different data classifications
