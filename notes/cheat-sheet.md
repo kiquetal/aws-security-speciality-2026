@@ -79,6 +79,9 @@
 - "Encrypt between instances, no app changes" → **Nitro inter-instance encryption**. Automatic, hardware-level, zero config.
 - Covers EC2-to-EC2, EKS inter-node, EMR, SageMaker. Only Nitro-based instance types.
 
+### Detect vs Prevent (D5 Trap)
+- 🧠 **"Detect external decryption" = GuardDuty S3 Protection. "Prevent external decryption" = KMS key policy condition.** The verb tells you the service.
+
 ---
 
 ## D3: Infrastructure Security (18%)
