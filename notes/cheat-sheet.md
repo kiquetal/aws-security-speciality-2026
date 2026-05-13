@@ -96,14 +96,20 @@
 - Network Access Analyzer = find unintended network paths (reachable from internet when shouldn't be).
 
 ### Edge
--
+- WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
+- WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.
+- Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
+- Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
 
 ---
 
 ## D1: Detection (16%)
 
 ### Service Selection
--
+- GuardDuty = active threats NOW (C2, crypto mining, exfil). Inspector = known CVEs (software vulns). Macie = sensitive data in S3.
+- Security Hub = aggregate findings + compliance dashboards (wraps Config rules). Requires Config enabled.
+- Detective = investigate AFTER detection (root cause, blast radius, timeline).
+- CloudTrail Lake = fast + dashboards + managed + near real-time. S3+Athena = cheap + DIY + unlimited retention.
 
 ### CloudTrail
 -
