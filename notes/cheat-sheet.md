@@ -46,20 +46,30 @@
 
 ### S3
 - `s3:prefix` condition key ONLY works with `s3:ListBucket` (bucket-level). For object-level path restriction (GetObject, PutObject), use a variable in the Resource ARN instead.
+- Default encryption = safety net (applies silently if no header). Bucket policy Deny = enforcement (rejects non-compliant uploads). They solve different problems.
 
 ### KMS
 - Grants are **eventually consistent** (up to 5 min). To use immediately after CreateGrant, pass the **grant token** in the subsequent API call (`--grant-tokens`). No token = AccessDenied until propagation completes.
 - Grants have **no expiration** — they last forever until explicitly revoked (`RevokeGrant`) or retired (`RetireGrant`). No auto-cleanup.
 - Multi-region keys share the **same key ID** (`mrk-` prefix) and **same key material** across regions. Encrypt in one region, decrypt in another locally. Imported keys CANNOT be multi-region.
+- MRK key policies are **independent per region** — updating policy on primary does NOT propagate to replicas. Must update each separately.
 - "Global Table + SSE-KMS + multi-region" → answer is always MRK. AWS managed keys (`aws/dynamodb`) are single-region only.
 - Key deletion waiting period: **7–30 days** (default 30). Can cancel with `CancelKeyDeletion` anytime during wait.
 - Prevent accidental deletion: **SCP Deny `kms:ScheduleKeyDeletion`**. Detect: **CloudTrail + EventBridge + Lambda** (auto-cancel + alert).
 - **Key store backends:** Default (multi-tenant, all ops) vs Custom Key Store (single-tenant CloudHSM, symmetric only via KMS) vs XKS (keys outside AWS, symmetric only via KMS). The symmetric-only limit is KMS, not the HSM.
 - CloudHSM **directly** = all operations (symmetric, asymmetric, sign, HMAC). CloudHSM **through KMS** (custom key store) = symmetric only.
+- Prevent accidental deletion: **SCP Deny `kms:ScheduleKeyDeletion`**. Detect: **CloudTrail + EventBridge + Lambda** (auto-cancel + alert).
 -
 
 ### Secrets Manager
--
+- Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
+- Secrets Manager = built-in rotation (RDS, Aurora, DocumentDB, Redshift). Parameter Store = no native rotation.
+- Deletion has 7–30 day recovery window. Cannot delete immediately.
+
+### Data Masking (New in C03)
+- "Mask PII in logs" → **CloudWatch Logs data protection policy**. Real-time, no app changes, managed data identifiers.
+- "Find PII in S3" → **Macie**. Completely different service, S3 only.
+- SNS message data protection = same concept for SNS topics.
 
 ---
 
