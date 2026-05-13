@@ -50,6 +50,7 @@
 - SSE-KMS permissions: **upload** = `s3:PutObject` + `kms:GenerateDataKey`. **Download** = `s3:GetObject` + `kms:Decrypt`. Not Encrypt — it's envelope encryption.
 - Object Lock requires versioning. Compliance mode = nobody can delete, not even root. Governance mode = overridable with `s3:BypassGovernanceRetention`.
 - Legal Hold = no expiration, independent of retention period. "Lawsuit" / "preserve indefinitely" → Legal Hold.
+- 🧠 **Cross-account S3 + SSE-KMS = THREE policies:** bucket policy (Account A) + key policy (Account A) + identity policy (Account B). Forget any one = Access Denied.
 
 ### KMS
 - Grants are **eventually consistent** (up to 5 min). To use immediately after CreateGrant, pass the **grant token** in the subsequent API call (`--grant-tokens`). No token = AccessDenied until propagation completes.
