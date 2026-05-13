@@ -72,6 +72,10 @@
 - "Find PII in S3" → **Macie**. Completely different service, S3 only.
 - SNS message data protection = same concept for SNS topics.
 
+### Encryption in Transit (New in C03)
+- "Encrypt between instances, no app changes" → **Nitro inter-instance encryption**. Automatic, hardware-level, zero config.
+- Covers EC2-to-EC2, EKS inter-node, EMR, SageMaker. Only Nitro-based instance types.
+
 ---
 
 ## D3: Infrastructure Security (18%)
