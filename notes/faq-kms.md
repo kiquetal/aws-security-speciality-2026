@@ -23,6 +23,9 @@
 4. **Imported keys**: Bring your own key material
 
 ### Envelope Encryption
+
+> **Diagram:** [envelope-encryption-flow.png](../diagrams/envelope-encryption-flow.png)
+
 - KMS generates data keys encrypted under your KMS key
 - Data encrypted locally with plaintext data key
 - Only encrypted data key stored with encrypted data
