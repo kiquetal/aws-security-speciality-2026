@@ -1,0 +1,23 @@
+---
+title: Envelope Encryption Flow (SSE-KMS)
+---
+sequenceDiagram
+    participant App as Application
+    participant S3 as Amazon S3
+    participant KMS as AWS KMS
+
+    Note over App,KMS: UPLOAD (PutObject with SSE-KMS)
+    App->>S3: PutObject (100MB file)
+    S3->>KMS: GenerateDataKey(KeyId=cmk-123)
+    KMS-->>S3: Plaintext data key + Encrypted data key
+    Note over S3: Encrypt file with plaintext data key
+    Note over S3: Discard plaintext key from memory
+    Note over S3: Store: encrypted file + encrypted data key
+
+    Note over App,KMS: DOWNLOAD (GetObject)
+    App->>S3: GetObject
+    S3->>KMS: Decrypt(encrypted data key)
+    KMS-->>S3: Plaintext data key
+    Note over S3: Decrypt file with plaintext data key
+    S3-->>App: Plaintext file
+    Note over S3: Discard plaintext key from memory
