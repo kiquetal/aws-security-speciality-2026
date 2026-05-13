@@ -103,6 +103,36 @@
 > **Exam gotcha:** "Need asymmetric keys on single-tenant HSM" → CloudHSM **directly**, not through KMS custom key store.
 > **Exam gotcha:** Custom key store and XKS both = symmetric only through KMS. The limitation is KMS, not the HSM.
 
+#### Quick Visual — Three CloudHSM-Related Options
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  THREE CloudHSM-RELATED OPTIONS                      │
+├─────────────────────┬──────────────────────┬────────────────────────┤
+│ CloudHSM DIRECT     │ Custom Key Store      │ XKS (External)         │
+│                     │ (CloudHSM via KMS)    │ (Your HSM via KMS)     │
+├─────────────────────┼──────────────────────┼────────────────────────┤
+│ Key lives: YOUR     │ Key lives: YOUR       │ Key lives: YOUR HSM    │
+│ CloudHSM (in AWS)   │ CloudHSM (in AWS)     │ OUTSIDE AWS            │
+├─────────────────────┼──────────────────────┼────────────────────────┤
+│ Interface: PKCS#11  │ Interface: KMS API    │ Interface: KMS API     │
+│ JCE, CNG           │                      │                        │
+├─────────────────────┼──────────────────────┼────────────────────────┤
+│ Ops: ALL            │ Ops: SYMMETRIC ONLY   │ Ops: SYMMETRIC ONLY    │
+│ (sym, asym, sign,  │ (encrypt/decrypt/     │ (encrypt/decrypt/      │
+│  HMAC, wrap)        │  GenerateDataKey)     │  GenerateDataKey)      │
+├─────────────────────┼──────────────────────┼────────────────────────┤
+│ KMS features?  ❌   │ KMS features?  ✅     │ KMS features?  ✅      │
+│ (no policies,       │ (key policies, grants,│ (key policies, grants, │
+│  no grants,         │  CloudTrail, native   │  CloudTrail, native    │
+│  no CloudTrail)     │  S3/EBS/RDS integr.)  │  S3/EBS/RDS integr.)   │
+├─────────────────────┼──────────────────────┼────────────────────────┤
+│ Tenant: SINGLE      │ Tenant: SINGLE        │ Tenant: SINGLE         │
+├─────────────────────┼──────────────────────┼────────────────────────┤
+│ Min HSMs: 1 (prod=2)│ Min HSMs: 2 (required)│ N/A (your infra)       │
+└─────────────────────┴──────────────────────┴────────────────────────┘
+```
+
 ### External Key Store (XKS)
 - **Double encryption**: First by KMS internal key, then by your external key
 - **You are responsible** for availability, durability, and performance
