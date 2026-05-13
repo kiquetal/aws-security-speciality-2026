@@ -165,3 +165,8 @@
 | `sts:ExternalId` | Third-party cross-account roles |
 | `aws:PrincipalServiceName` | Identify which AWS service is calling |
 | `aws:TokenIssueTime` | Revoke STS sessions issued before a timestamp |
+| `aws:SourceVpce` | Restrict access to specific VPC endpoint |
+| `aws:SourceVpc` | Restrict access to any endpoint in a VPC |
+| `aws:MultiFactorAuthPresent` | Require MFA for sensitive operations |
+| `aws:RequestTag/Key` | Enforce tag at creation time |
+| `aws:ResourceTag/Key` | Control access based on existing resource tags |
