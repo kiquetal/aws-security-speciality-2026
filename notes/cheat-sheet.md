@@ -83,7 +83,17 @@
 ## D3: Infrastructure Security (18%)
 
 ### Firewalls
--
+- Network Firewall: 1 endpoint per AZ, dedicated firewall subnet, route tables direct traffic through it. ~$288/month per AZ.
+- Stateless evaluated FIRST. If stateless says "pass" → skips stateful entirely. "Forward" → sends to stateful engine.
+- TLS inspection requires a CA certificate in ACM — firewall decrypts, inspects, re-encrypts (MITM pattern).
+- DNS Firewall = domain resolution filtering (VPC-level). Network Firewall = traffic content inspection (subnet-level). Different layers.
+
+### Network
+- Gateway endpoint (S3, DynamoDB) = free, route table entry. Interface endpoint = ENI + PrivateLink, costs money, needs SG.
+- Endpoint policy + bucket policy BOTH evaluated. Endpoint policy doesn't replace resource policies.
+- NACLs are stateless — need explicit inbound rule for ephemeral ports (1024–65535) on return traffic. SGs are stateful — handle it automatically.
+- Verified Access = zero-trust access to internal apps without VPN. Evaluates identity + device posture.
+- Network Access Analyzer = find unintended network paths (reachable from internet when shouldn't be).
 
 ### Edge
 -
