@@ -1,0 +1,29 @@
+---
+title: KMS Key Lifecycle States
+---
+stateDiagram-v2
+    [*] --> Enabled : CreateKey
+    Enabled --> Disabled : DisableKey
+    Disabled --> Enabled : EnableKey
+    Enabled --> PendingDeletion : ScheduleKeyDeletion
+    Disabled --> PendingDeletion : ScheduleKeyDeletion
+    PendingDeletion --> Disabled : CancelKeyDeletion
+    PendingDeletion --> [*] : Waiting period expires\n(7-30 days)\nKEY DESTROYED
+
+    note right of PendingDeletion
+        Cannot encrypt/decrypt
+        Helps find dependencies
+        7 days min, 30 days max
+    end note
+
+    note right of Disabled
+        Cannot encrypt/decrypt
+        Key material preserved
+        Can re-enable anytime
+    end note
+
+    note right of Enabled
+        Normal operations
+        Encrypt/Decrypt/Sign
+        Auto-rotation (if configured)
+    end note
