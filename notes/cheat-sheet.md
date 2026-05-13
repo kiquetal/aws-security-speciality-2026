@@ -61,8 +61,7 @@
 - Prevent accidental deletion: **SCP Deny `kms:ScheduleKeyDeletion`**. Detect: **CloudTrail + EventBridge + Lambda** (auto-cancel + alert).
 - **Key store backends:** Default (multi-tenant, all ops) vs Custom Key Store (single-tenant CloudHSM, symmetric only via KMS) vs XKS (keys outside AWS, symmetric only via KMS). The symmetric-only limit is KMS, not the HSM.
 - CloudHSM **directly** = all operations (symmetric, asymmetric, sign, HMAC). CloudHSM **through KMS** (custom key store) = symmetric only.
-- Prevent accidental deletion: **SCP Deny `kms:ScheduleKeyDeletion`**. Detect: **CloudTrail + EventBridge + Lambda** (auto-cancel + alert).
--
+- `CancelKeyDeletion` → key moves to **Disabled** (not Enabled). Must manually re-enable.
 
 ### Secrets Manager
 - Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
