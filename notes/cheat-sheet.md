@@ -124,12 +124,18 @@
 ---
 
 ## D2: Incident Response (14%)
--
+- IR sequence: Isolate (swap SG to deny-all) → Snapshot (EBS forensic copy) → Tag → Investigate → Remediate. NEVER terminate first.
+- Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.
+- Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
+- Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
+- Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.
 
 ---
 
 ## D6: Governance (14%)
--
+- Management account exempt from BOTH SCPs and RCPs. Don't put workloads there.
+- Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).
+- Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.
 
 ---
 
