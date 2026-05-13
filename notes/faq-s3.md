@@ -74,11 +74,25 @@
 - **KMS key requirement**: `s3:x-amz-server-side-encryption-aws-kms-key-id`
 - **Default encryption**: Doesn't prevent unencrypted uploads (use bucket policy)
 
-### S3 Object Lock
-- **Governance mode**: Can be overridden with special permissions
-- **Compliance mode**: Cannot be overridden, even by root
-- **Legal hold**: Independent of retention period
-- **Requires versioning** to be enabled
+### S3 Object Lock (Task 5.2 — Exam-Critical)
+
+| Mode | Who Can Delete? | Expiration? | Use Case |
+|---|---|---|---|
+| **Governance** | Users with `s3:BypassGovernanceRetention` | Fixed period | Testing, soft compliance |
+| **Compliance** | Nobody — not even root | Fixed period | Regulatory (SEC, HIPAA) |
+| **Legal Hold** | Nobody (until removed) | None — indefinite | Litigation, evidence preservation |
+
+**Key rules:**
+- **Requires versioning** — cannot enable Object Lock without it
+- **Compliance mode + Legal Hold are independent** — don't mix them for "fixed period" scenarios
+- Compliance mode = "immutable for X years, auto-deletable after" ← exam answer
+- Legal Hold = "preserve indefinitely, no expiry" ← exam answer
+- Governance mode = "soft lock, admin can override" ← rarely the exam answer
+
+**Exam traps:**
+- "5 years immutable, root can't delete" → **Compliance mode** (not Legal Hold — Legal Hold has no expiry)
+- "Preserve until lawsuit ends" → **Legal Hold** (no fixed period)
+- "Immutable but admin can override in emergency" → **Governance mode**
 
 ### S3 Encryption Decision Tree (Exam-Critical)
 
