@@ -117,7 +117,9 @@
 - "Normalize logs into common schema" = Security Lake (OCSF format).
 
 ### CloudTrail
--
+- CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
+- Security Lake = YOUR S3 bucket, OCSF format, normalizes ALL log sources (CloudTrail + VPC Flow + WAF + GuardDuty + third-party).
+- "Fast API call investigation" → CloudTrail Lake. "Normalize all logs into one schema" → Security Lake.
 
 ---
 
