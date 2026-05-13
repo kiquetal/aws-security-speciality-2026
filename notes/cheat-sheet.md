@@ -8,7 +8,7 @@
 
 ### Policy Layers
 - SCP restricts your principals. RCP restricts your resources — blocks external callers that SCPs can't touch.
-- Service-linked roles are EXEMPT from RCPs (but NOT from SCPs). AWS service principals are exempt via `PrincipalIsAWSService`. Don't confuse the two.
+- 🧠 **SLRs escape the RESOURCE gate (RCP), not the PRINCIPAL gate (SCP).** SLRs are exempt from RCPs only. SCPs still apply to SLRs because they live in your account. AWS service principals are a different thing — exempt via `PrincipalIsAWSService` condition.
 - Boundary = ceiling on ONE role. Identity ∩ boundary = effective. Never grants.
 - Delegation pattern: Deny CreateRole without boundary + Deny remove/swap boundary = safe self-service IAM.
 
