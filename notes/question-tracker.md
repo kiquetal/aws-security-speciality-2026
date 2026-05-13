@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 78 |
-| **✅ Correct** | 53 (68%) |
-| **⚠️ Partial** | 12 (15%) |
-| **❌ Wrong** | 13 (17%) |
-| **Sessions** | 12 |
-| **Re-tests Passed** | 11 of 16 |
+| **Total Questions** | 83 |
+| **✅ Correct** | 57 (69%) |
+| **⚠️ Partial** | 12 (14%) |
+| **❌ Wrong** | 14 (17%) |
+| **Sessions** | 13 |
+| **Re-tests Passed** | 12 of 17 |
 
 ## Domain Breakdown
 
@@ -22,7 +22,7 @@
 | D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
 | D3: Infrastructure Security | 10 | 1 | 2 | 13 | 77% | 🟡 |
-| D4: Identity & Access Management | 35 | 7 | 7 | 49 | 71% | 🟡 |
+| D4: Identity & Access Management | 39 | 7 | 8 | 54 | 72% | 🟡 |
 | D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
 | D6: Governance | 0 | 0 | 0 | 0 | — | — |
 
@@ -55,6 +55,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 21 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
 | 🟡 22 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
 | 🟡 23 | Session policy as ceiling | Q78 | D4 | 1 |
+| 🟡 24 | SCP cannot be bypassed | Q83 | D4 | 1 |
 
 ---
 
@@ -74,6 +75,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 10 | 2025-05-08 | Q64–Q68 | 4 | 1 | 0 | D4 Identity & Access Management (Week 2 — Identity Center, session policies, VP, ABAC) | [Jump](#session-10--2025-05-08) |
 | 11 | 2025-05-09 | Q69–Q73 | 3 | 0 | 2 | D4 Identity & Access Management (re-test — cross-account KMS, STS revocation, ABAC, RAM) | [Jump](#session-11--2025-05-09) |
 | 12 | 2025-05-09 | Q74–Q78 | 4 | 0 | 1 | D4 Identity & Access Management (Week 2 quiz — data perimeter, VP, boundaries, session policies) | [Jump](#session-12--2025-05-09) |
+| 13 | 2025-05-09 | Q79–Q83 | 4 | 0 | 1 | D4 Identity & Access Management (Week 2 final quiz — ABAC, boundaries, cross-account KMS, RCP, SCP bypass) | [Jump](#session-13--2025-05-09) |
 
 ---
 
@@ -278,3 +280,18 @@ After adding a session:
 | 76 | D4 | Boundary delegation + must tag with own team — how many Deny statements? | C: 4 | ✅ | 4: force boundary + force team tag + deny remove + deny swap | — | Permission boundaries + ABAC |
 | 77 | D4 | RCP denies non-org KMS access, same-org Account B calls Decrypt — blocked? | B: No, PrincipalOrgID matches | ✅ | Same-org caller matches condition → Deny doesn't fire → allowed | — | RCP cross-account same-org |
 | 78 | D4 | Identity=s3:*, boundary=s3:*+ec2:*, session=GetObject+PutObject — DeleteObject? | A: Allowed (identity grants s3:*) | ❌ | **C: Denied — session policy only allows GetObject+PutObject.** Session policy is a ceiling like boundary. Effective = identity ∩ boundary ∩ session ∩ SCP. ALL must allow. | — | Session policy as ceiling |
+
+---
+
+### Session 13 — 2025-05-09
+
+**Domains:** D4 Identity & Access Management (Week 2 final quiz — ABAC, boundaries, cross-account KMS, RCP, SCP bypass)
+**Score:** 4 ✅ · 0 ⚠️ · 1 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 79 | D4 | Identity Center + Okta, engineers access EC2 by project tag, no per-engineer policies — approach? | B: Session tags + ABAC | ✅ | Session tags from SAML + ABAC matching PrincipalTag/Project to ResourceTag/Project | — | Session tags + ABAC |
+| 80 | D4 | Boundary allows s3+ec2+logs, identity policy allows *, attempt kms:Encrypt? | B: Denied — boundary doesn't include kms | ✅ | Boundary is ceiling — effective = identity ∩ boundary. kms not in boundary = denied. | — | Permission boundary ceiling |
+| 81 | D4 | Cross-account KMS: key policy grants Account B root, identity policy allows Decrypt, no SCP restriction — result? | B: Allowed — both sides satisfied | ✅ | Key policy (Account A) + identity policy (Account B) = both sides present = allowed | Q70 | Cross-account KMS + SCP evaluation |
+| 82 | D4 | Block external principals from S3 org-wide even if bucket policy says Principal:* — solution? | B: RCP with PrincipalOrgID + PrincipalIsAWSService exception | ✅ | RCP blocks external callers that SCPs can't touch. SCP only governs your own principals. | — | RCP vs SCP for external callers |
+| 83 | D4 | Lambda in Account B calls S3 in Account A, bucket policy names role ARN directly, Account B SCP denies s3:GetObject — succeeds? | A: Yes — resource-based policy bypasses SCP | ❌ | **B: No — SCP cannot be bypassed by anything.** The bypass rule applies to session policies and boundaries, NEVER SCPs. | — | SCP cannot be bypassed |
