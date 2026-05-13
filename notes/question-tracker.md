@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 88 |
-| **✅ Correct** | 59 (67%) |
-| **⚠️ Partial** | 12 (14%) |
+| **Total Questions** | 91 |
+| **✅ Correct** | 62 (68%) |
+| **⚠️ Partial** | 12 (13%) |
 | **❌ Wrong** | 17 (19%) |
-| **Sessions** | 14 |
-| **Re-tests Passed** | 12 of 17 |
+| **Sessions** | 15 |
+| **Re-tests Passed** | 15 of 21 |
 
 ## Domain Breakdown
 
@@ -21,9 +21,9 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 5 | 3 | 4 | 12 | 42% | 🔴 |
 | D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
-| D3: Infrastructure Security | 10 | 1 | 2 | 13 | 77% | 🟡 |
+| D3: Infrastructure Security | 11 | 1 | 3 | 15 | 73% | 🟡 |
 | D4: Identity & Access Management | 39 | 7 | 8 | 54 | 72% | 🟡 |
-| D5: Data Protection | 3 | 1 | 0 | 4 | 75% | 🟡 |
+| D5: Data Protection | 7 | 1 | 2 | 10 | 70% | 🟡 |
 | D6: Governance | 0 | 0 | 0 | 0 | — | — |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -34,17 +34,17 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 |---|---|---|---|---|
 | 🔴 1 | Security services comparison | Q5, Q24 | D1 | 2 |
 | 🔴 2 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🟡 3 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 4 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 5 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 6 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 7 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
-| 🟡 8 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
-| 🟡 9 | DNS Firewall | Q14 | D3 | 1 |
-| 🟡 10 | Cross-account patterns | Q15 | D5 | 1 |
-| 🟡 11 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
-| 🟡 12 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 13 | Network Firewall TLS inspection | Q35 | D3 | 1 |
+| 🔴 3 | Network Firewall TLS inspection | Q35, Q87 | D3 | 2 |
+| 🟡 4 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 5 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 6 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 7 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 8 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 9 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 10 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 11 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 12 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 13 | NACLs stateless | Q34 | D3 | 1 |
 | 🟡 14 | RAM vs RCP | Q38 | D4 | 1 |
 | 🟡 15 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
 | 🟡 16 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
@@ -56,6 +56,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 22 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
 | 🟡 23 | Session policy as ceiling | Q78 | D4 | 1 |
 | 🟡 24 | SCP cannot be bypassed | Q83 | D4 | 1 |
+| 🟡 25 | MRK independent key policies | Q84 | D5 | 1 |
+| 🟡 26 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
 
 ---
 
@@ -77,6 +79,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 12 | 2025-05-09 | Q74–Q78 | 4 | 0 | 1 | D4 Identity & Access Management (Week 2 quiz — data perimeter, VP, boundaries, session policies) | [Jump](#session-12--2025-05-09) |
 | 13 | 2025-05-09 | Q79–Q83 | 4 | 0 | 1 | D4 Identity & Access Management (Week 2 final quiz — ABAC, boundaries, cross-account KMS, RCP, SCP bypass) | [Jump](#session-13--2025-05-09) |
 | 14 | 2025-05-09 | Q84–Q88 | 2 | 0 | 3 | D5 Data Protection · D3 Infrastructure Security (combined mini-exam) | [Jump](#session-14--2025-05-09) |
+| 15 | 2025-05-13 | Q89–Q91 | 3 | 0 | 0 | D5 Data Protection · D3 Infrastructure Security (re-test) | [Jump](#session-15--2025-05-13) |
 
 ---
 
@@ -311,3 +314,17 @@ After adding a session:
 | 86 | D5 | App in private subnet (no NAT) needs Secrets Manager — minimum infra? | B: Interface VPC endpoint + SG allowing HTTPS | ✅ | Interface endpoint (Gateway only for S3/DynamoDB). SG must allow 443. | — | VPC endpoints |
 | 87 | D3 | Network Firewall TLS inspection — users get cert warnings — what's missing? | C: Network Firewall needs public ACM cert | ❌ | **A: Firewall's CA cert isn't trusted by clients.** TLS inspection = private CA + MITM. Must distribute CA to client trust stores. | Q35 | Network Firewall TLS inspection |
 | 88 | D5 | Mask credit cards in CloudWatch Logs without code changes — Macie? | C: CloudWatch Logs data protection policy | ✅ | Macie = S3 only. CloudWatch Logs data protection = real-time masking in logs. | — | Data masking (new in C03) |
+
+
+---
+
+### Session 15 — 2025-05-13
+
+**Domains:** D5 Data Protection · D3 Infrastructure Security (re-test)
+**Score:** 3 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 89 | D3 | Network Firewall TLS inspection — users get cert warnings — root cause? | B: Firewall's CA cert isn't trusted by clients | ✅ | Private CA + MITM pattern — must distribute CA to client trust stores. | Q87 | Network Firewall TLS inspection |
+| 90 | D5 | DynamoDB Global Table + MRK, reads fail in eu-west-1 with AccessDenied on KMS — cause? | B: Replica key policy doesn't grant DynamoDB permission | ✅ | MRK policies are independent per region — must update each separately. | Q84 | MRK independent key policies |
+| 91 | D5 | S3 objects immutable for 5 years, root can't delete, auto-deletable after — config? | B: Compliance mode + versioning | ✅ | Compliance mode = fixed period, nobody can delete. Legal Hold = indefinite. Don't mix. | Q85 | Object Lock Compliance vs Legal Hold |
