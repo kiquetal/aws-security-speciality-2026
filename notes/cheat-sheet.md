@@ -123,10 +123,12 @@
 - "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
 - "Normalize logs into common schema" = Security Lake (OCSF format).
 
-### CloudTrail
+### CloudTrail / Logging
 - CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
 - Security Lake = YOUR S3 bucket, OCSF format, normalizes ALL log sources (CloudTrail + VPC Flow + WAF + GuardDuty + third-party).
-- "Fast API call investigation" → CloudTrail Lake. "Normalize all logs into one schema" → Security Lake.
+- CloudWatch Logs Insights = query app logs / VPC Flow Logs / Lambda logs. Custom syntax (not SQL). Already-ingested data.
+- "Fast API call investigation" → CloudTrail Lake. "Normalize all logs into one schema" → Security Lake. "Query app/VPC logs" → CloudWatch Logs Insights.
+- 🧠 **Three "lakes": CloudTrail Lake (API calls, SQL, managed store) vs Security Lake (all logs, OCSF, your S3) vs CloudWatch Logs Insights (app logs, custom syntax, CloudWatch store). No "CloudWatch Lake" exists.**
 
 ---
 
