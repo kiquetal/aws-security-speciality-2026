@@ -17,7 +17,7 @@
 | 3 | D5: KMS (key types, grants, policies, multi-region) | ✅ | 80% mini-exam, key stores + MRK + deletion solid, detect vs prevent gap found |
 | 4 | D5: Data protection (S3 encryption, CloudHSM, Secrets Manager, ACM) | ✅ | 100% closing quiz, ACM Private CA FAQ created, Nitro covered, detect-vs-prevent drills passed |
 | 5 | D3: Network security (SGs, NACLs, Network Firewall, VPC endpoints) | ✅ | 80% closing quiz, VPC endpoints + Verified Access + MACsec covered |
-| 6 | D3: Edge security (WAF, Shield, CloudFront) + Compute (Inspector, SSM) | ⬜ | |
+| 6 | D3: Edge security (WAF, Shield, CloudFront) + Compute (Inspector, SSM) | ✅ | 100% closing quiz, OAC/OAI, Inspector, Bedrock Guardrails, WAF limits covered |
 | 7 | D1: Detection (GuardDuty, Security Hub, Macie, Config) | ⬜ | |
 | 8 | D1: Logging (CloudTrail, CloudWatch, Security Lake, Athena) | ⬜ | |
 | 9 | D2: Incident Response (Detective, forensics, remediation, Step Functions) | ⬜ | |
