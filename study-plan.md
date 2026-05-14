@@ -20,7 +20,7 @@
 | 6 | D3: Edge security (WAF, Shield, CloudFront) + Compute (Inspector, SSM) | ✅ | 100% closing quiz, OAC/OAI, Inspector, Bedrock Guardrails, WAF limits covered |
 | 7 | D1: Detection (GuardDuty, Security Hub, Macie, Config) | ✅ | 100% closing quiz, service selection + dependencies + integration patterns solid |
 | 8 | D1: Logging (CloudTrail, CloudWatch, Security Lake, Athena) | ✅ | 80% closing quiz, Security Lake/OCSF, advanced selectors, org trail immutability covered |
-| 9 | D2: Incident Response (Detective, forensics, remediation, Step Functions) | ⬜ | |
+| 9 | D2: Incident Response (Detective, forensics, remediation, Step Functions) | ✅ | 100% closing quiz, IR sequence, forensic workflow, FIS, validate findings covered |
 | 10 | D6: Governance (Organizations, Control Tower, SCPs, RCPs, Firewall Manager) | ⬜ | |
 | 11 | Full practice exams + weak-area deep dives | ⬜ | |
 | 12 | Final review, exam simulations, confidence check | ⬜ | |
