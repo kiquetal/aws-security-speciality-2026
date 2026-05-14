@@ -145,6 +145,8 @@
 - Management account exempt from BOTH SCPs and RCPs. Don't put workloads there.
 - Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.
+- Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).
+- Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.
 
 ---
 
