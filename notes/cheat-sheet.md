@@ -118,6 +118,7 @@
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Different verbs.
 - "In progress" / "happening now" = active threat = GuardDuty. "What data exists?" = Macie. "What vulns exist?" = Inspector.
 - "Detect C2" = GuardDuty. "Block C2 domains" = DNS Firewall. Detect ≠ prevent.
+- 🧠 **DNS Firewall ALERT ≠ "generate a finding."** ALERT logs but doesn't produce security findings. GuardDuty reads DNS logs natively and generates findings with threat intel. "Detect + finding" = GuardDuty.
 - 🧠 **"Detect external decryption" = GuardDuty. "Prevent external decryption" = key policy condition.** The verb tells you the service.
 - "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
 - "Normalize logs into common schema" = Security Lake (OCSF format).
