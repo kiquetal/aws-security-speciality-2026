@@ -117,9 +117,9 @@ Exam signal: "encrypt in one region, decrypt in another" → MRK
 | # | Topic | Quick Ref | Deep-Dive FAQ |
 |---|---|---|---|
 | 1 | RCPs | ✅ | ✅ faq-rcp.md |
-| 2 | GenAI OWASP Top 10 | ✅ | ❌ TODO |
-| 3 | OCSF / Security Lake | ✅ | ❌ TODO |
-| 4 | Data Masking | ✅ | ❌ TODO |
-| 5 | Nitro Encryption | ✅ | ❌ TODO |
+| 2 | GenAI OWASP Top 10 | ✅ | ✅ faq-genai-owasp.md |
+| 3 | OCSF / Security Lake | ✅ | ✅ faq-security-lake.md |
+| 4 | Data Masking | ✅ | ✅ faq-data-masking.md |
+| 5 | Nitro Encryption | ✅ | ✅ faq-nitro-encryption.md |
 | 6 | Imported Key Material | ✅ | ✅ faq-kms.md |
-| 7 | Multi-Region Keys + Private CA | ✅ | ❌ TODO |
+| 7 | Multi-Region Keys + Private CA | ✅ | ✅ faq-kms.md + faq-acm-private-ca.md |
