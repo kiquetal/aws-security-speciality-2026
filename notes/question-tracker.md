@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 129 |
-| **✅ Correct** | 91 (71%) |
-| **⚠️ Partial** | 16 (12%) |
-| **❌ Wrong** | 22 (17%) |
-| **Sessions** | 21 |
-| **Re-tests Passed** | 32 of 39 |
+| **Total Questions** | 139 |
+| **✅ Correct** | 98 (71%) |
+| **⚠️ Partial** | 17 (12%) |
+| **❌ Wrong** | 24 (17%) |
+| **Sessions** | 22 |
+| **Re-tests Passed** | 35 of 42 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 12 | 3 | 7 | 22 | 55% | 🟡 |
-| D2: Incident Response | 2 | 0 | 0 | 2 | 100% | 🟢 |
-| D3: Infrastructure Security | 14 | 2 | 3 | 19 | 74% | 🟡 |
-| D4: Identity & Access Management | 49 | 7 | 9 | 65 | 75% | 🟡 |
-| D5: Data Protection | 14 | 3 | 2 | 19 | 74% | 🟡 |
-| D6: Governance | 0 | 1 | 1 | 2 | 0% | 🔴 |
+| D1: Detection | 13 | 3 | 8 | 24 | 54% | 🟡 |
+| D2: Incident Response | 2 | 0 | 1 | 3 | 67% | 🟡 |
+| D3: Infrastructure Security | 14 | 3 | 3 | 20 | 70% | 🟡 |
+| D4: Identity & Access Management | 51 | 7 | 9 | 67 | 76% | 🟡 |
+| D5: Data Protection | 16 | 3 | 2 | 21 | 76% | 🟡 |
+| D6: Governance | 2 | 1 | 1 | 4 | 50% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -66,6 +66,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 32 | SCP for preventive guardrails | Q119 | D6 | 1 |
 | 🟡 33 | RAM for resource sharing | Q126 | D6 | 1 |
 | 🟡 34 | DNS Firewall rule actions | Q129 | D3 | 1 |
+| 🟡 35 | GuardDuty vs Inspector | Q132 | D1 | 1 |
+| 🟡 36 | DNS Firewall rule structure | Q134 | D3 | 1 |
+| 🟡 37 | Step Functions for IR | Q138 | D2 | 1 |
 
 ---
 
@@ -94,6 +97,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 19 | 2025-05-14 | Q105–Q109 | 3 | 0 | 2 | D1 Detection (re-test — detect vs prevent, security services comparison) | [Jump](#session-19--2025-05-14) |
 | 20 | 2025-05-15 | Q110–Q119 | 7 | 2 | 1 | Cross-domain practice exam (Week 11 — all domains) | [Jump](#session-20--2025-05-15) |
 | 21 | 2025-05-15 | Q120–Q129 | 8 | 1 | 1 | Cross-domain timed practice exam (Week 11 — all domains) | [Jump](#session-21--2025-05-15) |
+| 22 | 2025-05-15 | Q130–Q139 | 7 | 1 | 2 | Cross-domain timed practice exam (Week 11 — all domains, RAM/FM focus) | [Jump](#session-22--2025-05-15) |
 
 ---
 
@@ -446,3 +450,24 @@ After adding a session:
 | 127 | D5 | S3 immutable 7 years, root can't delete, auto-expire after — config? | Compliance mode Object Lock | ✅ | Compliance mode + versioning. Fixed retention, nobody deletes, auto-expires. | Q85 | Object Lock Compliance mode |
 | 128 | D1 | Normalize CloudTrail + VPC Flow + GuardDuty + WAF into common schema, own S3 bucket? | Security Lake | ✅ | Security Lake — OCSF format, normalizes all sources, your S3 bucket. | — | Security Lake / OCSF |
 | 129 | D3 | Lambda resolve only 2 domains, block all else — service + rule structure? | DNS Firewall + DENY rule | ⚠️ | DNS Firewall correct. Actions are ALLOW/BLOCK/ALERT (not Deny). Structure: ALLOW specific → BLOCK *. | — | DNS Firewall rule actions |
+
+
+---
+
+### Session 22 — 2025-05-15
+
+**Domains:** Cross-domain timed practice exam (Week 11 — all domains, RAM/FM focus)
+**Score:** 7 ✅ · 1 ⚠️ · 2 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 130 | D6 | 200 accounts, same WAF rules on all ALBs, auto-remediate — which service? | Firewall Manager | ✅ | Firewall Manager — "ensure/enforce" + auto-remediate = FM. | — | Firewall Manager vs RAM |
+| 131 | D6 | Share Transit Gateway from networking account to dev OU — which service? | RAM | ✅ | RAM — "share" infrastructure cross-account = RAM. | — | RAM for resource sharing |
+| 132 | D1 | Lambda connecting to botnet IP, want security finding auto-generated — which service? | Inspector | ❌ | **GuardDuty** — active threat (C2/botnet connection) = GuardDuty. Inspector = CVEs, not active threats. | — | GuardDuty vs Inspector |
+| 133 | D4 | RCP denies s3:* for non-org, ELB SLR writes access logs — blocked? | No (SLR exempt from RCP) | ✅ | SLRs are structurally exempt from RCPs. | Q44 | RCP exemptions (SLR) |
+| 134 | D3 | Block all DNS except 3 domains, ALERT on "crypto" queries — rule structure? | ALERT using DNS Firewall | ⚠️ | ALLOW 3 domains → ALERT *crypto* → BLOCK *. Need full structure with priorities. | — | DNS Firewall rule structure |
+| 135 | D5 | AWS_KMS key, auto-rotation enabled, can old ciphertext still be decrypted? | Yes | ✅ | Yes — KMS keeps all old key material versions. Rotation doesn't break decryption. | — | KMS auto-rotation |
+| 136 | D1 | IAM role used from unexpected country, visualize blast radius — which service? | Detective | ✅ | Detective — "visualize" / "blast radius" / "what else" = investigation. | — | Detective for investigation |
+| 137 | D4 | Cross-account KMS: key policy grants B, identity policy allows, no SCP — result? | Succeeds | ✅ | Allowed — both sides satisfied, no SCP restriction. | Q81 | Cross-account KMS |
+| 138 | D2 | Multi-step IR: isolate → snapshot → tag → notify — which service orchestrates? | Don't remember | ❌ | **Step Functions** — multi-step workflow orchestration. EventBridge triggers, Step Functions coordinates. | — | Step Functions for IR |
+| 139 | D5 | After rotation, old DB connections still work — why? | AWSCURRENT and AWSPREVIOUS | ✅ | Old password valid as AWSPREVIOUS until next rotation cycle. | Q104 | Secrets Manager rotation |
