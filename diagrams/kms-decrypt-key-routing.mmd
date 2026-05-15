@@ -1,0 +1,35 @@
+---
+title: KMS Decrypt — Key ID Embedded in Ciphertext (No Alias Needed)
+---
+flowchart TB
+    subgraph ENCRYPT["Encrypt (uses alias → new key)"]
+        APP_E["App calls:<br/>kms encrypt<br/>--key-id alias/payments-key"]
+        ALIAS["alias/payments-key<br/>→ resolves to key-id-222"]
+        KEY_B["Key B (key-id-222)<br/>new material"]
+        BLOB_NEW["Ciphertext blob:<br/>{ keyId: key-id-222,<br/>  data: encrypted... }"]
+        APP_E --> ALIAS --> KEY_B --> BLOB_NEW
+    end
+
+    subgraph DECRYPT["Decrypt (reads key ID from blob — no alias)"]
+        APP_D["App calls:<br/>kms decrypt<br/>--ciphertext-blob &#60;blob&#62;<br/>(NO key-id parameter!)"]
+        KMS["KMS reads keyId<br/>from blob metadata"]
+        OLD_BLOB["Old blob:<br/>keyId = key-id-111"]
+        NEW_BLOB["New blob:<br/>keyId = key-id-222"]
+        KEY_A["Key A (key-id-111)<br/>old material ✅ still alive"]
+        KEY_B2["Key B (key-id-222)<br/>new material"]
+        PLAIN_A["✅ Plaintext"]
+        PLAIN_B["✅ Plaintext"]
+
+        APP_D --> KMS
+        KMS --> OLD_BLOB
+        KMS --> NEW_BLOB
+        OLD_BLOB --> KEY_A --> PLAIN_A
+        NEW_BLOB --> KEY_B2 --> PLAIN_B
+    end
+
+    style KEY_A fill:#ff9900,color:#fff
+    style KEY_B fill:#44bb44,color:#fff
+    style KEY_B2 fill:#44bb44,color:#fff
+    style BLOB_NEW fill:#e6f3ff
+    style PLAIN_A fill:#d4edda
+    style PLAIN_B fill:#d4edda
