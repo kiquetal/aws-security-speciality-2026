@@ -2,6 +2,7 @@
 
 > Based on question tracker analysis (149 questions, 23 sessions)
 > Updated: 2025-05-15
+> **Full catalog:** [video-catalog.md](./course/video-catalog.md)
 
 ---
 
