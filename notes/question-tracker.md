@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 139 |
-| **✅ Correct** | 98 (71%) |
-| **⚠️ Partial** | 17 (12%) |
-| **❌ Wrong** | 24 (17%) |
-| **Sessions** | 22 |
-| **Re-tests Passed** | 35 of 42 |
+| **Total Questions** | 149 |
+| **✅ Correct** | 105 (70%) |
+| **⚠️ Partial** | 19 (13%) |
+| **❌ Wrong** | 25 (17%) |
+| **Sessions** | 23 |
+| **Re-tests Passed** | 40 of 48 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 13 | 3 | 8 | 24 | 54% | 🟡 |
-| D2: Incident Response | 2 | 0 | 1 | 3 | 67% | 🟡 |
-| D3: Infrastructure Security | 14 | 3 | 3 | 20 | 70% | 🟡 |
+| D1: Detection | 16 | 4 | 9 | 29 | 55% | 🟡 |
+| D2: Incident Response | 3 | 1 | 1 | 5 | 60% | 🟡 |
+| D3: Infrastructure Security | 15 | 3 | 3 | 21 | 71% | 🟡 |
 | D4: Identity & Access Management | 51 | 7 | 9 | 67 | 76% | 🟡 |
 | D5: Data Protection | 16 | 3 | 2 | 21 | 76% | 🟡 |
-| D6: Governance | 2 | 1 | 1 | 4 | 50% | 🟡 |
+| D6: Governance | 4 | 1 | 1 | 6 | 67% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -36,39 +36,41 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 2 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
 | 🔴 3 | Network Firewall TLS inspection | Q35, Q87 | D3 | 2 |
 | 🔴 4 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105 | D1, D5 | 2 |
-| 🟡 5 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 6 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 7 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 8 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 9 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
-| 🟡 10 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
-| 🟡 11 | DNS Firewall | Q14 | D3 | 1 |
-| 🟡 12 | Cross-account patterns | Q15 | D5 | 1 |
-| 🟡 13 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
-| 🟡 14 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 15 | RAM vs RCP | Q38 | D4 | 1 |
-| 🟡 16 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
-| 🟡 17 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
-| 🟡 18 | Cross-account KMS | Q53 | D4 | 1 |
-| 🟡 19 | STS session revocation | Q62 | D4 | 1 |
-| 🟡 20 | Session tags + ABAC | Q63 | D4 | 1 |
-| 🟡 21 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
-| 🟡 22 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
-| 🟡 23 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
-| 🟡 24 | Session policy as ceiling | Q78 | D4 | 1 |
-| 🟡 25 | SCP cannot be bypassed | Q83 | D4 | 1 |
-| 🟡 26 | MRK independent key policies | Q84 | D5 | 1 |
-| 🟡 27 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
-| 🟡 28 | Session policy bypass by resource-based policy | Q96 | D4 | 1 |
-| 🟡 29 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
-| 🟡 30 | Imported key rotation procedure | Q114 | D5 | 1 |
-| 🟡 31 | GuardDuty finding types | Q116 | D1 | 1 |
+| 🔴 5 | GuardDuty finding types | Q116, Q142 | D1 | 2 |
+| 🟡 6 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 7 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 8 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 9 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 10 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 11 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 12 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 13 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 14 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 15 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 16 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 17 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 18 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
+| 🟡 19 | Cross-account KMS | Q53 | D4 | 1 |
+| 🟡 20 | STS session revocation | Q62 | D4 | 1 |
+| 🟡 21 | Session tags + ABAC | Q63 | D4 | 1 |
+| 🟡 22 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
+| 🟡 23 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
+| 🟡 24 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
+| 🟡 25 | Session policy as ceiling | Q78 | D4 | 1 |
+| 🟡 26 | SCP cannot be bypassed | Q83 | D4 | 1 |
+| 🟡 27 | MRK independent key policies | Q84 | D5 | 1 |
+| 🟡 28 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
+| 🟡 29 | Session policy bypass by resource-based policy | Q96 | D4 | 1 |
+| 🟡 30 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
+| 🟡 31 | Imported key rotation procedure | Q114 | D5 | 1 |
 | 🟡 32 | SCP for preventive guardrails | Q119 | D6 | 1 |
 | 🟡 33 | RAM for resource sharing | Q126 | D6 | 1 |
 | 🟡 34 | DNS Firewall rule actions | Q129 | D3 | 1 |
 | 🟡 35 | GuardDuty vs Inspector | Q132 | D1 | 1 |
 | 🟡 36 | DNS Firewall rule structure | Q134 | D3 | 1 |
 | 🟡 37 | Step Functions for IR | Q138 | D2 | 1 |
+| 🟡 38 | Access Analyzer modes | Q144 | D1 | 1 |
+| 🟡 39 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
 
 ---
 
@@ -98,6 +100,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 20 | 2025-05-15 | Q110–Q119 | 7 | 2 | 1 | Cross-domain practice exam (Week 11 — all domains) | [Jump](#session-20--2025-05-15) |
 | 21 | 2025-05-15 | Q120–Q129 | 8 | 1 | 1 | Cross-domain timed practice exam (Week 11 — all domains) | [Jump](#session-21--2025-05-15) |
 | 22 | 2025-05-15 | Q130–Q139 | 7 | 1 | 2 | Cross-domain timed practice exam (Week 11 — all domains, RAM/FM focus) | [Jump](#session-22--2025-05-15) |
+| 23 | 2025-05-15 | Q140–Q149 | 7 | 2 | 1 | D1 Detection · D2 Incident Response (re-test — post-video drill) | [Jump](#session-23--2025-05-15) |
 
 ---
 
@@ -471,3 +474,24 @@ After adding a session:
 | 137 | D4 | Cross-account KMS: key policy grants B, identity policy allows, no SCP — result? | Succeeds | ✅ | Allowed — both sides satisfied, no SCP restriction. | Q81 | Cross-account KMS |
 | 138 | D2 | Multi-step IR: isolate → snapshot → tag → notify — which service orchestrates? | Don't remember | ❌ | **Step Functions** — multi-step workflow orchestration. EventBridge triggers, Step Functions coordinates. | — | Step Functions for IR |
 | 139 | D5 | After rotation, old DB connections still work — why? | AWSCURRENT and AWSPREVIOUS | ✅ | Old password valid as AWSPREVIOUS until next rotation cycle. | Q104 | Secrets Manager rotation |
+
+
+---
+
+### Session 23 — 2025-05-15
+
+**Domains:** D1 Detection · D2 Incident Response (re-test — post-video drill)
+**Score:** 8 ✅ · 1 ⚠️ · 1 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 140 | D1 | EC2 connecting to botnet IP, want finding auto-generated, zero code — which service? | GuardDuty | ✅ | GuardDuty — active threat = GuardDuty. Inspector = CVEs only. | Q132 | GuardDuty vs Inspector |
+| 141 | D1 | "Which S3 buckets accessible by external accounts?" — which service? | IAM Access Analyzer | ✅ | IAM Access Analyzer (external access) — finds overly permissive resource policies. | — | Access Analyzer vs GuardDuty |
+| 142 | D1 | GuardDuty finding type for credentials used from Tor exit node? | "TorIP" | ⚠️ | `UnauthorizedAccess:IAMUser/TorIPCaller` — pattern is ThreatPurpose:ResourceType/ThreatName. | Q116 | GuardDuty finding types |
+| 143 | D1 | Compromised role, determine other resources accessed in 48hr, visualize blast radius? | Detective | ✅ | Detective — "visualize" / "blast radius" / "timeline" = always Detective. | Q109 | Detective for investigation |
+| 144 | D1 | External access vs unused access in IAM Access Analyzer — one sentence each? | Confused the definitions | ❌ | External = "who outside can reach my resources?" Unused = "which permissions haven't been used in 90 days?" | — | Access Analyzer modes |
+| 145 | D2 | Multi-step IR: isolate → snapshot → tag → notify — which service orchestrates? | Step Functions | ✅ | Step Functions — multi-step workflow orchestration. | Q138 | Step Functions for IR |
+| 146 | D6 | Share DNS Firewall rule groups to all 200 member accounts — which service? | RAM | ✅ | RAM — sharing resources cross-account = RAM. | Q126 | RAM for resource sharing |
+| 147 | D6 | Ensure all ALBs across 200 accounts have same WAF rules, auto-remediate — which service? | Firewall Manager | ✅ | Firewall Manager — "ensure/enforce" + auto-remediate = FM. | Q130 | Firewall Manager vs RAM |
+| 148 | D2 | Before full IR, what should you do first with the GuardDuty finding? | "Evaluate" | ⚠️ | **Validate findings** — assess scope, check false positives, confirm severity. Exam keyword = "validate" or "triage". | — | Validate findings (Task 2.2.3) |
+| 149 | D3 | Dedicated Direct Connect, Layer 2 encryption — which feature? | MACsec | ✅ | MACsec — Layer 2 encryption on dedicated DX only. | — | MACsec |
