@@ -139,9 +139,7 @@
 
 ## D2: Incident Response (14%)
 - IR sequence: Isolate (swap SG to deny-all) → Snapshot (EBS forensic copy) → Tag → Investigate → Remediate. NEVER terminate first.
-- Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.
-- Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
-- Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
+- 🧠 **"Validate findings" = first step before full IR (Task 2.2.3, new in C03).** Assess scope, check false positives, confirm severity. Exam keyword is "validate" or "triage", not "evaluate".
 - Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.
 - Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
 - Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
