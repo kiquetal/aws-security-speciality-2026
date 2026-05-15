@@ -144,8 +144,8 @@
 - [x] [Quiz] CloudFormation
 - [x] Using AWS Service Catalog - Part 1
 - [x] Using AWS Service Catalog - Part 2
-- [ ] About AWS Firewall Manager
-- [ ] Using AWS RAM to share resources across accounts
+- [x] About AWS Firewall Manager
+- [x] Using AWS RAM to share resources across accounts
 - [x] [Quiz] Service Catalog and Firewall Manager
 - [x] Security tools for code vulnerabilities
 
