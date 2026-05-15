@@ -1,0 +1,33 @@
+---
+title: "Delegated Admin — How Security Account Manages All Members"
+---
+flowchart TD
+    subgraph ORG["AWS Organization"]
+        MA["Management Account<br/>(created the org)"]
+        
+        subgraph SEC_OU["Security OU"]
+            SA["Security Account<br/>(delegated admin)"]
+        end
+        
+        subgraph WORK_OU["Workloads OU"]
+            DEV["Dev Account"]
+            PROD["Prod Account"]
+            NEW["New Account<br/>(joins later)"]
+        end
+    end
+
+    MA -->|"1. EnableOrganizationAdminAccount<br/>(one-time setup)"| SA
+
+    SA -->|"2. Auto-enables GuardDuty<br/>in ALL member accounts"| DEV
+    SA -->|"2. Auto-enables GuardDuty"| PROD
+    SA -->|"2. Auto-enables GuardDuty<br/>(automatic for new accounts)"| NEW
+
+    DEV -->|"3. Findings flow to<br/>delegated admin"| SA
+    PROD -->|"3. Findings flow"| SA
+    NEW -->|"3. Findings flow"| SA
+
+    style MA fill:#ff9900,color:#fff
+    style SA fill:#3366cc,color:#fff
+    style DEV fill:#44bb44,color:#fff
+    style PROD fill:#44bb44,color:#fff
+    style NEW fill:#44bb44,color:#fff,stroke-dasharray: 5 5
