@@ -1,5 +1,7 @@
 # FAQ: Amazon GuardDuty
 
+> **Diagram:** [delegated-admin-pattern.png](../diagrams/delegated-admin-pattern.png) — how Security Account manages GuardDuty org-wide
+
 ## Security Use Cases
 
 ### Intelligent Threat Detection
