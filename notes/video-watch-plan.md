@@ -7,18 +7,18 @@
 
 ## 🔴 MUST WATCH (directly addresses weak spots)
 
-| # | Video Title | Gap | Questions |
-|---|---|---|---|
-| 1 | About Amazon GuardDuty | GuardDuty vs Inspector vs Access Analyzer confusion | Q116, Q132, Q145 |
-| 2 | [LAB] Amazon GuardDuty Demo | Finding types, hands-on reinforcement | Q116, Q132 |
-| 3 | Amazon Detective | Swapped with CloudTrail under pressure | Q109, re-test |
-| 4 | About IAM Access Analyzer | Confused "find what's exposed" with GuardDuty | Q145 |
-| 5 | IAM Access Analyzer Unused Access | Different from external access findings | Q145 |
-| 6 | Using Step Functions for Security Workflows | Missed IR orchestration completely | Q138 |
-| 7 | Automatically remediating incidents | Full IR automation pipeline | Q138, Q147 |
-| 8 | About AWS Firewall Manager | RAM vs FM distinction | Q126 |
-| 9 | Using AWS RAM to share resources across accounts | Keep picking Control Tower when it's RAM | Q126 |
-| 10 | Incident containment in AWS | IR sequence + validate findings step | Q147 |
+| # | Video Title | Gap | Questions | Session Context |
+|---|---|---|---|---|
+| 1 | About Amazon GuardDuty | GuardDuty vs Inspector vs Access Analyzer confusion | Q116, Q132, Q145 | S20: didn't know Tor finding. S22: picked Inspector for botnet. Drill: picked GuardDuty for "what's exposed" |
+| 2 | [LAB] Amazon GuardDuty Demo | Finding types, hands-on reinforcement | Q116, Q132 | See above — need to see real findings in console |
+| 3 | Amazon Detective | Swapped with CloudTrail under pressure | Q109, re-test | S20 re-test Q4: said "CloudTrail" for investigation. Signal: "visualize/timeline/scope" = Detective |
+| 4 | About IAM Access Analyzer | Confused "find what's exposed" with GuardDuty | Q145 | Drill round: "which buckets accessible externally?" — said GuardDuty. Access Analyzer = permission audit, not active threat |
+| 5 | IAM Access Analyzer Unused Access | Different from external access findings | Q145 | Same confusion — Access Analyzer has TWO modes: external access + unused access |
+| 6 | Using Step Functions for Security Workflows | Missed IR orchestration completely | Q138 | S22: "multi-step IR orchestration" — said "don't remember". Answer = Step Functions |
+| 7 | Automatically remediating incidents | Full IR automation pipeline | Q138, Q147 | S22: missed Step Functions. Drill: missed "validate findings" step. Need full pipeline understanding |
+| 8 | About AWS Firewall Manager | RAM vs FM distinction | Q126 | S21: "share DNS Firewall rule groups" — said Control Tower. FM = enforce/deploy. RAM = share. |
+| 9 | Using AWS RAM to share resources across accounts | Keep picking Control Tower when it's RAM | Q126 | Same as above. RAM supports: TGW, subnets, DNS Firewall rule groups, Route 53 rules |
+| 10 | Incident containment in AWS | IR sequence + validate findings step | Q147 | Drill: left blank for "validate findings before full IR". New in C03 (Task 2.2.3) |
 
 ---
 
