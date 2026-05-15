@@ -115,6 +115,7 @@
 - GuardDuty = active threats NOW (C2, crypto mining, exfil). Inspector = known CVEs (software vulns). Macie = sensitive data in S3.
 - Security Hub = aggregate findings + compliance dashboards (wraps Config rules). Requires Config enabled.
 - Detective = investigate AFTER detection (root cause, blast radius, timeline).
+- 🧠 **CloudTrail = raw API log. Detective = the investigator who reads the logs FOR you.** "Who did what" = CloudTrail. "Show me the full picture / timeline / scope" = Detective.
 - CloudTrail Lake = fast + dashboards + managed + near real-time. S3+Athena = cheap + DIY + unlimited retention.
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Different verbs.
 - "In progress" / "happening now" = active threat = GuardDuty. "What data exists?" = Macie. "What vulns exist?" = Inspector.

@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 109 |
-| **✅ Correct** | 76 (70%) |
-| **⚠️ Partial** | 13 (12%) |
-| **❌ Wrong** | 20 (18%) |
-| **Sessions** | 19 |
-| **Re-tests Passed** | 24 of 31 |
+| **Total Questions** | 119 |
+| **✅ Correct** | 83 (70%) |
+| **⚠️ Partial** | 15 (13%) |
+| **❌ Wrong** | 21 (18%) |
+| **Sessions** | 20 |
+| **Re-tests Passed** | 27 of 34 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 9 | 3 | 6 | 18 | 50% | 🟡 |
-| D2: Incident Response | 0 | 0 | 0 | 0 | — | — |
-| D3: Infrastructure Security | 11 | 1 | 3 | 15 | 73% | 🟡 |
-| D4: Identity & Access Management | 45 | 7 | 9 | 61 | 74% | 🟡 |
-| D5: Data Protection | 11 | 2 | 2 | 15 | 73% | 🟡 |
-| D6: Governance | 0 | 0 | 0 | 0 | — | — |
+| D1: Detection | 10 | 3 | 7 | 20 | 50% | 🟡 |
+| D2: Incident Response | 1 | 0 | 0 | 1 | 100% | 🟢 |
+| D3: Infrastructure Security | 13 | 1 | 3 | 17 | 76% | 🟡 |
+| D4: Identity & Access Management | 47 | 7 | 9 | 63 | 75% | 🟡 |
+| D5: Data Protection | 12 | 3 | 2 | 17 | 71% | 🟡 |
+| D6: Governance | 0 | 1 | 0 | 1 | 0% | 🔴 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -61,6 +61,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 27 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
 | 🟡 28 | Session policy bypass by resource-based policy | Q96 | D4 | 1 |
 | 🟡 29 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
+| 🟡 30 | Imported key rotation procedure | Q114 | D5 | 1 |
+| 🟡 31 | GuardDuty finding types | Q116 | D1 | 1 |
+| 🟡 32 | SCP for preventive guardrails | Q119 | D6 | 1 |
 
 ---
 
@@ -87,6 +90,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 17 | 2025-05-13 | Q97–Q99 | 3 | 0 | 0 | D4 Identity & Access Management · D1 Detection (re-test — SLR exemptions, session policy bypass, Security Hub) | [Jump](#session-17--2025-05-13) |
 | 18 | 2025-05-13 | Q100–Q104 | 4 | 1 | 0 | D5 Data Protection (Week 3 mini-exam — KMS, S3 encryption, Secrets Manager, Object Lock) | [Jump](#session-18--2025-05-13) |
 | 19 | 2025-05-14 | Q105–Q109 | 3 | 0 | 2 | D1 Detection (re-test — detect vs prevent, security services comparison) | [Jump](#session-19--2025-05-14) |
+| 20 | 2025-05-15 | Q110–Q119 | 7 | 2 | 1 | Cross-domain practice exam (Week 11 — all domains) | [Jump](#session-20--2025-05-15) |
 
 ---
 
@@ -397,3 +401,24 @@ After adding a session:
 | 107 | D1 | Confirmed C2 — block DNS resolution to that domain VPC-wide immediately? | C: DNS Firewall BLOCK | ✅ | DNS Firewall BLOCK — kills query at DNS, connection never happens, VPC-wide. | — | Block C2 = DNS Firewall |
 | 108 | D1 | 300 accounts, dashboard for public S3 + unencrypted EBS + CIS compliance score, least overhead? | C: Security Hub with CIS benchmark | ✅ | Security Hub — aggregation + compliance dashboards + CIS benchmark built-in, one-click org-wide. | Q5 | Security services comparison |
 | 109 | D1 | EC2 exfiltrating data at 3 AM — determine who launched it, role used, other resources accessed in 48hr? | C: Detective | ✅ | Detective — "investigate" / "determine scope" / "timeline" = always Detective. | — | Detective for investigation |
+
+
+---
+
+### Session 20 — 2025-05-15
+
+**Domains:** Cross-domain practice exam (Week 11 — all domains)
+**Score:** 7 ✅ · 2 ⚠️ · 1 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 110 | D4 | Identity Center permission set=s3:*+ec2:*, boundary=s3:* only — ec2:DescribeInstances? | Blocked | ✅ | Denied — boundary doesn't include ec2:*, effective = identity ∩ boundary. | — | Permission boundary as ceiling |
+| 111 | D4 | Cross-account S3, bucket policy grants role ARN, Account B SCP denies s3:GetObject — succeeds? | Blocked | ✅ | Denied — SCP cannot be bypassed by anything. | Q83 | SCP cannot be bypassed |
+| 112 | D3 | Inspect egress for malware (Suricata) + block C2 DNS — which TWO services? | Network Firewall + DNS Firewall | ✅ | Network Firewall (Suricata IPS) + DNS Firewall (block C2 domains). | — | Firewalls layered |
+| 113 | D3 | Private subnet EC2 needs Secrets Manager, no NAT/IGW — minimum infra? | Interface endpoint + endpoint policy | ✅ | Interface VPC endpoint + SG allowing HTTPS (443). | — | VPC endpoints |
+| 114 | D5 | Imported key material — how to rotate? | "Manual rotation" (no steps) | ⚠️ | Create NEW KMS key (origin=EXTERNAL) → import new material → update alias → old key stays for old ciphertext. | — | Imported key rotation procedure |
+| 115 | D5 | CreateGrant → partner gets AccessDenied immediately, works 30s later — fix? | Pass grant token | ✅ | Pass grant token in subsequent API call for immediate use before eventual consistency. | Q101 | KMS Grants eventual consistency |
+| 116 | D1 | Detect credentials used from Tor exit node — which service, zero custom code? | Didn't know | ❌ | **GuardDuty** — finding type UnauthorizedAccess:IAMUser/TorIPCaller. Built-in threat intel, zero setup. | — | GuardDuty finding types |
+| 117 | D1 | Query CloudTrail across 50 accounts, SQL, near real-time, dashboards, no S3/Athena? | CloudTrail Lake | ✅ | CloudTrail Lake — managed, SQL, near real-time, cross-account, dashboards. | Q25 | CloudTrail Lake |
+| 118 | D2 | EC2 communicating with C2 — first 3 IR steps? | Isolate (SG) → EBS snapshot + tag → stop | ✅ | Isolate (deny-all SG) → Snapshot (EBS forensic copy) → Tag → Investigate. Never terminate first. | — | IR sequence |
+| 119 | D6 | Prevent disabling GuardDuty/CloudTrail/Flow Logs org-wide, auto for new accounts? | Control Tower | ⚠️ | **SCP** (Deny statements). Control Tower uses SCPs but the mechanism itself is SCP. | — | SCP for preventive guardrails |
