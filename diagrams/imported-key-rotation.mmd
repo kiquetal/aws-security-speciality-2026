@@ -1,0 +1,36 @@
+---
+title: Imported Key Material — Manual Rotation via Alias Swap
+---
+flowchart LR
+    subgraph BEFORE["Before Rotation"]
+        ALIAS1["alias/payments-key"]
+        KEY1["KMS Key A<br/>key-id-111<br/>origin=EXTERNAL<br/>+ old material"]
+        ALIAS1 -->|points to| KEY1
+        DATA1["Old ciphertext<br/>(encrypted with Key A)"]
+        KEY1 -.->|decrypts| DATA1
+    end
+
+    subgraph ROTATION["Rotation Steps"]
+        direction TB
+        S1["① Create NEW KMS key<br/>(origin=EXTERNAL)"]
+        S2["② Import NEW material<br/>into new key"]
+        S3["③ Update alias<br/>→ point to new key"]
+        S1 --> S2 --> S3
+    end
+
+    subgraph AFTER["After Rotation"]
+        ALIAS2["alias/payments-key"]
+        KEY2["KMS Key B<br/>key-id-222<br/>origin=EXTERNAL<br/>+ new material"]
+        KEY1B["KMS Key A<br/>key-id-111<br/>still exists!<br/>+ old material"]
+        ALIAS2 -->|points to| KEY2
+        DATA2["New ciphertext<br/>(encrypted with Key B)"]
+        DATA1B["Old ciphertext<br/>(encrypted with Key A)"]
+        KEY2 -.->|decrypts| DATA2
+        KEY1B -.->|decrypts| DATA1B
+    end
+
+    BEFORE --> ROTATION --> AFTER
+
+    style KEY1 fill:#ff9900,color:#fff
+    style KEY2 fill:#44bb44,color:#fff
+    style KEY1B fill:#ff9900,color:#fff,stroke-dasharray: 5 5
