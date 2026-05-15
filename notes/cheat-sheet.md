@@ -127,7 +127,6 @@
 - 🧠 **"Detect external decryption" = GuardDuty. "Prevent external decryption" = key policy condition.** The verb tells you the service.
 - "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
 - 🧠 **"Detect [bad thing] with zero custom code" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.
-- "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
 
 ### CloudTrail / Logging
 - CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
