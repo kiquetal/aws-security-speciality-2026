@@ -70,11 +70,11 @@
 - [x] IAM Access Analyzer Unused Access
 
 ### Session 2 (~60 min) — IR + Governance
-- [ ] About AWS Firewall Manager
-- [ ] Using AWS RAM to share resources across accounts
-- [ ] Incident containment in AWS
-- [ ] Using Step Functions for Security Workflows
-- [ ] Automatically remediating incidents
+- [x] About AWS Firewall Manager
+- [x] Using AWS RAM to share resources across accounts
+- [x] Incident containment in AWS
+- [x] Using Step Functions for Security Workflows
+- [x] Automatically remediating incidents
 
 ### Session 3 (~45 min) — Delegated Admin + Security Hub
 - [ ] Delegating and Centralizing GuardDuty
