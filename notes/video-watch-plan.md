@@ -54,8 +54,8 @@
 ## Recommended Watch Order
 
 ### Session 1 (~90 min) — Detection + Analysis
-- [ ] About Amazon GuardDuty
-- [ ] [LAB] Amazon GuardDuty Demo
+- [x] About Amazon GuardDuty
+- [-] [LAB] Amazon GuardDuty Demo (requires subscription — skipped)
 - [ ] Amazon Detective
 - [ ] About IAM Access Analyzer
 - [ ] IAM Access Analyzer Unused Access
