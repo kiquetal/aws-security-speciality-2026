@@ -236,7 +236,7 @@
 - [x] [Cheat Sheet] The 6 phases of IR mapped to AWS services
 - [x] [Checklist] AWS Incident Response Planning Checklist
 - [x] [Quiz] Incident response planning
-- [ ] Incident containment in AWS
+- [x] Incident containment in AWS
 - [ ] [Quiz] Choosing the Right EC2 Containment Layer
 - [ ] Test and validate your IR plans
 
@@ -253,8 +253,8 @@
 ## Respond to compromised resources and workloads
 - [ ] [LAB] Automated security response with EventBridge and Lambda
 - [ ] Incident management with SSM OpsCenter and Explorer
-- [ ] Using Step Functions for Security Workflows
-- [ ] Automatically remediating incidents
+- [x] Using Step Functions for Security Workflows
+- [x] Automatically remediating incidents
 - [ ] Using SageMaker AI Notebooks for Incident Response
 - [ ] [Quiz] Automatically remediate incidents
 

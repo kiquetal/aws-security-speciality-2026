@@ -15,11 +15,11 @@
 | 3 | Amazon Detective | Swapped with CloudTrail under pressure | ✅ Done |
 | 4 | About IAM Access Analyzer | Confused with GuardDuty | ✅ Done |
 | 5 | IAM Access Analyzer Unused Access | Two modes distinction | ✅ Done |
-| 6 | Using Step Functions for Security Workflows | Missed IR orchestration (Q138) | ⬜ |
-| 7 | Automatically remediating incidents | Full IR automation pipeline | ⬜ |
-| 8 | About AWS Firewall Manager | RAM vs FM distinction (Q126) | ⬜ |
-| 9 | Using AWS RAM to share resources across accounts | Keep picking Control Tower | ⬜ |
-| 10 | Incident containment in AWS | IR sequence + validate findings | ⬜ |
+| 6 | Using Step Functions for Security Workflows | Missed IR orchestration (Q138) | ✅ Done |
+| 7 | Automatically remediating incidents | Full IR automation pipeline | ✅ Done |
+| 8 | About AWS Firewall Manager | RAM vs FM distinction (Q126) | ✅ Done |
+| 9 | Using AWS RAM to share resources across accounts | Keep picking Control Tower | ✅ Done |
+| 10 | Incident containment in AWS | IR sequence + validate findings | ✅ Done |
 
 ---
 
