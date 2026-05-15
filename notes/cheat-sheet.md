@@ -123,6 +123,7 @@
 - 🧠 **DNS Firewall ALERT ≠ "generate a finding."** ALERT logs but doesn't produce security findings. GuardDuty reads DNS logs natively and generates findings with threat intel. "Detect + finding" = GuardDuty.
 - 🧠 **"Detect external decryption" = GuardDuty. "Prevent external decryption" = key policy condition.** The verb tells you the service.
 - "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
+- 🧠 **"Detect [bad thing] with zero custom code" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.
 - "Normalize logs into common schema" = Security Lake (OCSF format).
 
 ### CloudTrail / Logging
