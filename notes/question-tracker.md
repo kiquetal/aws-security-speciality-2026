@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 119 |
-| **✅ Correct** | 83 (70%) |
-| **⚠️ Partial** | 15 (13%) |
-| **❌ Wrong** | 21 (18%) |
-| **Sessions** | 20 |
-| **Re-tests Passed** | 27 of 34 |
+| **Total Questions** | 129 |
+| **✅ Correct** | 91 (71%) |
+| **⚠️ Partial** | 16 (12%) |
+| **❌ Wrong** | 22 (17%) |
+| **Sessions** | 21 |
+| **Re-tests Passed** | 32 of 39 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 10 | 3 | 7 | 20 | 50% | 🟡 |
-| D2: Incident Response | 1 | 0 | 0 | 1 | 100% | 🟢 |
-| D3: Infrastructure Security | 13 | 1 | 3 | 17 | 76% | 🟡 |
-| D4: Identity & Access Management | 47 | 7 | 9 | 63 | 75% | 🟡 |
-| D5: Data Protection | 12 | 3 | 2 | 17 | 71% | 🟡 |
-| D6: Governance | 0 | 1 | 0 | 1 | 0% | 🔴 |
+| D1: Detection | 12 | 3 | 7 | 22 | 55% | 🟡 |
+| D2: Incident Response | 2 | 0 | 0 | 2 | 100% | 🟢 |
+| D3: Infrastructure Security | 14 | 2 | 3 | 19 | 74% | 🟡 |
+| D4: Identity & Access Management | 49 | 7 | 9 | 65 | 75% | 🟡 |
+| D5: Data Protection | 14 | 3 | 2 | 19 | 74% | 🟡 |
+| D6: Governance | 0 | 1 | 1 | 2 | 0% | 🔴 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -64,6 +64,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 30 | Imported key rotation procedure | Q114 | D5 | 1 |
 | 🟡 31 | GuardDuty finding types | Q116 | D1 | 1 |
 | 🟡 32 | SCP for preventive guardrails | Q119 | D6 | 1 |
+| 🟡 33 | RAM for resource sharing | Q126 | D6 | 1 |
+| 🟡 34 | DNS Firewall rule actions | Q129 | D3 | 1 |
 
 ---
 
@@ -91,6 +93,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 18 | 2025-05-13 | Q100–Q104 | 4 | 1 | 0 | D5 Data Protection (Week 3 mini-exam — KMS, S3 encryption, Secrets Manager, Object Lock) | [Jump](#session-18--2025-05-13) |
 | 19 | 2025-05-14 | Q105–Q109 | 3 | 0 | 2 | D1 Detection (re-test — detect vs prevent, security services comparison) | [Jump](#session-19--2025-05-14) |
 | 20 | 2025-05-15 | Q110–Q119 | 7 | 2 | 1 | Cross-domain practice exam (Week 11 — all domains) | [Jump](#session-20--2025-05-15) |
+| 21 | 2025-05-15 | Q120–Q129 | 8 | 1 | 1 | Cross-domain timed practice exam (Week 11 — all domains) | [Jump](#session-21--2025-05-15) |
 
 ---
 
@@ -422,3 +425,24 @@ After adding a session:
 | 117 | D1 | Query CloudTrail across 50 accounts, SQL, near real-time, dashboards, no S3/Athena? | CloudTrail Lake | ✅ | CloudTrail Lake — managed, SQL, near real-time, cross-account, dashboards. | Q25 | CloudTrail Lake |
 | 118 | D2 | EC2 communicating with C2 — first 3 IR steps? | Isolate (SG) → EBS snapshot + tag → stop | ✅ | Isolate (deny-all SG) → Snapshot (EBS forensic copy) → Tag → Investigate. Never terminate first. | — | IR sequence |
 | 119 | D6 | Prevent disabling GuardDuty/CloudTrail/Flow Logs org-wide, auto for new accounts? | Control Tower | ⚠️ | **SCP** (Deny statements). Control Tower uses SCPs but the mechanism itself is SCP. | — | SCP for preventive guardrails |
+
+
+---
+
+### Session 21 — 2025-05-15
+
+**Domains:** Cross-domain timed practice exam (Week 11 — all domains)
+**Score:** 8 ✅ · 1 ⚠️ · 1 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 120 | D4 | SCP denies PutObject without Env tag, Config SLR writes snapshot (no tags) — succeeds? | Fail | ✅ | Fails — SCP applies to SLRs. RCP exempts SLRs, SCP does not. | Q97 | SCP applies to SLRs |
+| 121 | D1 | Detect root access key creation in any member account, zero code? | GuardDuty | ✅ | GuardDuty — Policy:IAMUser/RootCredentialUsage. | — | GuardDuty finding types |
+| 122 | D3 | Network Firewall TLS inspection — users get cert warnings — root cause? | Import private CA in browsers | ✅ | Firewall's CA cert not trusted by clients — distribute to trust stores. | Q87 | Network Firewall TLS inspection |
+| 123 | D5 | Global Table + MRK, reads fail in eu-west-1, primary key policy correct — cause? | Key policies are independent | ✅ | MRK replica key policy missing DynamoDB permission. Must update each region. | Q84 | MRK independent key policies |
+| 124 | D4 | Identity=s3:*, boundary=s3:*+ec2:*, session=GetObject only — DeleteObject? | Denied | ✅ | Session policy ceiling — DeleteObject not in session = denied. | Q78 | Session policy as ceiling |
+| 125 | D2 | After isolating compromised EC2 (deny-all SG), next step? | EBS snapshot + tag | ✅ | Snapshot EBS (forensic copy) + tag. Never terminate before preserving evidence. | — | IR sequence |
+| 126 | D6 | Share DNS Firewall rule groups from security account to all members, auto for new accounts? | Control Tower | ❌ | **AWS RAM** — sharing resources cross-account = RAM. Control Tower manages guardrails, not resource sharing. | — | RAM for resource sharing |
+| 127 | D5 | S3 immutable 7 years, root can't delete, auto-expire after — config? | Compliance mode Object Lock | ✅ | Compliance mode + versioning. Fixed retention, nobody deletes, auto-expires. | Q85 | Object Lock Compliance mode |
+| 128 | D1 | Normalize CloudTrail + VPC Flow + GuardDuty + WAF into common schema, own S3 bucket? | Security Lake | ✅ | Security Lake — OCSF format, normalizes all sources, your S3 bucket. | — | Security Lake / OCSF |
+| 129 | D3 | Lambda resolve only 2 domains, block all else — service + rule structure? | DNS Firewall + DENY rule | ⚠️ | DNS Firewall correct. Actions are ALLOW/BLOCK/ALERT (not Deny). Structure: ALLOW specific → BLOCK *. | — | DNS Firewall rule actions |
