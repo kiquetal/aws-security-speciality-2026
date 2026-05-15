@@ -166,6 +166,9 @@
 
 #### How to Manually Rotate Imported Key Material
 
+> **Diagram:** [imported-key-rotation.png](../diagrams/imported-key-rotation.png)
+> **Diagram:** [kms-decrypt-key-routing.png](../diagrams/kms-decrypt-key-routing.png) — shows how Decrypt auto-routes via key ID in ciphertext (no alias needed)
+
 ```
 Step 1: Create a NEW KMS key (origin = EXTERNAL)
 Step 2: Import your new key material into it
