@@ -62,6 +62,7 @@
 - Key deletion waiting period: **7–30 days** (default 30). Can cancel with `CancelKeyDeletion` anytime during wait.
 - Prevent accidental deletion: **SCP Deny `kms:ScheduleKeyDeletion`**. Detect: **CloudTrail + EventBridge + Lambda** (auto-cancel + alert).
 - **Key store backends:** Default (multi-tenant, all ops) vs Custom Key Store (single-tenant CloudHSM, symmetric only via KMS) vs XKS (keys outside AWS, symmetric only via KMS). The symmetric-only limit is KMS, not the HSM.
+- 🧠 **"Keys never IN AWS" = XKS. "Single-tenant HSM inside AWS" = CloudHSM custom key store.** Both integrate with KMS API, but only XKS satisfies "never in AWS infrastructure."
 - CloudHSM **directly** = all operations (symmetric, asymmetric, sign, HMAC). CloudHSM **through KMS** (custom key store) = symmetric only.
 - `CancelKeyDeletion` → key moves to **Disabled** (not Enabled). Must manually re-enable.
 - **4 KB max** for direct KMS Encrypt/Decrypt. Anything larger → envelope encryption (GenerateDataKey → encrypt locally).
@@ -148,6 +149,7 @@
 - Management account exempt from BOTH SCPs and RCPs. Don't put workloads there.
 - Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.
+- 🧠 **"Which mechanism prevents X?" = SCP. "Which service automates guardrails?" = Control Tower.** Control Tower uses SCPs — the mechanism is SCP, the automation is Control Tower.
 - Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.
 
