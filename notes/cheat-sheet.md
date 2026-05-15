@@ -101,6 +101,7 @@
 - Verified Access = zero-trust access to internal apps without VPN. Evaluates identity + device posture.
 - Network Access Analyzer = find unintended network paths (reachable from internet when shouldn't be).
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
+- MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
 
 ### Edge
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
@@ -126,7 +127,7 @@
 - 🧠 **"Detect external decryption" = GuardDuty. "Prevent external decryption" = key policy condition.** The verb tells you the service.
 - "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
 - 🧠 **"Detect [bad thing] with zero custom code" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.
-- "Normalize logs into common schema" = Security Lake (OCSF format).
+- "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
 
 ### CloudTrail / Logging
 - CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
@@ -140,6 +141,8 @@
 ## D2: Incident Response (14%)
 - IR sequence: Isolate (swap SG to deny-all) → Snapshot (EBS forensic copy) → Tag → Investigate → Remediate. NEVER terminate first.
 - Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.
+- Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
+- Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
 - Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.
 - Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
 - Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
