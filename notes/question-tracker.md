@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 182 |
-| **✅ Correct** | 129 (71%) |
-| **⚠️ Partial** | 20 (11%) |
-| **❌ Wrong** | 33 (18%) |
-| **Sessions** | 26 |
-| **Re-tests Passed** | 55 of 70 |
+| **Total Questions** | 206 |
+| **✅ Correct** | 148 (72%) |
+| **⚠️ Partial** | 20 (10%) |
+| **❌ Wrong** | 38 (18%) |
+| **Sessions** | 27 |
+| **Re-tests Passed** | 65 of 82 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 24 | 4 | 15 | 43 | 56% | 🟡 |
+| D1: Detection | 28 | 4 | 16 | 48 | 58% | 🟡 |
 | D2: Incident Response | 4 | 1 | 1 | 6 | 67% | 🟡 |
-| D3: Infrastructure Security | 18 | 4 | 3 | 25 | 72% | 🟡 |
-| D4: Identity & Access Management | 58 | 7 | 10 | 75 | 77% | 🟡 |
-| D5: Data Protection | 20 | 3 | 3 | 26 | 77% | 🟡 |
-| D6: Governance | 5 | 1 | 1 | 7 | 71% | 🟡 |
+| D3: Infrastructure Security | 21 | 4 | 3 | 28 | 75% | 🟡 |
+| D4: Identity & Access Management | 64 | 7 | 12 | 83 | 77% | 🟡 |
+| D5: Data Protection | 25 | 3 | 5 | 33 | 76% | 🟡 |
+| D6: Governance | 6 | 1 | 1 | 8 | 75% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -73,6 +73,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 39 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
 | 🟡 40 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178 | D1 | 1 |
 | 🟡 41 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
+| 🟡 42 | RCP exemptions (SLR) | Q183 | D4 | 1 |
+| 🟡 43 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
+| 🟡 44 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187 | D1 | 1 |
+| 🟡 45 | KMS auto-rotation retention | Q192 | D5 | 1 |
+| 🟡 46 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
 
 ---
 
@@ -106,6 +111,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 24 | 2025-05-16 | Q150–Q154 | 2 | 1 | 2 | Cross-domain (re-test — red-priority weak areas drill) | [Jump](#session-24--2025-05-16) |
 | 25 | 2025-05-16 | Q155–Q159 | 2 | 0 | 3 | D1 Detection (re-test — GuardDuty finding types + detect vs prevent drill) | [Jump](#session-25--2025-05-16) |
 | 26 | 2025-05-16 | Q160–Q182 | 20 | 0 | 3 | Cross-domain exam-format practice (Week 11 — all domains) | [Jump](#session-26--2025-05-16) |
+| 27 | 2025-05-16 | Q183–Q206 | 19 | 0 | 5 | Cross-domain exam-format practice (Week 11 — hardest topics) | [Jump](#session-27--2025-05-16) |
 
 ---
 
@@ -566,3 +572,38 @@ After adding a session:
 | 180 | D1 | Detect external S3 access (misconfig) + detect EC2 malicious IP (threat) — which TWO? | C+D | ✅ | Access Analyzer (misconfig) + GuardDuty (active threat). | — | Access Analyzer vs GuardDuty |
 | 181 | D5 | Mask credit cards in CloudWatch Logs, no code changes, restrict who sees raw? | A: Macie | ❌ | **B: CloudWatch Logs data protection policy** + logs:Unmask. Macie = S3 only. | — | Data masking (Macie ≠ logs) |
 | 182 | D3 | Dedicated Direct Connect, Layer 2 encryption? | B: MACsec | ✅ | MACsec — Layer 2 on dedicated DX only. | — | MACsec |
+
+
+---
+
+### Session 27 — 2025-05-16
+
+**Domains:** Cross-domain exam-format practice (Week 11 — hardest topics)
+**Score:** 19 ✅ · 0 ⚠️ · 5 ❌ (79% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 183 | D4 | RCP denies s3:* for non-org, ELB SLR writes access logs — blocked? | A: Denied | ❌ | **B: Allowed** — SLRs are structurally exempt from RCPs. | Q133 | RCP exemptions (SLR) |
+| 184 | D4 | Validate policy for security issues BEFORE deploying — which service? | A: Policy Simulator | ❌ | **B: Access Analyzer policy validation** — pre-deployment check. Simulator tests existing policies. | — | Access Analyzer policy validation vs Simulator |
+| 185 | D3 | EC2 private subnet needs S3 + DynamoDB, no internet — endpoint types? (TWO) | B+D | ✅ | Gateway endpoints for both (S3 + DynamoDB = only two Gateway endpoint services). | — | Gateway vs Interface endpoints |
+| 186 | D5 | Secret rotated, open DB connections still work — why? | B: AWSPREVIOUS | ✅ | Old password valid as AWSPREVIOUS until next rotation cycle. | Q104 | Secrets Manager rotation |
+| 187 | D1 | Role used from never-seen IP, zero code — which service? | B: Access Analyzer | ❌ | **C: GuardDuty** — unusual behavior happening NOW = active threat = GuardDuty. | Q158 | Detect vs prevent (GuardDuty vs Access Analyzer) |
+| 188 | D5 | S3 immutable 3 years, root can't delete, auto-expire after? | B: Compliance mode | ✅ | Compliance mode + fixed retention. Nobody deletes, auto-expires. | Q91 | Object Lock Compliance mode |
+| 189 | D4 | Identity=s3:*, boundary=s3:*+ec2:*, attempt kms:Encrypt? | B: Denied — boundary | ✅ | Boundary ceiling doesn't include kms:* = denied at Gate 3. | — | Permission boundary ceiling |
+| 190 | D1 | GuardDuty finding Policy:IAMUser/RootCredentialUsage — what happened? | B: Root API call | ✅ | Root account made an API call. Policy = risky config/usage. | — | GuardDuty finding types |
+| 191 | D6 | Prevent disabling GuardDuty/CloudTrail/Flow Logs org-wide? | B: SCP Deny | ✅ | SCP with explicit Deny on disable actions. | Q119 | SCP for preventive guardrails |
+| 192 | D5 | KMS auto-rotation: how long are old key material versions kept? | C: 90 days | ❌ | **B: Forever** — KMS keeps all versions until key deleted. No expiry. | — | KMS auto-rotation retention |
+| 193 | D4 | RCP denies s3:* non-org, ELB SLR writes — blocked? (re-test) | Allowed | ✅ | SLRs structurally exempt from RCPs. | Q183 | RCP exemptions (SLR) |
+| 194 | D4 | Validate policy before deploying — which service? (re-test) | Access Analyzer | ✅ | Access Analyzer policy validation = pre-deployment. | Q184 | Access Analyzer validation |
+| 195 | D1 | Role from unusual IP, zero code — which service? (re-test) | GuardDuty | ✅ | Active threat = GuardDuty. | Q187 | Detect vs prevent |
+| 196 | D5 | KMS auto-rotation: how long kept? (re-test) | Forever | ✅ | No expiration. All versions kept until key deleted. | Q192 | KMS auto-rotation retention |
+| 197 | D4 | Cross-account KMS: key policy grants B root, identity allows, no SCP — result? | B: Allowed | ✅ | Both sides satisfied, no SCP restriction. | Q81 | Cross-account KMS |
+| 198 | D4 | SCP denies RunInstances without CostCenter tag, dev launches without tag? | B: Denied | ✅ | SCP explicit Deny wins over identity Allow. | Q73 | SCP + RequestTag enforcement |
+| 199 | D5 | Mask SSNs in CW Logs, no code changes, restrict raw access? (TWO) | B+C | ✅ | CW Logs data protection + logs:Unmask for authorized users. | — | Data masking |
+| 200 | D4 | Session=GetObject only, cross-account bucket policy grants session PutObject — result? | B: Allowed | ✅ | Resource-based policy naming session bypasses session policy ceiling. | Q169 | Session policy bypass |
+| 201 | D1 | Exfiltration:S3/AnomalousBehavior — what does it indicate? | B: Unusual data transfer | ✅ | Unusual data transfer pattern suggesting exfiltration. | — | GuardDuty finding types |
+| 202 | D3 | Dedicated DX, encryption without latency? | B: MACsec | ✅ | MACsec — Layer 2, line-rate, dedicated only. | — | MACsec |
+| 203 | D5 | CMK scheduled for deletion, discovered 3 days later — what to do? | B: CancelKeyDeletion | ✅ | CancelKeyDeletion → key moves to Disabled. Must re-enable. | — | KMS key deletion |
+| 204 | D3 | Block C2 domain resolution VPC-wide immediately? | C: DNS Firewall BLOCK | ✅ | DNS Firewall BLOCK — kills query at DNS, VPC-wide. | — | DNS Firewall |
+| 205 | D1 | Access Analyzer finds external SQS access + GuardDuty enabled — what does each tell you? | B: AA=misconfig, GD=active threat | ✅ | AA = "exposed". GD = "being exploited". Complementary. | — | Access Analyzer vs GuardDuty |
+| 206 | D5 | Lambda has kms:GenerateDataKey in identity policy, key policy grants account root — succeeds? | C: Needs kms:Encrypt | ❌ | **B: Allowed** — root in key policy enables IAM delegation. GenerateDataKey IS correct for S3 envelope encryption. | — | KMS key policy delegation + GenerateDataKey |
