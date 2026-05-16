@@ -27,7 +27,7 @@
 
 | # | Video Title | Why | Status |
 |---|---|---|---|
-| 11 | Delegating and Centralizing GuardDuty | You just asked how this works | ⬜ |
+| 11 | Delegating and Centralizing GuardDuty | You just asked how this works | ✅ Done |
 | 12 | Delegating and Centralizing Detective | Same delegated admin pattern | ⬜ |
 | 13 | About AWS Security Hub CSPM | Never watched, exam-critical service | ⬜ |
 | 14 | Delegating and Centralizing Security Hub CSPM | Org-wide aggregation pattern | ⬜ |
@@ -77,7 +77,7 @@
 - [x] Automatically remediating incidents
 
 ### Session 3 (~45 min) — Delegated Admin + Security Hub
-- [ ] Delegating and Centralizing GuardDuty
+- [x] Delegating and Centralizing GuardDuty
 - [ ] Delegating and Centralizing Detective
 - [ ] About AWS Security Hub CSPM
 - [ ] Delegating and Centralizing Security Hub CSPM

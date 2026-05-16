@@ -79,7 +79,7 @@
 - [x] About Amazon CloudWatch
 - [x] About Amazon GuardDuty
 - [-] [LAB] Amazon GuardDuty Demo (requires subscription)
-- [ ] Delegating and Centralizing GuardDuty
+- [x] Delegating and Centralizing GuardDuty
 - [x] Amazon EventBridge
 - [x] Amazon Detective
 - [ ] Delegating and Centralizing Detective
