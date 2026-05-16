@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 216 |
-| **✅ Correct** | 157 (73%) |
+| **Total Questions** | 226 |
+| **✅ Correct** | 166 (73%) |
 | **⚠️ Partial** | 20 (9%) |
-| **❌ Wrong** | 39 (18%) |
-| **Sessions** | 28 |
-| **Re-tests Passed** | 68 of 85 |
+| **❌ Wrong** | 40 (18%) |
+| **Sessions** | 29 |
+| **Re-tests Passed** | 77 of 95 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 30 | 4 | 16 | 50 | 60% | 🟡 |
+| D1: Detection | 31 | 4 | 17 | 52 | 60% | 🟡 |
 | D2: Incident Response | 4 | 1 | 1 | 6 | 67% | 🟡 |
-| D3: Infrastructure Security | 22 | 4 | 4 | 30 | 73% | 🟡 |
-| D4: Identity & Access Management | 69 | 7 | 12 | 88 | 78% | 🟡 |
-| D5: Data Protection | 26 | 3 | 5 | 34 | 76% | 🟡 |
+| D3: Infrastructure Security | 23 | 4 | 4 | 31 | 74% | 🟡 |
+| D4: Identity & Access Management | 73 | 7 | 12 | 92 | 79% | 🟡 |
+| D5: Data Protection | 29 | 3 | 5 | 37 | 78% | 🟡 |
 | D6: Governance | 6 | 1 | 1 | 8 | 75% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -38,40 +38,40 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 4 | Security services comparison | Q5, Q24 | D1 | 2 |
 | 🔴 5 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
 | 🔴 6 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🟡 7 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 8 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 9 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 10 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 11 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
-| 🟡 12 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
-| 🟡 13 | DNS Firewall | Q14 | D3 | 1 |
-| 🟡 14 | Cross-account patterns | Q15 | D5 | 1 |
-| 🟡 15 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
-| 🟡 16 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 17 | RAM vs RCP | Q38 | D4 | 1 |
-| 🟡 18 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
-| 🟡 19 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
-| 🟡 20 | Cross-account KMS | Q53 | D4 | 1 |
-| 🟡 21 | STS session revocation | Q62 | D4 | 1 |
-| 🟡 22 | Session tags + ABAC | Q63 | D4 | 1 |
-| 🟡 23 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
-| 🟡 24 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
-| 🟡 25 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
-| 🟡 26 | Session policy as ceiling | Q78 | D4 | 1 |
-| 🟡 27 | SCP cannot be bypassed | Q83 | D4 | 1 |
-| 🟡 28 | MRK independent key policies | Q84 | D5 | 1 |
-| 🟡 29 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
-| 🟡 30 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
-| 🟡 31 | Imported key rotation procedure | Q114 | D5 | 1 |
-| 🟡 32 | SCP for preventive guardrails | Q119 | D6 | 1 |
-| 🟡 33 | RAM for resource sharing | Q126 | D6 | 1 |
-| 🟡 34 | DNS Firewall rule actions | Q129 | D3 | 1 |
-| 🟡 35 | GuardDuty vs Inspector | Q132 | D1 | 1 |
-| 🟡 36 | DNS Firewall rule structure | Q134 | D3 | 1 |
-| 🟡 37 | Step Functions for IR | Q138 | D2 | 1 |
-| 🟡 38 | Access Analyzer modes | Q144 | D1 | 1 |
-| 🟡 39 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
-| 🟡 40 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178 | D1 | 1 |
+| 🔴 7 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226 | D1 | 2 |
+| 🟡 8 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 9 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 10 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 11 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 12 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 13 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 14 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 15 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 16 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 17 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 18 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 19 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 20 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
+| 🟡 21 | Cross-account KMS | Q53 | D4 | 1 |
+| 🟡 22 | STS session revocation | Q62 | D4 | 1 |
+| 🟡 23 | Session tags + ABAC | Q63 | D4 | 1 |
+| 🟡 24 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
+| 🟡 25 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
+| 🟡 26 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
+| 🟡 27 | Session policy as ceiling | Q78 | D4 | 1 |
+| 🟡 28 | SCP cannot be bypassed | Q83 | D4 | 1 |
+| 🟡 29 | MRK independent key policies | Q84 | D5 | 1 |
+| 🟡 30 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
+| 🟡 31 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
+| 🟡 32 | Imported key rotation procedure | Q114 | D5 | 1 |
+| 🟡 33 | SCP for preventive guardrails | Q119 | D6 | 1 |
+| 🟡 34 | RAM for resource sharing | Q126 | D6 | 1 |
+| 🟡 35 | DNS Firewall rule actions | Q129 | D3 | 1 |
+| 🟡 36 | GuardDuty vs Inspector | Q132 | D1 | 1 |
+| 🟡 37 | DNS Firewall rule structure | Q134 | D3 | 1 |
+| 🟡 38 | Step Functions for IR | Q138 | D2 | 1 |
+| 🟡 39 | Access Analyzer modes | Q144 | D1 | 1 |
+| 🟡 40 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
 | 🟡 41 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
 | 🟡 42 | RCP exemptions (SLR) | Q183 | D4 | 1 |
 | 🟡 43 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
@@ -114,6 +114,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 26 | 2025-05-16 | Q160–Q182 | 20 | 0 | 3 | Cross-domain exam-format practice (Week 11 — all domains) | [Jump](#session-26--2025-05-16) |
 | 27 | 2025-05-16 | Q183–Q206 | 19 | 0 | 5 | Cross-domain exam-format practice (Week 11 — hardest topics) | [Jump](#session-27--2025-05-16) |
 | 28 | 2025-05-16 | Q207–Q216 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, targeting remaining gaps) | [Jump](#session-28--2025-05-16) |
+| 29 | 2025-05-16 | Q217–Q226 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — final killer set, all weak spots) | [Jump](#session-29--2025-05-16) |
 
 ---
 
@@ -630,3 +631,24 @@ After adding a session:
 | 214 | D4 | Prevent CreateRole without boundary, org-wide? | B: SCP + iam:PermissionsBoundary | ✅ | SCP delegation pattern — force boundary on all role creation. | — | SCP + boundary delegation |
 | 215 | D1 | CloudTrail log file modified — how detected? | C: Digest files + SHA-256 | ✅ | Log file integrity validation — digest files, validate via CLI. | — | CloudTrail integrity |
 | 216 | D4 | "Can editor Bob update invoice-789 in tenant Acme?" — which service? | B: Verified Permissions | ✅ | VP + Cedar — app-level authz, not AWS API. | — | Verified Permissions |
+
+
+---
+
+### Session 29 — 2025-05-16
+
+**Domains:** Cross-domain exam-format practice (Week 11 — final killer set, all weak spots)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 217 | D4 | RCP denies s3:* non-org. Config SLR writes + CloudTrail writes — which succeed? | A: Both | ✅ | Both — SLR exempt (structural) + CloudTrail exempt (PrincipalIsAWSService). Two different mechanisms. | Q183, Q207 | RCP exemptions (both paths) |
+| 218 | D1 | EC2 actively sending traffic to Bitcoin mining pool — finding type? | B: CryptoCurrency:EC2/BitcoinTool.B | ✅ | Active mining = CryptoCurrency. DNS query only = Impact. | Q178 | GuardDuty finding types |
+| 219 | D4 | Check new policy for security issues BEFORE attaching — which tool? | B: Access Analyzer validation | ✅ | Pre-deployment = Access Analyzer policy validation. Simulator = test existing. | Q184 | Access Analyzer validation |
+| 220 | D5 | Mask PHI in CW Logs, only compliance officer sees raw — which TWO? | B+C | ✅ | CW Logs data protection + deny logs:Unmask broadly. | Q181 | Data masking |
+| 221 | D4 | Session=GetObject only, bucket policy grants role PutObject — result? | B: Allowed | ✅ | Resource-based policy naming role bypasses session policy ceiling. | Q169, Q200 | Session policy bypass |
+| 222 | D4 | SCP denies GetObject, bucket policy in Account A grants role ARN — result? | B: Denied | ✅ | SCP cannot be bypassed by anything. | Q179 | SCP cannot be bypassed |
+| 223 | D5 | KMS rotated 3 times, decrypt data from original material 3 years ago? | B: Succeeds forever | ✅ | All versions kept forever, auto-routes via ciphertext metadata. | Q192 | KMS auto-rotation retention |
+| 224 | D3/D1 | Detect overly permissive SGs + detect malicious IP comms — which TWO? | C+D | ✅ | FM SG audit (misconfig) + GuardDuty (active threat). | Q208 | FM vs GuardDuty |
+| 225 | D5 | Key policy grants root only, Lambda identity has GenerateDataKey — succeeds? | B: Allowed | ✅ | Root = IAM delegation enabled. Identity policy grants the action. | Q206 | KMS key policy delegation |
+| 226 | D1 | EC2 queries DNS for crypto domain, no connection yet — finding type? | D: Discovery | ❌ | **B: `Impact:EC2/BitcoinDomainRequest.Reputation`** — DNS query to crypto domain = Impact. Active mining = CryptoCurrency. Discovery = resource enumeration. | Q178 | GuardDuty finding types (Impact vs CryptoCurrency) |
