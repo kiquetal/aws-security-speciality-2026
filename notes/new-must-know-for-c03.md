@@ -114,12 +114,12 @@ Exam signal: "encrypt in one region, decrypt in another" → MRK
 
 ## Progress Tracker
 
-| # | Topic | Quick Ref | Deep-Dive FAQ |
-|---|---|---|---|
-| 1 | RCPs | ✅ | ✅ faq-rcp.md |
-| 2 | GenAI OWASP Top 10 | ✅ | ✅ faq-genai-owasp.md |
-| 3 | OCSF / Security Lake | ✅ | ✅ faq-security-lake.md |
-| 4 | Data Masking | ✅ | ✅ faq-data-masking.md |
-| 5 | Nitro Encryption | ✅ | ✅ faq-nitro-encryption.md |
-| 6 | Imported Key Material | ✅ | ✅ faq-kms.md |
-| 7 | Multi-Region Keys + Private CA | ✅ | ✅ faq-kms.md + faq-acm-private-ca.md |
+| # | Topic | Quick Ref | Deep-Dive FAQ | Exam-Tested? |
+|---|---|---|---|---|
+| 1 | RCPs | ✅ | ✅ faq-rcp.md | ✅ Multiple sessions |
+| 2 | GenAI OWASP Top 10 | ✅ | ✅ faq-genai-owasp.md | ⬜ Not yet tested |
+| 3 | OCSF / Security Lake | ✅ | ✅ faq-security-lake.md | ✅ Q170 correct |
+| 4 | Data Masking | ✅ | ✅ faq-data-masking.md | ✅ Q181, Q199 |
+| 5 | Nitro Encryption | ✅ | ✅ faq-nitro-encryption.md | ✅ Q164 correct |
+| 6 | Imported Key Material | ✅ | ✅ faq-kms.md | ✅ Q172 correct |
+| 7 | Multi-Region Keys + Private CA | ✅ | ✅ faq-kms.md + faq-acm-private-ca.md | ✅ Q165 correct |
