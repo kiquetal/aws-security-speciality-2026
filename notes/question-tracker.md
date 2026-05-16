@@ -8,20 +8,20 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 154 |
-| **✅ Correct** | 107 (69%) |
+| **Total Questions** | 159 |
+| **✅ Correct** | 109 (69%) |
 | **⚠️ Partial** | 20 (13%) |
-| **❌ Wrong** | 27 (18%) |
-| **Sessions** | 24 |
-| **Re-tests Passed** | 42 of 53 |
+| **❌ Wrong** | 30 (19%) |
+| **Sessions** | 25 |
+| **Re-tests Passed** | 44 of 58 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 17 | 4 | 11 | 32 | 53% | 🟡 |
+| D1: Detection | 18 | 4 | 14 | 36 | 50% | 🟡 |
 | D2: Incident Response | 3 | 1 | 1 | 5 | 60% | 🟡 |
-| D3: Infrastructure Security | 15 | 4 | 3 | 22 | 68% | 🟡 |
+| D3: Infrastructure Security | 16 | 4 | 3 | 23 | 70% | 🟡 |
 | D4: Identity & Access Management | 52 | 7 | 9 | 68 | 76% | 🟡 |
 | D5: Data Protection | 16 | 3 | 2 | 21 | 76% | 🟡 |
 | D6: Governance | 4 | 1 | 1 | 6 | 67% | 🟡 |
@@ -32,9 +32,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
-| 🔴 1 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
-| 🔴 2 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153 | D1, D5 | 3 |
-| 🔴 3 | GuardDuty finding types | Q116, Q142, Q154 | D1 | 3 |
+| 🔴 1 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153, Q156, Q158 | D1, D5 | 5 |
+| 🔴 2 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
+| 🔴 3 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
 | 🔴 4 | Security services comparison | Q5, Q24 | D1 | 2 |
 | 🔴 5 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
 | 🟡 6 | CloudTrail data vs management events | Q1 | D1 | 1 |
@@ -102,6 +102,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 22 | 2025-05-15 | Q130–Q139 | 7 | 1 | 2 | Cross-domain timed practice exam (Week 11 — all domains, RAM/FM focus) | [Jump](#session-22--2025-05-15) |
 | 23 | 2025-05-15 | Q140–Q149 | 7 | 2 | 1 | D1 Detection · D2 Incident Response (re-test — post-video drill) | [Jump](#session-23--2025-05-15) |
 | 24 | 2025-05-16 | Q150–Q154 | 2 | 1 | 2 | Cross-domain (re-test — red-priority weak areas drill) | [Jump](#session-24--2025-05-16) |
+| 25 | 2025-05-16 | Q155–Q159 | 2 | 0 | 3 | D1 Detection (re-test — GuardDuty finding types + detect vs prevent drill) | [Jump](#session-25--2025-05-16) |
 
 ---
 
@@ -512,3 +513,19 @@ After adding a session:
 | 152 | D3 | Network Firewall TLS inspection — users get cert warnings — root cause? | "Import public CA in browser" | ⚠️ | Firewall's **private** CA cert not trusted by clients — distribute private CA to trust stores. Not a public cert — it's a MITM pattern with private CA. | Q122 | Network Firewall TLS inspection |
 | 153 | D1 | SSE-KMS buckets, alert when external account decrypts, least overhead? | CloudTrail | ❌ | **GuardDuty S3 Protection** — "alert/detect" + "least overhead" = GuardDuty. CloudTrail is the log source, not the detection engine. | Q105 | Detect vs prevent (GuardDuty vs policy) |
 | 154 | D1 | GuardDuty finding for credentials used from anonymizing proxy — finding type pattern? | Don't know | ❌ | `UnauthorizedAccess:IAMUser/TorIPCaller` — pattern: ThreatPurpose:ResourceType/ThreatName. | Q142 | GuardDuty finding types |
+
+
+---
+
+### Session 25 — 2025-05-16
+
+**Domains:** D1 Detection (re-test — GuardDuty finding types + detect vs prevent drill)
+**Score:** 2 ✅ · 0 ⚠️ · 3 ❌ (40% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 155 | D1 | GuardDuty finding type for EC2 mining Bitcoin? | "Mining:EC2/" | ❌ | `CryptoCurrency:EC2/BitcoinTool.B` — ThreatPurpose is CryptoCurrency, not Mining. | Q154 | GuardDuty finding types |
+| 156 | D1 | SSE-KMS, want to KNOW when external account decrypts, least overhead — GuardDuty or CloudTrail? | CloudTrail | ❌ | **GuardDuty S3 Protection** — "detect/alert" + "least overhead" = GuardDuty. CloudTrail is the log source, not the detection engine. | Q153 | Detect vs prevent (GuardDuty vs policy) |
+| 157 | D3 | Network Firewall TLS inspection CA cert — public, private, or self-signed? | Private | ✅ | Private CA cert — MITM pattern, distribute private CA to client trust stores. | Q152 | Network Firewall TLS inspection |
+| 158 | D1 | Credentials used from unusual geographic location, notify, least overhead? | IAM Access Analyzer | ❌ | **GuardDuty** — active threat (unusual location) = GuardDuty. Access Analyzer finds misconfigurations, not real-time threats. | Q156 | Detect vs prevent (GuardDuty vs policy) |
+| 159 | D1 | EC2 communicating with C2 server, alert with zero custom code? | GuardDuty | ✅ | GuardDuty — active threat + zero code = always GuardDuty. | Q140 | GuardDuty vs Inspector |
