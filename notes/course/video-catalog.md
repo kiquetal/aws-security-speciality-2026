@@ -82,11 +82,11 @@
 - [x] Delegating and Centralizing GuardDuty
 - [x] Amazon EventBridge
 - [x] Amazon Detective
-- [ ] Delegating and Centralizing Detective
+- [x] Delegating and Centralizing Detective
 - [ ] [LAB] Amazon Inspector
-- [ ] About AWS Security Hub CSPM
-- [ ] Delegating and Centralizing Security Hub CSPM
-- [ ] [Quiz] Security Monitoring and Threat Detection
+- [x] About AWS Security Hub CSPM
+- [x] Delegating and Centralizing Security Hub CSPM
+- [x] [Quiz] Security Monitoring and Threat Detection
 
 ## Amazon S3 Security
 - [x] Managing access to S3 buckets

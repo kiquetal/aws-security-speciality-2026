@@ -28,10 +28,10 @@
 | # | Video Title | Why | Status |
 |---|---|---|---|
 | 11 | Delegating and Centralizing GuardDuty | You just asked how this works | ✅ Done |
-| 12 | Delegating and Centralizing Detective | Same delegated admin pattern | ⬜ |
-| 13 | About AWS Security Hub CSPM | Never watched, exam-critical service | ⬜ |
-| 14 | Delegating and Centralizing Security Hub CSPM | Org-wide aggregation pattern | ⬜ |
-| 15 | [Quiz] Security Monitoring and Threat Detection | Free test of D1 knowledge | ⬜ |
+| 12 | Delegating and Centralizing Detective | Same delegated admin pattern | ✅ Done |
+| 13 | About AWS Security Hub CSPM | Never watched, exam-critical service | ✅ Done |
+| 14 | Delegating and Centralizing Security Hub CSPM | Org-wide aggregation pattern | ✅ Done |
+| 15 | [Quiz] Security Monitoring and Threat Detection | Free test of D1 knowledge | ✅ Done |
 | 16 | CloudWatch Logs data protection policies | Data masking (new in C03) | ✅ Done |
 | 17 | [LAB] Protect CloudWatch Logs data with masking policies | Hands-on data masking | ⬜ |
 | 18 | AWS hybrid and remote connectivity | MACsec = Layer 2 on dedicated DX | ✅ Done |
@@ -76,12 +76,12 @@
 - [x] Using Step Functions for Security Workflows
 - [x] Automatically remediating incidents
 
-### Session 3 (~45 min) — Delegated Admin + Security Hub
+### Session 3 (~45 min) — Delegated Admin + Security Hub ✅ COMPLETE
 - [x] Delegating and Centralizing GuardDuty
-- [ ] Delegating and Centralizing Detective
-- [ ] About AWS Security Hub CSPM
-- [ ] Delegating and Centralizing Security Hub CSPM
-- [ ] [Quiz] Security Monitoring and Threat Detection
+- [x] Delegating and Centralizing Detective
+- [x] About AWS Security Hub CSPM
+- [x] Delegating and Centralizing Security Hub CSPM
+- [x] [Quiz] Security Monitoring and Threat Detection
 
 ### Session 4 (~30 min, 1.5x speed) — Fill Remaining Gaps
 - [ ] AWS hybrid and remote connectivity
