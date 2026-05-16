@@ -50,6 +50,15 @@ QUERYING DNS for crypto domains (indicator, not confirmed)
   → Impact:EC2/BitcoinDomainRequest.Reputation
 
 Rule: DNS query = Impact. Active mining = CryptoCurrency.
+
+MEMORY TRICK:
+  DNS query = just LOOKING at the menu  → Impact
+  Active mining = EATING the food       → CryptoCurrency
+
+  Looking ≠ doing. Impact ≠ CryptoCurrency.
+
+Discovery = enumerating YOUR resources (listing buckets, etc.)
+            NEVER for crypto. Don't pick it.
 ```
 
 ## Memory Trick
