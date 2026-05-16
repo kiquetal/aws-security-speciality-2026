@@ -8,21 +8,21 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 149 |
-| **✅ Correct** | 105 (70%) |
-| **⚠️ Partial** | 19 (13%) |
-| **❌ Wrong** | 25 (17%) |
-| **Sessions** | 23 |
-| **Re-tests Passed** | 40 of 48 |
+| **Total Questions** | 154 |
+| **✅ Correct** | 107 (69%) |
+| **⚠️ Partial** | 20 (13%) |
+| **❌ Wrong** | 27 (18%) |
+| **Sessions** | 24 |
+| **Re-tests Passed** | 42 of 53 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 16 | 4 | 9 | 29 | 55% | 🟡 |
+| D1: Detection | 17 | 4 | 11 | 32 | 53% | 🟡 |
 | D2: Incident Response | 3 | 1 | 1 | 5 | 60% | 🟡 |
-| D3: Infrastructure Security | 15 | 3 | 3 | 21 | 71% | 🟡 |
-| D4: Identity & Access Management | 51 | 7 | 9 | 67 | 76% | 🟡 |
+| D3: Infrastructure Security | 15 | 4 | 3 | 22 | 68% | 🟡 |
+| D4: Identity & Access Management | 52 | 7 | 9 | 68 | 76% | 🟡 |
 | D5: Data Protection | 16 | 3 | 2 | 21 | 76% | 🟡 |
 | D6: Governance | 4 | 1 | 1 | 6 | 67% | 🟡 |
 
@@ -32,11 +32,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
-| 🔴 1 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 2 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 3 | Network Firewall TLS inspection | Q35, Q87 | D3 | 2 |
-| 🔴 4 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105 | D1, D5 | 2 |
-| 🔴 5 | GuardDuty finding types | Q116, Q142 | D1 | 2 |
+| 🔴 1 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
+| 🔴 2 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153 | D1, D5 | 3 |
+| 🔴 3 | GuardDuty finding types | Q116, Q142, Q154 | D1 | 3 |
+| 🔴 4 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 5 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
 | 🟡 6 | CloudTrail data vs management events | Q1 | D1 | 1 |
 | 🟡 7 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
 | 🟡 8 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
@@ -101,6 +101,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 21 | 2025-05-15 | Q120–Q129 | 8 | 1 | 1 | Cross-domain timed practice exam (Week 11 — all domains) | [Jump](#session-21--2025-05-15) |
 | 22 | 2025-05-15 | Q130–Q139 | 7 | 1 | 2 | Cross-domain timed practice exam (Week 11 — all domains, RAM/FM focus) | [Jump](#session-22--2025-05-15) |
 | 23 | 2025-05-15 | Q140–Q149 | 7 | 2 | 1 | D1 Detection · D2 Incident Response (re-test — post-video drill) | [Jump](#session-23--2025-05-15) |
+| 24 | 2025-05-16 | Q150–Q154 | 2 | 1 | 2 | Cross-domain (re-test — red-priority weak areas drill) | [Jump](#session-24--2025-05-16) |
 
 ---
 
@@ -495,3 +496,19 @@ After adding a session:
 | 147 | D6 | Ensure all ALBs across 200 accounts have same WAF rules, auto-remediate — which service? | Firewall Manager | ✅ | Firewall Manager — "ensure/enforce" + auto-remediate = FM. | Q130 | Firewall Manager vs RAM |
 | 148 | D2 | Before full IR, what should you do first with the GuardDuty finding? | "Evaluate" | ⚠️ | **Validate findings** — assess scope, check false positives, confirm severity. Exam keyword = "validate" or "triage". | — | Validate findings (Task 2.2.3) |
 | 149 | D3 | Dedicated Direct Connect, Layer 2 encryption — which feature? | MACsec | ✅ | MACsec — Layer 2 encryption on dedicated DX only. | — | MACsec |
+
+
+---
+
+### Session 24 — 2025-05-16
+
+**Domains:** Cross-domain (re-test — red-priority weak areas drill)
+**Score:** 2 ✅ · 1 ⚠️ · 2 ❌ (40% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 150 | D1 | 200 accounts, dashboard: unencrypted S3/EBS + CIS score, least overhead? | Security Hub | ✅ | Security Hub — FSBP + CIS benchmark, org-wide, one-click. | Q108 | Security services comparison |
+| 151 | D4 | 600 customers need kms:Decrypt, key policy at 28KB, onboard/offboard weekly? | KMS Grants | ✅ | KMS Grants — one API call per customer, no policy edits, scales without limit. | Q69 | RAM vs KMS Grants |
+| 152 | D3 | Network Firewall TLS inspection — users get cert warnings — root cause? | "Import public CA in browser" | ⚠️ | Firewall's **private** CA cert not trusted by clients — distribute private CA to trust stores. Not a public cert — it's a MITM pattern with private CA. | Q122 | Network Firewall TLS inspection |
+| 153 | D1 | SSE-KMS buckets, alert when external account decrypts, least overhead? | CloudTrail | ❌ | **GuardDuty S3 Protection** — "alert/detect" + "least overhead" = GuardDuty. CloudTrail is the log source, not the detection engine. | Q105 | Detect vs prevent (GuardDuty vs policy) |
+| 154 | D1 | GuardDuty finding for credentials used from anonymizing proxy — finding type pattern? | Don't know | ❌ | `UnauthorizedAccess:IAMUser/TorIPCaller` — pattern: ThreatPurpose:ResourceType/ThreatName. | Q142 | GuardDuty finding types |
