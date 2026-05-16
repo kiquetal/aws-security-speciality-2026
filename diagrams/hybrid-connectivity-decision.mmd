@@ -1,0 +1,23 @@
+flowchart TD
+    Q["How do you connect?"] --> S1{"Entire on-prem<br/>network to AWS?"}
+    S1 -->|"Quick/backup<br/>over internet"| VPN["Site-to-Site VPN<br/>(IPsec, Layer 3)"]
+    S1 -->|"Dedicated fiber<br/>high throughput"| DX["Direct Connect<br/>(1/10/100 Gbps)"]
+
+    Q --> S2{"Multiple VPCs +<br/>on-prem interconnect?"}
+    S2 --> TGW["Transit Gateway<br/>(hub-and-spoke)"]
+
+    Q --> S3{"Remote workforce<br/>access?"}
+    S3 -->|"Full network<br/>access needed"| CVPN["Client VPN<br/>(OpenVPN tunnel)"]
+    S3 -->|"Specific apps only<br/>zero-trust"| VA["Verified Access<br/>(browser, no client)"]
+
+    DX --> ENC{"Encrypt DX?"}
+    ENC -->|"Dedicated DX"| MAC["MACsec<br/>(Layer 2, line-rate)"]
+    ENC -->|"Hosted DX"| VPNDX["VPN over DX<br/>(IPsec, Layer 3)"]
+
+    style VPN fill:#3366cc,color:#fff
+    style DX fill:#ff9900,color:#fff
+    style TGW fill:#8B5CF6,color:#fff
+    style CVPN fill:#059669,color:#fff
+    style VA fill:#DC2626,color:#fff
+    style MAC fill:#ff9900,color:#fff
+    style VPNDX fill:#3366cc,color:#fff
