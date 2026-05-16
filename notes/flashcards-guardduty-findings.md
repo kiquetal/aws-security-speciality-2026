@@ -40,6 +40,18 @@
 | `Exfiltration:S3/AnomalousBehavior` | Unusual S3 data transfer |
 | `Impact:EC2/BitcoinDomainRequest.Reputation` | EC2 querying crypto domain |
 
+## CryptoCurrency vs Impact (Exam Trap!)
+
+```
+ACTIVELY MINING (confirmed traffic to mining pool)
+  → CryptoCurrency:EC2/BitcoinTool.B
+
+QUERYING DNS for crypto domains (indicator, not confirmed)
+  → Impact:EC2/BitcoinDomainRequest.Reputation
+
+Rule: DNS query = Impact. Active mining = CryptoCurrency.
+```
+
 ## Memory Trick
 
 ```
