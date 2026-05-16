@@ -34,7 +34,7 @@
 | 15 | [Quiz] Security Monitoring and Threat Detection | Free test of D1 knowledge | ⬜ |
 | 16 | CloudWatch Logs data protection policies | Data masking (new in C03) | ✅ Done |
 | 17 | [LAB] Protect CloudWatch Logs data with masking policies | Hands-on data masking | ⬜ |
-| 18 | AWS hybrid and remote connectivity | MACsec = Layer 2 on dedicated DX | ⬜ |
+| 18 | AWS hybrid and remote connectivity | MACsec = Layer 2 on dedicated DX | ✅ Done |
 | 19 | Amazon Route 53 Resolver query logs | DNS Firewall context (Q129, Q134) | ✅ Done |
 | 20 | Test and validate your IR plans | Fault Injection Service (new in C03) | ⬜ |
 | 21 | [Scenario] Alert and monitoring for all root activities | Practical exam scenario | ⬜ |

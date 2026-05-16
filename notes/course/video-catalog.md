@@ -185,7 +185,7 @@
 - [x] ELB Health Checks and Encryption
 - [x] ELB Logging and Metrics
 - [x] VPC Endpoints and AWS PrivateLink
-- [ ] AWS hybrid and remote connectivity
+- [x] AWS hybrid and remote connectivity
 - [x] Amazon VPC Network Access Analyzer
 - [x] Code Signing with AWS Signer
 
