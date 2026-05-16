@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 206 |
-| **✅ Correct** | 148 (72%) |
-| **⚠️ Partial** | 20 (10%) |
-| **❌ Wrong** | 38 (18%) |
-| **Sessions** | 27 |
-| **Re-tests Passed** | 65 of 82 |
+| **Total Questions** | 216 |
+| **✅ Correct** | 157 (73%) |
+| **⚠️ Partial** | 20 (9%) |
+| **❌ Wrong** | 39 (18%) |
+| **Sessions** | 28 |
+| **Re-tests Passed** | 68 of 85 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 28 | 4 | 16 | 48 | 58% | 🟡 |
+| D1: Detection | 30 | 4 | 16 | 50 | 60% | 🟡 |
 | D2: Incident Response | 4 | 1 | 1 | 6 | 67% | 🟡 |
-| D3: Infrastructure Security | 21 | 4 | 3 | 28 | 75% | 🟡 |
-| D4: Identity & Access Management | 64 | 7 | 12 | 83 | 77% | 🟡 |
-| D5: Data Protection | 25 | 3 | 5 | 33 | 76% | 🟡 |
+| D3: Infrastructure Security | 22 | 4 | 4 | 30 | 73% | 🟡 |
+| D4: Identity & Access Management | 69 | 7 | 12 | 88 | 78% | 🟡 |
+| D5: Data Protection | 26 | 3 | 5 | 34 | 76% | 🟡 |
 | D6: Governance | 6 | 1 | 1 | 8 | 75% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -78,6 +78,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 44 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187 | D1 | 1 |
 | 🟡 45 | KMS auto-rotation retention | Q192 | D5 | 1 |
 | 🟡 46 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
+| 🟡 47 | Firewall Manager SG audit | Q208 | D3 | 1 |
 
 ---
 
@@ -112,6 +113,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 25 | 2025-05-16 | Q155–Q159 | 2 | 0 | 3 | D1 Detection (re-test — GuardDuty finding types + detect vs prevent drill) | [Jump](#session-25--2025-05-16) |
 | 26 | 2025-05-16 | Q160–Q182 | 20 | 0 | 3 | Cross-domain exam-format practice (Week 11 — all domains) | [Jump](#session-26--2025-05-16) |
 | 27 | 2025-05-16 | Q183–Q206 | 19 | 0 | 5 | Cross-domain exam-format practice (Week 11 — hardest topics) | [Jump](#session-27--2025-05-16) |
+| 28 | 2025-05-16 | Q207–Q216 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, targeting remaining gaps) | [Jump](#session-28--2025-05-16) |
 
 ---
 
@@ -607,3 +609,24 @@ After adding a session:
 | 204 | D3 | Block C2 domain resolution VPC-wide immediately? | C: DNS Firewall BLOCK | ✅ | DNS Firewall BLOCK — kills query at DNS, VPC-wide. | — | DNS Firewall |
 | 205 | D1 | Access Analyzer finds external SQS access + GuardDuty enabled — what does each tell you? | B: AA=misconfig, GD=active threat | ✅ | AA = "exposed". GD = "being exploited". Complementary. | — | Access Analyzer vs GuardDuty |
 | 206 | D5 | Lambda has kms:GenerateDataKey in identity policy, key policy grants account root — succeeds? | C: Needs kms:Encrypt | ❌ | **B: Allowed** — root in key policy enables IAM delegation. GenerateDataKey IS correct for S3 envelope encryption. | — | KMS key policy delegation + GenerateDataKey |
+
+
+---
+
+### Session 28 — 2025-05-16
+
+**Domains:** Cross-domain exam-format practice (Week 11 — mixed, targeting remaining gaps)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 207 | D4 | RCP denies kms:Decrypt non-org + PrincipalIsAWSService:false. CloudTrail decrypts — blocked? | B: Allowed | ✅ | CloudTrail IS an AWS service → condition doesn't match → Deny doesn't fire. | Q42 | RCP exemptions (PrincipalIsAWSService) |
+| 208 | D3 | SG opened to 0.0.0.0/0 across 200 accounts, auto-detect + revert — which service? | A: GuardDuty | ❌ | **C: Firewall Manager SG audit policy** — misconfig + org-wide + auto-remediate = FM. GuardDuty detects threats, not misconfigs. | — | Firewall Manager SG audit |
+| 209 | D3 | DNS Firewall: allow only 2 domains, block all else — rule structure? | B: ALLOW specific → BLOCK * | ✅ | ALLOW domains first (lowest priority number) → BLOCK * last. First match wins. | Q129 | DNS Firewall rule structure |
+| 210 | D4 | Identity Center employee selects permission set — what does it become? | B: IAM role | ✅ | Permission set = IAM role auto-created in target account. | — | Identity Center |
+| 211 | D5 | Lambda uploads to S3 with SSE-KMS — which KMS permission needed? | C+A | ✅ | **C only: kms:GenerateDataKey** — S3 uses envelope encryption. kms:Encrypt is for direct <4KB. | Q206 | KMS GenerateDataKey for S3 |
+| 212 | D4 | Role chaining A→B→C, Role C MaxSessionDuration=12hr — actual max? | B: 1 hour | ✅ | Role chaining always resets to 1hr max. | — | Role chaining |
+| 213 | D1 | GuardDuty Runtime Monitoring for EKS — what extra component needed? | B: Security agent | ✅ | Runtime Monitoring = only GuardDuty feature needing an agent. | — | GuardDuty Runtime Monitoring |
+| 214 | D4 | Prevent CreateRole without boundary, org-wide? | B: SCP + iam:PermissionsBoundary | ✅ | SCP delegation pattern — force boundary on all role creation. | — | SCP + boundary delegation |
+| 215 | D1 | CloudTrail log file modified — how detected? | C: Digest files + SHA-256 | ✅ | Log file integrity validation — digest files, validate via CLI. | — | CloudTrail integrity |
+| 216 | D4 | "Can editor Bob update invoice-789 in tenant Acme?" — which service? | B: Verified Permissions | ✅ | VP + Cedar — app-level authz, not AWS API. | — | Verified Permissions |
