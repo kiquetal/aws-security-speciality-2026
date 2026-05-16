@@ -193,7 +193,7 @@
 - [x] Centralized CloudWatch Logging
 - [x] Configure the Amazon unified CloudWatch agent
 - [x] [LAB] Install and Configure the Amazon CloudWatch Unified Agent on EC2
-- [ ] CloudWatch Logs data protection policies
+- [x] CloudWatch Logs data protection policies
 - [ ] [LAB] Protect CloudWatch Logs data with masking policies
 - [x] [Cheat Sheet] Troubleshoot CloudWatch Agent configurations
 - [x] [Quiz] CloudWatch logging
@@ -201,7 +201,7 @@
 ## Working with security logs
 - [x] [LAB] Amazon VPC Flow Logs
 - [x] Transit Gateway Flow Logs
-- [ ] Amazon Route 53 Resolver query logs
+- [x] Amazon Route 53 Resolver query logs
 - [x] [DEMO] Enable S3 Server Access Logs
 - [x] [LAB] S3 Server Access Logs – AWS Console
 - [x] [LAB] S3 Server Access Logs – CLI
