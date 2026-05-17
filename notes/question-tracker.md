@@ -8,21 +8,21 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 226 |
-| **✅ Correct** | 166 (73%) |
+| **Total Questions** | 231 |
+| **✅ Correct** | 171 (74%) |
 | **⚠️ Partial** | 20 (9%) |
-| **❌ Wrong** | 40 (18%) |
-| **Sessions** | 29 |
-| **Re-tests Passed** | 77 of 95 |
+| **❌ Wrong** | 40 (17%) |
+| **Sessions** | 30 |
+| **Re-tests Passed** | 82 of 100 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 31 | 4 | 17 | 52 | 60% | 🟡 |
+| D1: Detection | 34 | 4 | 17 | 55 | 62% | 🟡 |
 | D2: Incident Response | 4 | 1 | 1 | 6 | 67% | 🟡 |
 | D3: Infrastructure Security | 23 | 4 | 4 | 31 | 74% | 🟡 |
-| D4: Identity & Access Management | 73 | 7 | 12 | 92 | 79% | 🟡 |
+| D4: Identity & Access Management | 75 | 7 | 12 | 94 | 80% | 🟡 |
 | D5: Data Protection | 29 | 3 | 5 | 37 | 78% | 🟡 |
 | D6: Governance | 6 | 1 | 1 | 8 | 75% | 🟡 |
 
@@ -115,6 +115,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 27 | 2025-05-16 | Q183–Q206 | 19 | 0 | 5 | Cross-domain exam-format practice (Week 11 — hardest topics) | [Jump](#session-27--2025-05-16) |
 | 28 | 2025-05-16 | Q207–Q216 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, targeting remaining gaps) | [Jump](#session-28--2025-05-16) |
 | 29 | 2025-05-16 | Q217–Q226 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — final killer set, all weak spots) | [Jump](#session-29--2025-05-16) |
+| 30 | 2025-05-17 | Q227–Q231 | 5 | 0 | 0 | Cross-domain (re-test — red-priority gaps: Impact vs CryptoCurrency, session policy bypass) | [Jump](#session-30--2025-05-17) |
 
 ---
 
@@ -652,3 +653,19 @@ After adding a session:
 | 224 | D3/D1 | Detect overly permissive SGs + detect malicious IP comms — which TWO? | C+D | ✅ | FM SG audit (misconfig) + GuardDuty (active threat). | Q208 | FM vs GuardDuty |
 | 225 | D5 | Key policy grants root only, Lambda identity has GenerateDataKey — succeeds? | B: Allowed | ✅ | Root = IAM delegation enabled. Identity policy grants the action. | Q206 | KMS key policy delegation |
 | 226 | D1 | EC2 queries DNS for crypto domain, no connection yet — finding type? | D: Discovery | ❌ | **B: `Impact:EC2/BitcoinDomainRequest.Reputation`** — DNS query to crypto domain = Impact. Active mining = CryptoCurrency. Discovery = resource enumeration. | Q178 | GuardDuty finding types (Impact vs CryptoCurrency) |
+
+
+---
+
+### Session 30 — 2025-05-17
+
+**Domains:** Cross-domain (re-test — red-priority gaps: Impact vs CryptoCurrency, session policy bypass)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 227 | D1 | EC2 DNS queries to pool.minergate.com, no TCP connection yet — ThreatPurpose? | Impact | ✅ | Impact — DNS query only = Impact. Active mining = CryptoCurrency. | Q226 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 228 | D1 | EC2 actively sending traffic TO mining pool (connection established) — ThreatPurpose? | CryptoCurrency | ✅ | CryptoCurrency:EC2/BitcoinTool.B — active mining traffic. | Q218 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 229 | D4 | Identity=s3:*, session=GetObject only, same-account bucket policy grants role DeleteObject — succeeds? | Yes | ✅ | Resource-based policy naming role bypasses session policy ceiling. | Q169, Q221 | Session policy bypass by resource-based policy |
+| 230 | D4 | Same as Q229 but caller's SCP denies DeleteObject — succeeds? | No | ✅ | SCP cannot be bypassed by anything. | Q222 | SCP cannot be bypassed |
+| 231 | D1 | EC2 queries DNS for known botnet C2 domain, no connection — ThreatPurpose? | Impact | ✅ | DNS query only = Impact. Active C2 communication = Trojan. | Q226 | GuardDuty finding types (Impact vs CryptoCurrency) |
