@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 241 |
-| **✅ Correct** | 178 (74%) |
+| **Total Questions** | 251 |
+| **✅ Correct** | 187 (75%) |
 | **⚠️ Partial** | 20 (8%) |
-| **❌ Wrong** | 43 (18%) |
-| **Sessions** | 31 |
-| **Re-tests Passed** | 82 of 101 |
+| **❌ Wrong** | 44 (18%) |
+| **Sessions** | 32 |
+| **Re-tests Passed** | 84 of 103 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
 | D1: Detection | 40 | 4 | 20 | 64 | 62% | 🟡 |
-| D2: Incident Response | 5 | 1 | 1 | 7 | 71% | 🟡 |
-| D3: Infrastructure Security | 23 | 4 | 4 | 31 | 74% | 🟡 |
-| D4: Identity & Access Management | 75 | 7 | 12 | 94 | 80% | 🟡 |
-| D5: Data Protection | 29 | 3 | 5 | 37 | 78% | 🟡 |
-| D6: Governance | 6 | 1 | 1 | 8 | 75% | 🟡 |
+| D2: Incident Response | 6 | 1 | 1 | 8 | 75% | 🟡 |
+| D3: Infrastructure Security | 24 | 4 | 4 | 32 | 75% | 🟡 |
+| D4: Identity & Access Management | 77 | 7 | 12 | 96 | 80% | 🟢 |
+| D5: Data Protection | 34 | 3 | 5 | 42 | 81% | 🟢 |
+| D6: Governance | 6 | 1 | 2 | 9 | 67% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -81,6 +81,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 47 | Firewall Manager SG audit | Q208 | D3 | 1 |
 | 🟡 48 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
 | 🟡 49 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
+| 🟡 50 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
 
 ---
 
@@ -119,6 +120,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 29 | 2025-05-16 | Q217–Q226 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — final killer set, all weak spots) | [Jump](#session-29--2025-05-16) |
 | 30 | 2025-05-17 | Q227–Q231 | 5 | 0 | 0 | Cross-domain (re-test — red-priority gaps: Impact vs CryptoCurrency, session policy bypass) | [Jump](#session-30--2025-05-17) |
 | 31 | 2025-05-17 | Q232–Q241 | 7 | 0 | 3 | D1 Detection + Cross-domain (Week 11 — D1 focus, targeting 62% domain) | [Jump](#session-31--2025-05-17) |
+| 32 | 2025-05-17 | Q246–Q255 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, all domains) | [Jump](#session-32--2025-05-17) |
 
 ---
 
@@ -693,3 +695,24 @@ After adding a session:
 | 239 | D1/D2 | GuardDuty Recon finding, want to know what else attacker IP touched in 48hr — which service? | B: Detective | ✅ | Detective = "what else" / "blast radius" / "timeline". | — | Detective for investigation |
 | 240 | D1/D4 | GuardDuty S3 Protection + RCP denying non-org, external attacker tries to read — what happens? | A: Both act | ✅ | RCP blocks access + GuardDuty detects the attempt. Independent services. | — | RCP + GuardDuty complementary |
 | 241 | D1 | Detect CloudTrail StopLogging org-wide within 5 min, minimal setup — approach? | C: Org trail + EventBridge in mgmt account | ✅ | Organization trail + one EventBridge rule in management account. Detect ≠ prevent. | — | Org trail + EventBridge detection |
+
+
+---
+
+### Session 32 — 2025-05-17
+
+**Domains:** Cross-domain exam-format practice (Week 11 — mixed, all domains)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 246 | D5 | Lambda uploads to S3 with SSE-KMS — which KMS permission? | C: kms:GenerateDataKey | ✅ | S3 envelope encryption = GenerateDataKey for uploads. kms:Encrypt is for direct <4KB. | — | KMS GenerateDataKey for S3 |
+| 247 | D5 | KMS key scheduled for deletion 5 days ago, 30-day wait — recover? | B: CancelKeyDeletion → Disabled | ✅ | CancelKeyDeletion → key moves to Disabled. Must re-enable manually. | — | KMS key deletion recovery |
+| 248 | D5/D6 | Prevent S3 buckets without encryption org-wide — approach? | D: Config rule + auto-remediation | ✅ | CreateBucket API doesn't have encryption settings — must detect and fix after. | — | Config auto-remediation |
+| 249 | D3 | EC2 private subnet needs S3 + DynamoDB, minimize cost — endpoint types? | B+D: Gateway for both | ✅ | S3 and DynamoDB = only two Gateway endpoint services (free). | — | Gateway vs Interface endpoints |
+| 250 | D2 | Access keys leaked to GitHub — correct response sequence? | B: Deactivate → CloudTrail → new key → delete old | ✅ | Stop bleeding first, then investigate, then replace. | — | Credential leak IR |
+| 251 | D6 | Control Tower prevent disabling GuardDuty — which mechanism? | A: Config rule | ❌ | **B: SCP** — "prevent" = preventive control = SCP. Config = detective (detect after). Control Tower uses SCPs for preventive guardrails. | — | SCP for preventive guardrails (Control Tower) |
+| 252 | D4 | RCP denies s3:* non-org, Config SLR writes snapshot — succeeds? | A: Yes — SLR exempt | ✅ | SLRs structurally exempt from RCPs. | Q183 | RCP exemptions (SLR) |
+| 253 | D4 | Validate policy for security issues BEFORE deploying — which tool? | B: Access Analyzer validation | ✅ | Pre-deployment = Access Analyzer policy validation. Simulator = test existing. | Q184 | Access Analyzer policy validation |
+| 254 | D5 | Secret rotated, old DB connection still works — why? | B: AWSPREVIOUS | ✅ | Old password valid as AWSPREVIOUS until next rotation cycle. | — | Secrets Manager rotation |
+| 255 | D5 | Encrypt between C6i instances, zero config — mechanism? | C: Nitro | ✅ | C6i = Nitro-based. Automatic hardware-level encryption. | — | Nitro inter-instance encryption |
