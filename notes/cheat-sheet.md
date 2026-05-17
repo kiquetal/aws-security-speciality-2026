@@ -39,6 +39,7 @@
 - Identity Center = workforce SSO. Cognito = customer apps. Never mix them.
 - Only ONE identity source at a time: built-in OR AD OR external IdP (SAML 2.0).
 - Permission set = IAM role auto-created in target accounts. No manual role management.
+- 🧠 **SCIM = auto-sync users + groups from IdP.** New user added to group in Okta → auto-inherits permission set assignment. No manual action in Identity Center.
 
 ---
 
@@ -66,11 +67,13 @@
 - CloudHSM **directly** = all operations (symmetric, asymmetric, sign, HMAC). CloudHSM **through KMS** (custom key store) = symmetric only.
 - `CancelKeyDeletion` → key moves to **Disabled** (not Enabled). Must manually re-enable.
 - **4 KB max** for direct KMS Encrypt/Decrypt. Anything larger → envelope encryption (GenerateDataKey → encrypt locally).
+- 🧠 **"Root in key policy" = enables IAM delegation, NOT a blanket grant.** Each principal still needs explicit kms:Decrypt in their identity policy. Root opens the door for IAM — it doesn't let everyone through.
 
 ### Secrets Manager
 - Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
 - Secrets Manager = built-in rotation (RDS, Aurora, DocumentDB, Redshift). Parameter Store = no native rotation.
 - Deletion has 7–30 day recovery window. Cannot delete immediately.
+- 🧠 **"Credentials available in DR region" = Secrets Manager cross-region replication.** MRK replicates key material, not the secret itself. Different layers.
 
 ### Data Masking (New in C03)
 - "Mask PII in logs" → **CloudWatch Logs data protection policy**. Real-time, no app changes, managed data identifiers.
