@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 251 |
-| **✅ Correct** | 187 (75%) |
+| **Total Questions** | 261 |
+| **✅ Correct** | 192 (74%) |
 | **⚠️ Partial** | 20 (8%) |
-| **❌ Wrong** | 44 (18%) |
-| **Sessions** | 32 |
-| **Re-tests Passed** | 84 of 103 |
+| **❌ Wrong** | 49 (19%) |
+| **Sessions** | 33 |
+| **Re-tests Passed** | 84 of 106 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 40 | 4 | 20 | 64 | 62% | 🟡 |
+| D1: Detection | 41 | 4 | 20 | 65 | 63% | 🟡 |
 | D2: Incident Response | 6 | 1 | 1 | 8 | 75% | 🟡 |
-| D3: Infrastructure Security | 24 | 4 | 4 | 32 | 75% | 🟡 |
-| D4: Identity & Access Management | 77 | 7 | 12 | 96 | 80% | 🟢 |
-| D5: Data Protection | 34 | 3 | 5 | 42 | 81% | 🟢 |
+| D3: Infrastructure Security | 25 | 4 | 5 | 34 | 74% | 🟡 |
+| D4: Identity & Access Management | 79 | 7 | 14 | 100 | 79% | 🟡 |
+| D5: Data Protection | 35 | 3 | 7 | 45 | 78% | 🟡 |
 | D6: Governance | 6 | 1 | 2 | 9 | 67% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -37,27 +37,27 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 3 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
 | 🔴 4 | Security services comparison | Q5, Q24 | D1 | 2 |
 | 🔴 5 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 6 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 7 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226 | D1 | 2 |
-| 🔴 8 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🟡 9 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 10 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 11 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 12 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 13 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
-| 🟡 14 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
-| 🟡 15 | DNS Firewall | Q14 | D3 | 1 |
-| 🟡 16 | Cross-account patterns | Q15 | D5 | 1 |
-| 🟡 17 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
-| 🟡 18 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 19 | RAM vs RCP | Q38 | D4 | 1 |
-| 🟡 20 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
-| 🟡 21 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
-| 🟡 22 | Cross-account KMS | Q53 | D4 | 1 |
-| 🟡 23 | STS session revocation | Q62 | D4 | 1 |
-| 🟡 24 | Session tags + ABAC | Q63 | D4 | 1 |
-| 🟡 25 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
-| 🟡 26 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
+| 🔴 6 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 7 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 8 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226 | D1 | 2 |
+| 🔴 9 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🟡 10 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 11 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 12 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 13 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 14 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 15 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 16 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 17 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 18 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 19 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 20 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 21 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 22 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
+| 🟡 23 | Cross-account KMS | Q53 | D4 | 1 |
+| 🟡 24 | STS session revocation | Q62 | D4 | 1 |
+| 🟡 25 | Session tags + ABAC | Q63 | D4 | 1 |
+| 🟡 26 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
 | 🟡 27 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
 | 🟡 28 | Session policy as ceiling | Q78 | D4 | 1 |
 | 🟡 29 | SCP cannot be bypassed | Q83 | D4 | 1 |
@@ -82,6 +82,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 48 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
 | 🟡 49 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
 | 🟡 50 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
+| 🟡 51 | Secrets Manager cross-region replication | Q258 | D5 | 1 |
+| 🟡 52 | SCP for preventive enforcement | Q261 | D3 | 1 |
+| 🟡 53 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
+| 🟡 54 | KMS key policy root = delegation, not grant | Q264 | D5 | 1 |
 
 ---
 
@@ -121,6 +125,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 30 | 2025-05-17 | Q227–Q231 | 5 | 0 | 0 | Cross-domain (re-test — red-priority gaps: Impact vs CryptoCurrency, session policy bypass) | [Jump](#session-30--2025-05-17) |
 | 31 | 2025-05-17 | Q232–Q241 | 7 | 0 | 3 | D1 Detection + Cross-domain (Week 11 — D1 focus, targeting 62% domain) | [Jump](#session-31--2025-05-17) |
 | 32 | 2025-05-17 | Q246–Q255 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, all domains) | [Jump](#session-32--2025-05-17) |
+| 33 | 2025-05-17 | Q256–Q265 | 5 | 0 | 5 | Cross-domain exam-format practice (Week 11 — harder scenarios, multi-concept) | [Jump](#session-33--2025-05-17) |
 
 ---
 
@@ -716,3 +721,24 @@ After adding a session:
 | 253 | D4 | Validate policy for security issues BEFORE deploying — which tool? | B: Access Analyzer validation | ✅ | Pre-deployment = Access Analyzer policy validation. Simulator = test existing. | Q184 | Access Analyzer policy validation |
 | 254 | D5 | Secret rotated, old DB connection still works — why? | B: AWSPREVIOUS | ✅ | Old password valid as AWSPREVIOUS until next rotation cycle. | — | Secrets Manager rotation |
 | 255 | D5 | Encrypt between C6i instances, zero config — mechanism? | C: Nitro | ✅ | C6i = Nitro-based. Automatic hardware-level encryption. | — | Nitro inter-instance encryption |
+
+
+---
+
+### Session 33 — 2025-05-17
+
+**Domains:** Cross-domain exam-format practice (Week 11 — harder scenarios, multi-concept)
+**Score:** 5 ✅ · 0 ⚠️ · 5 ❌ (50% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 256 | D4/D5 | Cross-account Lambda → S3+KMS, all policies correct, still AccessDenied — cause? | A: Missing sts:AssumeRole | ❌ | **C: Caller's SCP denies kms:Decrypt.** SCP follows the caller even when accessing another account's resources. AssumeRole already succeeded (error is on S3/KMS call). | Q70 | Cross-account KMS + SCP evaluation |
+| 257 | D4 | Developers need CreateRole but can't escalate beyond s3+ec2 — mechanism? | B: SCP requiring PermissionsBoundary | ✅ | SCP forces boundary on all CreateRole calls. Boundary caps effective permissions. | — | Permission boundary delegation |
+| 258 | D5 | DB credentials available in DR region if primary fails — which feature? | A: KMS MRK | ❌ | **B: Secrets Manager cross-region replication.** MRK replicates key material, not the secret itself. | — | Secrets Manager cross-region replication |
+| 259 | D1 | Suspect CloudTrail log file modified — how to verify integrity? | B: Digest files + AWS CLI | ✅ | CloudTrail digest files with SHA-256 hashes, validate via CLI. | — | CloudTrail integrity validation |
+| 260 | D5 | S3 immutable 7 years, root can't delete, auto-expire — config? | B: Compliance mode | ✅ | Compliance mode = fixed period, nobody deletes, auto-expires. | — | Object Lock Compliance mode |
+| 261 | D3/D4 | Enforce IMDSv2 org-wide, prevent non-compliant launches — approach? | B: Config + auto-remediation | ❌ | **A: SCP denying RunInstances unless MetadataHttpTokens=required.** "Prevent" + "org-wide" = SCP. Config = detect and fix after. | Q251 | SCP for preventive enforcement |
+| 262 | D3 | Lambda private subnet, no NAT, needs Secrets Manager — which TWO? | B+C | ✅ | Interface endpoint + SG allowing outbound HTTPS 443. | — | VPC endpoints + security groups |
+| 263 | D4 | Identity Center + Okta + SCIM, new engineer joins Platform group — what happens? | C: Manual assignment needed | ❌ | **B: SCIM auto-syncs user + group membership.** Group already assigned to permission set → new user inherits access automatically. | — | SCIM provisioning (Identity Center) |
+| 264 | D5 | Key policy grants root only, engineer has s3:GetObject but no KMS perms — can they read? | C: Yes, root delegates to all | ❌ | **B: No — root enables IAM delegation but doesn't grant access.** Each principal still needs explicit kms:Decrypt in their identity policy. | Q206 | KMS key policy root = delegation, not grant |
+| 265 | D4 | Multi-tenant DynamoDB, restrict users to own tenant rows, no per-tenant policies? | C: dynamodb:LeadingKeys + PrincipalTag | ✅ | ABAC with LeadingKeys condition matching caller's TenantId tag. | — | ABAC for DynamoDB multi-tenant |
