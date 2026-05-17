@@ -8,19 +8,19 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 231 |
-| **✅ Correct** | 171 (74%) |
-| **⚠️ Partial** | 20 (9%) |
-| **❌ Wrong** | 40 (17%) |
-| **Sessions** | 30 |
-| **Re-tests Passed** | 82 of 100 |
+| **Total Questions** | 241 |
+| **✅ Correct** | 178 (74%) |
+| **⚠️ Partial** | 20 (8%) |
+| **❌ Wrong** | 43 (18%) |
+| **Sessions** | 31 |
+| **Re-tests Passed** | 82 of 101 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 34 | 4 | 17 | 55 | 62% | 🟡 |
-| D2: Incident Response | 4 | 1 | 1 | 6 | 67% | 🟡 |
+| D1: Detection | 40 | 4 | 20 | 64 | 62% | 🟡 |
+| D2: Incident Response | 5 | 1 | 1 | 7 | 71% | 🟡 |
 | D3: Infrastructure Security | 23 | 4 | 4 | 31 | 74% | 🟡 |
 | D4: Identity & Access Management | 75 | 7 | 12 | 94 | 80% | 🟡 |
 | D5: Data Protection | 29 | 3 | 5 | 37 | 78% | 🟡 |
@@ -39,46 +39,48 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 5 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
 | 🔴 6 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
 | 🔴 7 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226 | D1 | 2 |
-| 🟡 8 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 9 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 10 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 11 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 12 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
-| 🟡 13 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
-| 🟡 14 | DNS Firewall | Q14 | D3 | 1 |
-| 🟡 15 | Cross-account patterns | Q15 | D5 | 1 |
-| 🟡 16 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
-| 🟡 17 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 18 | RAM vs RCP | Q38 | D4 | 1 |
-| 🟡 19 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
-| 🟡 20 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
-| 🟡 21 | Cross-account KMS | Q53 | D4 | 1 |
-| 🟡 22 | STS session revocation | Q62 | D4 | 1 |
-| 🟡 23 | Session tags + ABAC | Q63 | D4 | 1 |
-| 🟡 24 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
-| 🟡 25 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
-| 🟡 26 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
-| 🟡 27 | Session policy as ceiling | Q78 | D4 | 1 |
-| 🟡 28 | SCP cannot be bypassed | Q83 | D4 | 1 |
-| 🟡 29 | MRK independent key policies | Q84 | D5 | 1 |
-| 🟡 30 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
-| 🟡 31 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
-| 🟡 32 | Imported key rotation procedure | Q114 | D5 | 1 |
-| 🟡 33 | SCP for preventive guardrails | Q119 | D6 | 1 |
-| 🟡 34 | RAM for resource sharing | Q126 | D6 | 1 |
-| 🟡 35 | DNS Firewall rule actions | Q129 | D3 | 1 |
-| 🟡 36 | GuardDuty vs Inspector | Q132 | D1 | 1 |
-| 🟡 37 | DNS Firewall rule structure | Q134 | D3 | 1 |
-| 🟡 38 | Step Functions for IR | Q138 | D2 | 1 |
-| 🟡 39 | Access Analyzer modes | Q144 | D1 | 1 |
-| 🟡 40 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
-| 🟡 41 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
-| 🟡 42 | RCP exemptions (SLR) | Q183 | D4 | 1 |
-| 🟡 43 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
-| 🟡 44 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187 | D1 | 1 |
+| 🔴 8 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🟡 9 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 10 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 11 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 12 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 13 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 14 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 15 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 16 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 17 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 18 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 19 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 20 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 21 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
+| 🟡 22 | Cross-account KMS | Q53 | D4 | 1 |
+| 🟡 23 | STS session revocation | Q62 | D4 | 1 |
+| 🟡 24 | Session tags + ABAC | Q63 | D4 | 1 |
+| 🟡 25 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
+| 🟡 26 | Cross-account KMS + SCP evaluation | Q70 | D4 | 1 |
+| 🟡 27 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
+| 🟡 28 | Session policy as ceiling | Q78 | D4 | 1 |
+| 🟡 29 | SCP cannot be bypassed | Q83 | D4 | 1 |
+| 🟡 30 | MRK independent key policies | Q84 | D5 | 1 |
+| 🟡 31 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
+| 🟡 32 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
+| 🟡 33 | Imported key rotation procedure | Q114 | D5 | 1 |
+| 🟡 34 | SCP for preventive guardrails | Q119 | D6 | 1 |
+| 🟡 35 | RAM for resource sharing | Q126 | D6 | 1 |
+| 🟡 36 | DNS Firewall rule actions | Q129 | D3 | 1 |
+| 🟡 37 | GuardDuty vs Inspector | Q132 | D1 | 1 |
+| 🟡 38 | DNS Firewall rule structure | Q134 | D3 | 1 |
+| 🟡 39 | Step Functions for IR | Q138 | D2 | 1 |
+| 🟡 40 | Access Analyzer modes | Q144 | D1 | 1 |
+| 🟡 41 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
+| 🟡 42 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
+| 🟡 43 | RCP exemptions (SLR) | Q183 | D4 | 1 |
+| 🟡 44 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
 | 🟡 45 | KMS auto-rotation retention | Q192 | D5 | 1 |
 | 🟡 46 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
 | 🟡 47 | Firewall Manager SG audit | Q208 | D3 | 1 |
+| 🟡 48 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
+| 🟡 49 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
 
 ---
 
@@ -116,6 +118,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 28 | 2025-05-16 | Q207–Q216 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, targeting remaining gaps) | [Jump](#session-28--2025-05-16) |
 | 29 | 2025-05-16 | Q217–Q226 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — final killer set, all weak spots) | [Jump](#session-29--2025-05-16) |
 | 30 | 2025-05-17 | Q227–Q231 | 5 | 0 | 0 | Cross-domain (re-test — red-priority gaps: Impact vs CryptoCurrency, session policy bypass) | [Jump](#session-30--2025-05-17) |
+| 31 | 2025-05-17 | Q232–Q241 | 7 | 0 | 3 | D1 Detection + Cross-domain (Week 11 — D1 focus, targeting 62% domain) | [Jump](#session-31--2025-05-17) |
 
 ---
 
@@ -669,3 +672,24 @@ After adding a session:
 | 229 | D4 | Identity=s3:*, session=GetObject only, same-account bucket policy grants role DeleteObject — succeeds? | Yes | ✅ | Resource-based policy naming role bypasses session policy ceiling. | Q169, Q221 | Session policy bypass by resource-based policy |
 | 230 | D4 | Same as Q229 but caller's SCP denies DeleteObject — succeeds? | No | ✅ | SCP cannot be bypassed by anything. | Q222 | SCP cannot be bypassed |
 | 231 | D1 | EC2 queries DNS for known botnet C2 domain, no connection — ThreatPurpose? | Impact | ✅ | DNS query only = Impact. Active C2 communication = Trojan. | Q226 | GuardDuty finding types (Impact vs CryptoCurrency) |
+
+
+---
+
+### Session 31 — 2025-05-17
+
+**Domains:** D1 Detection + Cross-domain (Week 11 — D1 focus, targeting 62% domain)
+**Score:** 7 ✅ · 0 ⚠️ · 3 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 232 | D1 | GuardDuty enabled via delegated admin, one account has no findings despite production workloads — cause? | C: VPC Flow Logs not enabled | ❌ | **D: Workloads in a region where GuardDuty not enabled.** GuardDuty is regional. It reads VPC Flow Logs via internal feed — no need to enable them yourself. | — | GuardDuty is regional + agentless |
+| 233 | D1 | Detect credentials used from never-seen IP, zero custom code — which service? | A: Access Analyzer | ❌ | **C: GuardDuty** — unusual IP = active threat happening NOW = GuardDuty. Access Analyzer = permission audit, not real-time threats. | Q187 | Detect vs prevent (GuardDuty vs Access Analyzer) |
+| 234 | D1 | CloudTrail Lake vs Security Lake — how do they store data? | B: CT Lake managed, Security Lake your S3 | ✅ | CloudTrail Lake = managed data store. Security Lake = your S3 bucket (Iceberg/Parquet/OCSF). | — | CloudTrail Lake vs Security Lake |
+| 235 | D2 | GuardDuty severity 8.5, EC2 communicating with C2 — first action? | C: Deny-all SG | ✅ | Isolate first (deny-all SG) → snapshot → investigate. Never terminate. | — | IR sequence |
+| 236 | D1 | Query VPC Flow Logs in CloudWatch for top data sender — most efficient? | D: Detective | ❌ | **B: CloudWatch Logs Insights** — data already in CW, arbitrary aggregation query, no extra setup. Detective = investigate from a finding/entity, not open-ended queries. | — | CloudWatch Logs Insights vs Detective |
+| 237 | D1/D6 | S3 logging enforcement across 300 accounts, auto-remediate within 1hr — which TWO? | A+D | ✅ | Config managed rule + auto-remediation (A) + organizational rule from delegated admin (D). | — | Config org rules + auto-remediation |
+| 238 | D1 | EC2 private subnet, VPC Flow Logs not appearing in CloudWatch, CW agent installed — cause? | A: Flow log pointing to S3 | ✅ | VPC Flow Logs are VPC-level, don't use CW agent. Configuration determines destination. | — | VPC Flow Logs ≠ CW agent |
+| 239 | D1/D2 | GuardDuty Recon finding, want to know what else attacker IP touched in 48hr — which service? | B: Detective | ✅ | Detective = "what else" / "blast radius" / "timeline". | — | Detective for investigation |
+| 240 | D1/D4 | GuardDuty S3 Protection + RCP denying non-org, external attacker tries to read — what happens? | A: Both act | ✅ | RCP blocks access + GuardDuty detects the attempt. Independent services. | — | RCP + GuardDuty complementary |
+| 241 | D1 | Detect CloudTrail StopLogging org-wide within 5 min, minimal setup — approach? | C: Org trail + EventBridge in mgmt account | ✅ | Organization trail + one EventBridge rule in management account. Detect ≠ prevent. | — | Org trail + EventBridge detection |
