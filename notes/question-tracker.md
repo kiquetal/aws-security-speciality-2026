@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 291 |
-| **✅ Correct** | 213 (73%) |
+| **Total Questions** | 301 |
+| **✅ Correct** | 222 (74%) |
 | **⚠️ Partial** | 20 (7%) |
-| **❌ Wrong** | 58 (20%) |
-| **Sessions** | 37 |
+| **❌ Wrong** | 59 (20%) |
+| **Sessions** | 38 |
 | **Re-tests Passed** | 101 of 126 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 45 | 4 | 21 | 70 | 64% | 🟡 |
-| D2: Incident Response | 6 | 1 | 1 | 8 | 75% | 🟡 |
-| D3: Infrastructure Security | 29 | 4 | 5 | 38 | 76% | 🟡 |
-| D4: Identity & Access Management | 82 | 7 | 14 | 103 | 80% | 🟡 |
-| D5: Data Protection | 37 | 3 | 7 | 47 | 79% | 🟡 |
+| D1: Detection | 46 | 4 | 22 | 72 | 64% | 🟡 |
+| D2: Incident Response | 7 | 1 | 1 | 9 | 78% | 🟡 |
+| D3: Infrastructure Security | 30 | 4 | 5 | 39 | 77% | 🟡 |
+| D4: Identity & Access Management | 87 | 7 | 14 | 108 | 81% | 🟢 |
+| D5: Data Protection | 38 | 3 | 7 | 48 | 79% | 🟡 |
 | D6: Governance | 14 | 1 | 10 | 25 | 56% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -94,6 +94,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 60 | StackSets no auto-remediation | Q283 | D6 | 1 |
 | 🟡 61 | Firewall Manager auto-remediation | Q284 | D6 | 1 |
 | 🟡 62 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
+| 🟡 63 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
 
 ---
 
@@ -138,6 +139,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 35 | 2025-05-18 | Q271–Q275 | 1 | 0 | 4 | D6 Governance (untested gaps — StackSets, Audit Manager, Artifact, Service Catalog, Conformance Packs) | [Jump](#session-35--2025-05-18) |
 | 36 | 2025-05-18 | Q276–Q280 | 3 | 0 | 2 | D6 Governance (re-test — StackSets, Service Catalog, Audit Manager, Artifact, Conformance Packs) | [Jump](#session-36--2025-05-18) |
 | 37 | 2025-05-18 | Q281–Q295 | 12 | 0 | 3 | D6 Governance + D3/D4 (untested topics) + D1 Detection (retention check) | [Jump](#session-37--2025-05-18) |
+| 38 | 2025-05-18 | Q296–Q305 | 9 | 0 | 1 | Cross-domain exam simulation (all domains) | [Jump](#session-38--2025-05-18) |
 
 ---
 
@@ -828,3 +830,24 @@ After adding a session:
 | 293 | D1 | EC2 DNS query to mining pool, no connection — ThreatPurpose? | C: Impact | ✅ | DNS query only = Impact. Active mining = CryptoCurrency. | Q226 | Impact vs CryptoCurrency |
 | 294 | D1 | Credentials from never-seen location, zero code? | C: GuardDuty | ✅ | Active threat + zero code = GuardDuty. | Q233 | Detect vs prevent |
 | 295 | D1 | Lambda DNS to C2 domain, want finding generated, no blocking? | A: DNS Firewall ALERT | ❌ | **B: GuardDuty** — DNS Firewall ALERT logs but doesn't produce findings. GuardDuty reads DNS logs + generates findings. | Q106 | DNS Firewall ALERT ≠ finding |
+
+
+---
+
+### Session 38 — 2025-05-18
+
+**Domains:** Cross-domain exam simulation (all domains)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 296 | D4 | Block external S3 access org-wide without modifying bucket policies? | B: RCP + PrincipalOrgID | ✅ | RCP blocks external callers on resource side. SCP can't stop outsiders. | — | RCP for external access |
+| 297 | D3 | EC2 private subnet, no NAT, needs Secrets Manager — which TWO? | B+C: Interface endpoint + SG HTTPS | ✅ | Interface endpoint (Gateway = S3/DynamoDB only) + SG allowing 443. | — | VPC endpoints |
+| 298 | D4 | Identity=s3:*, boundary=s3:*+ec2:*, session=Get+Put — DeleteObject? | C: Denied — session policy | ✅ | Session policy ceiling — DeleteObject not in session = denied. | — | Session policy as ceiling |
+| 299 | D5 | KMS key scheduled for deletion 5 days ago, 30-day wait — recover? | B: CancelKeyDeletion → Disabled | ✅ | CancelKeyDeletion during wait → Disabled → must re-enable. | — | KMS key deletion recovery |
+| 300 | D4 | Identity Center + Okta + SCIM, new engineer joins Platform group? | B: SCIM auto-syncs | ✅ | Group already assigned → new user inherits access automatically. | — | SCIM provisioning |
+| 301 | D2 | GuardDuty severity 8.5, EC2 communicating with C2 — first action? | C: Deny-all SG | ✅ | Isolate first → snapshot → investigate. Never terminate. | — | IR sequence |
+| 302 | D1 | Investigate finding, blast radius, what else in 48hr? | C: Detective | ✅ | "Investigate" + "blast radius" + "timeline" = Detective. | — | Detective for investigation |
+| 303 | D1 | Normalize CloudTrail + VPC Flow + GuardDuty + third-party, own S3? | C: CloudWatch Logs Insights | ❌ | **B: Security Lake** — "normalize" + "single schema" + "your S3" = Security Lake (OCSF). CW Insights queries existing CW data. | — | Security Lake vs CW Logs Insights |
+| 304 | D4 | SCP denies PutObject without Env tag, Config SLR writes (no tags)? | C: Fails — SCP applies to SLRs | ✅ | SCP applies to SLRs — they're principals in your account. RCP exempts SLRs. | — | SCP applies to SLRs |
+| 305 | D4 | Validate policy for security issues BEFORE deploying? | B: Access Analyzer validation | ✅ | Pre-deployment = Access Analyzer policy validation. Simulator = test existing. | — | Access Analyzer policy validation |
