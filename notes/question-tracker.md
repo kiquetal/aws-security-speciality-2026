@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 321 |
-| **✅ Correct** | 241 (75%) |
+| **Total Questions** | 326 |
+| **✅ Correct** | 246 (75%) |
 | **⚠️ Partial** | 20 (6%) |
-| **❌ Wrong** | 60 (19%) |
-| **Sessions** | 39 |
-| **Re-tests Passed** | 106 of 132 |
+| **❌ Wrong** | 60 (18%) |
+| **Sessions** | 40 |
+| **Re-tests Passed** | 108 of 134 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 50 | 4 | 22 | 76 | 66% | 🟡 |
+| D1: Detection | 52 | 4 | 22 | 78 | 67% | 🟡 |
 | D2: Incident Response | 7 | 1 | 1 | 9 | 78% | 🟡 |
-| D3: Infrastructure Security | 33 | 4 | 5 | 42 | 79% | 🟡 |
-| D4: Identity & Access Management | 93 | 7 | 14 | 114 | 82% | 🟢 |
-| D5: Data Protection | 42 | 3 | 7 | 52 | 81% | 🟢 |
+| D3: Infrastructure Security | 34 | 4 | 5 | 43 | 79% | 🟡 |
+| D4: Identity & Access Management | 94 | 7 | 14 | 115 | 82% | 🟢 |
+| D5: Data Protection | 43 | 3 | 7 | 53 | 81% | 🟢 |
 | D6: Governance | 16 | 1 | 11 | 28 | 57% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -142,6 +142,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 37 | 2025-05-18 | Q281–Q295 | 12 | 0 | 3 | D6 Governance + D3/D4 (untested topics) + D1 Detection (retention check) | [Jump](#session-37--2025-05-18) |
 | 38 | 2025-05-18 | Q296–Q305 | 9 | 0 | 1 | Cross-domain exam simulation (all domains) | [Jump](#session-38--2025-05-18) |
 | 39 | 2025-05-18 | Q306–Q325 | 19 | 0 | 1 | Cross-domain exam simulation (all domains, hardest scenarios) | [Jump](#session-39--2025-05-18) |
+| 40 | 2025-05-18 | Q326–Q330 | 5 | 0 | 0 | Cross-domain exam simulation (all domains, final validation) | [Jump](#session-40--2025-05-18) |
 
 ---
 
@@ -884,3 +885,19 @@ After adding a session:
 | 323 | D4 | Cross-account same-org, RCP denies non-org — result? | B: Allowed — PrincipalOrgID matches | ✅ | Same-org = condition doesn't match = Deny doesn't fire. | — | RCP same-org evaluation |
 | 324 | D3/D4 | Enforce IMDSv2 org-wide, block non-compliant launches? | B: SCP | ✅ | "Prevent" + "org-wide" = SCP. | — | SCP for preventive enforcement |
 | 325 | D4 | Mobile app, Cognito sign-in, per-user S3 prefix — which TWO? | A+C: Identity Pool + IAM policy with sub | ✅ | Identity Pool vends creds + policy scoped to Cognito sub. | — | Cognito Identity Pool + per-user access |
+
+
+---
+
+### Session 40 — 2025-05-18
+
+**Domains:** Cross-domain exam simulation (all domains, final validation)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 326 | D1/D2 | GuardDuty Trojan finding severity 8.9, contain + preserve + investigate 72hr — correct sequence? (THREE) | B+C+D | ✅ | Isolate (deny-all SG) → EBS snapshot → Detective for 72hr blast radius. Never terminate first. | — | IR sequence + Detective |
+| 327 | D4 | Identity=s3:*+ec2:*+lambda:*, boundary=s3:*+ec2:*, session=Get+Put, same-account bucket policy grants role DeleteObject — result? | C: Allowed — resource-based bypasses session | ✅ | Resource-based policy naming role bypasses session policy ceiling. Boundary allows s3:* so no block there. | Q169 | Session policy bypass by resource-based policy |
+| 328 | D5 | PHI in S3 with CMK, need: DR credentials, key in both regions, mask PHI in CW Logs — which THREE? | A+C+E | ✅ | MRK for cross-region key + Secrets Manager replication for credentials + CW Logs data protection for masking. | — | MRK + Secrets Manager replication + data masking |
+| 329 | D3/D6 | 400 accounts, block malicious DNS org-wide, auto-apply new accounts, auto-remediate disassociation — which TWO? | A+B: RAM + Firewall Manager | ✅ | RAM shares rule group. FM enforces association + auto-remediates. They complement each other. | Q313 | RAM for sharing + FM for enforcing |
+| 330 | D1/D6 | CIS compliance dashboard across 200 accounts + collect SOC 2 evidence for audit — which TWO services? | B+C: Security Hub + Audit Manager | ✅ | Security Hub = CIS dashboard. Audit Manager = YOUR evidence mapped to SOC 2. Artifact = AWS's reports. | — | Security Hub vs Audit Manager vs Artifact |
