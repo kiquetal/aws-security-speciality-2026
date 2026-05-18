@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 276 |
-| **✅ Correct** | 201 (73%) |
+| **Total Questions** | 291 |
+| **✅ Correct** | 213 (73%) |
 | **⚠️ Partial** | 20 (7%) |
-| **❌ Wrong** | 55 (20%) |
-| **Sessions** | 36 |
-| **Re-tests Passed** | 92 of 116 |
+| **❌ Wrong** | 58 (20%) |
+| **Sessions** | 37 |
+| **Re-tests Passed** | 101 of 126 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 41 | 4 | 20 | 65 | 63% | 🟡 |
+| D1: Detection | 45 | 4 | 21 | 70 | 64% | 🟡 |
 | D2: Incident Response | 6 | 1 | 1 | 8 | 75% | 🟡 |
-| D3: Infrastructure Security | 26 | 4 | 5 | 35 | 74% | 🟡 |
-| D4: Identity & Access Management | 81 | 7 | 14 | 102 | 79% | 🟡 |
+| D3: Infrastructure Security | 29 | 4 | 5 | 38 | 76% | 🟡 |
+| D4: Identity & Access Management | 82 | 7 | 14 | 103 | 80% | 🟡 |
 | D5: Data Protection | 37 | 3 | 7 | 47 | 79% | 🟡 |
-| D6: Governance | 10 | 1 | 8 | 19 | 53% | 🟡 |
+| D6: Governance | 14 | 1 | 10 | 25 | 56% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -91,6 +91,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 57 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
 | 🟡 58 | Config conformance packs | Q275 | D6 | 1 |
 | 🟡 59 | StackSets vs Conformance Pack | Q276 | D6 | 1 |
+| 🟡 60 | StackSets no auto-remediation | Q283 | D6 | 1 |
+| 🟡 61 | Firewall Manager auto-remediation | Q284 | D6 | 1 |
+| 🟡 62 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
 
 ---
 
@@ -134,6 +137,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 34 | 2025-05-18 | Q266–Q270 | 5 | 0 | 0 | Cross-domain (re-test — Session 33 errors) | [Jump](#session-34--2025-05-18) |
 | 35 | 2025-05-18 | Q271–Q275 | 1 | 0 | 4 | D6 Governance (untested gaps — StackSets, Audit Manager, Artifact, Service Catalog, Conformance Packs) | [Jump](#session-35--2025-05-18) |
 | 36 | 2025-05-18 | Q276–Q280 | 3 | 0 | 2 | D6 Governance (re-test — StackSets, Service Catalog, Audit Manager, Artifact, Conformance Packs) | [Jump](#session-36--2025-05-18) |
+| 37 | 2025-05-18 | Q281–Q295 | 12 | 0 | 3 | D6 Governance + D3/D4 (untested topics) + D1 Detection (retention check) | [Jump](#session-37--2025-05-18) |
 
 ---
 
@@ -798,3 +802,29 @@ After adding a session:
 | 278 | D6 | Evidence that S3 encrypted + CloudTrail enabled, mapped to SOC 2 framework, generate report? | C: Audit Manager | ✅ | Audit Manager — collects YOUR evidence, maps to frameworks, generates YOUR report. | Q271 | Audit Manager vs Artifact |
 | 279 | D6 | Proof that AWS infrastructure meets PCI DSS — where to get? | B: Artifact | ✅ | Artifact = download AWS's compliance reports/certificates. | Q272 | AWS Artifact |
 | 280 | D6 | 25 Config rules + auto-remediation + single package + org-wide from delegated admin? | C: Organizational conformance pack | ✅ | Conformance pack = bundle of rules + remediation as one unit, org-wide. | Q275 | Config conformance packs |
+
+
+---
+
+### Session 37 — 2025-05-18
+
+**Domains:** D6 Governance + D3/D4 (untested topics) + D1 Detection (retention check)
+**Score:** 10 ✅ · 0 ⚠️ · 3 ❌ (77% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 281 | D6 | Deploy GuardDuty + Config + CloudTrail across 200 accounts, auto for new accounts? | C: StackSets | ✅ | StackSets (service-managed, auto-deploy) — deploys any resource. | Q276 | StackSets vs Conformance Pack |
+| 282 | D6 | Junior dev needs VPC but only has servicecatalog:ProvisionProduct — how? | C: Service Catalog assumes launch role | ✅ | Launch constraint lets Service Catalog assume a role with the permissions. | Q277 | Service Catalog (self-service) |
+| 283 | D6 | StackSet deployed Config, developer disables recorder manually — what happens? | D: Conformance pack re-enables | ❌ | **B: Nothing — StackSets doesn't auto-remediate.** Conformance pack remediates rule violations, not service disablement. | — | StackSets no auto-remediation |
+| 284 | D6 | 200 accounts, same WAF on ALBs, auto for new accounts, re-apply if removed? | D: Conformance pack | ❌ | **C: Firewall Manager** — WAF rules + auto-remediate = FM. Conformance packs deploy Config rules, not WAF. | — | Firewall Manager auto-remediation |
+| 285 | D3 | SG opened to 0.0.0.0/0 port 22, auto-revert across 300 accounts? | C: Firewall Manager SG audit | ✅ | FM SG audit policy — org-wide, auto-remediate overly permissive SGs. | Q208 | Firewall Manager SG audit |
+| 286 | D6 | 15 new accounts join OU, need CloudTrail+Config+GuardDuty immediately, zero manual? | C: StackSets with auto-deploy | ✅ | StackSets targeting OU with auto-deploy = new accounts get stack automatically. | Q276 | StackSets auto-deploy |
+| 287 | D6 | Platform team "Golden VPC", app teams self-provision without ec2:CreateVpc? | C: Service Catalog with launch constraint | ✅ | Self-service + no broad IAM = Service Catalog + launch constraint. | Q277 | Service Catalog (self-service) |
+| 288 | D3 | Bedrock chatbot, prevent prompt injection + block PII in responses? | B: Bedrock Guardrails | ✅ | Guardrails filter input (prompt injection) and output (PII). | — | GenAI / Bedrock Guardrails |
+| 289 | D4 | Mobile app, Cognito sign-in, needs temp AWS creds for S3 upload? | B: Cognito Identity Pool | ✅ | User Pool authenticates. Identity Pool vends temporary AWS credentials. | — | Cognito Identity Pool |
+| 290 | D3 | Verify EC2 reachable from internet without sending traffic? | C: Network Access Analyzer | ✅ | Analyzes configs to find unintended network paths — no traffic needed. | — | Network Access Analyzer |
+| 291 | D1 | SSE-KMS, alert external decryption, least overhead? | C: GuardDuty S3 Protection | ✅ | "Detect" + "least overhead" = GuardDuty. | Q156 | Detect vs prevent |
+| 292 | D1 | EC2 active traffic to mining pool — ThreatPurpose? | B: CryptoCurrency | ✅ | Active mining = CryptoCurrency. | Q218 | GuardDuty finding types |
+| 293 | D1 | EC2 DNS query to mining pool, no connection — ThreatPurpose? | C: Impact | ✅ | DNS query only = Impact. Active mining = CryptoCurrency. | Q226 | Impact vs CryptoCurrency |
+| 294 | D1 | Credentials from never-seen location, zero code? | C: GuardDuty | ✅ | Active threat + zero code = GuardDuty. | Q233 | Detect vs prevent |
+| 295 | D1 | Lambda DNS to C2 domain, want finding generated, no blocking? | A: DNS Firewall ALERT | ❌ | **B: GuardDuty** — DNS Firewall ALERT logs but doesn't produce findings. GuardDuty reads DNS logs + generates findings. | Q106 | DNS Firewall ALERT ≠ finding |
