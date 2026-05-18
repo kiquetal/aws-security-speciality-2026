@@ -244,6 +244,27 @@ Artifact = "AWS's compliance paperwork"
 
 **Bundle of Config rules + remediation actions deployed as a single unit — org-wide via delegated admin.**
 
+> ⚠️ This is a feature of **AWS Config** — not a separate service. Think of it as "Config rules in bulk."
+
+### Hierarchy
+
+```
+AWS Config
+├── Individual Config rules (one rule at a time, one account)
+├── Conformance packs (bundle of rules + remediation as ONE unit)
+│   ├── Account-level conformance pack (one account)
+│   └── Organizational conformance pack (all accounts from delegated admin)
+└── Aggregators (view compliance across accounts — read-only)
+```
+
+### AWS Pre-Built Packs (just pick and deploy)
+
+- `Operational-Best-Practices-for-PCI-DSS`
+- `Operational-Best-Practices-for-HIPAA`
+- `Operational-Best-Practices-for-CIS`
+- `Operational-Best-Practices-for-NIST-800-53`
+- Or build your own custom pack with Lambda-backed rules
+
 ### How It Works
 
 ```
