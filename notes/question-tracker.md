@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 261 |
-| **✅ Correct** | 192 (74%) |
+| **Total Questions** | 266 |
+| **✅ Correct** | 197 (74%) |
 | **⚠️ Partial** | 20 (8%) |
-| **❌ Wrong** | 49 (19%) |
-| **Sessions** | 33 |
-| **Re-tests Passed** | 84 of 106 |
+| **❌ Wrong** | 49 (18%) |
+| **Sessions** | 34 |
+| **Re-tests Passed** | 89 of 111 |
 
 ## Domain Breakdown
 
@@ -21,9 +21,9 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 41 | 4 | 20 | 65 | 63% | 🟡 |
 | D2: Incident Response | 6 | 1 | 1 | 8 | 75% | 🟡 |
-| D3: Infrastructure Security | 25 | 4 | 5 | 34 | 74% | 🟡 |
-| D4: Identity & Access Management | 79 | 7 | 14 | 100 | 79% | 🟡 |
-| D5: Data Protection | 35 | 3 | 7 | 45 | 78% | 🟡 |
+| D3: Infrastructure Security | 26 | 4 | 5 | 35 | 74% | 🟡 |
+| D4: Identity & Access Management | 81 | 7 | 14 | 102 | 79% | 🟡 |
+| D5: Data Protection | 37 | 3 | 7 | 47 | 79% | 🟡 |
 | D6: Governance | 6 | 1 | 2 | 9 | 67% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -126,6 +126,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 31 | 2025-05-17 | Q232–Q241 | 7 | 0 | 3 | D1 Detection + Cross-domain (Week 11 — D1 focus, targeting 62% domain) | [Jump](#session-31--2025-05-17) |
 | 32 | 2025-05-17 | Q246–Q255 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, all domains) | [Jump](#session-32--2025-05-17) |
 | 33 | 2025-05-17 | Q256–Q265 | 5 | 0 | 5 | Cross-domain exam-format practice (Week 11 — harder scenarios, multi-concept) | [Jump](#session-33--2025-05-17) |
+| 34 | 2025-05-18 | Q266–Q270 | 5 | 0 | 0 | Cross-domain (re-test — Session 33 errors) | [Jump](#session-34--2025-05-18) |
 
 ---
 
@@ -742,3 +743,19 @@ After adding a session:
 | 263 | D4 | Identity Center + Okta + SCIM, new engineer joins Platform group — what happens? | C: Manual assignment needed | ❌ | **B: SCIM auto-syncs user + group membership.** Group already assigned to permission set → new user inherits access automatically. | — | SCIM provisioning (Identity Center) |
 | 264 | D5 | Key policy grants root only, engineer has s3:GetObject but no KMS perms — can they read? | C: Yes, root delegates to all | ❌ | **B: No — root enables IAM delegation but doesn't grant access.** Each principal still needs explicit kms:Decrypt in their identity policy. | Q206 | KMS key policy root = delegation, not grant |
 | 265 | D4 | Multi-tenant DynamoDB, restrict users to own tenant rows, no per-tenant policies? | C: dynamodb:LeadingKeys + PrincipalTag | ✅ | ABAC with LeadingKeys condition matching caller's TenantId tag. | — | ABAC for DynamoDB multi-tenant |
+
+
+---
+
+### Session 34 — 2025-05-18
+
+**Domains:** Cross-domain (re-test — Session 33 errors)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 266 | D4/D5 | Cross-account Lambda → S3+KMS, all correct, AccessDenied — cause? | B: Account B's SCP denies kms:Decrypt | ✅ | SCP follows the caller even when accessing another account's resources. | Q256 | Cross-account KMS + SCP evaluation |
+| 267 | D5 | DB credentials available in DR region if primary fails — which feature? | B: Secrets Manager cross-region replication | ✅ | MRK replicates key material, not the secret itself. Secrets Manager replication replicates the secret. | Q258 | Secrets Manager cross-region replication |
+| 268 | D3/D4 | Enforce IMDSv2 org-wide, prevent non-compliant launches — approach? | B: SCP denying RunInstances unless MetadataHttpTokens=required | ✅ | "Prevent" + "org-wide" = SCP. Config = detect and fix after. | Q261 | SCP for preventive enforcement |
+| 269 | D4 | Identity Center + Okta + SCIM, new engineer joins Platform group — what happens? | B: SCIM auto-syncs user + group membership | ✅ | Group already assigned to permission set → new user inherits access automatically. | Q263 | SCIM provisioning (Identity Center) |
+| 270 | D5 | Key policy grants root only, engineer has s3:GetObject but no KMS perms — can they read? | B: Fails — root enables delegation but doesn't grant | ✅ | Root in key policy enables IAM delegation. Each principal still needs explicit kms:Decrypt. | Q264 | KMS key policy root = delegation, not grant |
