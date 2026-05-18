@@ -168,6 +168,7 @@
 - 🧠 **"Share resources cross-account" = RAM. "Enforce guardrails cross-account" = SCP/Control Tower.** DNS Firewall rule groups, TGWs, subnets = RAM. Deny actions org-wide = SCP.
 - 🧠 **Audit Manager = YOUR compliance evidence. Artifact = AWS's compliance reports.** "Collect evidence for our audit" = Audit Manager. "Download AWS's SOC 2" = Artifact.
 - 🧠 **StackSets = push IaC to many accounts (any resource). Firewall Manager = push security RULES only (WAF/SG/NF/DNS FW).** "Deploy GuardDuty + Config" = StackSets. "Deploy WAF rules" = FM.
+- 🧠 **FM auto-remediates. StackSets does NOT.** Someone removes WAF from ALB → FM re-applies. Someone disables Config → StackSets does nothing.
 - 🧠 **StackSets = deploy resources/services. Conformance pack = deploy compliance rules + remediation.** "Enable GuardDuty org-wide" = StackSets. "Check encryption + fix" = conformance pack.
 - 🧠 **Service Catalog = users PULL pre-approved resources (self-service). StackSets = admin PUSHES.** Launch role means dev doesn't need broad IAM.
 - 🧠 **Config conformance pack = bundle of rules + remediation as ONE unit, org-wide from delegated admin.** Security Hub standard = same rules but dashboard + no built-in remediation.
