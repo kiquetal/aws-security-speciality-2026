@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 301 |
-| **✅ Correct** | 222 (74%) |
-| **⚠️ Partial** | 20 (7%) |
-| **❌ Wrong** | 59 (20%) |
-| **Sessions** | 38 |
-| **Re-tests Passed** | 101 of 126 |
+| **Total Questions** | 321 |
+| **✅ Correct** | 241 (75%) |
+| **⚠️ Partial** | 20 (6%) |
+| **❌ Wrong** | 60 (19%) |
+| **Sessions** | 39 |
+| **Re-tests Passed** | 106 of 132 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 46 | 4 | 22 | 72 | 64% | 🟡 |
+| D1: Detection | 50 | 4 | 22 | 76 | 66% | 🟡 |
 | D2: Incident Response | 7 | 1 | 1 | 9 | 78% | 🟡 |
-| D3: Infrastructure Security | 30 | 4 | 5 | 39 | 77% | 🟡 |
-| D4: Identity & Access Management | 87 | 7 | 14 | 108 | 81% | 🟢 |
-| D5: Data Protection | 38 | 3 | 7 | 48 | 79% | 🟡 |
-| D6: Governance | 14 | 1 | 10 | 25 | 56% | 🟡 |
+| D3: Infrastructure Security | 33 | 4 | 5 | 42 | 79% | 🟡 |
+| D4: Identity & Access Management | 93 | 7 | 14 | 114 | 82% | 🟢 |
+| D5: Data Protection | 42 | 3 | 7 | 52 | 81% | 🟢 |
+| D6: Governance | 16 | 1 | 11 | 28 | 57% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -95,6 +95,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 61 | Firewall Manager auto-remediation | Q284 | D6 | 1 |
 | 🟡 62 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
 | 🟡 63 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
+| 🟡 64 | RAM for sharing vs FM for enforcing | Q313 | D6 | 1 |
 
 ---
 
@@ -140,6 +141,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 36 | 2025-05-18 | Q276–Q280 | 3 | 0 | 2 | D6 Governance (re-test — StackSets, Service Catalog, Audit Manager, Artifact, Conformance Packs) | [Jump](#session-36--2025-05-18) |
 | 37 | 2025-05-18 | Q281–Q295 | 12 | 0 | 3 | D6 Governance + D3/D4 (untested topics) + D1 Detection (retention check) | [Jump](#session-37--2025-05-18) |
 | 38 | 2025-05-18 | Q296–Q305 | 9 | 0 | 1 | Cross-domain exam simulation (all domains) | [Jump](#session-38--2025-05-18) |
+| 39 | 2025-05-18 | Q306–Q325 | 19 | 0 | 1 | Cross-domain exam simulation (all domains, hardest scenarios) | [Jump](#session-39--2025-05-18) |
 
 ---
 
@@ -851,3 +853,34 @@ After adding a session:
 | 303 | D1 | Normalize CloudTrail + VPC Flow + GuardDuty + third-party, own S3? | C: CloudWatch Logs Insights | ❌ | **B: Security Lake** — "normalize" + "single schema" + "your S3" = Security Lake (OCSF). CW Insights queries existing CW data. | — | Security Lake vs CW Logs Insights |
 | 304 | D4 | SCP denies PutObject without Env tag, Config SLR writes (no tags)? | C: Fails — SCP applies to SLRs | ✅ | SCP applies to SLRs — they're principals in your account. RCP exempts SLRs. | — | SCP applies to SLRs |
 | 305 | D4 | Validate policy for security issues BEFORE deploying? | B: Access Analyzer validation | ✅ | Pre-deployment = Access Analyzer policy validation. Simulator = test existing. | — | Access Analyzer policy validation |
+
+
+---
+
+### Session 39 — 2025-05-18
+
+**Domains:** Cross-domain exam simulation (all domains, hardest scenarios)
+**Score:** 19 ✅ · 0 ⚠️ · 1 ❌ (95% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 306 | D1 | Query VPC Flow Logs in CW for top 10 source IPs — most efficient? | B: CloudWatch Logs Insights | ✅ | Data already in CW + aggregation query = CW Logs Insights. | Q236 | CW Logs Insights vs Detective |
+| 307 | D3 | Lambda DNS to C2 domain, BLOCK resolution VPC-wide? | C: DNS Firewall BLOCK | ✅ | DNS Firewall BLOCK kills query at DNS, VPC-wide. | — | DNS Firewall BLOCK |
+| 308 | D1 | Lambda DNS to C2 domain, want FINDING generated, no blocking? | B: GuardDuty | ✅ | GuardDuty generates findings. DNS Firewall ALERT just logs. | Q295 | DNS Firewall ALERT ≠ finding |
+| 309 | D1 | Normalize CloudTrail + VPC Flow + WAF into OCSF, third-party SIEM reads from S3? | C: Security Lake | ✅ | "Normalize" + "OCSF" + "your S3" = Security Lake. | Q303 | Security Lake / OCSF |
+| 310 | D4 | Identity=s3:*, session=GetObject only, bucket policy grants role DeleteObject — result? | B: Allowed — resource-based bypasses session | ✅ | Resource-based policy naming role bypasses session policy ceiling. | Q169 | Session policy bypass |
+| 311 | D4 | Same as Q310 but SCP denies DeleteObject — result? | B: Denied — SCP cannot be bypassed | ✅ | SCP cannot be bypassed by anything. | — | SCP cannot be bypassed |
+| 312 | D6 | Prove AWS data centers meet ISO 27001 — where? | B: Artifact | ✅ | AWS's compliance = Artifact. | — | AWS Artifact |
+| 313 | D6 | Share DNS Firewall rule groups from security account to 15 new accounts? | A: Firewall Manager | ❌ | **B: RAM** — "share resources cross-account" = RAM. FM enforces rules, RAM shares them. | Q126 | RAM for sharing vs FM for enforcing |
+| 314 | D6 | 20 Config rules + remediation + single unit + org-wide from delegated admin? | C: Organizational conformance pack | ✅ | Conformance pack = bundle + remediation as one unit. | — | Config conformance packs |
+| 315 | D1 | Impact:EC2/BitcoinDomainRequest.Reputation — what happened? | B: DNS query to crypto domain, no connection | ✅ | Impact = DNS query only. CryptoCurrency = active mining. | Q226 | Impact vs CryptoCurrency |
+| 316 | D4 | RCP denies s3:* non-org, ELB SLR writes access logs — blocked? | B: Allowed — SLR exempt from RCP | ✅ | SLRs structurally exempt from RCPs. | — | RCP exemptions (SLR) |
+| 317 | D4 | Validate new policy + test existing role access — which TWO tools? | A+B: Access Analyzer + Simulator | ✅ | Validation = pre-deploy. Simulator = test existing. | — | Access Analyzer vs Simulator |
+| 318 | D5 | Secret rotated, open DB connection still works — why? | B: AWSPREVIOUS | ✅ | Old password valid as AWSPREVIOUS until next rotation. | — | Secrets Manager rotation |
+| 319 | D5 | KMS rotated 3 times, decrypt 3-year-old data? | B: Succeeds forever | ✅ | All versions kept forever, auto-routes via ciphertext metadata. | — | KMS auto-rotation retention |
+| 320 | D3/D1 | Detect overly permissive SGs + detect malicious IP comms — which TWO? | C+B: FM SG audit + GuardDuty | ✅ | FM = misconfig remediation. GuardDuty = active threats. | — | FM + GuardDuty complementary |
+| 321 | D5 | Imported key rotation procedure, keep old key for historical data? | C: New key + import + alias | ✅ | Create new key (EXTERNAL) → import → update alias → old stays. | — | Imported key rotation |
+| 322 | D5 | Global Table + MRK, reads fail eu-west-1, primary key policy correct? | B: Replica key policy missing DynamoDB | ✅ | MRK policies independent per region. | — | MRK independent key policies |
+| 323 | D4 | Cross-account same-org, RCP denies non-org — result? | B: Allowed — PrincipalOrgID matches | ✅ | Same-org = condition doesn't match = Deny doesn't fire. | — | RCP same-org evaluation |
+| 324 | D3/D4 | Enforce IMDSv2 org-wide, block non-compliant launches? | B: SCP | ✅ | "Prevent" + "org-wide" = SCP. | — | SCP for preventive enforcement |
+| 325 | D4 | Mobile app, Cognito sign-in, per-user S3 prefix — which TWO? | A+C: Identity Pool + IAM policy with sub | ✅ | Identity Pool vends creds + policy scoped to Cognito sub. | — | Cognito Identity Pool + per-user access |
