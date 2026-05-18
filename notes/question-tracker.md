@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 266 |
-| **✅ Correct** | 197 (74%) |
-| **⚠️ Partial** | 20 (8%) |
-| **❌ Wrong** | 49 (18%) |
-| **Sessions** | 34 |
+| **Total Questions** | 271 |
+| **✅ Correct** | 198 (73%) |
+| **⚠️ Partial** | 20 (7%) |
+| **❌ Wrong** | 53 (20%) |
+| **Sessions** | 35 |
 | **Re-tests Passed** | 89 of 111 |
 
 ## Domain Breakdown
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 26 | 4 | 5 | 35 | 74% | 🟡 |
 | D4: Identity & Access Management | 81 | 7 | 14 | 102 | 79% | 🟡 |
 | D5: Data Protection | 37 | 3 | 7 | 47 | 79% | 🟡 |
-| D6: Governance | 6 | 1 | 2 | 9 | 67% | 🟡 |
+| D6: Governance | 7 | 1 | 6 | 14 | 50% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -86,6 +86,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 52 | SCP for preventive enforcement | Q261 | D3 | 1 |
 | 🟡 53 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
 | 🟡 54 | KMS key policy root = delegation, not grant | Q264 | D5 | 1 |
+| 🟡 55 | Audit Manager vs Artifact | Q271 | D6 | 1 |
+| 🟡 56 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
+| 🟡 57 | Service Catalog (self-service) | Q274 | D6 | 1 |
+| 🟡 58 | Config conformance packs | Q275 | D6 | 1 |
 
 ---
 
@@ -127,6 +131,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 32 | 2025-05-17 | Q246–Q255 | 9 | 0 | 1 | Cross-domain exam-format practice (Week 11 — mixed, all domains) | [Jump](#session-32--2025-05-17) |
 | 33 | 2025-05-17 | Q256–Q265 | 5 | 0 | 5 | Cross-domain exam-format practice (Week 11 — harder scenarios, multi-concept) | [Jump](#session-33--2025-05-17) |
 | 34 | 2025-05-18 | Q266–Q270 | 5 | 0 | 0 | Cross-domain (re-test — Session 33 errors) | [Jump](#session-34--2025-05-18) |
+| 35 | 2025-05-18 | Q271–Q275 | 1 | 0 | 4 | D6 Governance (untested gaps — StackSets, Audit Manager, Artifact, Service Catalog, Conformance Packs) | [Jump](#session-35--2025-05-18) |
 
 ---
 
@@ -759,3 +764,19 @@ After adding a session:
 | 268 | D3/D4 | Enforce IMDSv2 org-wide, prevent non-compliant launches — approach? | B: SCP denying RunInstances unless MetadataHttpTokens=required | ✅ | "Prevent" + "org-wide" = SCP. Config = detect and fix after. | Q261 | SCP for preventive enforcement |
 | 269 | D4 | Identity Center + Okta + SCIM, new engineer joins Platform group — what happens? | B: SCIM auto-syncs user + group membership | ✅ | Group already assigned to permission set → new user inherits access automatically. | Q263 | SCIM provisioning (Identity Center) |
 | 270 | D5 | Key policy grants root only, engineer has s3:GetObject but no KMS perms — can they read? | B: Fails — root enables delegation but doesn't grant | ✅ | Root in key policy enables IAM delegation. Each principal still needs explicit kms:Decrypt. | Q264 | KMS key policy root = delegation, not grant |
+
+
+---
+
+### Session 35 — 2025-05-18
+
+**Domains:** D6 Governance (untested gaps — StackSets, Audit Manager, Artifact, Service Catalog, Conformance Packs)
+**Score:** 2 ✅ · 0 ⚠️ · 3 ❌ (40% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 271 | D6 | HIPAA compliance, auto-collect evidence, generate report for auditor? | D: Artifact | ❌ | **B: Audit Manager** — collects YOUR evidence (Config, CloudTrail, Security Hub) and generates YOUR audit report. Artifact = AWS's compliance paperwork. | — | Audit Manager vs Artifact |
+| 272 | D6 | Auditor needs AWS's PCI DSS Attestation of Compliance — where? | B: Artifact | ✅ | Artifact = download AWS's compliance reports/certificates. | — | AWS Artifact |
+| 273 | D6 | Deploy GuardDuty + Config + CloudTrail across 150 accounts, auto for new accounts? | A: Firewall Manager | ❌ | **B: StackSets (service-managed, auto-deploy)** — FM only deploys firewall rules. StackSets deploys any resource. | — | StackSets vs Firewall Manager |
+| 274 | D6 | Self-service S3/EC2 with encryption+logging baked in, devs don't need broad IAM? | C: StackSets | ❌ | **B: Service Catalog with launch role** — self-service = users pull. StackSets = admin pushes. Launch role means dev doesn't need resource permissions. | — | Service Catalog (self-service) |
+| 275 | D6 | 30 Config rules as single unit + auto-remediation + org-wide from delegated admin? | D: Firewall Manager | ❌ | **B: Config conformance pack (organizational)** — bundle of rules + remediation as one unit. FM doesn't deploy Config rules. | — | Config conformance packs |
