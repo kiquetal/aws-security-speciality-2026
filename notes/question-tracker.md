@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 271 |
-| **✅ Correct** | 198 (73%) |
+| **Total Questions** | 276 |
+| **✅ Correct** | 201 (73%) |
 | **⚠️ Partial** | 20 (7%) |
-| **❌ Wrong** | 53 (20%) |
-| **Sessions** | 35 |
-| **Re-tests Passed** | 89 of 111 |
+| **❌ Wrong** | 55 (20%) |
+| **Sessions** | 36 |
+| **Re-tests Passed** | 92 of 116 |
 
 ## Domain Breakdown
 
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 26 | 4 | 5 | 35 | 74% | 🟡 |
 | D4: Identity & Access Management | 81 | 7 | 14 | 102 | 79% | 🟡 |
 | D5: Data Protection | 37 | 3 | 7 | 47 | 79% | 🟡 |
-| D6: Governance | 7 | 1 | 6 | 14 | 50% | 🟡 |
+| D6: Governance | 10 | 1 | 8 | 19 | 53% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -41,55 +41,56 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 7 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
 | 🔴 8 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226 | D1 | 2 |
 | 🔴 9 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🟡 10 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 11 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 12 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 13 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 14 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
-| 🟡 15 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
-| 🟡 16 | DNS Firewall | Q14 | D3 | 1 |
-| 🟡 17 | Cross-account patterns | Q15 | D5 | 1 |
-| 🟡 18 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
-| 🟡 19 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 20 | RAM vs RCP | Q38 | D4 | 1 |
-| 🟡 21 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
-| 🟡 22 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
-| 🟡 23 | Cross-account KMS | Q53 | D4 | 1 |
-| 🟡 24 | STS session revocation | Q62 | D4 | 1 |
-| 🟡 25 | Session tags + ABAC | Q63 | D4 | 1 |
-| 🟡 26 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
-| 🟡 27 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
-| 🟡 28 | Session policy as ceiling | Q78 | D4 | 1 |
-| 🟡 29 | SCP cannot be bypassed | Q83 | D4 | 1 |
-| 🟡 30 | MRK independent key policies | Q84 | D5 | 1 |
-| 🟡 31 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
-| 🟡 32 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
-| 🟡 33 | Imported key rotation procedure | Q114 | D5 | 1 |
-| 🟡 34 | SCP for preventive guardrails | Q119 | D6 | 1 |
-| 🟡 35 | RAM for resource sharing | Q126 | D6 | 1 |
-| 🟡 36 | DNS Firewall rule actions | Q129 | D3 | 1 |
-| 🟡 37 | GuardDuty vs Inspector | Q132 | D1 | 1 |
-| 🟡 38 | DNS Firewall rule structure | Q134 | D3 | 1 |
-| 🟡 39 | Step Functions for IR | Q138 | D2 | 1 |
-| 🟡 40 | Access Analyzer modes | Q144 | D1 | 1 |
-| 🟡 41 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
-| 🟡 42 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
-| 🟡 43 | RCP exemptions (SLR) | Q183 | D4 | 1 |
-| 🟡 44 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
-| 🟡 45 | KMS auto-rotation retention | Q192 | D5 | 1 |
-| 🟡 46 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
-| 🟡 47 | Firewall Manager SG audit | Q208 | D3 | 1 |
-| 🟡 48 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
-| 🟡 49 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
-| 🟡 50 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
-| 🟡 51 | Secrets Manager cross-region replication | Q258 | D5 | 1 |
-| 🟡 52 | SCP for preventive enforcement | Q261 | D3 | 1 |
-| 🟡 53 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
-| 🟡 54 | KMS key policy root = delegation, not grant | Q264 | D5 | 1 |
-| 🟡 55 | Audit Manager vs Artifact | Q271 | D6 | 1 |
-| 🟡 56 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
-| 🟡 57 | Service Catalog (self-service) | Q274 | D6 | 1 |
+| 🔴 10 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🟡 11 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 12 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 13 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 14 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 15 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 16 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 17 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 18 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 19 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 20 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 21 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 22 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 23 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
+| 🟡 24 | Cross-account KMS | Q53 | D4 | 1 |
+| 🟡 25 | STS session revocation | Q62 | D4 | 1 |
+| 🟡 26 | Session tags + ABAC | Q63 | D4 | 1 |
+| 🟡 27 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
+| 🟡 28 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
+| 🟡 29 | Session policy as ceiling | Q78 | D4 | 1 |
+| 🟡 30 | SCP cannot be bypassed | Q83 | D4 | 1 |
+| 🟡 31 | MRK independent key policies | Q84 | D5 | 1 |
+| 🟡 32 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
+| 🟡 33 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
+| 🟡 34 | Imported key rotation procedure | Q114 | D5 | 1 |
+| 🟡 35 | SCP for preventive guardrails | Q119 | D6 | 1 |
+| 🟡 36 | RAM for resource sharing | Q126 | D6 | 1 |
+| 🟡 37 | DNS Firewall rule actions | Q129 | D3 | 1 |
+| 🟡 38 | GuardDuty vs Inspector | Q132 | D1 | 1 |
+| 🟡 39 | DNS Firewall rule structure | Q134 | D3 | 1 |
+| 🟡 40 | Step Functions for IR | Q138 | D2 | 1 |
+| 🟡 41 | Access Analyzer modes | Q144 | D1 | 1 |
+| 🟡 42 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
+| 🟡 43 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
+| 🟡 44 | RCP exemptions (SLR) | Q183 | D4 | 1 |
+| 🟡 45 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
+| 🟡 46 | KMS auto-rotation retention | Q192 | D5 | 1 |
+| 🟡 47 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
+| 🟡 48 | Firewall Manager SG audit | Q208 | D3 | 1 |
+| 🟡 49 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
+| 🟡 50 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
+| 🟡 51 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
+| 🟡 52 | Secrets Manager cross-region replication | Q258 | D5 | 1 |
+| 🟡 53 | SCP for preventive enforcement | Q261 | D3 | 1 |
+| 🟡 54 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
+| 🟡 55 | KMS key policy root = delegation, not grant | Q264 | D5 | 1 |
+| 🟡 56 | Audit Manager vs Artifact | Q271 | D6 | 1 |
+| 🟡 57 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
 | 🟡 58 | Config conformance packs | Q275 | D6 | 1 |
+| 🟡 59 | StackSets vs Conformance Pack | Q276 | D6 | 1 |
 
 ---
 
@@ -132,6 +133,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 33 | 2025-05-17 | Q256–Q265 | 5 | 0 | 5 | Cross-domain exam-format practice (Week 11 — harder scenarios, multi-concept) | [Jump](#session-33--2025-05-17) |
 | 34 | 2025-05-18 | Q266–Q270 | 5 | 0 | 0 | Cross-domain (re-test — Session 33 errors) | [Jump](#session-34--2025-05-18) |
 | 35 | 2025-05-18 | Q271–Q275 | 1 | 0 | 4 | D6 Governance (untested gaps — StackSets, Audit Manager, Artifact, Service Catalog, Conformance Packs) | [Jump](#session-35--2025-05-18) |
+| 36 | 2025-05-18 | Q276–Q280 | 3 | 0 | 2 | D6 Governance (re-test — StackSets, Service Catalog, Audit Manager, Artifact, Conformance Packs) | [Jump](#session-36--2025-05-18) |
 
 ---
 
@@ -780,3 +782,19 @@ After adding a session:
 | 273 | D6 | Deploy GuardDuty + Config + CloudTrail across 150 accounts, auto for new accounts? | A: Firewall Manager | ❌ | **B: StackSets (service-managed, auto-deploy)** — FM only deploys firewall rules. StackSets deploys any resource. | — | StackSets vs Firewall Manager |
 | 274 | D6 | Self-service S3/EC2 with encryption+logging baked in, devs don't need broad IAM? | C: StackSets | ❌ | **B: Service Catalog with launch role** — self-service = users pull. StackSets = admin pushes. Launch role means dev doesn't need resource permissions. | — | Service Catalog (self-service) |
 | 275 | D6 | 30 Config rules as single unit + auto-remediation + org-wide from delegated admin? | D: Firewall Manager | ❌ | **B: Config conformance pack (organizational)** — bundle of rules + remediation as one unit. FM doesn't deploy Config rules. | — | Config conformance packs |
+
+
+---
+
+### Session 36 — 2025-05-18
+
+**Domains:** D6 Governance (re-test — StackSets, Service Catalog, Audit Manager, Artifact, Conformance Packs)
+**Score:** 3 ✅ · 0 ⚠️ · 2 ❌ (60% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 276 | D6 | Deploy GuardDuty + Config + CloudTrail across 200 accounts, auto for new accounts? | D: Conformance pack | ❌ | **B: StackSets (service-managed, auto-deploy)** — conformance packs deploy Config RULES, not enable services. StackSets deploys any resource. | Q273 | StackSets vs Conformance Pack |
+| 277 | D6 | Self-service hardened EC2/S3, devs don't need broad IAM (ec2:RunInstances, s3:CreateBucket)? | D: SCP | ❌ | **B: Service Catalog with launch constraint** — SCP restricts, doesn't enable. Launch constraint lets Service Catalog assume a role with the permissions. | Q274 | Service Catalog (self-service) |
+| 278 | D6 | Evidence that S3 encrypted + CloudTrail enabled, mapped to SOC 2 framework, generate report? | C: Audit Manager | ✅ | Audit Manager — collects YOUR evidence, maps to frameworks, generates YOUR report. | Q271 | Audit Manager vs Artifact |
+| 279 | D6 | Proof that AWS infrastructure meets PCI DSS — where to get? | B: Artifact | ✅ | Artifact = download AWS's compliance reports/certificates. | Q272 | AWS Artifact |
+| 280 | D6 | 25 Config rules + auto-remediation + single package + org-wide from delegated admin? | C: Organizational conformance pack | ✅ | Conformance pack = bundle of rules + remediation as one unit, org-wide. | Q275 | Config conformance packs |
