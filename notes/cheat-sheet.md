@@ -103,6 +103,8 @@
 - NACLs are stateless — need explicit inbound rule for ephemeral ports (1024–65535) on return traffic. SGs are stateful — handle it automatically.
 - Verified Access = zero-trust access to internal apps without VPN. Evaluates identity + device posture.
 - Network Access Analyzer = find unintended network paths (reachable from internet when shouldn't be).
+- VPC Reachability Analyzer = "why can't A reach B?" (specific pair, troubleshooting one connection).
+- 🧠 **"What's exposed?" = Network Access Analyzer (auditor). "Why can't A reach B?" = Reachability Analyzer (debugger).** Different tools, different questions.
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
 
