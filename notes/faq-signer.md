@@ -95,6 +95,60 @@ EKS cluster → admission controller (Kyverno/OPA) → verify signature → allo
 | Cost | Free (no charge for signing operations) |
 | Revocation | Per-profile or per-job |
 
+## Revocation — Decision Table (Exam-Critical)
+
+| Action | What Happens | Scope | Use Case |
+|---|---|---|---|
+| **Revoke signing job** | ONE specific signature marked invalid | Only that artifact | "This specific Lambda zip is suspect" |
+| **Revoke signing profile** | ALL signatures from that profile invalid | Everything signed with it | "Entire signing authority compromised" |
+| **Delete CSC** | No signature verification on the function | Enforcement removed | ❌ Never — removes security entirely |
+| **Remove IAM access** | Person can't sign NEW artifacts | Future only | "Developer left — prevent new signing" |
+
+### When to Use Which
+
+```
+"One bad artifact, keep everything else working"
+  → Revoke the signing JOB (surgical)
+
+"Signing authority compromised, can't trust anything from it"
+  → Revoke the signing PROFILE (nuclear — re-sign everything)
+
+"Developer left, no suspicion"
+  → Remove IAM access (future prevention only)
+
+"Developer left + suspect malicious code signed"
+  → Remove IAM access (future) + Revoke specific job (past)
+```
+
+### CSC Explained
+
+```
+CSC = enforcement point on the Lambda function
+
+Defines:
+├── Which signing profiles are trusted (allowed publishers)
+├── What happens if invalid:
+│   ├── ENFORCE → block deployment
+│   └── WARN → allow but log to CloudTrail
+└── Attached to Lambda function(s)
+
+DELETE CSC = remove all verification = anyone deploys anything
+           = NEVER the right answer
+```
+
+### How Revocation Works at Deploy Time
+
+```
+Developer deploys Lambda:
+  → CSC checks signature
+  → Looks up signing job status
+  → If ACTIVE → ✅ deploy allowed
+  → If REVOKED → ❌ deployment blocked
+  
+The code still exists. The signature still exists.
+But its TRUST STATUS is "revoked" → CSC rejects it.
+```
+
 ## Exam Gotchas
 
 | Gotcha | Detail |
