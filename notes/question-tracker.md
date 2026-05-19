@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 345 |
-| **✅ Correct** | 262 (76%) |
+| **Total Questions** | 355 |
+| **✅ Correct** | 272 (77%) |
 | **⚠️ Partial** | 20 (6%) |
 | **❌ Wrong** | 63 (18%) |
 | **Sessions** | 42 |
-| **Re-tests Passed** | 116 of 142 |
+| **Re-tests Passed** | 126 of 152 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 56 | 4 | 22 | 82 | 68% | 🟡 |
-| D2: Incident Response | 8 | 1 | 1 | 10 | 80% | 🟢 |
-| D3: Infrastructure Security | 38 | 4 | 7 | 49 | 78% | 🟡 |
-| D4: Identity & Access Management | 97 | 7 | 15 | 119 | 82% | 🟢 |
-| D5: Data Protection | 46 | 3 | 7 | 56 | 82% | 🟢 |
-| D6: Governance | 17 | 1 | 11 | 29 | 59% | 🟡 |
+| D1: Detection | 58 | 4 | 22 | 84 | 69% | 🟡 |
+| D2: Incident Response | 9 | 1 | 1 | 11 | 82% | 🟢 |
+| D3: Infrastructure Security | 40 | 4 | 7 | 51 | 78% | 🟡 |
+| D4: Identity & Access Management | 99 | 7 | 15 | 121 | 82% | 🟢 |
+| D5: Data Protection | 48 | 3 | 7 | 58 | 83% | 🟢 |
+| D6: Governance | 18 | 1 | 11 | 30 | 60% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -147,7 +147,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 39 | 2025-05-18 | Q306–Q325 | 19 | 0 | 1 | Cross-domain exam simulation (all domains, hardest scenarios) | [Jump](#session-39--2025-05-18) |
 | 40 | 2025-05-18 | Q326–Q330 | 5 | 0 | 0 | Cross-domain exam simulation (all domains, final validation) | [Jump](#session-40--2025-05-18) |
 | 41 | 2025-05-19 | Q331–Q335 | 5 | 0 | 0 | Cross-domain (untested gaps — Bedrock, Cognito, OAC+KMS, Security Lake, VPC endpoints) | [Jump](#session-41--2025-05-19) |
-| 42 | 2025-05-19 | Q336–Q349 | 11 | 0 | 3 | Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps) | [Jump](#session-42--2025-05-19) |
+| 42 | 2025-05-19 | Q336–Q359 | 21 | 0 | 3 | Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps) | [Jump](#session-42--2025-05-19) |
 
 ---
 
@@ -929,7 +929,7 @@ After adding a session:
 ### Session 42 — 2025-05-19
 
 **Domains:** Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps)
-**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+**Score:** 18 ✅ · 0 ⚠️ · 3 ❌ (86% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -947,3 +947,13 @@ After adding a session:
 | 347 | D2/D4 | Exfiltrated role creds, stop attacker + keep app working? | B: Inline Deny TokenIssueTime | ✅ | Deny sessions before timestamp, app gets new creds after. | Q71 | STS session revocation |
 | 348 | D6/D3 | 25 Config rules + remediation + single package + org-wide? | C: Conformance pack | ✅ | Organizational conformance pack from delegated admin. | Q275 | Config conformance packs |
 | 349 | D3/D5 | Dedicated DX, Layer 2 encryption, zero overhead? | B: MACsec | ✅ | MACsec = Layer 2, dedicated only, line-rate. | — | MACsec |
+| 350 | D4/D5 | Cross-account Lambda → S3+KMS, all correct, AccessDenied — cause? | B: Account B's SCP | ✅ | SCP follows the caller even when accessing another account's resources. | Q256 | Cross-account KMS + SCP |
+| 351 | D1/D2 | Impact finding then CryptoCurrency finding 30min later — what happened? | B: DNS query → active mining | ✅ | Instance progressed from DNS resolution to active mining traffic. | Q226 | GuardDuty finding stages |
+| 352 | D3/D6 | RAM shares rule group + FM policy, developer disassociates — what happens? | B: FM re-associates automatically | ✅ | FM auto-remediates. Developer can disassociate but FM re-applies. | Q329 | FM auto-remediation |
+| 353 | D4 | RCP denies non-org s3:*. ELB SLR + CloudTrail + external attacker — which succeed? | B: SLR + CloudTrail only | ✅ | SLR exempt (structural) + CloudTrail exempt (PrincipalIsAWSService). Attacker blocked. | Q217 | RCP exemptions (both paths) |
+| 354 | D5/D3 | Key material NEVER in AWS + native S3 SSE-KMS integration? | B: XKS | ✅ | External key store — material outside AWS, integrates via KMS API. | Q102 | XKS |
+| 355 | D1/D4 | Access Analyzer finds external access + GuardDuty finds malicious IP — what does each tell you? | B: AA=exposed, GD=being exploited | ✅ | AA = misconfiguration. GD = active threat. Complementary. | Q205 | Access Analyzer vs GuardDuty |
+| 356 | D2/D1 | After containment, determine roles used + buckets accessed + 72hr timeline? | C: Detective | ✅ | "What else" + "timeline" + "blast radius" = Detective. | Q109 | Detective for investigation |
+| 357 | D6/D4 | Identity Center + Okta + SCIM, new engineer joins Platform group? | B: SCIM auto-syncs | ✅ | Group already assigned → new user inherits access automatically. | Q263 | SCIM provisioning |
+| 358 | D5 | CreateGrant → partner AccessDenied immediately, works 30s later? | B: Grant token | ✅ | Pass grant token for immediate use before eventual consistency. | Q101 | KMS Grants eventual consistency |
+| 359 | D3/D5 | Private subnet needs DynamoDB + S3, minimize cost — endpoint types? | B: Gateway for both | ✅ | S3 + DynamoDB = only two Gateway endpoint services (free). | Q249 | Gateway vs Interface endpoints |
