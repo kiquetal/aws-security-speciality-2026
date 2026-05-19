@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 331 |
-| **✅ Correct** | 251 (76%) |
+| **Total Questions** | 345 |
+| **✅ Correct** | 262 (76%) |
 | **⚠️ Partial** | 20 (6%) |
-| **❌ Wrong** | 60 (18%) |
-| **Sessions** | 41 |
-| **Re-tests Passed** | 108 of 134 |
+| **❌ Wrong** | 63 (18%) |
+| **Sessions** | 42 |
+| **Re-tests Passed** | 116 of 142 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 53 | 4 | 22 | 79 | 67% | 🟡 |
-| D2: Incident Response | 7 | 1 | 1 | 9 | 78% | 🟡 |
-| D3: Infrastructure Security | 36 | 4 | 5 | 45 | 80% | 🟢 |
-| D4: Identity & Access Management | 95 | 7 | 14 | 116 | 82% | 🟢 |
-| D5: Data Protection | 44 | 3 | 7 | 54 | 81% | 🟢 |
-| D6: Governance | 16 | 1 | 11 | 28 | 57% | 🟡 |
+| D1: Detection | 56 | 4 | 22 | 82 | 68% | 🟡 |
+| D2: Incident Response | 8 | 1 | 1 | 10 | 80% | 🟢 |
+| D3: Infrastructure Security | 38 | 4 | 7 | 49 | 78% | 🟡 |
+| D4: Identity & Access Management | 97 | 7 | 15 | 119 | 82% | 🟢 |
+| D5: Data Protection | 46 | 3 | 7 | 56 | 82% | 🟢 |
+| D6: Governance | 17 | 1 | 11 | 29 | 59% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -96,6 +96,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 62 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
 | 🟡 63 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
 | 🟡 64 | RAM for sharing vs FM for enforcing | Q313 | D6 | 1 |
+| 🟡 65 | Verified Access trust providers | Q336 | D3 | 1 |
+| 🟡 66 | Signer revocation (job vs profile vs IAM) | Q339 | D4 | 1 |
+| 🟡 67 | Cognito Identity Pool + KMS permissions | Q341 | D3 | 1 |
 
 ---
 
@@ -144,6 +147,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 39 | 2025-05-18 | Q306–Q325 | 19 | 0 | 1 | Cross-domain exam simulation (all domains, hardest scenarios) | [Jump](#session-39--2025-05-18) |
 | 40 | 2025-05-18 | Q326–Q330 | 5 | 0 | 0 | Cross-domain exam simulation (all domains, final validation) | [Jump](#session-40--2025-05-18) |
 | 41 | 2025-05-19 | Q331–Q335 | 5 | 0 | 0 | Cross-domain (untested gaps — Bedrock, Cognito, OAC+KMS, Security Lake, VPC endpoints) | [Jump](#session-41--2025-05-19) |
+| 42 | 2025-05-19 | Q336–Q349 | 11 | 0 | 3 | Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps) | [Jump](#session-42--2025-05-19) |
 
 ---
 
@@ -918,3 +922,28 @@ After adding a session:
 | 333 | D5 | CloudFront + S3 origin + SSE-KMS, only CF can access — which TWO? | B+C | ✅ | OAC (not OAI) for SSE-KMS + KMS key policy granting CF service principal. OAI can't do KMS. | — | OAC + KMS key policy |
 | 334 | D1 | Security Lake + Splunk — which THREE true statements? | A+B+F | ✅ | Your S3 (Parquet) + OCSF normalized + third-party OCSF ingestion. Not real-time (batch). | — | Security Lake / OCSF |
 | 335 | D3/D5 | Private subnet (no NAT), needs Secrets Manager + S3 SSE-KMS upload — minimum infra? (THREE) | A+B+D | ✅ | Interface endpoint (Secrets Mgr) + Gateway endpoint (S3) + SG HTTPS. KMS endpoint not needed — S3 calls KMS server-side. | — | VPC endpoints + SSE-KMS server-side |
+
+
+---
+
+### Session 42 — 2025-05-19
+
+**Domains:** Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps)
+**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 336 | D3/D4 | Verified Access: Okta group + device posture — which TWO enforce? | A+C | ❌ | **A+B**: Trust provider for Okta (identity) + trust provider for device management (posture). IAM doesn't control VA decisions. | — | Verified Access trust providers |
+| 337 | D5 | Lambda uploads SSE-KMS, key policy grants root, role has GenerateDataKey — fails? | B: Should succeed | ✅ | Root enables delegation + identity has GenerateDataKey = both sides satisfied. Trick question. | Q206 | KMS key policy delegation |
+| 338 | D1 | CryptoCurrency vs Impact finding — DNS query + active mining from same instance? | D: Different stages | ✅ | CryptoCurrency = active mining traffic. Impact = DNS query only. Different stages of same attack. | Q226 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 339 | D4/D6 | Signer: developer left, backdoored Lambda found — most targeted remediation? | D: Remove IAM | ❌ | **B: Revoke specific signing job.** Remove IAM prevents future but doesn't invalidate existing artifact. | — | Signer revocation (job vs profile vs IAM) |
+| 340 | D3 | Verify EC2 reachable from internet without sending traffic? | C: Network Access Analyzer | ✅ | "Any instance unintentionally reachable" = broad discovery = Network Access Analyzer. | — | Network Access Analyzer vs Reachability |
+| 341 | D3/D4 | Cognito + S3 per-user + SSE-KMS — what additional config? (TWO) | B+C | ❌ | **A+B**: Identity Pool auth role needs kms:GenerateDataKey (mobile app calls S3 directly, not Lambda). | — | Cognito Identity Pool + KMS permissions |
+| 342 | D1/D3 | EC2 DNS to C2 domain — finding generated + block DNS? | B | ✅ | GuardDuty for finding + DNS Firewall BLOCK for prevention. DNS Firewall ALERT ≠ finding. | Q295 | GuardDuty + DNS Firewall complementary |
+| 343 | D4/D5 | Signer: ENFORCE + allowed profile + invalidate one artifact — THREE? | A+E+F | ✅ | CSC ENFORCE (A) + attach to function (F) + revoke job for compromised artifact (E). | Q339 | Signer CSC + revocation |
+| 344 | D5/D6 | S3 immutable 7yr + HIPAA evidence — THREE? | B+D | ✅ | Compliance mode (B) + Audit Manager HIPAA (D). Question design asked THREE but only two needed. | — | Object Lock + Audit Manager |
+| 345 | D4/D3 | Prevent IMDSv1 launches org-wide — approach? | B: SCP | ✅ | "Prevent" + "org-wide" = SCP denying RunInstances unless MetadataHttpTokens=required. | Q261 | SCP for preventive enforcement |
+| 346 | D1/D5 | Alert external KMS decryption, least overhead? | C: GuardDuty | ✅ | "Alert" + "least overhead" = GuardDuty S3 Protection. | Q156 | Detect vs prevent |
+| 347 | D2/D4 | Exfiltrated role creds, stop attacker + keep app working? | B: Inline Deny TokenIssueTime | ✅ | Deny sessions before timestamp, app gets new creds after. | Q71 | STS session revocation |
+| 348 | D6/D3 | 25 Config rules + remediation + single package + org-wide? | C: Conformance pack | ✅ | Organizational conformance pack from delegated admin. | Q275 | Config conformance packs |
+| 349 | D3/D5 | Dedicated DX, Layer 2 encryption, zero overhead? | B: MACsec | ✅ | MACsec = Layer 2, dedicated only, line-rate. | — | MACsec |
