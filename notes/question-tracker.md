@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 326 |
-| **✅ Correct** | 246 (75%) |
+| **Total Questions** | 331 |
+| **✅ Correct** | 251 (76%) |
 | **⚠️ Partial** | 20 (6%) |
 | **❌ Wrong** | 60 (18%) |
-| **Sessions** | 40 |
+| **Sessions** | 41 |
 | **Re-tests Passed** | 108 of 134 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 52 | 4 | 22 | 78 | 67% | 🟡 |
+| D1: Detection | 53 | 4 | 22 | 79 | 67% | 🟡 |
 | D2: Incident Response | 7 | 1 | 1 | 9 | 78% | 🟡 |
-| D3: Infrastructure Security | 34 | 4 | 5 | 43 | 79% | 🟡 |
-| D4: Identity & Access Management | 94 | 7 | 14 | 115 | 82% | 🟢 |
-| D5: Data Protection | 43 | 3 | 7 | 53 | 81% | 🟢 |
+| D3: Infrastructure Security | 36 | 4 | 5 | 45 | 80% | 🟢 |
+| D4: Identity & Access Management | 95 | 7 | 14 | 116 | 82% | 🟢 |
+| D5: Data Protection | 44 | 3 | 7 | 54 | 81% | 🟢 |
 | D6: Governance | 16 | 1 | 11 | 28 | 57% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -143,6 +143,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 38 | 2025-05-18 | Q296–Q305 | 9 | 0 | 1 | Cross-domain exam simulation (all domains) | [Jump](#session-38--2025-05-18) |
 | 39 | 2025-05-18 | Q306–Q325 | 19 | 0 | 1 | Cross-domain exam simulation (all domains, hardest scenarios) | [Jump](#session-39--2025-05-18) |
 | 40 | 2025-05-18 | Q326–Q330 | 5 | 0 | 0 | Cross-domain exam simulation (all domains, final validation) | [Jump](#session-40--2025-05-18) |
+| 41 | 2025-05-19 | Q331–Q335 | 5 | 0 | 0 | Cross-domain (untested gaps — Bedrock, Cognito, OAC+KMS, Security Lake, VPC endpoints) | [Jump](#session-41--2025-05-19) |
 
 ---
 
@@ -901,3 +902,19 @@ After adding a session:
 | 328 | D5 | PHI in S3 with CMK, need: DR credentials, key in both regions, mask PHI in CW Logs — which THREE? | A+C+E | ✅ | MRK for cross-region key + Secrets Manager replication for credentials + CW Logs data protection for masking. | — | MRK + Secrets Manager replication + data masking |
 | 329 | D3/D6 | 400 accounts, block malicious DNS org-wide, auto-apply new accounts, auto-remediate disassociation — which TWO? | A+B: RAM + Firewall Manager | ✅ | RAM shares rule group. FM enforces association + auto-remediates. They complement each other. | Q313 | RAM for sharing + FM for enforcing |
 | 330 | D1/D6 | CIS compliance dashboard across 200 accounts + collect SOC 2 evidence for audit — which TWO services? | B+C: Security Hub + Audit Manager | ✅ | Security Hub = CIS dashboard. Audit Manager = YOUR evidence mapped to SOC 2. Artifact = AWS's reports. | — | Security Hub vs Audit Manager vs Artifact |
+
+
+---
+
+### Session 41 — 2025-05-19
+
+**Domains:** Cross-domain (untested gaps — Bedrock, Cognito, OAC+KMS, Security Lake, VPC endpoints)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 331 | D3 | Bedrock chatbot: prevent prompt injection + block PII in responses + restrict model access — which TWO? | B+C | ✅ | Bedrock Guardrails (content) + IAM bedrock:InvokeModel (access). WAF ≠ LLM content. | — | Bedrock Guardrails + IAM |
+| 332 | D4 | Mobile app, Cognito sign-in, per-user S3 folders + guest read-only — which TWO? | A+D | ✅ | User Pool authenticates + Identity Pool vends creds (auth role per-user, unauth role guest). | — | Cognito Identity Pool + per-user access |
+| 333 | D5 | CloudFront + S3 origin + SSE-KMS, only CF can access — which TWO? | B+C | ✅ | OAC (not OAI) for SSE-KMS + KMS key policy granting CF service principal. OAI can't do KMS. | — | OAC + KMS key policy |
+| 334 | D1 | Security Lake + Splunk — which THREE true statements? | A+B+F | ✅ | Your S3 (Parquet) + OCSF normalized + third-party OCSF ingestion. Not real-time (batch). | — | Security Lake / OCSF |
+| 335 | D3/D5 | Private subnet (no NAT), needs Secrets Manager + S3 SSE-KMS upload — minimum infra? (THREE) | A+B+D | ✅ | Interface endpoint (Secrets Mgr) + Gateway endpoint (S3) + SG HTTPS. KMS endpoint not needed — S3 calls KMS server-side. | — | VPC endpoints + SSE-KMS server-side |
