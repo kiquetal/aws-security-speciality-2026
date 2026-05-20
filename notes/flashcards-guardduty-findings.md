@@ -61,6 +61,19 @@ Discovery = enumerating YOUR resources (listing buckets, etc.)
             NEVER for crypto. Don't pick it.
 ```
 
+## Data Source Suffix (!suffix)
+
+Some findings include a `!DataSource` suffix indicating HOW GuardDuty detected it:
+
+| Suffix | Data Source | Example |
+|---|---|---|
+| `!DNS` | DNS log analysis | `Trojan:EC2/DriveBySourceTraffic!DNS` |
+| (none) | VPC Flow Logs or CloudTrail | `CryptoCurrency:EC2/BitcoinTool.B` |
+
+Full pattern: `ThreatPurpose:ResourceType/ThreatName!DataSource`
+
+> ⚠️ `!DNS` does NOT mean DNS Firewall generated the finding. GuardDuty reads DNS logs via its own internal feed.
+
 ## Memory Trick
 
 ```
