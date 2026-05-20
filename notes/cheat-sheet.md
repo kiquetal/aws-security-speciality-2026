@@ -74,6 +74,7 @@
 - Secrets Manager = built-in rotation (RDS, Aurora, DocumentDB, Redshift). Parameter Store = no native rotation.
 - Deletion has 7–30 day recovery window. Cannot delete immediately.
 - 🧠 **"Credentials available in DR region" = Secrets Manager cross-region replication.** MRK replicates key material, not the secret itself. Different layers.
+- 🧠 **"Access Denied on DATABASE after rotation" = rotation Lambda failed to update DB password.** Secret changed but DB didn't. "Access Denied on Secrets Manager" = IAM problem. Different layers.
 
 ### Data Masking (New in C03)
 - "Mask PII in logs" → **CloudWatch Logs data protection policy**. Real-time, no app changes, managed data identifiers.
@@ -130,12 +131,15 @@
 - 🧠 **DNS Firewall ALERT ≠ "generate a finding."** ALERT logs but doesn't produce security findings. GuardDuty reads DNS logs natively and generates findings with threat intel. "Detect + finding" = GuardDuty.
 - 🧠 **"Detect external decryption" = GuardDuty. "Prevent external decryption" = key policy condition.** The verb tells you the service.
 - "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
+- 🧠 **"Unused PERMISSIONS (per-action)" = Access Analyzer unused access. "Unused ROLE (last assumed)" = Config/credential report.** Different granularity.
+- 🧠 **Access Analyzer unused access + policy generation = find bloat + auto-generate replacement.** Two features, one service, designed together.
 - 🧠 **"Detect [bad thing] with zero custom code" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.
 
 ### GuardDuty Operational
 - 🧠 **GuardDuty is REGIONAL.** Must enable in every region where workloads run. No findings from a region where it's not enabled.
 - 🧠 **GuardDuty reads VPC Flow Logs + DNS logs via internal feed — you DON'T need to enable them yourself.** Your VPC Flow Logs are for YOUR queries (Insights, Athena). GuardDuty has its own tap.
 - 🧠 **"Unusual IP" / "never-seen location" = active threat = GuardDuty.** NOT Access Analyzer (that's permission audit, not real-time threats).
+- 🧠 **"Zero findings despite active workloads + GuardDuty confirmed enabled" = suppression rule archiving findings.** GuardDuty WILL generate findings on production — if you see none, something is hiding them.
 
 ### Log Sources
 - **"Which domain was queried?" = Resolver Query Logs.** VPC Flow Logs only show IP:port — domain name is gone after DNS resolves.
