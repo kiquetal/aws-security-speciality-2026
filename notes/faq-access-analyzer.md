@@ -47,13 +47,44 @@ ANSWERS: "Am I exposed?"                  ANSWERS: "Am I over-provisioned?"
 | **Scope** | ACCOUNT or ORGANIZATION | ACCOUNT_UNUSED_ACCESS or ORGANIZATION_UNUSED_ACCESS |
 | **Delegated admin** | ✅ Org-wide | ✅ Org-wide |
 
-## Additional Features
+## All Five Features (Exam-Critical)
 
-| Feature | What It Does |
-|---|---|
-| **Policy validation** | Checks policy grammar + security warnings before deployment |
-| **Policy generation** | Generates least-privilege policy from CloudTrail activity |
-| **Custom policy checks** | Validate policies against your security standards (paid) |
+| # | Feature | Input | Output | Cost | Exam Signal |
+|---|---|---|---|---|---|
+| 1 | **External access** | Resource policies | "Bucket accessible by external account" | Free | "Who outside can reach?" |
+| 2 | **Unused access** | CloudTrail 90d activity | "Role has kms:* but never called any kms action" | Paid | "Which permissions unused?" |
+| 3 | **Policy generation** | CloudTrail activity for one role | Ready-to-attach least-privilege JSON policy | Free | "Generate replacement policy" |
+| 4 | **Policy validation** | Policy JSON (before deploy) | Warnings: "overly permissive", "syntax error" | Free | "Check policy before attaching" |
+| 5 | **Custom policy checks** | Policy JSON + your rules | Pass/fail against your security standards | Paid | "Validate against our standards" |
+
+### Policy Generation — How It Works
+
+```
+Step 1: Call GeneratePolicy with a role ARN
+Step 2: Access Analyzer reads 90 days of CloudTrail for that role
+Step 3: Returns a JSON policy with ONLY the actions actually called
+Step 4: You review and attach as replacement
+
+Example:
+  Role currently has: s3:*, ec2:*, kms:*, rds:*
+  CloudTrail shows role only called: s3:GetObject, s3:PutObject, ec2:DescribeInstances
+  Generated policy: Allow s3:GetObject, s3:PutObject, ec2:DescribeInstances (specific ARNs)
+```
+
+### Unused Access + Policy Generation = Complete Workflow
+
+```
+1. Enable UNUSED ACCESS analyzer (org-level)
+   → Finds: "DataTeamRole has 47 unused permissions"
+
+2. Call POLICY GENERATION for DataTeamRole
+   → Returns: least-privilege policy based on actual usage
+
+3. Replace the bloated policy with the generated one
+   → Done. No manual analysis needed.
+```
+
+🧠 **Two features, one service, designed to work together.** Unused access finds the problem. Policy generation gives you the fix.
 
 ## Exam Gotchas
 
