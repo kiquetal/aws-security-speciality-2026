@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 355 |
-| **✅ Correct** | 272 (77%) |
-| **⚠️ Partial** | 20 (6%) |
-| **❌ Wrong** | 63 (18%) |
-| **Sessions** | 42 |
-| **Re-tests Passed** | 126 of 152 |
+| **Total Questions** | 365 |
+| **✅ Correct** | 282 (77%) |
+| **⚠️ Partial** | 20 (5%) |
+| **❌ Wrong** | 63 (17%) |
+| **Sessions** | 43 |
+| **Re-tests Passed** | 135 of 161 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 58 | 4 | 22 | 84 | 69% | 🟡 |
+| D1: Detection | 61 | 4 | 22 | 87 | 70% | 🟡 |
 | D2: Incident Response | 9 | 1 | 1 | 11 | 82% | 🟢 |
-| D3: Infrastructure Security | 40 | 4 | 7 | 51 | 78% | 🟡 |
-| D4: Identity & Access Management | 99 | 7 | 15 | 121 | 82% | 🟢 |
-| D5: Data Protection | 48 | 3 | 7 | 58 | 83% | 🟢 |
-| D6: Governance | 18 | 1 | 11 | 30 | 60% | 🟡 |
+| D3: Infrastructure Security | 42 | 4 | 7 | 53 | 79% | 🟡 |
+| D4: Identity & Access Management | 101 | 7 | 15 | 123 | 82% | 🟢 |
+| D5: Data Protection | 49 | 3 | 7 | 59 | 83% | 🟢 |
+| D6: Governance | 20 | 1 | 11 | 32 | 62% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -147,6 +147,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 39 | 2025-05-18 | Q306–Q325 | 19 | 0 | 1 | Cross-domain exam simulation (all domains, hardest scenarios) | [Jump](#session-39--2025-05-18) |
 | 40 | 2025-05-18 | Q326–Q330 | 5 | 0 | 0 | Cross-domain exam simulation (all domains, final validation) | [Jump](#session-40--2025-05-18) |
 | 41 | 2025-05-19 | Q331–Q335 | 5 | 0 | 0 | Cross-domain (untested gaps — Bedrock, Cognito, OAC+KMS, Security Lake, VPC endpoints) | [Jump](#session-41--2025-05-19) |
+| 43 | 2025-05-20 | Q360–Q369 | 10 | 0 | 0 | Cross-domain (killer set — remaining 🟡 weak areas) | [Jump](#session-43--2025-05-20) |
 | 42 | 2025-05-19 | Q336–Q359 | 21 | 0 | 3 | Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps) | [Jump](#session-42--2025-05-19) |
 
 ---
@@ -923,6 +924,26 @@ After adding a session:
 | 334 | D1 | Security Lake + Splunk — which THREE true statements? | A+B+F | ✅ | Your S3 (Parquet) + OCSF normalized + third-party OCSF ingestion. Not real-time (batch). | — | Security Lake / OCSF |
 | 335 | D3/D5 | Private subnet (no NAT), needs Secrets Manager + S3 SSE-KMS upload — minimum infra? (THREE) | A+B+D | ✅ | Interface endpoint (Secrets Mgr) + Gateway endpoint (S3) + SG HTTPS. KMS endpoint not needed — S3 calls KMS server-side. | — | VPC endpoints + SSE-KMS server-side |
 
+
+---
+
+### Session 43 — 2025-05-20
+
+**Domains:** Cross-domain (killer set — remaining 🟡 weak areas)
+**Score:** 10 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 360 | D3/D4 | Verified Access: stolen laptop, block specific device without affecting others? | B: Update device trust provider | ✅ | Mark device non-compliant in device trust provider | Q336 | Verified Access trust providers |
+| 361 | D6 | StackSets deployed Config, developer disables recorder — what happens? | B: Nothing — StackSets no auto-remediation | ✅ | StackSets does not auto-remediate drift | Q283 | StackSets no auto-remediation |
+| 362 | D1 | GuardDuty finding `Trojan:EC2/DriveBySourceTraffic!DNS` — what does !DNS mean? | B: Finding from DNS log analysis | ✅ | !suffix = data source used for detection | — | GuardDuty finding structure |
+| 363 | D4/D5 | Cross-account S3+KMS, all policies correct, still fails — cause? | B: Account B's SCP denies kms:Decrypt | ✅ | SCP follows the caller | Q256 | Cross-account KMS + SCP evaluation |
+| 364 | D6 | Self-provision hardened RDS, devs don't need rds:CreateDBInstance? | B: Service Catalog with launch constraint | ✅ | Launch constraint = Service Catalog assumes role | Q274 | Service Catalog (self-service) |
+| 365 | D1/D2 | After containment, determine other resources accessed, visualize timeline? | C: Detective | ✅ | "What else" + "visualize" + "timeline" = Detective | Q109 | Detective for investigation |
+| 366 | D5 | KMS rotated 3 times, decrypt original data from year 1? | B: Succeeds — auto-routes to correct version | ✅ | All versions kept forever, ciphertext metadata routes | Q192 | KMS auto-rotation retention |
+| 367 | D3 | DNS Firewall: ALLOW 2 domains + ALERT crypto + BLOCK all — priority order? | B: ALLOW → ALLOW → ALERT → BLOCK | ✅ | First match wins, ALLOW specific first, BLOCK * last | Q134 | DNS Firewall rule structure |
+| 368 | D4 | SCP denies RunInstances without tag, Config SLR launches (no tags) — result? | B: Fails — SCP applies to SLRs | ✅ | SLRs escape RCPs, NOT SCPs | Q97 | SCP applies to SLRs |
+| 369 | D1/D5 | Prevent external decrypt + alert on attempts — which TWO? | D+B: RCP + GuardDuty | ✅ | RCP prevents, GuardDuty detects | Q100 | Detect vs prevent (RCP + GuardDuty) |
 
 ---
 
