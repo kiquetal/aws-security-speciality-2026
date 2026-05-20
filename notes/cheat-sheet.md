@@ -175,13 +175,20 @@
 - 🧠 **Config conformance pack = bundle of rules + remediation as ONE unit, org-wide from delegated admin.** Security Hub standard = same rules but dashboard + no built-in remediation.
 ---
 
-## Quotas That Trick You
+## Quotas That Trick You (4-5-8-32-5120)
 
 | Service | Limit | Value |
 |---|---|---|
-| KMS key policy | Max size | 32 KB |
-| SCP / RCP | Max size | 5,120 chars |
+| KMS direct Encrypt/Decrypt | Max data size | 4 KB |
 | SCP / RCP | Max per target | 5 |
+| WAF | Body inspection default | 8 KB (up to 64 KB paid) |
+| KMS key policy | Max size | 32 KB |
+| SCP / RCP | Max characters | 5,120 |
+| KMS key deletion | Wait period | 7–30 days (default 30) |
+| Role chaining | Max session | 1 hour (always resets) |
+
+- 🧠 **`GetCallerIdentity` cannot be denied by anything.** Not IAM, not SCP, not boundary, not session policy.
+- 🧠 **`aws:TokenIssueTime` = revoke sessions.** Inline Deny with DateLessThan. Only way to kill active STS tokens.
 
 ---
 
