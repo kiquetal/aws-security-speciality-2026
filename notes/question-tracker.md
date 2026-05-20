@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 365 |
-| **✅ Correct** | 282 (77%) |
+| **Total Questions** | 375 |
+| **✅ Correct** | 289 (77%) |
 | **⚠️ Partial** | 20 (5%) |
-| **❌ Wrong** | 63 (17%) |
-| **Sessions** | 43 |
+| **❌ Wrong** | 66 (18%) |
+| **Sessions** | 44 |
 | **Re-tests Passed** | 135 of 161 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 61 | 4 | 22 | 87 | 70% | 🟡 |
+| D1: Detection | 62 | 4 | 23 | 89 | 70% | 🟡 |
 | D2: Incident Response | 9 | 1 | 1 | 11 | 82% | 🟢 |
-| D3: Infrastructure Security | 42 | 4 | 7 | 53 | 79% | 🟡 |
-| D4: Identity & Access Management | 101 | 7 | 15 | 123 | 82% | 🟢 |
-| D5: Data Protection | 49 | 3 | 7 | 59 | 83% | 🟢 |
-| D6: Governance | 20 | 1 | 11 | 32 | 62% | 🟡 |
+| D3: Infrastructure Security | 43 | 4 | 7 | 54 | 80% | 🟡 |
+| D4: Identity & Access Management | 104 | 7 | 16 | 127 | 82% | 🟢 |
+| D5: Data Protection | 50 | 3 | 8 | 61 | 82% | 🟢 |
+| D6: Governance | 21 | 1 | 11 | 33 | 64% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -99,6 +99,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 65 | Verified Access trust providers | Q336 | D3 | 1 |
 | 🟡 66 | Signer revocation (job vs profile vs IAM) | Q339 | D4 | 1 |
 | 🟡 67 | Cognito Identity Pool + KMS permissions | Q341 | D3 | 1 |
+| 🟡 68 | GuardDuty suppression rules | Q372 | D1 | 1 |
+| 🟡 69 | Access Analyzer unused + policy generation | Q374 | D4 | 1 |
+| 🟡 70 | Secrets Manager rotation failure | Q376 | D5 | 1 |
 
 ---
 
@@ -149,6 +152,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 41 | 2025-05-19 | Q331–Q335 | 5 | 0 | 0 | Cross-domain (untested gaps — Bedrock, Cognito, OAC+KMS, Security Lake, VPC endpoints) | [Jump](#session-41--2025-05-19) |
 | 43 | 2025-05-20 | Q360–Q369 | 10 | 0 | 0 | Cross-domain (killer set — remaining 🟡 weak areas) | [Jump](#session-43--2025-05-20) |
 | 42 | 2025-05-19 | Q336–Q359 | 21 | 0 | 3 | Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps) | [Jump](#session-42--2025-05-19) |
+| 44 | 2025-05-20 | Q370–Q379 | 7 | 0 | 3 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-44--2025-05-20) |
 
 ---
 
@@ -978,3 +982,22 @@ After adding a session:
 | 357 | D6/D4 | Identity Center + Okta + SCIM, new engineer joins Platform group? | B: SCIM auto-syncs | ✅ | Group already assigned → new user inherits access automatically. | Q263 | SCIM provisioning |
 | 358 | D5 | CreateGrant → partner AccessDenied immediately, works 30s later? | B: Grant token | ✅ | Pass grant token for immediate use before eventual consistency. | Q101 | KMS Grants eventual consistency |
 | 359 | D3/D5 | Private subnet needs DynamoDB + S3, minimize cost — endpoint types? | B: Gateway for both | ✅ | S3 + DynamoDB = only two Gateway endpoint services (free). | Q249 | Gateway vs Interface endpoints |
+
+
+### Session 44 — 2025-05-20
+
+**Domains:** Cross-domain killer exam simulation (all domains, novel scenarios)
+**Score:** 7 ✅ · 0 ⚠️ · 3 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 370 | D4/D6 | RCP block external S3 + exempt Config — which TWO? | B+C | ✅ | RCP with PrincipalOrgID + PrincipalIsAWSService exception | — | RCP + PrincipalIsAWSService |
+| 371 | D4/D5 | SCP denies kms:Decrypt unless ViaService=s3, Lambda still works — why? | B: ViaService satisfied | ✅ | S3 calls KMS on behalf of caller, condition satisfied | — | kms:ViaService condition |
+| 372 | D1 | GuardDuty enabled all regions, zero findings 90 days, active workloads — cause? | A: VPC Flow Logs not enabled | ❌ | **D: Suppression rule archiving findings.** GuardDuty reads Flow Logs via internal feed. Zero findings on active workloads = suppression rule. | — | GuardDuty suppression rules |
+| 373 | D6 | Self-service VPC, no broad IAM, NOT auto for new accounts — which service? | B: Service Catalog | ✅ | Self-service + no broad IAM + not automatic = Service Catalog with launch constraint | — | Service Catalog (self-service) |
+| 374 | D4 | Find unused permissions 90d + generate replacement policies, least overhead — which TWO? | C+A | ❌ | **A+B: Access Analyzer unused access + policy generation.** Config rule = role-level, not permission-level. | — | Access Analyzer unused + policy generation |
+| 375 | D5 | CW Logs mask credit cards + only compliance sees raw + audit trail — which THREE? | A+B+E | ✅ | Data protection policy + logs:Unmask + audit destination | — | CW Logs data masking |
+| 376 | D5 | Secrets Manager rotation, batch works, new Lambda fails on RDS — cause? | C: Missing GetSecretValue | ❌ | **D: Rotation Lambda failed to update DB password.** Error on DATABASE = credential problem, not IAM. | — | Secrets Manager rotation failure |
+| 377 | D4/D6 | Data perimeter: block external IN + block exfil OUT + exempt services — which TWO? | A+B | ✅ | RCP (block outsiders) + SCP with ResourceAccount (block exfil) | — | Data perimeter (RCP+SCP) |
+| 378 | D3/D5 | Private subnet, Secrets Manager + S3 SSE-KMS + CW Logs — minimum endpoints? | 3 | ✅ | Gateway (S3) + Interface (Secrets Mgr) + Interface (CW Logs). KMS not needed — S3 calls server-side. | — | VPC endpoints minimum |
+| 379 | D1/D2 | Trojan finding severity 8.2, contain + preserve + investigate 72hr — sequence? | B,C,D | ✅ | Isolate (deny-all SG) → Snapshot (EBS) → Detective (72hr timeline) | — | IR sequence + Detective |
