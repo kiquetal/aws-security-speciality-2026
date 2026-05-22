@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 375 |
-| **✅ Correct** | 289 (77%) |
+| **Total Questions** | 380 |
+| **✅ Correct** | 294 (77%) |
 | **⚠️ Partial** | 20 (5%) |
-| **❌ Wrong** | 66 (18%) |
-| **Sessions** | 44 |
-| **Re-tests Passed** | 135 of 161 |
+| **❌ Wrong** | 66 (17%) |
+| **Sessions** | 45 |
+| **Re-tests Passed** | 140 of 166 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 62 | 4 | 23 | 89 | 70% | 🟡 |
+| D1: Detection | 63 | 4 | 23 | 90 | 70% | 🟡 |
 | D2: Incident Response | 9 | 1 | 1 | 11 | 82% | 🟢 |
 | D3: Infrastructure Security | 43 | 4 | 7 | 54 | 80% | 🟡 |
-| D4: Identity & Access Management | 104 | 7 | 16 | 127 | 82% | 🟢 |
-| D5: Data Protection | 50 | 3 | 8 | 61 | 82% | 🟢 |
+| D4: Identity & Access Management | 106 | 7 | 16 | 129 | 82% | 🟢 |
+| D5: Data Protection | 52 | 3 | 8 | 63 | 83% | 🟢 |
 | D6: Governance | 21 | 1 | 11 | 33 | 64% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -153,6 +153,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 43 | 2025-05-20 | Q360–Q369 | 10 | 0 | 0 | Cross-domain (killer set — remaining 🟡 weak areas) | [Jump](#session-43--2025-05-20) |
 | 42 | 2025-05-19 | Q336–Q359 | 21 | 0 | 3 | Cross-domain (Signer, Verified Access, Cognito, hybrid, detection gaps) | [Jump](#session-42--2025-05-19) |
 | 44 | 2025-05-20 | Q370–Q379 | 7 | 0 | 3 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-44--2025-05-20) |
+| 45 | 2025-05-22 | Q380–Q384 | 5 | 0 | 0 | Cross-domain (re-test — Session 44 errors + validation) | [Jump](#session-45--2025-05-22) |
 
 ---
 
@@ -1001,3 +1002,17 @@ After adding a session:
 | 377 | D4/D6 | Data perimeter: block external IN + block exfil OUT + exempt services — which TWO? | A+B | ✅ | RCP (block outsiders) + SCP with ResourceAccount (block exfil) | — | Data perimeter (RCP+SCP) |
 | 378 | D3/D5 | Private subnet, Secrets Manager + S3 SSE-KMS + CW Logs — minimum endpoints? | 3 | ✅ | Gateway (S3) + Interface (Secrets Mgr) + Interface (CW Logs). KMS not needed — S3 calls server-side. | — | VPC endpoints minimum |
 | 379 | D1/D2 | Trojan finding severity 8.2, contain + preserve + investigate 72hr — sequence? | B,C,D | ✅ | Isolate (deny-all SG) → Snapshot (EBS) → Detective (72hr timeline) | — | IR sequence + Detective |
+
+
+### Session 45 — 2025-05-22
+
+**Domains:** Cross-domain (re-test — Session 44 errors + validation)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 380 | D1 | GuardDuty zero findings 6 months, junior created filter — investigate first? | C: Suppression rules with overly broad filter | ✅ | Suppression rules auto-archive findings. "Created filter to reduce noise" = suppression rule. | Q372 | GuardDuty suppression rules |
+| 381 | D4 | Find unused permissions 90d + generate replacement policy, least overhead? | B: Access Analyzer unused + policy generation | ✅ | Two features, one service, least overhead. | Q374 | Access Analyzer unused + policy generation |
+| 382 | D5 | Rotation completes, new Lambda "password auth failed" on RDS, ECS works — cause? | C: Rotation Lambda failed ALTER USER on RDS | ✅ | Error on DATABASE = rotation Lambda didn't update DB. ECS uses old connection (AWSPREVIOUS). | Q376 | Secrets Manager rotation failure |
+| 383 | D5 | S3 CRR + MRK, decrypt fails in destination, replica exists — cause? | B: MRK replica key policy missing kms:Decrypt | ✅ | MRK policies independent per region — must update each separately. | Q84 | MRK independent key policies |
+| 384 | D4/D1 | Block external S3 access org-wide + detect attempts — which TWO? | B+C: RCP + GuardDuty S3 Protection | ✅ | RCP prevents, GuardDuty detects. SCP can't stop external callers. | Q369 | Detect vs prevent (RCP + GuardDuty) |
