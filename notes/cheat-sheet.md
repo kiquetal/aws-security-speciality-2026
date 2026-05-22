@@ -27,7 +27,8 @@
 - Session policy = temporary scope-down passed at AssumeRole time. Filters down, never escalates. Effective = role ∩ session policy ∩ boundary ∩ SCP.
 - ⚠️ Session policy is a CEILING just like boundary — not "after" it. Both are intersected in parallel. If session allows only Get+Put, Delete is denied even if boundary allows s3:*.
 - ⚠️ **Exception:** Resource-based policies that name the session ARN directly BYPASS the session policy ceiling. The filter only restricts identity-based grants.
-- SCPs and RCPs can NEVER be bypassed — not by resource-based policies, not by anything. Only session policies and boundaries have the resource-policy bypass exception.
+- ⚠️ **SAME-ACCOUNT ONLY.** The resource-policy bypass of session policies and boundaries ONLY works same-account. Cross-account, session policy ceiling ALWAYS applies — no bypass possible.
+- SCPs and RCPs can NEVER be bypassed — not by resource-based policies, not by anything. Only session policies and boundaries have the resource-policy bypass exception (same-account only).
 
 ### ABAC
 - PrincipalTag = who. ResourceTag = what. RequestTag = what you're sending. Three different tags, three different moments.
