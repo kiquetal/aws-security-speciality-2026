@@ -12,6 +12,9 @@
 - Boundary = ceiling on ONE role. Identity ∩ boundary = effective. Never grants.
 - Delegation pattern: Deny CreateRole without boundary + Deny remove/swap boundary = safe self-service IAM.
 
+### Data Perimeter
+- 🧠 **RCP blocks outsiders IN. SCP blocks insiders OUT.** Full data perimeter = both together. Bucket policy per-bucket doesn't scale org-wide.
+
 ### Cross-Account
 - RAM opens, RCP closes. RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.
 - RAM doesn't support KMS. Use KMS Grants for per-operation, per-principal, revocable cross-account key access.
@@ -135,6 +138,7 @@
 - 🧠 **"Unused PERMISSIONS (per-action)" = Access Analyzer unused access. "Unused ROLE (last assumed)" = Config/credential report.** Different granularity.
 - 🧠 **Access Analyzer unused access + policy generation = find bloat + auto-generate replacement.** Two features, one service, designed together.
 - 🧠 **"Detect [bad thing] with zero custom code" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.
+- 🧠 **"Detect API call fast + least overhead" + org trail exists = EventBridge rule in management account.** Near real-time, one rule. Config is slower + heavier — use for remediation, not pure fast detection.
 
 ### GuardDuty Operational
 - 🧠 **GuardDuty is REGIONAL.** Must enable in every region where workloads run. No findings from a region where it's not enabled.

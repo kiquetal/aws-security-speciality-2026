@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 390 |
-| **✅ Correct** | 304 (78%) |
-| **⚠️ Partial** | 20 (5%) |
-| **❌ Wrong** | 66 (17%) |
-| **Sessions** | 46 |
-| **Re-tests Passed** | 141 of 167 |
+| **Total Questions** | 400 |
+| **✅ Correct** | 311 (78%) |
+| **⚠️ Partial** | 21 (5%) |
+| **❌ Wrong** | 68 (17%) |
+| **Sessions** | 47 |
+| **Re-tests Passed** | 147 of 173 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 65 | 4 | 23 | 92 | 71% | 🟡 |
-| D2: Incident Response | 9 | 1 | 1 | 11 | 82% | 🟢 |
-| D3: Infrastructure Security | 45 | 4 | 7 | 56 | 80% | 🟢 |
-| D4: Identity & Access Management | 109 | 7 | 16 | 132 | 83% | 🟢 |
-| D5: Data Protection | 53 | 3 | 8 | 64 | 83% | 🟢 |
+| D1: Detection | 65 | 4 | 24 | 93 | 70% | 🟡 |
+| D2: Incident Response | 10 | 1 | 1 | 12 | 83% | 🟢 |
+| D3: Infrastructure Security | 47 | 4 | 7 | 58 | 81% | 🟢 |
+| D4: Identity & Access Management | 111 | 8 | 17 | 136 | 82% | 🟢 |
+| D5: Data Protection | 55 | 3 | 8 | 66 | 83% | 🟢 |
 | D6: Governance | 23 | 1 | 11 | 35 | 66% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -102,6 +102,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 68 | GuardDuty suppression rules | Q372 | D1 | 1 |
 | 🟡 69 | Access Analyzer unused + policy generation | Q374 | D4 | 1 |
 | 🟡 70 | Secrets Manager rotation failure | Q376 | D5 | 1 |
+| 🟡 71 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D4 | 1 |
+| 🟡 72 | Data perimeter (RCP blocks IN, SCP blocks OUT) | Q398 | D4 | 1 |
+| 🟡 73 | EventBridge for fast detection | Q401 | D1 | 1 |
 
 ---
 
@@ -155,6 +158,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 44 | 2025-05-20 | Q370–Q379 | 7 | 0 | 3 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-44--2025-05-20) |
 | 45 | 2025-05-22 | Q380–Q384 | 5 | 0 | 0 | Cross-domain (re-test — Session 44 errors + validation) | [Jump](#session-45--2025-05-22) |
 | 46 | 2026-05-24 | Q385–Q394 | 10 | 0 | 0 | Cross-domain exam simulation (all domains, certification-level) | [Jump](#session-46--2026-05-24) |
+| 47 | 2026-05-24 | Q395–Q404 | 7 | 1 | 2 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-47--2026-05-24) |
 
 ---
 
@@ -1036,3 +1040,22 @@ After adding a session:
 | 392 | D4 | Identity=s3:*, boundary=s3:*+ec2:*, session=Get+Put, bucket policy grants Delete — result? | C: Allowed — resource-based bypasses session | ✅ | Same-account resource-based policy bypasses session policy ceiling | — | Session policy bypass |
 | 393 | D3 | DNS Firewall: ALLOW 2 domains + ALERT crypto + BLOCK all — rule order? | B: ALLOW → ALLOW → ALERT → BLOCK | ✅ | First match wins, ALLOW specific first, BLOCK * last | — | DNS Firewall rule structure |
 | 394 | D6 | Service Catalog, dev only has ProvisionProduct, VPC created — how? | B: Launch constraint role | ✅ | Launch constraint = Service Catalog assumes role with permissions | — | Service Catalog launch constraint |
+
+
+### Session 47 — 2026-05-24
+
+**Domains:** Cross-domain killer exam simulation (all domains, novel scenarios)
+**Score:** 7 ✅ · 1 ⚠️ · 2 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 395 | D4/D3 | Multi-tenant DynamoDB, Cognito Identity Pool, Tenant A reads Tenant B — fix? (TWO) | A+C | ⚠️ | **C+D**: Map TenantId as session tag (C) + Verified Permissions for app-level authz (D). `sub` ≠ TenantId. | — | Cognito + DynamoDB ABAC (sub vs TenantId) |
+| 396 | D2/D4 | Exfiltrated role creds, stop attacker + keep ECS running? | B: Inline Deny TokenIssueTime | ✅ | Deny sessions before timestamp, ECS gets new creds after. | Q71 | STS session revocation |
+| 397 | D3 | Network Firewall TLS inspection — cert warnings — fix? | B: Distribute private CA to trust stores | ✅ | Private CA + MITM pattern — distribute to client trust stores. | Q87 | Network Firewall TLS inspection |
+| 398 | D4/D6 | Data perimeter: block external IN + block exfil OUT — which TWO? | A+C | ❌ | **A+B**: RCP (block outsiders IN) + SCP with ResourceAccount (block insiders OUT). Bucket policy per-bucket doesn't scale. | — | Data perimeter (RCP blocks IN, SCP blocks OUT) |
+| 399 | D5 | S3 CRR + MRK, decrypt fails in eu-west-1 — cause? | B: MRK replica key policy missing permissions | ✅ | MRK policies independent per region — must update each separately. | Q84 | MRK independent key policies |
+| 400 | D4 | Identity Center + Okta + SCIM, new engineer joins Platform group — how? (TWO) | A+B: SCIM syncs + group already assigned | ✅ | SCIM auto-syncs. Group assigned to permission set → inherits access. | Q263 | SCIM provisioning |
+| 401 | D1 | Detect StopLogging within 5 min, org trail exists, least overhead? | C: Config rule | ❌ | **B: EventBridge rule in management account.** Near real-time, one rule. Config is slower + heavier. | — | EventBridge for fast detection |
+| 402 | D3/D5 | Private subnet, Secrets Manager + S3 SSE-KMS + CW Logs — minimum endpoints? | B: 3 | ✅ | Gateway (S3) + Interface (Secrets Mgr) + Interface (CW Logs). KMS not needed — S3 calls server-side. | — | VPC endpoints minimum |
+| 403 | D5 | Rotation completes, new Lambda "password auth failed" on RDS, ECS works — cause? | B: Rotation Lambda failed ALTER USER on RDS | ✅ | Error on DATABASE = rotation Lambda didn't update DB. ECS uses old connection (AWSPREVIOUS). | Q376 | Secrets Manager rotation failure |
+| 404 | D4 | Find unused permissions 90d + generate replacement policies, least overhead? | B: Access Analyzer unused + policy generation | ✅ | Two features, one service, least overhead. | Q374 | Access Analyzer unused + policy generation |
