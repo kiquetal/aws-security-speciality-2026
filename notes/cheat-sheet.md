@@ -193,6 +193,9 @@
 - 🧠 **Control Tower guardrails: Preventive = SCP (block API). Detective = Config (detect after). Proactive = CF Hook (validate template before deploy).**
 - 🧠 **"Validate template content" = Proactive guardrail (CF Hook). "Block API call" = SCP.** SCP can't see what's inside a CloudFormation template.
 - 🧠 **Every security service supports delegated admin.** GuardDuty, Security Hub, FM, Config, Audit Manager, Macie, Inspector, Detective, Security Lake, Access Analyzer.
+- 🧠 **"Detect specific API call fast" = EventBridge on CloudTrail. "Detect malicious behavior" = GuardDuty.** GuardDuty doesn't alert on policy changes.
+- 🧠 **If the service has delegated admin + auto-enable → use native, not StackSets.** GuardDuty, Inspector, Security Hub, Macie, Detective, Config, Access Analyzer.
+- 🧠 **No single governance service does everything.** CT doesn't share (RAM), deploy WAF (FM), or remediate (Config).
 ---
 
 ## Quotas That Trick You (4-5-8-32-5120)
