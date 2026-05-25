@@ -8,10 +8,10 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 420 |
-| **✅ Correct** | 328 (78%) |
+| **Total Questions** | 425 |
+| **✅ Correct** | 330 (78%) |
 | **⚠️ Partial** | 21 (5%) |
-| **❌ Wrong** | 71 (17%) |
+| **❌ Wrong** | 74 (17%) |
 | **Sessions** | 49 |
 | **Re-tests Passed** | 155 of 182 |
 
@@ -22,8 +22,8 @@
 | D1: Detection | 68 | 4 | 24 | 96 | 71% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
 | D3: Infrastructure Security | 51 | 4 | 9 | 64 | 80% | 🟡 |
-| D4: Identity & Access Management | 115 | 8 | 17 | 140 | 82% | 🟢 |
-| D5: Data Protection | 59 | 3 | 9 | 71 | 83% | 🟢 |
+| D4: Identity & Access Management | 117 | 8 | 18 | 143 | 82% | 🟢 |
+| D5: Data Protection | 59 | 3 | 11 | 73 | 81% | 🟢 |
 | D6: Governance | 24 | 1 | 11 | 36 | 67% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -107,6 +107,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 73 | EventBridge for fast detection | Q401 | D1 | 1 |
 | 🟡 74 | Timeout vs Access Denied (SG troubleshooting) | Q418 | D3 | 1 |
 | 🟡 75 | KMS is regional | Q423 | D5 | 1 |
+| 🟡 76 | Default encryption vs bucket policy Deny | Q426 | D5 | 1 |
+| 🟡 77 | RCP same-org evaluation | Q427 | D4 | 1 |
+| 🟡 78 | Secrets Manager replication ≠ MRK | Q428 | D5 | 1 |
 
 ---
 
@@ -162,7 +165,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 46 | 2026-05-24 | Q385–Q394 | 10 | 0 | 0 | Cross-domain exam simulation (all domains, certification-level) | [Jump](#session-46--2026-05-24) |
 | 47 | 2026-05-24 | Q395–Q404 | 7 | 1 | 2 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-47--2026-05-24) |
 | 48 | 2026-05-24 | Q405–Q414 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-48--2026-05-24) |
-| 49 | 2026-05-24 | Q415–Q424 | 8 | 0 | 2 | Cross-domain lightning rounds (all domains, novel scenarios) | [Jump](#session-49--2026-05-24) |
+| 49 | 2026-05-24 | Q415–Q429 | 10 | 0 | 5 | Cross-domain lightning rounds (all domains, novel scenarios) | [Jump](#session-49--2026-05-24) |
 
 ---
 
@@ -1087,7 +1090,7 @@ After adding a session:
 ### Session 49 — 2026-05-24
 
 **Domains:** Cross-domain lightning rounds (all domains, novel scenarios)
-**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+**Score:** 10 ✅ · 0 ⚠️ · 5 ❌ (67% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -1101,3 +1104,8 @@ After adding a session:
 | 422 | D5 | KMS auto-rotation enabled, rotated once in 2 years — how many material versions? | B: 2 | ✅ | Original + one rotation = 2. All kept forever. | — | KMS rotation versions |
 | 423 | D5/D4 | Cross-account KMS, key policy + identity policy correct, still Access Denied — cause? | Confused | ❌ | **C: Wrong regional endpoint.** KMS keys are regional — calling wrong region = key not found. | — | KMS is regional |
 | 424 | D3/D6 | RAM shares DNS FW rule group, FM enforces, developer disassociates — what happens? | B: FM re-associates automatically | ✅ | FM auto-remediates. Developer can disassociate but FM re-applies. | Q329 | FM auto-remediation |
+| 425 | D4/D5 | SCP denies kms:Decrypt unless ViaService=s3, developer calls KMS directly from CLI? | B: Fails — ViaService not satisfied | ✅ | Direct call has no ViaService context → SCP Deny fires. | — | kms:ViaService + SCP |
+| 426 | D5 | Default encryption SSE-KMS + bucket policy Deny if wrong key header — upload without header? | A: Succeeds (default encryption) | ❌ | **B: Fails — bucket policy evaluates headers BEFORE default encryption applies.** | — | Default encryption vs bucket policy Deny |
+| 427 | D4 | RCP denies non-org s3:*, same-account Lambda writes to own bucket — result? | D: Succeeds — RCPs don't apply same-account | ❌ | **B: Succeeds — RCPs DO apply, but Lambda's PrincipalOrgID matches → Deny doesn't fire.** | — | RCP same-org evaluation |
+| 428 | D5 | Secrets Manager cross-region replication, source key is single-region (not MRK) — works? | A: Replication fails, needs MRK | ❌ | **C: Works — you specify a separate key in destination region. SM re-encrypts.** MRK not required. | — | Secrets Manager replication ≠ MRK |
+| 429 | D4 | Employee terminated in Okta, revoke AWS access within minutes — mechanism? | A: SCIM deprovisioning | ✅ | SCIM auto-syncs lifecycle. Deactivate in Okta → removed from Identity Center within minutes. | — | SCIM deprovisioning |
