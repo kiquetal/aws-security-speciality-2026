@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 468 |
-| **✅ Correct** | 363 (78%) |
+| **Total Questions** | 482 |
+| **✅ Correct** | 374 (78%) |
 | **⚠️ Partial** | 22 (5%) |
-| **❌ Wrong** | 83 (18%) |
+| **❌ Wrong** | 86 (18%) |
 | **Sessions** | 51 |
-| **Re-tests Passed** | 168 of 199 |
+| **Re-tests Passed** | 169 of 200 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 68 | 4 | 24 | 96 | 71% | 🟡 |
+| D1: Detection | 68 | 4 | 25 | 97 | 70% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
 | D3: Infrastructure Security | 53 | 4 | 9 | 66 | 80% | 🟢 |
 | D4: Identity & Access Management | 118 | 8 | 18 | 144 | 82% | 🟢 |
 | D5: Data Protection | 61 | 3 | 11 | 75 | 81% | 🟢 |
-| D6: Governance | 52 | 2 | 20 | 74 | 70% | 🟡 |
+| D6: Governance | 63 | 2 | 22 | 87 | 72% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -117,6 +117,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 83 | FM SG common policy | Q454 | D6 | 1 |
 | 🟡 84 | Delegated admin (all services) | Q462 | D6 | 1 |
 | 🟡 85 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
+| 🟡 86 | EventBridge for API call detection | Q474 | D1 | 1 |
+| 🟡 87 | Native org-wide deployment | Q483 | D6 | 1 |
+| 🟡 88 | No single governance service | Q486 | D6 | 1 |
 
 ---
 
@@ -174,7 +177,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 48 | 2026-05-24 | Q405–Q414 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-48--2026-05-24) |
 | 49 | 2026-05-24 | Q415–Q429 | 10 | 0 | 5 | Cross-domain lightning rounds (all domains, novel scenarios) | [Jump](#session-49--2026-05-24) |
 | 50 | 2026-05-25 | Q430–Q434 | 5 | 0 | 0 | Cross-domain (re-test — Session 49 errors + new killer) | [Jump](#session-50--2026-05-25) |
-| 51 | 2026-05-25 | Q435–Q472 | 28 | 1 | 9 | D6 Governance (targeted drill — RAM vs FM, StackSets, Service Catalog, Audit Manager) | [Jump](#session-51--2026-05-25) |
+| 51 | 2026-05-25 | Q435–Q486 | 39 | 1 | 12 | D6 Governance (targeted drill — RAM vs FM, StackSets, Service Catalog, Audit Manager) | [Jump](#session-51--2026-05-25) |
 
 ---
 
@@ -1179,3 +1182,17 @@ After adding a session:
 | 470 | D6 | RAM shared subnet, developer launches EC2 — who owns the instance? | B: Workload account (launcher) | ✅ | RAM shares infra, resources launched belong to launcher. | — | RAM shared VPC ownership |
 | 471 | D6 | Match 5 scenarios to 5 services (SCP/Config/FM/SC/Hook) | All correct (A,B,C,D,E in order) | ✅ | Full D6 decision tree mapped correctly. | — | D6 governance decision tree |
 | 472 | D6 | One sentence each: what makes SCP/conformance/FM/StackSets/SC unique? | All correct | ✅ | Block API / check+fix / firewall lifecycle / push infra / self-service+launch role. | — | D6 service differentiation |
+| 473 | D6/D4 | RCP denies non-org s3:*, developer saves Principal:* bucket policy — what happens? | B: Policy saves, RCP blocks subsequent access | ✅ | RCP doesn't block PutBucketPolicy — blocks access at evaluation time. | — | RCP evaluation timing |
+| 474 | D1/D6 | Detect PutBucketPolicy with Principal:* within 5 min + prevent external access — TWO? | D+A: GuardDuty + RCP | ❌ | **C+A: EventBridge on CloudTrail + RCP.** GuardDuty detects threats, not API calls. | — | EventBridge for API call detection |
+| 475 | D6 | Service Catalog provisions VPC, developer removes flow logs 2 weeks later — what happens? | B: Nothing — SC doesn't monitor after provisioning | ✅ | Service Catalog = deploy only, no monitoring. | — | Service Catalog no post-deploy monitoring |
+| 476 | D6 | Self-provision EC2 + auto-fix IMDSv2 + block ModifyInstanceMetadata — THREE? | A+B+C: Service Catalog + Config + SCP | ✅ | Three layers: self-service + detect/fix + prevent. | — | Layered governance |
+| 477 | D6/D4 | SCP denies DeleteDetector, rogue admin in management account calls it — result? | B: Allowed — mgmt account exempt | ✅ | Management account always exempt from SCPs. | — | Management account exempt |
+| 478 | D6 | Prevent member accounts from sharing resources externally via RAM — how? | D: Both SCP condition + Organizations setting work | ✅ | Two mechanisms: SCP with ram:RequestedAllowsExternalPrincipals, or org-level setting. | — | RAM external sharing controls |
+| 479 | D6 | Audit Manager auto-collected evidence sources — which THREE? | A+B+C: Config + CloudTrail + Security Hub | ✅ | Auto-collected. Manual = screenshots, pen test reports. | — | Audit Manager evidence sources |
+| 480 | D6 | StackSets service-managed, new account joins OU — what happens? | B: Stack instance auto-deploys (if auto-deploy enabled) | ✅ | Service-managed + auto-deploy = zero manual work. | — | StackSets auto-deploy |
+| 481 | D6 | Control Tower detective guardrail "Detect S3 encryption" — what's underneath? | B: Config rule | ✅ | Detective guardrail = Config rule. Preventive = SCP. Proactive = CF Hook. | — | Control Tower guardrail internals |
+| 482 | D6 | Conformance pack + Security Hub both flag unencrypted bucket — difference? | B: Conformance pack auto-fixes, Security Hub only reports | ✅ | Conformance pack has remediation. Security Hub = dashboard only. | — | Conformance pack vs Security Hub |
+| 483 | D6 | Deploy Inspector across 200 accounts, auto for new — approach? | A: StackSets | ❌ | **B: Inspector delegated admin with auto-enable.** Native org support = use native, not StackSets. | — | Native org-wide deployment |
+| 484 | D6 | Deploy GuardDuty across 300 accounts, auto for new — approach? | B: GuardDuty delegated admin with auto-enable | ✅ | Native org support → use native. | Q483 | Native org-wide deployment |
+| 485 | D6 | Deploy GuardDuty + Config + CloudTrail + custom IAM roles, auto for new — approach? | C: StackSets + native delegated admin for each | ✅ | Mix: native for services that support it, StackSets for custom resources. | — | Hybrid deployment strategy |
+| 486 | D6 | "ONE service that does everything" — which? | A: Control Tower | ❌ | **B: No single service does all.** CT doesn't share (RAM), deploy WAF (FM), or remediate (Config). | — | No single governance service |
