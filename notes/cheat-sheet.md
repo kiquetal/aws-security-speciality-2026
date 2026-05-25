@@ -175,6 +175,7 @@
 - Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.
 - 🧠 **"Which mechanism prevents X?" = SCP. "Which service automates guardrails?" = Control Tower.** Control Tower uses SCPs — the mechanism is SCP, the automation is Control Tower.
+- 🧠 **"PREVENT/BLOCK launches" = SCP (preventive). "DETECT + FIX after" = Config (detective).** If the instance should NEVER exist, SCP. If it can exist briefly then get fixed, Config.
 - 🧠 **"Share resources cross-account" = RAM. "Enforce guardrails cross-account" = SCP/Control Tower.** DNS Firewall rule groups, TGWs, subnets = RAM. Deny actions org-wide = SCP.
 - 🧠 **Audit Manager = YOUR compliance evidence. Artifact = AWS's compliance reports.** "Collect evidence for our audit" = Audit Manager. "Download AWS's SOC 2" = Artifact.
 - 🧠 **StackSets = push IaC to many accounts (any resource). Firewall Manager = push security RULES only (WAF/SG/NF/DNS FW).** "Deploy GuardDuty + Config" = StackSets. "Deploy WAF rules" = FM.
