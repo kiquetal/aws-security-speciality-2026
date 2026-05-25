@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 410 |
-| **✅ Correct** | 320 (78%) |
+| **Total Questions** | 420 |
+| **✅ Correct** | 328 (78%) |
 | **⚠️ Partial** | 21 (5%) |
-| **❌ Wrong** | 69 (17%) |
-| **Sessions** | 48 |
-| **Re-tests Passed** | 150 of 177 |
+| **❌ Wrong** | 71 (17%) |
+| **Sessions** | 49 |
+| **Re-tests Passed** | 155 of 182 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 66 | 4 | 24 | 94 | 70% | 🟡 |
-| D2: Incident Response | 10 | 1 | 1 | 12 | 83% | 🟢 |
-| D3: Infrastructure Security | 49 | 4 | 8 | 61 | 80% | 🟢 |
-| D4: Identity & Access Management | 114 | 8 | 17 | 139 | 82% | 🟢 |
-| D5: Data Protection | 58 | 3 | 8 | 69 | 84% | 🟢 |
-| D6: Governance | 23 | 1 | 11 | 35 | 66% | 🟡 |
+| D1: Detection | 68 | 4 | 24 | 96 | 71% | 🟡 |
+| D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
+| D3: Infrastructure Security | 51 | 4 | 9 | 64 | 80% | 🟡 |
+| D4: Identity & Access Management | 115 | 8 | 17 | 140 | 82% | 🟢 |
+| D5: Data Protection | 59 | 3 | 9 | 71 | 83% | 🟢 |
+| D6: Governance | 24 | 1 | 11 | 36 | 67% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -105,6 +105,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 71 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D4 | 1 |
 | 🟡 72 | Data perimeter (RCP blocks IN, SCP blocks OUT) | Q398 | D4 | 1 |
 | 🟡 73 | EventBridge for fast detection | Q401 | D1 | 1 |
+| 🟡 74 | Timeout vs Access Denied (SG troubleshooting) | Q418 | D3 | 1 |
+| 🟡 75 | KMS is regional | Q423 | D5 | 1 |
 
 ---
 
@@ -160,6 +162,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 46 | 2026-05-24 | Q385–Q394 | 10 | 0 | 0 | Cross-domain exam simulation (all domains, certification-level) | [Jump](#session-46--2026-05-24) |
 | 47 | 2026-05-24 | Q395–Q404 | 7 | 1 | 2 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-47--2026-05-24) |
 | 48 | 2026-05-24 | Q405–Q414 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-48--2026-05-24) |
+| 49 | 2026-05-24 | Q415–Q424 | 8 | 0 | 2 | Cross-domain lightning rounds (all domains, novel scenarios) | [Jump](#session-49--2026-05-24) |
 
 ---
 
@@ -1079,3 +1082,22 @@ After adding a session:
 | 412 | D4/D3 | Cognito per-user S3, pen tester crafts request to other user's prefix? | B: Fails — IAM policy restricts to caller's sub | ✅ | Policy Resource uses sub variable, mismatch = denied. | — | Cognito per-user isolation |
 | 413 | D3/D4 | Enforce IMDSv2 org-wide, block non-compliant launches immediately? | A: Config + auto-remediation | ❌ | **B: SCP** denying RunInstances unless MetadataHttpTokens=required. "Prevent" = SCP. | Q261 | SCP for preventive enforcement |
 | 414 | D5 | CloudFront + S3 SSE-KMS, only CF can access — which TWO? | B+C: OAC + KMS key policy for CF service principal | ✅ | OAC (not OAI) for SSE-KMS + KMS key policy granting CF. | — | OAC + KMS key policy |
+
+
+### Session 49 — 2026-05-24
+
+**Domains:** Cross-domain lightning rounds (all domains, novel scenarios)
+**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 415 | D6/D1 | Prevent StopLogging from ever happening again, org-wide? | B: SCP Deny StopLogging | ✅ | "Prevent" = SCP. EventBridge = detect. Config = remediate. | Q401 | SCP for preventive enforcement |
+| 416 | D1 | Query VPC Flow Logs in CW for top 10 source IPs — most efficient? | B: CloudWatch Logs Insights | ✅ | Data already in CW + aggregation = CW Logs Insights. | Q236 | CW Logs Insights vs Detective |
+| 417 | D4/D6 | Enforce CostCenter tag on all EC2 launches org-wide, never create without? | B: SCP + RequestTag Null condition | ✅ | "Must have tag" + "never created without" + org-wide = SCP. | Q73 | SCP + RequestTag enforcement |
+| 418 | D3 | Lambda timeout calling Secrets Manager, endpoint exists, endpoint SG correct — cause? | B: Endpoint policy denies | ❌ | **A: Lambda SG missing outbound HTTPS.** Timeout = network problem, not permissions. | — | Timeout vs Access Denied (SG troubleshooting) |
+| 419 | D1 | Normalize CloudTrail + VPC Flow + GuardDuty + third-party, own S3, SIEM reads? | B: Security Lake | ✅ | "Normalize" + "single schema" + "your S3" = Security Lake (OCSF). | Q303 | Security Lake / OCSF |
+| 420 | D3 | Bedrock: prevent prompt injection + block PII in responses + restrict model access — which TWO? | B+C: Guardrails + IAM | ✅ | Guardrails (content) + IAM bedrock:InvokeModel (access). | — | Bedrock Guardrails + IAM |
+| 421 | D2 | EC2 C2 communication: contain + preserve + investigate 72hr — sequence? | B: Deny-all SG → EBS snapshot → Detective | ✅ | Isolate → snapshot → Detective for timeline. | — | IR sequence + Detective |
+| 422 | D5 | KMS auto-rotation enabled, rotated once in 2 years — how many material versions? | B: 2 | ✅ | Original + one rotation = 2. All kept forever. | — | KMS rotation versions |
+| 423 | D5/D4 | Cross-account KMS, key policy + identity policy correct, still Access Denied — cause? | Confused | ❌ | **C: Wrong regional endpoint.** KMS keys are regional — calling wrong region = key not found. | — | KMS is regional |
+| 424 | D3/D6 | RAM shares DNS FW rule group, FM enforces, developer disassociates — what happens? | B: FM re-associates automatically | ✅ | FM auto-remediates. Developer can disassociate but FM re-applies. | Q329 | FM auto-remediation |
