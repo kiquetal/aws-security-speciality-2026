@@ -188,6 +188,11 @@
 - 🧠 **StackSets = deploy resources/services. Conformance pack = deploy compliance rules + remediation.** "Enable GuardDuty org-wide" = StackSets. "Check encryption + fix" = conformance pack.
 - 🧠 **Service Catalog = users PULL pre-approved resources (self-service). StackSets = admin PUSHES.** Launch role means dev doesn't need broad IAM.
 - 🧠 **Config conformance pack = bundle of rules + remediation as ONE unit, org-wide from delegated admin.** Security Hub standard = same rules but dashboard + no built-in remediation.
+- 🧠 **FM creates WAF/Shield/SG directly (no RAM). FM only enforces DNS FW + Network FW (needs RAM to share first).** Ask: "Does the resource already exist in another account?" Yes = RAM.
+- 🧠 **Config can't remediate its own disablement.** If someone stops Config, the rule can't fire. Use SCP to prevent `StopConfigurationRecorder`.
+- 🧠 **Control Tower guardrails: Preventive = SCP (block API). Detective = Config (detect after). Proactive = CF Hook (validate template before deploy).**
+- 🧠 **"Validate template content" = Proactive guardrail (CF Hook). "Block API call" = SCP.** SCP can't see what's inside a CloudFormation template.
+- 🧠 **Every security service supports delegated admin.** GuardDuty, Security Hub, FM, Config, Audit Manager, Macie, Inspector, Detective, Security Lake, Access Analyzer.
 ---
 
 ## Quotas That Trick You (4-5-8-32-5120)
