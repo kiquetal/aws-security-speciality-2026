@@ -299,9 +299,49 @@ Deploy org-wide:
 
 ---
 
+## 6. Native Org-Wide Deployment (Delegated Admin + Auto-Enable)
+
+These services have **built-in** org-wide management. Do NOT use StackSets for them.
+
+| Service | Delegated Admin? | Auto-Enable New Accounts? | Use StackSets? |
+|---|---|---|---|
+| **GuardDuty** | ✅ | ✅ | ❌ No — use native |
+| **Security Hub** | ✅ | ✅ | ❌ No — use native |
+| **Inspector** | ✅ | ✅ | ❌ No — use native |
+| **Macie** | ✅ | ✅ | ❌ No — use native |
+| **Detective** | ✅ | ✅ | ❌ No — use native |
+| **Config** | ✅ | ✅ | ❌ No — use native |
+| **Access Analyzer** | ✅ | ✅ | ❌ No — use native |
+| **Firewall Manager** | ✅ | ✅ (policies auto-apply) | ❌ No — use native |
+| **Security Lake** | ✅ | ✅ | ❌ No — use native |
+| **Audit Manager** | ✅ | ❌ (manual per-account) | Maybe |
+
+### When DO you use StackSets?
+
+For things that **don't have native org-wide deployment**:
+- IAM roles (baseline roles in every account)
+- CloudTrail trails (org trail is an alternative)
+- VPCs, subnets, endpoints
+- Custom Lambda functions
+- Any CloudFormation resource without native org support
+
+### Exam Decision
+
+```
+"Deploy [security service] across all accounts, auto for new"
+  → Does the service have delegated admin + auto-enable?
+    YES → use native org management (not StackSets)
+    NO  → use StackSets
+```
+
+> ⚠️ **Exam trap:** Q437 asked "GuardDuty + Config + CloudTrail" — the answer was StackSets because it's deploying MULTIPLE things including CloudTrail (which doesn't have simple auto-enable for custom trails). If the question asks about ONE service that has native support → use native.
+
+---
+
 ## 🧠 Cheat-Sheet One-Liners
 
 - **StackSets = push IaC to many accounts.** Service Catalog = users pull pre-approved resources.
 - **Audit Manager = YOUR compliance evidence.** Artifact = AWS's compliance reports.
 - **Conformance pack = bundle of Config rules deployed as one unit.** Security Hub standard = same rules but with dashboard + aggregation.
 - **"Self-service with guardrails" = Service Catalog.** Launch role means user doesn't need broad IAM.
+- **If the service has delegated admin + auto-enable → use native, not StackSets.** GuardDuty, Inspector, Security Hub, Macie, Detective, Config, Access Analyzer all have it.
