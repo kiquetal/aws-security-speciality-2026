@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 425 |
-| **✅ Correct** | 330 (78%) |
+| **Total Questions** | 430 |
+| **✅ Correct** | 335 (78%) |
 | **⚠️ Partial** | 21 (5%) |
 | **❌ Wrong** | 74 (17%) |
-| **Sessions** | 49 |
-| **Re-tests Passed** | 155 of 182 |
+| **Sessions** | 50 |
+| **Re-tests Passed** | 160 of 187 |
 
 ## Domain Breakdown
 
@@ -21,9 +21,9 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 68 | 4 | 24 | 96 | 71% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
-| D3: Infrastructure Security | 51 | 4 | 9 | 64 | 80% | 🟡 |
-| D4: Identity & Access Management | 117 | 8 | 18 | 143 | 82% | 🟢 |
-| D5: Data Protection | 59 | 3 | 11 | 73 | 81% | 🟢 |
+| D3: Infrastructure Security | 53 | 4 | 9 | 66 | 80% | 🟢 |
+| D4: Identity & Access Management | 118 | 8 | 18 | 144 | 82% | 🟢 |
+| D5: Data Protection | 61 | 3 | 11 | 75 | 81% | 🟢 |
 | D6: Governance | 24 | 1 | 11 | 36 | 67% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -166,6 +166,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 47 | 2026-05-24 | Q395–Q404 | 7 | 1 | 2 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-47--2026-05-24) |
 | 48 | 2026-05-24 | Q405–Q414 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-48--2026-05-24) |
 | 49 | 2026-05-24 | Q415–Q429 | 10 | 0 | 5 | Cross-domain lightning rounds (all domains, novel scenarios) | [Jump](#session-49--2026-05-24) |
+| 50 | 2026-05-25 | Q430–Q434 | 5 | 0 | 0 | Cross-domain (re-test — Session 49 errors + new killer) | [Jump](#session-50--2026-05-25) |
 
 ---
 
@@ -1109,3 +1110,17 @@ After adding a session:
 | 427 | D4 | RCP denies non-org s3:*, same-account Lambda writes to own bucket — result? | D: Succeeds — RCPs don't apply same-account | ❌ | **B: Succeeds — RCPs DO apply, but Lambda's PrincipalOrgID matches → Deny doesn't fire.** | — | RCP same-org evaluation |
 | 428 | D5 | Secrets Manager cross-region replication, source key is single-region (not MRK) — works? | A: Replication fails, needs MRK | ❌ | **C: Works — you specify a separate key in destination region. SM re-encrypts.** MRK not required. | — | Secrets Manager replication ≠ MRK |
 | 429 | D4 | Employee terminated in Okta, revoke AWS access within minutes — mechanism? | A: SCIM deprovisioning | ✅ | SCIM auto-syncs lifecycle. Deactivate in Okta → removed from Identity Center within minutes. | — | SCIM deprovisioning |
+
+
+### Session 50 — 2026-05-25
+
+**Domains:** Cross-domain (re-test — Session 49 errors + new killer)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 430 | D3 | Lambda timeout calling Secrets Manager, endpoint exists, endpoint SG correct — cause? | B: Lambda SG missing outbound HTTPS | ✅ | Timeout = network problem. Lambda SG needs outbound 443. | Q418 | Timeout vs Access Denied (SG troubleshooting) |
+| 431 | D5 | Default encryption SSE-KMS + bucket policy Deny if wrong key header — upload without header? | B: Fails — bucket policy evaluates before default encryption | ✅ | Bucket policy checks headers BEFORE default encryption applies. | Q426 | Default encryption vs bucket policy Deny |
+| 432 | D4 | RCP denies non-org s3:*, same-account Lambda writes to own bucket — result? | B: Succeeds — PrincipalOrgID matches, Deny doesn't fire | ✅ | RCPs DO apply same-account, but condition logic determines outcome. | Q427 | RCP same-org evaluation |
+| 433 | D5 | Secrets Manager cross-region replication, source key is single-region (not MRK) — works? | B: Works — specify different key in destination, SM re-encrypts | ✅ | MRK not required. SM re-encrypts with whatever key you specify. | Q428 | Secrets Manager replication ≠ MRK |
+| 434 | D3/D6 | Prevent EC2 launch without IMDSv2 + detect existing IMDSv1 and fix — which TWO? | A+B: SCP + Config rule with SSM remediation | ✅ | SCP prevents. Config + SSM detects and fixes existing. | Q261, Q413 | SCP prevent + Config detect/fix |
