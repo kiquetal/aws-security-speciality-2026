@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 446 |
-| **✅ Correct** | 344 (77%) |
-| **⚠️ Partial** | 21 (5%) |
-| **❌ Wrong** | 81 (18%) |
+| **Total Questions** | 468 |
+| **✅ Correct** | 363 (78%) |
+| **⚠️ Partial** | 22 (5%) |
+| **❌ Wrong** | 83 (18%) |
 | **Sessions** | 51 |
-| **Re-tests Passed** | 165 of 196 |
+| **Re-tests Passed** | 168 of 199 |
 
 ## Domain Breakdown
 
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 53 | 4 | 9 | 66 | 80% | 🟢 |
 | D4: Identity & Access Management | 118 | 8 | 18 | 144 | 82% | 🟢 |
 | D5: Data Protection | 61 | 3 | 11 | 75 | 81% | 🟢 |
-| D6: Governance | 33 | 1 | 18 | 52 | 63% | 🟡 |
+| D6: Governance | 52 | 2 | 20 | 74 | 70% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -114,6 +114,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 80 | RAM + FM complementary | Q442 | D6 | 1 |
 | 🟡 81 | Full governance stack | Q445 | D6 | 1 |
 | 🟡 82 | StackSets limitations | Q450 | D6 | 1 |
+| 🟡 83 | FM SG common policy | Q454 | D6 | 1 |
+| 🟡 84 | Delegated admin (all services) | Q462 | D6 | 1 |
+| 🟡 85 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
 
 ---
 
@@ -171,7 +174,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 48 | 2026-05-24 | Q405–Q414 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, novel scenarios) | [Jump](#session-48--2026-05-24) |
 | 49 | 2026-05-24 | Q415–Q429 | 10 | 0 | 5 | Cross-domain lightning rounds (all domains, novel scenarios) | [Jump](#session-49--2026-05-24) |
 | 50 | 2026-05-25 | Q430–Q434 | 5 | 0 | 0 | Cross-domain (re-test — Session 49 errors + new killer) | [Jump](#session-50--2026-05-25) |
-| 51 | 2026-05-25 | Q435–Q450 | 9 | 0 | 7 | D6 Governance (targeted drill — RAM vs FM, StackSets, Service Catalog, Audit Manager) | [Jump](#session-51--2026-05-25) |
+| 51 | 2026-05-25 | Q435–Q472 | 28 | 1 | 9 | D6 Governance (targeted drill — RAM vs FM, StackSets, Service Catalog, Audit Manager) | [Jump](#session-51--2026-05-25) |
 
 ---
 
@@ -1154,3 +1157,25 @@ After adding a session:
 | 448 | D6 | Match verbs to RAM vs FM (4 items) | All correct (A, FM, FM, FM) | ✅ | "Make visible" = RAM. Ensure/enforce/re-apply/create = FM. | — | RAM vs FM verb test |
 | 449 | D6 | Prevent unencrypted uploads + collect PCI evidence for auditor — which TWO? | A+D: SCP + Audit Manager | ✅ | SCP prevents. Audit Manager collects evidence for frameworks. | — | SCP + Audit Manager |
 | 450 | D6 | Why can't StackSets do everything? Two limitations? | B+E: no remediation + no auto-deploy | ❌ | **B+C: no auto-remediation + can't share resources.** StackSets CAN auto-deploy to new accounts. | — | StackSets limitations |
+| 451 | D6 | Shield Advanced on all CloudFront + ALBs across 150 accounts — which service? | B: Firewall Manager only | ✅ | FM creates Shield protections directly. No RAM needed. | — | FM creates directly (Shield) |
+| 452 | D6 | TGW in shared-services account, 40 accounts need to attach — which service? | B: RAM | ✅ | TGW = infrastructure sharing = RAM. | — | RAM for TGW sharing |
+| 453 | D6 | Detect overly permissive SGs (0.0.0.0/0 port 22) + auto-revoke across 300 accounts? | B: Firewall Manager SG audit | ✅ | FM SG audit = find + auto-remediate overly permissive SGs org-wide. | Q208 | Firewall Manager SG audit |
+| 454 | D6 | Ensure baseline SG (deny all inbound) applied to all EC2 across 300 accounts? | B: RAM | ❌ | **A: Firewall Manager SG common policy.** FM creates the SG in each account. Nothing being shared. | — | FM SG common policy |
+| 455 | D6 | "DNS FW rule group needs to be accessible to member accounts" — which service? | A: RAM | ✅ | "Accessible/visible/share" = RAM. | — | RAM verb signal |
+| 456 | D6 | "DNS FW rule group must be associated with every VPC + re-associated if removed" — which? | B: Firewall Manager | ✅ | "Associated/enforce/re-apply" = FM. | — | FM verb signal |
+| 457 | D6 | Network FW policy: Step 1 share, Step 2 enforce — correct sequence? | A: RAM shares, FM enforces | ✅ | RAM first (available), FM second (mandatory). | — | RAM + FM sequence |
+| 458 | D6 | Prevent IGW creation + detect/fix flow logs + self-provision VPC + SOC 2 evidence — which FOUR? | A+B+C+D: SCP + conformance pack + Service Catalog + Audit Manager | ✅ | Four governance patterns in one question. | — | Full governance stack |
+| 459 | D6 | Control Tower: someone modifies SCP outside CT — what happens? | B: Drift alert, no auto-fix | ✅ | CT detects drift but doesn't auto-revert. | — | Control Tower drift |
+| 460 | D6 | Deny LeaveOrganization + CreateUser + StopLogging org-wide — where? | B: SCP on org root | ✅ | Restrict principals = SCP. | — | SCP for preventive guardrails |
+| 461 | D6 | Block external S3 reads even with Principal:* bucket policy — where? | B: RCP on org root | ✅ | Block external callers on resources = RCP. | — | RCP for external access |
+| 462 | D6 | Which services support delegated admin? (GuardDuty, SH, FM, Config, Audit Manager) | A+B+C+D (missed E) | ⚠️ | **F: All of them.** Every security service supports delegated admin. | — | Delegated admin (all services) |
+| 463 | D6 | SCP denies DeleteBucket, user in management account calls it — result? | B: Allowed — mgmt account exempt | ✅ | Management account exempt from SCPs and RCPs. | — | Management account exempt |
+| 464 | D6 | Block CF template deploying S3 without encryption — which guardrail type? | A: Preventive (SCP) | ❌ | **C: Proactive (CloudFormation Hook).** SCP blocks API calls. Hook validates template content. | — | Proactive guardrail (CF Hook) |
+| 465 | D6 | Proactive guardrails — which statement true? | B: Validate CF templates before resources created | ✅ | Proactive = inspect IaC before deployment. | — | Proactive guardrail definition |
+| 466 | D6 | Signed Lambda: validate template + detect unsigned + prevent disabling CSC — which THREE? | A+B+C: Proactive + Detective + SCP | ✅ | Three layers: proactive + detective + preventive. | — | Layered guardrails |
+| 467 | D6 | Prevent GuardDuty disablement, never even briefly — approach? | B: SCP denying DeleteDetector + StopMonitoringMembers | ✅ | "Never even briefly" = preventive = SCP. Config has a gap. | Q440 | SCP prevents disabling services |
+| 468 | D6 | CF template must include StorageEncrypted + DeletionProtection, fail before creation? | C: Proactive guardrail (CF Hook) | ✅ | "Template must include X" + "before creation" = CF Hook. | Q464 | Proactive guardrail (CF Hook) |
+| 469 | D6 | Prevent unsigned Lambda deploy + detect missing CSC + prevent deleting CSC — THREE? | A+C+D: Proactive + Config + SCP | ✅ | Three layers: proactive (template) + detective (after) + preventive (API block). | — | Layered guardrails |
+| 470 | D6 | RAM shared subnet, developer launches EC2 — who owns the instance? | B: Workload account (launcher) | ✅ | RAM shares infra, resources launched belong to launcher. | — | RAM shared VPC ownership |
+| 471 | D6 | Match 5 scenarios to 5 services (SCP/Config/FM/SC/Hook) | All correct (A,B,C,D,E in order) | ✅ | Full D6 decision tree mapped correctly. | — | D6 governance decision tree |
+| 472 | D6 | One sentence each: what makes SCP/conformance/FM/StackSets/SC unique? | All correct | ✅ | Block API / check+fix / firewall lifecycle / push infra / self-service+launch role. | — | D6 service differentiation |
