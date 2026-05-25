@@ -72,6 +72,7 @@
 - `CancelKeyDeletion` → key moves to **Disabled** (not Enabled). Must manually re-enable.
 - **4 KB max** for direct KMS Encrypt/Decrypt. Anything larger → envelope encryption (GenerateDataKey → encrypt locally).
 - 🧠 **"Root in key policy" = enables IAM delegation, NOT a blanket grant.** Each principal still needs explicit kms:Decrypt in their identity policy. Root opens the door for IAM — it doesn't let everyone through.
+- 🧠 **KMS keys are REGIONAL.** Cross-account call to wrong region = Access Denied (key not found). Always verify the endpoint region matches the key's region.
 
 ### Secrets Manager
 - Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
@@ -118,6 +119,9 @@
 - WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.
 - Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
+
+### Troubleshooting
+- 🧠 **Timeout = network problem (SG, NACL, routing, missing endpoint). Access Denied = permissions problem (IAM, policy, key policy).** The error type tells you where to look.
 
 ---
 
