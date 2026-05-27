@@ -123,6 +123,7 @@
 
 ### Troubleshooting
 - 🧠 **Timeout = network problem (SG, NACL, routing, missing endpoint). Access Denied = permissions problem (IAM, policy, key policy).** The error type tells you where to look.
+- 🧠 **C2Activity finding = active IP connection. DNS Firewall useless (IP already known). Use Network Firewall DROP on C2 IP.** DNS FW only helps if attacker needs DNS resolution.
 
 ---
 
@@ -142,6 +143,7 @@
 - "Unused permissions" / "overly permissive" = IAM Access Analyzer. "Credentials being misused" = GuardDuty.
 - 🧠 **"Unused PERMISSIONS (per-action)" = Access Analyzer unused access. "Unused ROLE (last assumed)" = Config/credential report.** Different granularity.
 - 🧠 **Access Analyzer unused access + policy generation = find bloat + auto-generate replacement.** Two features, one service, designed together.
+- 🧠 **Access Analyzer + GuardDuty can BOTH fire on the same resource.** AA = "who CAN access?" (static policy analysis). GD = "who IS accessing abnormally?" (dynamic behavior). Independent services.
 - 🧠 **"Detect [bad thing] with zero custom code" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.
 - 🧠 **"Detect API call fast + least overhead" + org trail exists = EventBridge rule in management account.** Near real-time, one rule. Config is slower + heavier — use for remediation, not pure fast detection.
 

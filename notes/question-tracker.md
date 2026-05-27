@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 517 |
-| **✅ Correct** | 402 (78%) |
+| **Total Questions** | 532 |
+| **✅ Correct** | 414 (78%) |
 | **⚠️ Partial** | 22 (4%) |
-| **❌ Wrong** | 93 (18%) |
-| **Sessions** | 53 |
-| **Re-tests Passed** | 190 of 228 |
+| **❌ Wrong** | 96 (18%) |
+| **Sessions** | 54 |
+| **Re-tests Passed** | 194 of 233 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 74 | 4 | 27 | 105 | 70% | 🟡 |
+| D1: Detection | 75 | 4 | 29 | 108 | 69% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
-| D3: Infrastructure Security | 58 | 4 | 9 | 71 | 82% | 🟢 |
-| D4: Identity & Access Management | 127 | 8 | 20 | 155 | 82% | 🟢 |
-| D5: Data Protection | 65 | 3 | 13 | 81 | 80% | 🟢 |
-| D6: Governance | 67 | 2 | 23 | 92 | 73% | 🟡 |
+| D3: Infrastructure Security | 60 | 4 | 10 | 74 | 81% | 🟢 |
+| D4: Identity & Access Management | 132 | 8 | 20 | 160 | 82% | 🟢 |
+| D5: Data Protection | 67 | 3 | 13 | 83 | 81% | 🟢 |
+| D6: Governance | 69 | 2 | 23 | 94 | 73% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -122,6 +122,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 88 | EventBridge for API call detection | Q474 | D1 | 1 |
 | 🟡 89 | No single governance service | Q486 | D6 | 1 |
 | 🟡 90 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1 | 1 |
+| 🟡 91 | Access Analyzer + GuardDuty both fire | Q518 | D1 | 1 |
+| 🟡 92 | EventBridge for fast detection + auto-revert | Q523 | D1 | 1 |
+| 🟡 93 | Network FW for IP-level C2 block | Q526 | D3 | 1 |
 
 ---
 
@@ -182,6 +185,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 51 | 2026-05-25 | Q435–Q486 | 39 | 1 | 12 | D6 Governance (targeted drill — RAM vs FM, StackSets, Service Catalog, Audit Manager) | [Jump](#session-51--2026-05-25) |
 | 52 | 2026-05-26 | Q487–Q505 | 19 | 0 | 6 | Cross-domain (hard drill — D1/D4/D5/D6 weak spots) | [Jump](#session-52--2026-05-26) |
 | 53 | 2026-05-26 | Q506–Q515 | 9 | 0 | 1 | Cross-domain (re-test + killer uplift — all domains) | [Jump](#session-53--2026-05-26) |
+| 54 | 2026-05-26 | Q516–Q530 | 12 | 0 | 3 | Cross-domain (killer uplift — hard novel scenarios) | [Jump](#session-54--2026-05-26) |
 
 ---
 
@@ -1253,3 +1257,27 @@ After adding a session:
 | 513 | D4 | Identity=s3:*+kms:*, boundary=s3:*+ec2:*, session=Get+Put, same-account bucket policy grants role DeleteObject — result? | C: Allowed — resource-based bypasses session | ✅ | Same-account resource-based policy naming role bypasses session + boundary ceiling. | Q169 | Session policy bypass by resource-based policy |
 | 514 | D5/D3 | CloudFront + S3 + OAC + SSE-KMS, Access Denied — what's missing? | B: KMS key policy must grant kms:Decrypt to cloudfront.amazonaws.com | ✅ | OAC needs explicit KMS permission for CF service principal. | — | OAC + KMS key policy |
 | 515 | D1/D6 | Prevent PutBucketPolicy with Principal:* + detect within 5 min — which TWO? | A+C: SCP + EventBridge | ❌ | **C+D: EventBridge + RCP.** SCP can't inspect API payload content. RCP prevents the consequence (external access). | Q474 | SCP can't inspect payload + RCP prevents consequence |
+
+
+### Session 54 — 2026-05-26
+
+**Domains:** Cross-domain (killer uplift — hard novel scenarios)
+**Score:** 12 ✅ · 0 ⚠️ · 3 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 516 | D4/D5 | SCP denies kms:Decrypt+GenerateDataKey unless ViaService=s3 or secretsmanager, Lambda does 3 ops — which succeed? | B: Only S3 read + GetSecretValue | ✅ | ViaService set by S3 and SM. Direct kms:Decrypt has no ViaService → denied. | Q506 | kms:ViaService + SCP (multiple services) |
+| 517 | D6/D4 | SCP denies ScheduleKeyDeletion, member admin + member root + management admin — which denied? | B: Only member admin + member root | ✅ | Management account exempt from SCPs. SCPs apply to member root. | — | Management account exempt |
+| 518 | D1/D4 | Bucket policy grants external account, external downloads nightly — which services generate findings? | A: Only GuardDuty | ❌ | **C: Both Access Analyzer + GuardDuty.** AA flags external access (static). GD flags anomalous pattern (dynamic). | — | Access Analyzer + GuardDuty both fire |
+| 519 | D5 | Rotation successful, new Lambda Access Denied on RDS, ECS works — cause? | B: Rotation Lambda failed ALTER USER on DB | ✅ | Secret changed but DB didn't. ECS uses AWSPREVIOUS. | Q376 | Secrets Manager rotation failure |
+| 520 | D3/D6 | WAF on ALBs + DNS FW on VPCs, both via FM — which needs RAM? | B: Only DNS Firewall | ✅ | FM creates WAF directly. DNS FW rule group exists in another account → RAM shares first. | — | FM creates WAF directly, needs RAM for DNS FW |
+| 521 | D4 | RCP denies non-org s3:*, same-org Account B Lambda PutObject to Account A bucket — result? | B: Allowed — PrincipalOrgID matches | ✅ | Same-org caller → condition FALSE → Deny doesn't fire. | Q427 | RCP same-org evaluation |
+| 522 | D3/D5 | Lambda private subnet, direct kms:Decrypt from code, no KMS endpoint — result? | B: Add Interface endpoint for KMS + SG inbound 443 | ✅ | Direct KMS call needs network path. S3 SSE-KMS is server-side (no endpoint needed). | — | KMS endpoint needed for direct calls only |
+| 523 | D1/D6 | Detect DeleteTrail/StopLogging within 2 min + auto-revert — architecture? | A: Config rule with auto-remediation | ❌ | **B: EventBridge in management account → Lambda.** Near real-time. Config is slower. | Q401 | EventBridge for fast detection + auto-revert |
+| 524 | D4/D3 | Cognito per-user S3, pen tester crafts request to other user's prefix — result? | B: Fails — IAM policy restricts to caller's sub | ✅ | Policy variable resolves to caller's identity, not requested path. | — | Cognito per-user isolation |
+| 525 | D5 | 7yr immutable + root can't delete + auto-expire + lawsuit preservation beyond 7yr — config? | A: Compliance mode + Legal Hold on lawsuit records | ✅ | Compliance = fixed period. Legal Hold = indefinite for litigation. | — | Object Lock Compliance + Legal Hold |
+| 526 | D3/D1 | Trojan:EC2/C2Activity.B — block C2 VPC-wide + continue monitoring other instances — approach? | A: DNS Firewall BLOCK | ❌ | **B: Network Firewall DROP on C2 IP + GuardDuty continues.** C2Activity = active IP connection. DNS FW useless if IP hardcoded. | — | Network FW for IP-level C2 block |
+| 527 | D4/D6 | SCP forces boundary, dev attaches AdministratorAccess, calls ec2:RunInstances — result? | B: Denied — boundary doesn't include ec2 | ✅ | Boundary = ceiling. ec2 not in boundary = denied regardless of identity policy. | — | Permission boundary delegation |
+| 528 | D1 | Correlate GD + VPC Flow + WAF, SQL, own S3, single schema, SIEM reads — service? | B: Security Lake | ✅ | Multiple sources + OCSF + your S3 + subscriber model = Security Lake. | — | Security Lake |
+| 529 | D4/D5 | Identity has kms:Decrypt, session policy only s3:GetObject, reads SSE-KMS object — result? | B: Succeeds — server-side KMS not gated by session policy | ✅ | Session policy gates caller's direct calls, not S3's internal KMS call. | — | Session policy + server-side KMS |
+| 530 | D6 | CF template must include StorageEncrypted + DeletionProtection, fail before creation — guardrail type? | C: Proactive (CF Hook) | ✅ | "Validate template content before deploy" = CF Hook. SCP can't see template. | Q464 | Proactive guardrail (CF Hook) |
