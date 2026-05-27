@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 507 |
-| **✅ Correct** | 393 (78%) |
+| **Total Questions** | 517 |
+| **✅ Correct** | 402 (78%) |
 | **⚠️ Partial** | 22 (4%) |
-| **❌ Wrong** | 92 (18%) |
-| **Sessions** | 52 |
-| **Re-tests Passed** | 184 of 221 |
+| **❌ Wrong** | 93 (18%) |
+| **Sessions** | 53 |
+| **Re-tests Passed** | 190 of 228 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 72 | 4 | 26 | 102 | 71% | 🟡 |
+| D1: Detection | 74 | 4 | 27 | 105 | 70% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
-| D3: Infrastructure Security | 57 | 4 | 9 | 70 | 81% | 🟢 |
-| D4: Identity & Access Management | 124 | 8 | 20 | 152 | 82% | 🟢 |
-| D5: Data Protection | 63 | 3 | 13 | 79 | 80% | 🟡 |
-| D6: Governance | 66 | 2 | 23 | 91 | 73% | 🟡 |
+| D3: Infrastructure Security | 58 | 4 | 9 | 71 | 82% | 🟢 |
+| D4: Identity & Access Management | 127 | 8 | 20 | 155 | 82% | 🟢 |
+| D5: Data Protection | 65 | 3 | 13 | 81 | 80% | 🟢 |
+| D6: Governance | 67 | 2 | 23 | 92 | 73% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -121,6 +121,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 87 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
 | 🟡 88 | EventBridge for API call detection | Q474 | D1 | 1 |
 | 🟡 89 | No single governance service | Q486 | D6 | 1 |
+| 🟡 90 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1 | 1 |
 
 ---
 
@@ -180,6 +181,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 50 | 2026-05-25 | Q430–Q434 | 5 | 0 | 0 | Cross-domain (re-test — Session 49 errors + new killer) | [Jump](#session-50--2026-05-25) |
 | 51 | 2026-05-25 | Q435–Q486 | 39 | 1 | 12 | D6 Governance (targeted drill — RAM vs FM, StackSets, Service Catalog, Audit Manager) | [Jump](#session-51--2026-05-25) |
 | 52 | 2026-05-26 | Q487–Q505 | 19 | 0 | 6 | Cross-domain (hard drill — D1/D4/D5/D6 weak spots) | [Jump](#session-52--2026-05-26) |
+| 53 | 2026-05-26 | Q506–Q515 | 9 | 0 | 1 | Cross-domain (re-test + killer uplift — all domains) | [Jump](#session-53--2026-05-26) |
 
 ---
 
@@ -1232,3 +1234,22 @@ After adding a session:
 | 503 | D5/D4 | Key policy grants root only, Lambda only has s3:GetObject (no kms:Decrypt) — reads encrypted object? | C: Succeeds — S3 handles server-side | ❌ | **B: Fails — Lambda needs explicit kms:Decrypt.** Root = delegation, not grant. | Q264 | KMS key policy root = delegation, not grant |
 | 504 | D6 | Security Hub + GuardDuty + custom IAM role across 300 accounts — how many mechanisms? | C: 3 (SH native + GD native + StackSets for IAM role) | ✅ | Native for services that support it, StackSets for custom resources. | Q485 | Hybrid deployment strategy |
 | 505 | D4/D5 | SCP denies kms:* unless ViaService=s3 — which TWO calls succeed? | A+C: Lambda via S3 read + Lambda via S3 upload | ✅ | ViaService set when S3 calls KMS on behalf of caller. Direct CLI = no ViaService = denied. | Q488 | kms:ViaService + SCP |
+
+
+### Session 53 — 2026-05-26
+
+**Domains:** Cross-domain (re-test + killer uplift — all domains)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 506 | D4/D5 | SCP denies kms:Decrypt unless ViaService=s3, developer calls KMS directly from CLI — result? | B: Denied — ViaService not satisfied | ✅ | Direct call has no ViaService context → SCP Deny fires. | Q488, Q495 | kms:ViaService + SCP |
+| 507 | D1 | EC2 DNS query to xmr.pool.minergate.com, no TCP connection — ThreatPurpose? | B: Impact | ✅ | DNS query only = Impact. Active mining = CryptoCurrency. | Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 508 | D5/D4 | Key policy grants root only, Lambda has s3:GetObject but no kms:Decrypt — reads SSE-KMS object? | B: Fails — needs explicit kms:Decrypt | ✅ | Root = delegation, not grant. Each principal needs explicit KMS perms. | Q503 | KMS key policy root = delegation, not grant |
+| 509 | D4/D6 | RCP denies non-org sts:AssumeRole, external partner has trust policy — result? | B: Denied by RCP | ✅ | RCP blocks external AssumeRole regardless of trust policy. | — | RCP blocks external AssumeRole |
+| 510 | D3/D5 | Lambda private subnet, monitoring endpoint exists, PutMetricData times out — cause? | A: Endpoint SG missing inbound HTTPS from Lambda SG | ✅ | Timeout = network. Interface endpoint SG must allow inbound 443. | Q418 | Timeout vs Access Denied (SG troubleshooting) |
+| 511 | D1/D2 | Trojan:EC2/DropPoint!DNS severity 8.4, contain + preserve + keep API available — sequence? | B: Deny-all SG → EBS snapshot → deregister from ALB | ✅ | Isolate first → preserve evidence → remove from traffic. | — | IR sequence + ALB |
+| 512 | D6 | DNS FW rule groups: share from security account + enforce on all VPCs + auto-remediate — which TWO? | A+B: RAM + Firewall Manager | ✅ | RAM shares, FM enforces + auto-remediates. | Q441, Q442 | RAM for sharing + FM for enforcing |
+| 513 | D4 | Identity=s3:*+kms:*, boundary=s3:*+ec2:*, session=Get+Put, same-account bucket policy grants role DeleteObject — result? | C: Allowed — resource-based bypasses session | ✅ | Same-account resource-based policy naming role bypasses session + boundary ceiling. | Q169 | Session policy bypass by resource-based policy |
+| 514 | D5/D3 | CloudFront + S3 + OAC + SSE-KMS, Access Denied — what's missing? | B: KMS key policy must grant kms:Decrypt to cloudfront.amazonaws.com | ✅ | OAC needs explicit KMS permission for CF service principal. | — | OAC + KMS key policy |
+| 515 | D1/D6 | Prevent PutBucketPolicy with Principal:* + detect within 5 min — which TWO? | A+C: SCP + EventBridge | ❌ | **C+D: EventBridge + RCP.** SCP can't inspect API payload content. RCP prevents the consequence (external access). | Q474 | SCP can't inspect payload + RCP prevents consequence |
