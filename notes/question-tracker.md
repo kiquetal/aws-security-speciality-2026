@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 532 |
-| **✅ Correct** | 414 (78%) |
+| **Total Questions** | 542 |
+| **✅ Correct** | 421 (78%) |
 | **⚠️ Partial** | 22 (4%) |
-| **❌ Wrong** | 96 (18%) |
-| **Sessions** | 54 |
+| **❌ Wrong** | 99 (18%) |
+| **Sessions** | 55 |
 | **Re-tests Passed** | 194 of 233 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 75 | 4 | 29 | 108 | 69% | 🟡 |
+| D1: Detection | 77 | 4 | 31 | 112 | 69% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
 | D3: Infrastructure Security | 60 | 4 | 10 | 74 | 81% | 🟢 |
-| D4: Identity & Access Management | 132 | 8 | 20 | 160 | 82% | 🟢 |
-| D5: Data Protection | 67 | 3 | 13 | 83 | 81% | 🟢 |
-| D6: Governance | 69 | 2 | 23 | 94 | 73% | 🟡 |
+| D4: Identity & Access Management | 135 | 8 | 20 | 163 | 83% | 🟢 |
+| D5: Data Protection | 68 | 3 | 14 | 85 | 80% | 🟢 |
+| D6: Governance | 70 | 2 | 23 | 95 | 74% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -125,6 +125,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 91 | Access Analyzer + GuardDuty both fire | Q518 | D1 | 1 |
 | 🟡 92 | EventBridge for fast detection + auto-revert | Q523 | D1 | 1 |
 | 🟡 93 | Network FW for IP-level C2 block | Q526 | D3 | 1 |
+| 🟡 94 | Detection + response architecture | Q532 | D1 | 1 |
+| 🟡 95 | GuardDuty ≠ failed attempts | Q534 | D1 | 1 |
+| 🟡 96 | Gateway endpoint policy as additional gate | Q535 | D5 | 1 |
 
 ---
 
@@ -186,6 +189,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 52 | 2026-05-26 | Q487–Q505 | 19 | 0 | 6 | Cross-domain (hard drill — D1/D4/D5/D6 weak spots) | [Jump](#session-52--2026-05-26) |
 | 53 | 2026-05-26 | Q506–Q515 | 9 | 0 | 1 | Cross-domain (re-test + killer uplift — all domains) | [Jump](#session-53--2026-05-26) |
 | 54 | 2026-05-26 | Q516–Q530 | 12 | 0 | 3 | Cross-domain (killer uplift — hard novel scenarios) | [Jump](#session-54--2026-05-26) |
+| 55 | 2026-05-26 | Q531–Q540 | 7 | 0 | 3 | Cross-domain (killer difficulty — multi-concept combos) | [Jump](#session-55--2026-05-26) |
 
 ---
 
@@ -1281,3 +1285,22 @@ After adding a session:
 | 528 | D1 | Correlate GD + VPC Flow + WAF, SQL, own S3, single schema, SIEM reads — service? | B: Security Lake | ✅ | Multiple sources + OCSF + your S3 + subscriber model = Security Lake. | — | Security Lake |
 | 529 | D4/D5 | Identity has kms:Decrypt, session policy only s3:GetObject, reads SSE-KMS object — result? | B: Succeeds — server-side KMS not gated by session policy | ✅ | Session policy gates caller's direct calls, not S3's internal KMS call. | — | Session policy + server-side KMS |
 | 530 | D6 | CF template must include StorageEncrypted + DeletionProtection, fail before creation — guardrail type? | C: Proactive (CF Hook) | ✅ | "Validate template content before deploy" = CF Hook. SCP can't see template. | Q464 | Proactive guardrail (CF Hook) |
+
+
+### Session 55 — 2026-05-26
+
+**Domains:** Cross-domain (killer difficulty — multi-concept combos)
+**Score:** 7 ✅ · 0 ⚠️ · 3 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 531 | D4/D5/D6 | SCP ViaService + RCP + key policy root + session policy — Lambda reads SSE-KMS object? | C: Succeeds — server-side KMS, ViaService satisfied | ✅ | Session policy doesn't gate server-side KMS. ViaService satisfied. Root enables delegation. | — | Full stack evaluation |
+| 532 | D1/D3/D6 | Block DNS + detect C2 TCP + auto-block IP + org-wide — which FOUR? | C: DNS FW + Inspector + NF + StackSets | ❌ | **A: DNS FW + GuardDuty + Network FW + EventBridge→Lambda.** Inspector detects CVEs not C2. WAF can't block raw TCP. | — | Detection + response architecture |
+| 533 | D4/D5 | Cross-account S3+KMS, SCP ViaService, Lambda reads via S3 — result? | A: Succeeds — ViaService satisfied cross-account | ✅ | ViaService set by S3 regardless of account boundary. | — | kms:ViaService cross-account |
+| 534 | D1/D4/D6 | External trust policy + RCP + GuardDuty + Access Analyzer + EventBridge — which THREE true? | A+B+C | ❌ | **A+B+D.** GuardDuty doesn't fire on blocked AssumeRole attempts. EventBridge fires on CreateRole API call. | — | GuardDuty ≠ failed attempts |
+| 535 | D5/D4/D3 | Secret works, S3 upload Access Denied, all IAM correct — cause? | D: KMS endpoint SG blocks | ❌ | **C: S3 Gateway endpoint policy denies PutObject.** Access Denied = permissions (endpoint policy), not network (timeout). | — | Gateway endpoint policy as additional gate |
+| 536 | D1/D2/D4 | InstanceCredentialExfiltration.OutsideAWS — stop attacker + keep instance + new creds work? | B: Inline Deny TokenIssueTime | ✅ | Exfiltrated creds denied. IMDS refreshes new creds after timestamp. Instance stays up. | — | Credential exfiltration response |
+| 537 | D6/D3/D4 | Prevent IMDSv1 + detect/fix existing + baseline SG + share NF policy — which FOUR? | A: SCP + Config/SSM + FM SG common + RAM | ✅ | SCP prevents. Config fixes. FM common creates SG. RAM shares NF policy. | — | Full governance stack |
+| 538 | D5/D4 | Cross-account KMS, key policy grants Account B root, identity policy has Decrypt — result? | A: Succeeds — both sides grant | ✅ | Root in key policy enables IAM delegation in Account B. Both sides satisfied. | — | Cross-account KMS standard pattern |
+| 539 | D1/D6 | CIS score + GD findings + Inspector CVEs + custom metric, least overhead — service? | B: Security Hub | ✅ | Aggregates all + CIS standard + cross-region + one-click org-wide. | — | Security Hub aggregation |
+| 540 | D4/D3/D5 | Cross-account S3+KMS + SCP ViaService + RCP + session policy — Lambda reads? | B: Succeeds — all gates pass | ✅ | ViaService satisfied, RCP same-org passes, session doesn't gate server-side KMS. | — | 5-layer cross-account evaluation |

@@ -146,6 +146,7 @@
 - 🧠 **Access Analyzer + GuardDuty can BOTH fire on the same resource.** AA = "who CAN access?" (static policy analysis). GD = "who IS accessing abnormally?" (dynamic behavior). Independent services.
 - 🧠 **"Detect [bad thing] with zero custom code" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.
 - 🧠 **"Detect API call fast + least overhead" + org trail exists = EventBridge rule in management account.** Near real-time, one rule. Config is slower + heavier — use for remediation, not pure fast detection.
+- 🧠 **"Detect specific API call fast" = EventBridge on CloudTrail. "Detect malicious behavior" = GuardDuty.** GuardDuty doesn't alert on policy changes or blocked attempts.
 
 ### GuardDuty Operational
 - 🧠 **GuardDuty is REGIONAL.** Must enable in every region where workloads run. No findings from a region where it's not enabled.
