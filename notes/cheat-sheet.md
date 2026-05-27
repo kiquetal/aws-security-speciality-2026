@@ -200,6 +200,7 @@
 - 🧠 **"Detect specific API call fast" = EventBridge on CloudTrail. "Detect malicious behavior" = GuardDuty.** GuardDuty doesn't alert on policy changes.
 - 🧠 **If the service has delegated admin + auto-enable → use native, not StackSets.** GuardDuty, Inspector, Security Hub, Macie, Detective, Config, Access Analyzer.
 - 🧠 **No single governance service does everything.** CT doesn't share (RAM), deploy WAF (FM), or remediate (Config).
+- 🧠 **Declarative policy = "this state is impossible to violate" (EC2/VPC/EBS only).** SCP = "this API call is blocked." Different layers. "Regardless of which API" = declarative.
 ---
 
 ## Quotas That Trick You (4-5-8-32-5120)
