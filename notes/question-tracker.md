@@ -192,7 +192,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 53 | 2026-05-26 | Q506–Q515 | 9 | 0 | 1 | Cross-domain (re-test + killer uplift — all domains) | [Jump](#session-53--2026-05-26) |
 | 54 | 2026-05-26 | Q516–Q530 | 12 | 0 | 3 | Cross-domain (killer uplift — hard novel scenarios) | [Jump](#session-54--2026-05-26) |
 | 55 | 2026-05-26 | Q531–Q540 | 7 | 0 | 3 | Cross-domain (killer difficulty — multi-concept combos) | [Jump](#session-55--2026-05-26) |
-| 56 | 2026-05-27 | Q541–Q555 | 11 | 1 | 3 |  | [Jump](#session-56--2026-05-27) |
+| 56 | 2026-05-28 | Q541–Q555 | 11 | 1 | 3 |  | [Jump](#session-56--2026-05-28) |
 
 ---
 
@@ -1309,7 +1309,7 @@ After adding a session:
 | 540 | D4/D3/D5 | Cross-account S3+KMS + SCP ViaService + RCP + session policy — Lambda reads? | B: Succeeds — all gates pass | ✅ | ViaService satisfied, RCP same-org passes, session doesn't gate server-side KMS. | — | 5-layer cross-account evaluation |
 
 
-### Session 56 — 2026-05-27
+### Session 56 — 2026-05-28
 **Score:** 11 ✅ · 1 ⚠️ · 3 ❌ (73% correct)
 **Score:** 3 ✅ · 1 ⚠️ · 1 ❌ (60% correct)
 **Score:** 2 ✅ · 0 ⚠️ · 1 ❌ (67% correct)
