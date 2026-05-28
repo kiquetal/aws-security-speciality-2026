@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 542 |
+| **Total Questions** | 543 |
 | **✅ Correct** | 421 (78%) |
 | **⚠️ Partial** | 22 (4%) |
-| **❌ Wrong** | 99 (18%) |
-| **Sessions** | 55 |
-| **Re-tests Passed** | 194 of 233 |
+| **❌ Wrong** | 100 (18%) |
+| **Sessions** | 56 |
+| **Re-tests Passed** | 194 of 234 |
 
 ## Domain Breakdown
 
@@ -22,7 +22,7 @@
 | D1: Detection | 77 | 4 | 31 | 112 | 69% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
 | D3: Infrastructure Security | 60 | 4 | 10 | 74 | 81% | 🟢 |
-| D4: Identity & Access Management | 135 | 8 | 20 | 163 | 83% | 🟢 |
+| D4: Identity & Access Management | 135 | 8 | 21 | 164 | 82% | 🟢 |
 | D5: Data Protection | 68 | 3 | 14 | 85 | 80% | 🟢 |
 | D6: Governance | 70 | 2 | 23 | 95 | 74% | 🟡 |
 
@@ -128,6 +128,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 94 | Detection + response architecture | Q532 | D1 | 1 |
 | 🟡 95 | GuardDuty ≠ failed attempts | Q534 | D1 | 1 |
 | 🟡 96 | Gateway endpoint policy as additional gate | Q535 | D5 | 1 |
+| 🟡 97 | Cross-account KMS key policy must name external account | Q541 | D4 | 1 |
 
 ---
 
@@ -190,6 +191,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 53 | 2026-05-26 | Q506–Q515 | 9 | 0 | 1 | Cross-domain (re-test + killer uplift — all domains) | [Jump](#session-53--2026-05-26) |
 | 54 | 2026-05-26 | Q516–Q530 | 12 | 0 | 3 | Cross-domain (killer uplift — hard novel scenarios) | [Jump](#session-54--2026-05-26) |
 | 55 | 2026-05-26 | Q531–Q540 | 7 | 0 | 3 | Cross-domain (killer difficulty — multi-concept combos) | [Jump](#session-55--2026-05-26) |
+| 56 | 2026-05-27 | Q541–Q541 | 0 | 0 | 1 | Cross-domain (killer difficulty — multi-layer KMS cross-account) | [Jump](#session-56--2026-05-27) |
 
 ---
 
@@ -1304,3 +1306,13 @@ After adding a session:
 | 538 | D5/D4 | Cross-account KMS, key policy grants Account B root, identity policy has Decrypt — result? | A: Succeeds — both sides grant | ✅ | Root in key policy enables IAM delegation in Account B. Both sides satisfied. | — | Cross-account KMS standard pattern |
 | 539 | D1/D6 | CIS score + GD findings + Inspector CVEs + custom metric, least overhead — service? | B: Security Hub | ✅ | Aggregates all + CIS standard + cross-region + one-click org-wide. | — | Security Hub aggregation |
 | 540 | D4/D3/D5 | Cross-account S3+KMS + SCP ViaService + RCP + session policy — Lambda reads? | B: Succeeds — all gates pass | ✅ | ViaService satisfied, RCP same-org passes, session doesn't gate server-side KMS. | — | 5-layer cross-account evaluation |
+
+
+### Session 56 — 2026-05-27
+
+**Domains:** Cross-domain (killer difficulty — multi-layer KMS cross-account)
+**Score:** 0 ✅ · 0 ⚠️ · 1 ❌ (0% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 541 | D4/D5 | RCP + SCP ViaService + key policy grants only Account A root + Lambda in Account B reads SSE-KMS object cross-account — result? | A: Succeeds — all gates pass | ❌ | **C: Fails — key policy grants only Account A root, doesn't name Account B. Cross-account KMS requires key policy to explicitly name external account.** Root enables IAM delegation same-account only. | Q264, Q503 | Cross-account KMS key policy must name external account |
