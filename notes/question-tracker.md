@@ -8,18 +8,18 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 577 |
-| **✅ Correct** | 447 (77%) |
+| **Total Questions** | 582 |
+| **✅ Correct** | 452 (78%) |
 | **⚠️ Partial** | 23 (4%) |
-| **❌ Wrong** | 107 (19%) |
-| **Sessions** | 58 |
-| **Re-tests Passed** | 219 of 267 |
+| **❌ Wrong** | 107 (18%) |
+| **Sessions** | 59 |
+| **Re-tests Passed** | 224 of 272 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 86 | 5 | 37 | 128 | 67% | 🟡 |
+| D1: Detection | 91 | 5 | 37 | 133 | 68% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
 | D3: Infrastructure Security | 62 | 4 | 10 | 76 | 82% | 🟢 |
 | D4: Identity & Access Management | 140 | 8 | 21 | 169 | 83% | 🟢 |
@@ -196,6 +196,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 56 | 2026-05-28 | Q541–Q555 | 11 | 1 | 3 |  | [Jump](#session-56--2026-05-28) |
 | 57 | 2026-05-28 | Q556–Q565 | 9 | 0 | 1 | Cross-domain (killer exam set — all red-priority weak areas) | [Jump](#session-57--2026-05-28) |
 | 58 | 2026-05-28 | Q566–Q575 | 6 | 0 | 4 | D1 Detection + D6 Governance (targeted drill — detect vs prevent + RAM/FM) | [Jump](#session-58--2026-05-28) |
+| 59 | 2026-05-28 | Q576–Q580 | 5 | 0 | 0 | D1 Detection (targeted drill — GuardDuty S3 Protection vs EventBridge vs Access Analyzer) | [Jump](#session-59--2026-05-28) |
 
 ---
 
@@ -1372,3 +1373,17 @@ After adding a session:
 | 573 | D1 | Bucket policy grants external account, no access yet — which service fires? | B: Only Access Analyzer | ✅ | AA = static policy analysis (fires on policy). GD = needs actual access. | Q518 | Access Analyzer + GuardDuty both fire |
 | 574 | D1 | Detect DeleteDetector within 1 min, org trail exists? | B: Config rule | ❌ | **C: EventBridge.** "Detect specific API" + "within 1 min" = EventBridge. Config is slower. | Q474, Q549 | EventBridge for API call detection |
 | 575 | D1 | Detect PutBucketPolicy within 2 min, org trail exists, least overhead? | C: EventBridge | ✅ | "Specific API call" + "fast" + "least overhead" = EventBridge. | Q474 | EventBridge for API call detection |
+
+
+### Session 59 — 2026-05-28
+
+**Domains:** D1 Detection (targeted drill — GuardDuty S3 Protection vs EventBridge vs Access Analyzer)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 576 | D1 | Unusual download patterns from unknown country, alert, least overhead? | B: GuardDuty S3 Protection | ✅ | Anomalous access pattern = GuardDuty S3 Protection. | Q568 | Detect vs prevent (GuardDuty vs policy) |
+| 577 | D1 | PutBucketPolicy with Principal:*, alert within 2 min? | B: EventBridge | ✅ | Specific API call + fast = EventBridge. | Q574 | EventBridge for API call detection |
+| 578 | D1 | External account downloading hundreds of objects at 3 AM, zero setup? | C: GuardDuty S3 Protection | ✅ | Exfiltration + anomalous + zero setup = GuardDuty. | Q568 | Detect vs prevent (GuardDuty vs policy) |
+| 579 | D1 | Bucket policy grants external access, no access yet — which service? | B: Access Analyzer | ✅ | Static policy analysis, no access needed = Access Analyzer. | Q573 | Access Analyzer + GuardDuty both fire |
+| 580 | D1 | External account downloads from unusual geo + unusual time, least overhead? | C: GuardDuty S3 Protection | ✅ | Anomalous behavior on data access = GuardDuty S3 Protection. | Q568 | Detect vs prevent (GuardDuty vs policy) |
