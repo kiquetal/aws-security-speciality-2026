@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 557 |
-| **✅ Correct** | 432 (78%) |
+| **Total Questions** | 567 |
+| **✅ Correct** | 441 (78%) |
 | **⚠️ Partial** | 23 (4%) |
-| **❌ Wrong** | 102 (18%) |
-| **Sessions** | 56 |
-| **Re-tests Passed** | 204 of 247 |
+| **❌ Wrong** | 103 (18%) |
+| **Sessions** | 57 |
+| **Re-tests Passed** | 213 of 257 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 81 | 5 | 33 | 119 | 68% | 🟡 |
+| D1: Detection | 84 | 5 | 33 | 122 | 69% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
-| D3: Infrastructure Security | 60 | 4 | 10 | 74 | 81% | 🟢 |
-| D4: Identity & Access Management | 137 | 8 | 21 | 166 | 83% | 🟢 |
+| D3: Infrastructure Security | 61 | 4 | 10 | 75 | 81% | 🟢 |
+| D4: Identity & Access Management | 140 | 8 | 21 | 169 | 83% | 🟢 |
 | D5: Data Protection | 68 | 3 | 14 | 85 | 80% | 🟢 |
-| D6: Governance | 75 | 2 | 23 | 100 | 75% | 🟡 |
+| D6: Governance | 77 | 2 | 24 | 103 | 75% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -36,18 +36,18 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 2 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
 | 🔴 3 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
 | 🔴 4 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
-| 🔴 5 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
-| 🔴 6 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 7 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 8 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
-| 🔴 9 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 10 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 11 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
-| 🔴 12 | KMS key policy root = delegation, not grant | Q264, Q503 | D5 | 2 |
-| 🔴 13 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
-| 🔴 14 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
-| 🔴 15 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
-| 🔴 16 | RAM for sharing vs FM for enforcing | Q313, Q441 | D6 | 2 |
+| 🔴 5 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
+| 🔴 6 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
+| 🔴 7 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 8 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 9 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 10 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 11 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 12 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
+| 🔴 13 | KMS key policy root = delegation, not grant | Q264, Q503 | D5 | 2 |
+| 🔴 14 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🔴 15 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
+| 🔴 16 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
 | 🔴 17 | EventBridge for API call detection | Q474, Q549 | D1 | 2 |
 | 🔴 18 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
 | 🟡 19 | CloudTrail data vs management events | Q1 | D1 | 1 |
@@ -193,6 +193,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 54 | 2026-05-26 | Q516–Q530 | 12 | 0 | 3 | Cross-domain (killer uplift — hard novel scenarios) | [Jump](#session-54--2026-05-26) |
 | 55 | 2026-05-26 | Q531–Q540 | 7 | 0 | 3 | Cross-domain (killer difficulty — multi-concept combos) | [Jump](#session-55--2026-05-26) |
 | 56 | 2026-05-28 | Q541–Q555 | 11 | 1 | 3 |  | [Jump](#session-56--2026-05-28) |
+| 57 | 2026-05-28 | Q556–Q565 | 9 | 0 | 1 | Cross-domain (killer exam set — all red-priority weak areas) | [Jump](#session-57--2026-05-28) |
 
 ---
 
@@ -1331,3 +1332,22 @@ After adding a session:
 | 553 | D6 | StackSets deployed Config, developer stops recorder — what happens? | B: Nothing — StackSets doesn't auto-remediate | ✅ | StackSets deploys but never auto-remediates. Use SCP to prevent. | Q283, Q439 | StackSets no auto-remediation |
 | 554 | D6 | Deploy Macie across 150 accounts, auto for new — approach? | B: Macie delegated admin with auto-enable | ✅ | Native org support = use native, not StackSets. | Q483, Q492 | Native org-wide deployment |
 | 555 | D6 | WAF on all ALBs, auto-apply new accounts, re-attach if removed — which service? | B: Firewall Manager | ✅ | FM creates WAF directly (no RAM) + auto-remediates. | Q284, Q435 | Firewall Manager auto-remediation |
+
+
+### Session 57 — 2026-05-28
+
+**Domains:** Cross-domain (killer exam set — all red-priority weak areas)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 556 | D1 | GuardDuty zero findings 6 months, active workloads, VPC Flow Logs enabled — cause? | D: Suppression rule | ✅ | Suppression rule archiving findings. GD reads Flow Logs internally. | Q372, Q389 | GuardDuty suppression rules |
+| 557 | D1/D6 | Detect PutBucketPolicy Principal:* within 2 min + prevent external access — which TWO? | C+D: EventBridge + RCP | ✅ | EventBridge for fast API detection + RCP prevents consequence. | Q474, Q549 | EventBridge for API call detection + RCP |
+| 558 | D1 | EC2 resolves pool.supportxmr.com via DNS, no TCP connection — ThreatPurpose? | B: Impact | ✅ | DNS query only = Impact. Active mining = CryptoCurrency. | Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 559 | D4/D5 | Cross-account S3+KMS, key policy grants only Account A root, Account B has kms:Decrypt — result? | B: Fails — key policy must name external account | ✅ | Root enables IAM delegation same-account only. Cross-account needs explicit grant. | Q541 | Cross-account KMS key policy must name external account |
+| 560 | D4 | Identity=s3:*, boundary=s3:*+ec2:*, session=Get+Put, same-account bucket policy grants Delete — result? | C: Allowed — resource-based bypasses session | ✅ | Same-account resource policy naming role bypasses session + boundary ceiling. | Q96, Q169 | Session policy bypass by resource-based policy |
+| 561 | D6 | Deploy Macie across 200 accounts, auto for new — approach? | B: Macie delegated admin with auto-enable | ✅ | Native org support = use native, not StackSets. | Q483, Q492 | Native org-wide deployment |
+| 562 | D6 | RAM shares DNS FW rule group, developer disassociates from VPC — what happens? | A: Nothing — RAM doesn't enforce | ❌ | **C: Firewall Manager re-associates automatically.** RAM shares, FM enforces. Full pattern assumed. | Q313, Q441 | RAM for sharing vs FM for enforcing |
+| 563 | D6 | Prevent disabling Config, junior suggests Config rule — why won't it work? | A: Config can't evaluate its own service — use SCP | ✅ | Config can't remediate its own disablement. SCP prevents the API call. | Q440 | SCP prevents disabling services |
+| 564 | D4/D5 | SCP denies kms:Decrypt unless ViaService=s3, Lambda reads S3 + dev calls KMS directly — which succeed? | B: Only S3 read — ViaService satisfied | ✅ | Direct CLI has no ViaService context → SCP Deny fires. S3 sets ViaService. | Q488, Q495 | kms:ViaService + SCP |
+| 565 | D3/D6 | Share NF policy + enforce on VPCs + auto-recreate if deleted — which TWO? | A+B: RAM + Firewall Manager | ✅ | RAM shares, FM enforces lifecycle + auto-remediates. | Q442, Q446 | RAM + FM complementary |
