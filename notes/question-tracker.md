@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 543 |
-| **✅ Correct** | 421 (78%) |
+| **Total Questions** | 544 |
+| **✅ Correct** | 422 (78%) |
 | **⚠️ Partial** | 22 (4%) |
 | **❌ Wrong** | 100 (18%) |
 | **Sessions** | 56 |
-| **Re-tests Passed** | 194 of 234 |
+| **Re-tests Passed** | 195 of 235 |
 
 ## Domain Breakdown
 
@@ -22,7 +22,7 @@
 | D1: Detection | 77 | 4 | 31 | 112 | 69% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
 | D3: Infrastructure Security | 60 | 4 | 10 | 74 | 81% | 🟢 |
-| D4: Identity & Access Management | 135 | 8 | 21 | 164 | 82% | 🟢 |
+| D4: Identity & Access Management | 136 | 8 | 21 | 165 | 82% | 🟢 |
 | D5: Data Protection | 68 | 3 | 14 | 85 | 80% | 🟢 |
 | D6: Governance | 70 | 2 | 23 | 95 | 74% | 🟡 |
 
@@ -191,7 +191,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 53 | 2026-05-26 | Q506–Q515 | 9 | 0 | 1 | Cross-domain (re-test + killer uplift — all domains) | [Jump](#session-53--2026-05-26) |
 | 54 | 2026-05-26 | Q516–Q530 | 12 | 0 | 3 | Cross-domain (killer uplift — hard novel scenarios) | [Jump](#session-54--2026-05-26) |
 | 55 | 2026-05-26 | Q531–Q540 | 7 | 0 | 3 | Cross-domain (killer difficulty — multi-concept combos) | [Jump](#session-55--2026-05-26) |
-| 56 | 2026-05-27 | Q541–Q541 | 0 | 0 | 1 | Cross-domain (killer difficulty — multi-layer KMS cross-account) | [Jump](#session-56--2026-05-27) |
+| 56 | 2026-05-27 | Q541–Q542 | 1 | 0 | 1 | Cross-domain (killer difficulty — multi-layer KMS cross-account) | [Jump](#session-56--2026-05-27) |
 
 ---
 
@@ -1311,8 +1311,9 @@ After adding a session:
 ### Session 56 — 2026-05-27
 
 **Domains:** Cross-domain (killer difficulty — multi-layer KMS cross-account)
-**Score:** 0 ✅ · 0 ⚠️ · 1 ❌ (0% correct)
+**Score:** 1 ✅ · 0 ⚠️ · 1 ❌ (50% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
 | 541 | D4/D5 | RCP + SCP ViaService + key policy grants only Account A root + Lambda in Account B reads SSE-KMS object cross-account — result? | A: Succeeds — all gates pass | ❌ | **C: Fails — key policy grants only Account A root, doesn't name Account B. Cross-account KMS requires key policy to explicitly name external account.** Root enables IAM delegation same-account only. | Q264, Q503 | Cross-account KMS key policy must name external account |
+| 542 | D4/D5 | SCP ViaService + session policy (s3:Get+sm:Get only) + same-account SSE-KMS — 3 ops: S3 read, SM GetSecret, direct kms:Decrypt — which succeed? | B: Only #1 and #2 — ViaService satisfied, direct Decrypt has no ViaService | ✅ | Direct kms:Decrypt has no ViaService context → SCP Deny fires. Server-side KMS calls by S3/SM satisfy ViaService and aren't gated by session policy. | Q488, Q495 | kms:ViaService + SCP |
