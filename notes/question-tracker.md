@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 567 |
-| **✅ Correct** | 441 (78%) |
+| **Total Questions** | 577 |
+| **✅ Correct** | 447 (77%) |
 | **⚠️ Partial** | 23 (4%) |
-| **❌ Wrong** | 103 (18%) |
-| **Sessions** | 57 |
-| **Re-tests Passed** | 213 of 257 |
+| **❌ Wrong** | 107 (19%) |
+| **Sessions** | 58 |
+| **Re-tests Passed** | 219 of 267 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 84 | 5 | 33 | 122 | 69% | 🟡 |
+| D1: Detection | 86 | 5 | 37 | 128 | 67% | 🟡 |
 | D2: Incident Response | 11 | 1 | 1 | 13 | 85% | 🟢 |
-| D3: Infrastructure Security | 61 | 4 | 10 | 75 | 81% | 🟢 |
+| D3: Infrastructure Security | 62 | 4 | 10 | 76 | 82% | 🟢 |
 | D4: Identity & Access Management | 140 | 8 | 21 | 169 | 83% | 🟢 |
-| D5: Data Protection | 68 | 3 | 14 | 85 | 80% | 🟢 |
-| D6: Governance | 77 | 2 | 24 | 103 | 75% | 🟡 |
+| D5: Data Protection | 69 | 3 | 14 | 86 | 80% | 🟢 |
+| D6: Governance | 79 | 2 | 24 | 105 | 75% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -32,23 +32,23 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
-| 🔴 1 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153, Q156, Q158, Q546 | D1, D5 | 6 |
+| 🔴 1 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153, Q156, Q158, Q546, Q568 | D1, D5 | 7 |
 | 🔴 2 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
-| 🔴 3 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
-| 🔴 4 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
-| 🔴 5 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
-| 🔴 6 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
-| 🔴 7 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 8 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 9 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
-| 🔴 10 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 11 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 12 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
-| 🔴 13 | KMS key policy root = delegation, not grant | Q264, Q503 | D5 | 2 |
-| 🔴 14 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
-| 🔴 15 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
-| 🔴 16 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
-| 🔴 17 | EventBridge for API call detection | Q474, Q549 | D1 | 2 |
+| 🔴 3 | EventBridge for API call detection | Q474, Q549, Q570, Q574 | D1 | 4 |
+| 🔴 4 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
+| 🔴 5 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
+| 🔴 6 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
+| 🔴 7 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
+| 🔴 8 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 9 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 10 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 11 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 12 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 13 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
+| 🔴 14 | KMS key policy root = delegation, not grant | Q264, Q503 | D5 | 2 |
+| 🔴 15 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🔴 16 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
+| 🔴 17 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
 | 🔴 18 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
 | 🟡 19 | CloudTrail data vs management events | Q1 | D1 | 1 |
 | 🟡 20 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
@@ -130,6 +130,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 96 | Gateway endpoint policy as additional gate | Q535 | D5 | 1 |
 | 🟡 97 | Cross-account KMS key policy must name external account | Q541 | D4 | 1 |
 | 🟡 98 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1 | 1 |
+| 🟡 99 | Detect C2 = GuardDuty (zero code) | Q571 | D1 | 1 |
 
 ---
 
@@ -194,6 +195,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 55 | 2026-05-26 | Q531–Q540 | 7 | 0 | 3 | Cross-domain (killer difficulty — multi-concept combos) | [Jump](#session-55--2026-05-26) |
 | 56 | 2026-05-28 | Q541–Q555 | 11 | 1 | 3 |  | [Jump](#session-56--2026-05-28) |
 | 57 | 2026-05-28 | Q556–Q565 | 9 | 0 | 1 | Cross-domain (killer exam set — all red-priority weak areas) | [Jump](#session-57--2026-05-28) |
+| 58 | 2026-05-28 | Q566–Q575 | 6 | 0 | 4 | D1 Detection + D6 Governance (targeted drill — detect vs prevent + RAM/FM) | [Jump](#session-58--2026-05-28) |
 
 ---
 
@@ -1351,3 +1353,22 @@ After adding a session:
 | 563 | D6 | Prevent disabling Config, junior suggests Config rule — why won't it work? | A: Config can't evaluate its own service — use SCP | ✅ | Config can't remediate its own disablement. SCP prevents the API call. | Q440 | SCP prevents disabling services |
 | 564 | D4/D5 | SCP denies kms:Decrypt unless ViaService=s3, Lambda reads S3 + dev calls KMS directly — which succeed? | B: Only S3 read — ViaService satisfied | ✅ | Direct CLI has no ViaService context → SCP Deny fires. S3 sets ViaService. | Q488, Q495 | kms:ViaService + SCP |
 | 565 | D3/D6 | Share NF policy + enforce on VPCs + auto-recreate if deleted — which TWO? | A+B: RAM + Firewall Manager | ✅ | RAM shares, FM enforces lifecycle + auto-remediates. | Q442, Q446 | RAM + FM complementary |
+
+
+### Session 58 — 2026-05-28
+
+**Domains:** D1 Detection + D6 Governance (targeted drill — detect vs prevent + RAM/FM)
+**Score:** 6 ✅ · 0 ⚠️ · 4 ❌ (60% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 566 | D6 | RAM shares DNS FW rule group, FM enforces, developer disassociates — what happens? | B: FM re-associates automatically | ✅ | FM auto-remediates. RAM shares, FM enforces. | Q562 | RAM for sharing vs FM for enforcing |
+| 567 | D6 | RAM share deleted, FM policy still exists — what happens? | B: FM policy non-compliant, rule group inaccessible | ✅ | RAM is the foundation. Remove share → FM can't enforce what doesn't exist. | Q562 | RAM + FM dependency |
+| 568 | D1 | SSE-KMS, detect when external account successfully decrypts, least overhead? | A: CloudTrail + metric filter | ❌ | **C: GuardDuty S3 Protection.** "Detect" + "least overhead" = GuardDuty. CloudTrail is the log source, not the detection engine. | Q100, Q546 | Detect vs prevent (GuardDuty vs policy) |
+| 569 | D5/D4 | Block external decryption org-wide? | B: RCP denying non-org kms:Decrypt | ✅ | "Block" + "org-wide" = RCP. | Q369 | RCP for prevention |
+| 570 | D1 | Detect DeleteTrail within 2 min, org trail exists, least overhead? | A: GuardDuty | ❌ | **C: EventBridge rule in management account.** "Detect specific API call" + "fast" = EventBridge. | Q474, Q549 | EventBridge for API call detection |
+| 571 | D1 | EC2 communicating with known C2 IP, alert with zero custom code? | D: Network Firewall alert | ❌ | **C: GuardDuty.** "Detect" + "zero custom code" = always GuardDuty. NF requires deployment + rules. | Q159 | Detect C2 = GuardDuty (zero code) |
+| 572 | D3 | Block C2 IP VPC-wide, attacker hardcoded IP (no DNS)? | C: Network Firewall DROP | ✅ | DNS FW useless if no DNS query. Network FW drops by IP. | Q526 | Network FW for IP-level C2 block |
+| 573 | D1 | Bucket policy grants external account, no access yet — which service fires? | B: Only Access Analyzer | ✅ | AA = static policy analysis (fires on policy). GD = needs actual access. | Q518 | Access Analyzer + GuardDuty both fire |
+| 574 | D1 | Detect DeleteDetector within 1 min, org trail exists? | B: Config rule | ❌ | **C: EventBridge.** "Detect specific API" + "within 1 min" = EventBridge. Config is slower. | Q474, Q549 | EventBridge for API call detection |
+| 575 | D1 | Detect PutBucketPolicy within 2 min, org trail exists, least overhead? | C: EventBridge | ✅ | "Specific API call" + "fast" + "least overhead" = EventBridge. | Q474 | EventBridge for API call detection |
