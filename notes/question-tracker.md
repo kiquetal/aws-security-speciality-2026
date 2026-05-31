@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 632 |
-| **✅ Correct** | 497 (79%) |
+| **Total Questions** | 650 |
+| **✅ Correct** | 512 (79%) |
 | **⚠️ Partial** | 23 (4%) |
-| **❌ Wrong** | 112 (18%) |
-| **Sessions** | 64 |
-| **Re-tests Passed** | 268 of 321 |
+| **❌ Wrong** | 115 (18%) |
+| **Sessions** | 65 |
+| **Re-tests Passed** | 281 of 337 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 108 | 5 | 40 | 153 | 71% | 🟡 |
+| D1: Detection | 116 | 5 | 42 | 163 | 71% | 🟡 |
 | D2: Incident Response | 12 | 1 | 1 | 14 | 86% | 🟢 |
 | D3: Infrastructure Security | 63 | 4 | 10 | 77 | 82% | 🟢 |
 | D4: Identity & Access Management | 154 | 8 | 22 | 184 | 84% | 🟢 |
-| D5: Data Protection | 72 | 3 | 15 | 90 | 80% | 🟢 |
-| D6: Governance | 88 | 2 | 24 | 114 | 77% | 🟡 |
+| D5: Data Protection | 74 | 3 | 16 | 93 | 80% | 🟡 |
+| D6: Governance | 93 | 2 | 24 | 119 | 78% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -38,21 +38,21 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 4 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
 | 🔴 5 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
 | 🔴 6 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
-| 🔴 7 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
-| 🔴 8 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 9 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 10 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
-| 🔴 11 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 12 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 13 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
-| 🔴 14 | KMS key policy root = delegation, not grant | Q264, Q503 | D5 | 2 |
-| 🔴 15 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
-| 🔴 16 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
-| 🔴 17 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
-| 🔴 18 | Default encryption vs bucket policy Deny | Q426, Q626 | D5 | 2 |
-| 🔴 19 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
-| 🔴 20 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
-| 🔴 21 | Detect C2 = GuardDuty (zero code) | Q571, Q584 | D1 | 2 |
+| 🔴 7 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
+| 🔴 8 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
+| 🔴 9 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
+| 🔴 10 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 11 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 12 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 13 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 14 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 15 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
+| 🔴 16 | KMS key policy root = delegation, not grant | Q264, Q503 | D5 | 2 |
+| 🔴 17 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🔴 18 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
+| 🔴 19 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
+| 🔴 20 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
+| 🔴 21 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
 | 🟡 22 | CloudTrail data vs management events | Q1 | D1 | 1 |
 | 🟡 23 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
 | 🟡 24 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
@@ -132,6 +132,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 98 | Cross-account KMS key policy must name external account | Q541 | D4 | 1 |
 | 🟡 99 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1 | 1 |
 | 🟡 100 | Session policy + server-side KMS | Q591 | D4 | 1 |
+| 🟡 101 | Detect vs prevent (GuardDuty vs EventBridge for behavioral) | Q640 | D1 | 1 |
 
 ---
 
@@ -203,6 +204,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 62 | 2026-05-30 | Q601–Q610 | 10 | 0 | 0 | D1 Detection + D6 Governance (killer targeted drill — all red-priority gaps) | [Jump](#session-62--2026-05-30) |
 | 63 | 2026-05-30 | Q611–Q620 | 10 | 0 | 0 | Cross-domain killer (session policy + server-side KMS + cross-account + RCP + ViaService) | [Jump](#session-63--2026-05-30) |
 | 64 | 2026-05-30 | Q621–Q630 | 9 | 0 | 1 | Cross-domain (AWS-style wording traps — all domains, novel phrasing) | [Jump](#session-64--2026-05-30) |
+| 65 | 2026-05-31 | Q631–Q648 | 15 | 0 | 3 | Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance) | [Jump](#session-65--2026-05-31) |
 
 ---
 
@@ -1488,3 +1490,31 @@ After adding a session:
 | 628 | D4/D5 | Lambda calls kms:Decrypt directly (not via S3), SCP ViaService=s3 only — result? | B: Fails — no ViaService context, SCP Deny fires | ✅ | Direct call has no ViaService. SCP follows the caller. | Q488, Q506 | kms:ViaService + SCP |
 | 629 | D1 | GuardDuty zero findings 90d, active workloads, junior created suppression filter 80d ago — investigate first? | B: Suppression filter overly broad | ✅ | Zero findings + active workloads + suppression filter = filter archiving everything. | Q372, Q389 | GuardDuty suppression rules |
 | 630 | D4/D5 | Cross-account SSE-KMS, RCP denies non-org s3:*, Lambda kms:Decrypt — at which layer does RCP evaluate KMS? | C: RCP only covers s3:* actions, not kms:* | ✅ | RCP statement scope is action-level. s3:* doesn't include kms:*. | — | RCP scope (action-level) |
+
+
+### Session 65 — 2026-05-31
+
+**Domains:** Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance)
+**Score:** 15 ✅ · 0 ⚠️ · 3 ❌ (83% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 631 | D1 | SSE-KMS, alert on downloads inconsistent with business hours/geo, zero Lambda/filters/infra — service? | B: GuardDuty S3 Protection | ✅ | "Anomalous pattern" + "zero code/infra" = GuardDuty S3 Protection. | Q568, Q581 | Detect vs prevent (GuardDuty vs policy) |
+| 632 | D1 | Detect iam:DeactivateMFADevice within 90s, org trail exists, least overhead? | C: EventBridge rule in management account | ✅ | "Detect specific API call" + "fast" + "least overhead" = EventBridge. | Q474, Q570 | EventBridge for API call detection |
+| 633 | D1 | EC2 communicating with C2 IP (hardcoded, no DNS), alert, zero custom code, zero infra deployment? | B: Network Firewall alert | ❌ | **C: GuardDuty.** "Detect + zero code + zero infra" = always GuardDuty. NF requires deployment. | Q571, Q584 | Detect C2 = GuardDuty (zero code) |
+| 634 | D1 | Bucket policy grants external account, no access yet, GD + AA enabled — which fires? | C: Only Access Analyzer | ✅ | AA = static policy analysis (fires on policy). GD = needs actual anomalous access. | Q518, Q573 | Access Analyzer + GuardDuty both fire |
+| 635 | D1 | RCP blocks external, attacker attempts 200 GetObjects (all denied), GD enabled — finding? | B: No — GD only fires on successful anomalous access | ✅ | GuardDuty doesn't fire on blocked attempts — no successful access = no finding. | Q534, Q594 | GuardDuty ≠ failed attempts |
+| 636 | D1 | Detect kms:DisableKey across 300 accounts within 2 min, org trail exists, least overhead? | C: EventBridge rule in management account | ✅ | "Detect specific API call" + "fast" = EventBridge. | Q474, Q570 | EventBridge for API call detection |
+| 637 | D1 | Lambda active TCP to mining pool IP (confirmed by Flow Logs) — ThreatPurpose? | B: CryptoCurrency | ✅ | Active mining traffic = CryptoCurrency. | Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 638 | D1 | Same Lambda 10min earlier, only DNS resolution of pool.minexmr.com, no TCP — ThreatPurpose? | B: Impact | ✅ | DNS query only = Impact. Active mining = CryptoCurrency. | Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 639 | D1 | Visibility into anomalous download patterns (unusual volumes/times/countries), no code/filters/maintenance — service? | C: GuardDuty S3 Protection | ✅ | "Anomalous behavior" + "zero maintenance" = GuardDuty S3 Protection. | Q568, Q581 | Detect vs prevent (GuardDuty vs policy) |
+| 640 | D1 | Prevent external S3 reads org-wide + detect internal 3AM unusual-country downloads — which TWO? | B+E: RCP + EventBridge | ❌ | **B+C: RCP + GuardDuty S3 Protection.** EventBridge detects API calls, not behavioral anomalies. | Q568, Q581 | Detect vs prevent (GuardDuty vs EventBridge for behavioral) |
+| 641 | D5 | SCP Deny PutObject if KMS key header ≠ specific key, upload without header, default encryption set — result? | B: Denied — SCP evaluates before default encryption | ✅ | SCP evaluates request headers BEFORE default encryption applies. | Q426, Q626 | Default encryption vs bucket policy Deny |
+| 642 | D5 | Same SCP, upload WITH correct KMS key header — result? | A: Succeeds — header matches condition | ✅ | Header present and matches → StringNotEquals is FALSE → Deny doesn't fire. | Q426, Q626 | Default encryption vs bucket policy Deny |
+| 643 | D5 | Bucket policy Deny if encryption header ≠ aws:kms, default encryption SSE-KMS, upload without header — result? | A: Succeeds (default encryption) | ❌ | **B: Denied — bucket policy evaluates request headers before default encryption applies.** Same rule as SCP. | Q426, Q626 | Default encryption vs bucket policy Deny |
+| 644 | D6 | NF policies in central account, 200 members need them applied + auto-re-apply if deleted — which TWO? | A+B: RAM + Firewall Manager | ✅ | RAM shares, FM enforces + auto-remediates. | Q441, Q562 | RAM for sharing + FM for enforcing |
+| 645 | D6 | FM deploys WAF to ALBs, developer disassociates Web ACL — what happens? | B: FM re-associates automatically | ✅ | FM auto-remediates. | Q284, Q435 | Firewall Manager auto-remediation |
+| 646 | D6 | Share TGW with 50 accounts + ensure route table entries in all VPCs — which TWO? | A+C: RAM + StackSets | ✅ | RAM shares TGW. StackSets deploys route table entries (FM can't do routes). | — | RAM + StackSets complementary |
+| 647 | D6 | DNS FW rule groups visible to 300 members, NO auto-association needed — service? | B: RAM | ✅ | "Visible/accessible" without enforcement = RAM only. | Q441, Q562 | RAM for sharing vs FM for enforcing |
+| 648 | D6 | Match verbs: visible=?, associate=?, re-create=?, deploy IAM role=? | A: RAM, FM, FM, StackSets | ✅ | "Visible" = RAM. "Associate/re-create" = FM. "Deploy custom resource" = StackSets. | — | RAM vs FM vs StackSets verb signals |
+
