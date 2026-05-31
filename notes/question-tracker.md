@@ -8,21 +8,21 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 612 |
-| **✅ Correct** | 478 (78%) |
+| **Total Questions** | 622 |
+| **✅ Correct** | 488 (78%) |
 | **⚠️ Partial** | 23 (4%) |
 | **❌ Wrong** | 111 (18%) |
-| **Sessions** | 62 |
-| **Re-tests Passed** | 250 of 302 |
+| **Sessions** | 63 |
+| **Re-tests Passed** | 260 of 312 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 104 | 5 | 40 | 149 | 70% | 🟡 |
+| D1: Detection | 105 | 5 | 40 | 150 | 70% | 🟡 |
 | D2: Incident Response | 12 | 1 | 1 | 14 | 86% | 🟢 |
 | D3: Infrastructure Security | 63 | 4 | 10 | 77 | 82% | 🟢 |
-| D4: Identity & Access Management | 142 | 8 | 22 | 172 | 83% | 🟢 |
+| D4: Identity & Access Management | 151 | 8 | 22 | 181 | 83% | 🟢 |
 | D5: Data Protection | 71 | 3 | 14 | 88 | 81% | 🟢 |
 | D6: Governance | 86 | 2 | 24 | 112 | 77% | 🟡 |
 
@@ -201,6 +201,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 60 | 2026-05-30 | Q581–Q590 | 8 | 0 | 2 | D1 Detection + D6 Governance (re-test blitz — top 3 red-priority gaps) | [Jump](#session-60--2026-05-30) |
 | 61 | 2026-05-30 | Q591–Q600 | 8 | 0 | 2 | Cross-domain killer exam simulation (all domains, hardest scenarios) | [Jump](#session-61--2026-05-30) |
 | 62 | 2026-05-30 | Q601–Q610 | 10 | 0 | 0 | D1 Detection + D6 Governance (killer targeted drill — all red-priority gaps) | [Jump](#session-62--2026-05-30) |
+| 63 | 2026-05-30 | Q611–Q620 | 10 | 0 | 0 | Cross-domain killer (session policy + server-side KMS + cross-account + RCP + ViaService) | [Jump](#session-63--2026-05-30) |
 
 ---
 
@@ -1448,3 +1449,22 @@ After adding a session:
 | 608 | D6 | DNS FW rule groups: share + associate all VPCs + auto-re-associate — which TWO? | A: RAM + Firewall Manager | ✅ | RAM shares, FM enforces + auto-remediates. | Q441, Q562 | RAM for sharing + FM for enforcing |
 | 609 | D1/D5 | Prevent external decryption + alert anomalous downloads — which TWO? | B+C: RCP + GuardDuty S3 Protection | ✅ | RCP prevents, GuardDuty detects anomalous behavior. | Q568, Q581 | Detect vs prevent (RCP + GuardDuty) |
 | 610 | D6 | Developer deploys Inspector via StackSets — why is this wrong? | B: Inspector has native delegated admin with auto-enable | ✅ | Native org support = use native, not StackSets. | Q483, Q492 | Native org-wide deployment |
+
+
+### Session 63 — 2026-05-30
+
+**Domains:** Cross-domain killer (session policy + server-side KMS + cross-account + RCP + ViaService)
+**Score:** 10 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 611 | D4/D5 | Cross-account SSE-KMS, key policy grants only Account A root, Lambda in B has kms:Decrypt, SCP ViaService, RCP same-org, session=GetObject — result? | B: Fails — key policy doesn't name Account B | ✅ | Cross-account KMS requires key policy to explicitly name external account. Root enables delegation same-account only. | Q541, Q559 | Cross-account KMS key policy must name external account |
+| 612 | D4/D5 | Same as Q611 but key policy now grants Account B root — result? | C: Succeeds — server-side KMS, ViaService satisfied, session doesn't gate | ✅ | All 5 layers pass. S3 calls KMS server-side, ViaService satisfied, session policy doesn't gate server-side KMS. | Q591, Q531 | Session policy + server-side KMS + ViaService |
+| 613 | D4 | Cross-account bucket policy grants role DeleteObject, session=Get+Put only — DeleteObject? | A: Denied — session policy ceiling applies cross-account | ✅ | Resource-policy bypass of session policy ONLY works same-account. Cross-account = ceiling always applies. | Q96, Q169 | Session policy bypass same-account ONLY |
+| 614 | D4 | Same-account bucket policy grants role DeleteObject, session=Get+Put only — DeleteObject? | B: Allowed — same-account resource-based bypasses session | ✅ | Same-account resource-based policy naming role bypasses session policy ceiling. | Q96, Q169 | Session policy bypass by resource-based policy |
+| 615 | D4/D5 | SCP denies kms:Decrypt+GenerateDataKey unless ViaService=s3 or secretsmanager — S3 read + SM GetSecret + direct Decrypt — which succeed? | B: Only #1 and #2 | ✅ | S3 and SM set ViaService server-side. Direct kms:Decrypt has no ViaService → SCP Deny fires. | Q488, Q506 | kms:ViaService + SCP (multiple services) |
+| 616 | D4/D5 | Cross-account SSE-KMS, all correct, key policy grants B root, still Access Denied — cause? | A: RCP denies non-org kms:Decrypt | ✅ | RCP is the hidden gate. Key policy granting root IS sufficient for cross-account (enables delegation). | Q541, Q568 | RCP as hidden gate for cross-account KMS |
+| 617 | D1/D4 | Bucket policy grants external account, no access yet — which services fire? (TWO) | A+C: Access Analyzer fires (static) + GuardDuty does NOT (no access) | ✅ | AA = static policy analysis. GD = needs actual anomalous access. No access = no GD finding. | Q518, Q534 | Access Analyzer + GuardDuty both fire |
+| 618 | D4/D5 | Identity=GetObject+Decrypt, session=GetObject only, boundary=s3:*+kms:*, same-account, no bucket policy naming role — SSE-KMS read? | A: Succeeds — server-side KMS not gated by session policy | ✅ | Session policy doesn't gate S3's internal KMS call. Identity has kms:Decrypt. Root enables delegation. | Q529, Q591 | Session policy + server-side KMS |
+| 619 | D4/D6 | RCP denies non-org s3:* with PrincipalIsAWSService:false — ELB SLR + CloudTrail + external attacker — which succeed? (TWO) | A+B: SLR + CloudTrail | ✅ | SLR exempt (structural) + CloudTrail exempt (PrincipalIsAWSService). Attacker blocked. | Q217, Q499 | RCP exemptions (both paths) |
+| 620 | D4/D5/D6 | Full 5-layer: key policy grants B root + SCP ViaService + RCP same-org + session=GetObject + cross-account SSE-KMS read — result? | C: Succeeds — all gates pass | ✅ | ViaService satisfied (server-side), RCP same-org passes, session doesn't gate server-side KMS, key policy enables delegation. | Q591, Q531 | Full 5-layer cross-account evaluation |
