@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 602 |
-| **✅ Correct** | 468 (78%) |
+| **Total Questions** | 612 |
+| **✅ Correct** | 478 (78%) |
 | **⚠️ Partial** | 23 (4%) |
 | **❌ Wrong** | 111 (18%) |
-| **Sessions** | 61 |
-| **Re-tests Passed** | 240 of 292 |
+| **Sessions** | 62 |
+| **Re-tests Passed** | 250 of 302 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 98 | 5 | 40 | 143 | 69% | 🟡 |
+| D1: Detection | 104 | 5 | 40 | 149 | 70% | 🟡 |
 | D2: Incident Response | 12 | 1 | 1 | 14 | 86% | 🟢 |
-| D3: Infrastructure Security | 62 | 4 | 10 | 76 | 82% | 🟢 |
+| D3: Infrastructure Security | 63 | 4 | 10 | 77 | 82% | 🟢 |
 | D4: Identity & Access Management | 142 | 8 | 22 | 172 | 83% | 🟢 |
 | D5: Data Protection | 71 | 3 | 14 | 88 | 81% | 🟢 |
-| D6: Governance | 83 | 2 | 24 | 109 | 76% | 🟡 |
+| D6: Governance | 86 | 2 | 24 | 112 | 77% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -200,6 +200,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 59 | 2026-05-28 | Q576–Q580 | 5 | 0 | 0 | D1 Detection (targeted drill — GuardDuty S3 Protection vs EventBridge vs Access Analyzer) | [Jump](#session-59--2026-05-28) |
 | 60 | 2026-05-30 | Q581–Q590 | 8 | 0 | 2 | D1 Detection + D6 Governance (re-test blitz — top 3 red-priority gaps) | [Jump](#session-60--2026-05-30) |
 | 61 | 2026-05-30 | Q591–Q600 | 8 | 0 | 2 | Cross-domain killer exam simulation (all domains, hardest scenarios) | [Jump](#session-61--2026-05-30) |
+| 62 | 2026-05-30 | Q601–Q610 | 10 | 0 | 0 | D1 Detection + D6 Governance (killer targeted drill — all red-priority gaps) | [Jump](#session-62--2026-05-30) |
 
 ---
 
@@ -1428,3 +1429,22 @@ After adding a session:
 | 598 | D2/D4 | InstanceCredentialExfiltration.OutsideAWS, stop attacker + instance stays up + fresh creds work — single action? | B: Inline Deny TokenIssueTime | ✅ | Deny old creds, IMDS refreshes new ones after timestamp. | Q536 | Credential exfiltration response |
 | 599 | D4/D5 | Cross-account KMS, key policy grants B root, Account B SCP denies kms:* unless ViaService=s3, Lambda calls Decrypt directly — result? | B: Fails — ViaService not satisfied, SCP Deny fires | ✅ | Direct call has no ViaService context. SCP follows the caller. | Q488, Q506 | kms:ViaService + SCP |
 | 600 | D1/D6 | Prevent DeleteTrail/StopLogging + detect PutBucketPolicy 2min + prevent external S3 + alert anomalous downloads — match FOUR services | A+B+C+D: SCP + EventBridge + RCP + GuardDuty | ✅ | SCP prevents API. EventBridge detects API. RCP prevents consequence. GuardDuty detects behavior. | Q557, Q587 | Full detect/prevent architecture |
+
+
+### Session 62 — 2026-05-30
+
+**Domains:** D1 Detection + D6 Governance (killer targeted drill — all red-priority gaps)
+**Score:** 10 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 601 | D1 | RCP blocks external + GuardDuty S3 Protection enabled + attacker attempts 50 GetObjects (all denied) — did GuardDuty alert? | B: No — GD only fires on successful anomalous access | ✅ | GuardDuty doesn't fire on blocked attempts — no successful access = no finding. | Q534, Q594 | GuardDuty ≠ failed attempts |
+| 602 | D1/D6 | Detect PutBucketPolicy Principal:* within 2 min + prevent external access — which TWO? | B: EventBridge + RCP | ✅ | EventBridge for fast API detection + RCP prevents consequence. | Q474, Q549 | EventBridge for API call detection + RCP |
+| 603 | D1 | EC2 actively sending TCP traffic to mining pool (connection established, data flowing) — ThreatPurpose? | B: CryptoCurrency | ✅ | Active mining traffic = CryptoCurrency. DNS query only = Impact. | Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 604 | D1 | Same instance 10min earlier, resolved pool.minexmr.com via DNS, no TCP connection — ThreatPurpose? | B: Impact | ✅ | DNS query only = Impact. Active mining = CryptoCurrency. | Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 605 | D3/D1 | Trojan:EC2/C2Activity.B!DNS, attacker hardcoded C2 IP, no DNS queries — block VPC-wide? | B: Network Firewall DROP on C2 IP | ✅ | IP hardcoded = DNS FW useless. Network FW drops by IP. | Q526, Q571 | Network FW for IP-level C2 block |
+| 606 | D1 | Detect DeleteDetector/StopLogging within 1 min, org trail exists, least overhead? | C: EventBridge rule in management account | ✅ | "Detect specific API call" + "fast" = EventBridge. | Q474, Q570 | EventBridge for API call detection |
+| 607 | D6 | Prevent DeleteDetector/StopLogging from ever happening — mechanism? | B: SCP denying those actions | ✅ | "Prevent" = SCP. EventBridge detects. Config remediates. | Q440, Q467 | SCP prevents disabling services |
+| 608 | D6 | DNS FW rule groups: share + associate all VPCs + auto-re-associate — which TWO? | A: RAM + Firewall Manager | ✅ | RAM shares, FM enforces + auto-remediates. | Q441, Q562 | RAM for sharing + FM for enforcing |
+| 609 | D1/D5 | Prevent external decryption + alert anomalous downloads — which TWO? | B+C: RCP + GuardDuty S3 Protection | ✅ | RCP prevents, GuardDuty detects anomalous behavior. | Q568, Q581 | Detect vs prevent (RCP + GuardDuty) |
+| 610 | D6 | Developer deploys Inspector via StackSets — why is this wrong? | B: Inspector has native delegated admin with auto-enable | ✅ | Native org support = use native, not StackSets. | Q483, Q492 | Native org-wide deployment |
