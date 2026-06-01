@@ -8,21 +8,21 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 667 |
-| **✅ Correct** | 523 (78%) |
+| **Total Questions** | 673 |
+| **✅ Correct** | 529 (79%) |
 | **⚠️ Partial** | 24 (4%) |
-| **❌ Wrong** | 117 (18%) |
-| **Sessions** | 66 |
-| **Re-tests Passed** | 291 of 353 |
+| **❌ Wrong** | 117 (17%) |
+| **Sessions** | 67 |
+| **Re-tests Passed** | 297 of 359 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 118 | 6 | 43 | 167 | 71% | 🟡 |
+| D1: Detection | 121 | 6 | 43 | 170 | 71% | 🟡 |
 | D2: Incident Response | 12 | 1 | 1 | 14 | 86% | 🟢 |
 | D3: Infrastructure Security | 63 | 4 | 10 | 77 | 82% | 🟢 |
-| D4: Identity & Access Management | 156 | 8 | 23 | 187 | 83% | 🟢 |
+| D4: Identity & Access Management | 159 | 8 | 23 | 190 | 84% | 🟢 |
 | D5: Data Protection | 76 | 3 | 16 | 95 | 80% | 🟢 |
 | D6: Governance | 98 | 2 | 24 | 124 | 79% | 🟡 |
 
@@ -207,6 +207,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 64 | 2026-05-30 | Q621–Q630 | 9 | 0 | 1 | Cross-domain (AWS-style wording traps — all domains, novel phrasing) | [Jump](#session-64--2026-05-30) |
 | 65 | 2026-05-31 | Q631–Q648 | 15 | 0 | 3 | Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance) | [Jump](#session-65--2026-05-31) |
 | 66 | 2026-06-01 | Q649–Q670 | 11 | 1 | 2 | Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance + D4 IAM) | [Jump](#session-66--2026-06-01) |
+| 67 | 2026-06-01 | Q671–Q676 | 6 | 0 | 0 | D1 Detection + D4/D5 IAM/Data Protection (final leaks drill — C2=Trojan + cross-account KMS key policy) | [Jump](#session-67--2026-06-01) |
 
 ---
 
@@ -1546,3 +1547,19 @@ After adding a session:
 | 668 | D4/D5 | 5-layer cross-account SSE-KMS: key policy grants B root + SCP ViaService + RCP same-org + session=GetObject — result? | C: Succeeds — all gates pass | ✅ | Server-side KMS, ViaService satisfied, session doesn't gate, RCP same-org passes. | Q591, Q531 | Full 5-layer cross-account evaluation |
 | 669 | D4/D5 | Same as Q668 but key policy grants only Account A root (not B) — result? | C: Succeeds — RCP same-org overrides | ❌ | **B: Fails — key policy must explicitly name external account.** Root enables delegation same-account only. RCP never grants access. | Q541, Q559 | Cross-account KMS key policy must name external account |
 | 670 | D4 | Cross-account bucket policy grants DeleteObject, session policy=Get+Put only — result? | B: Denied — session policy ceiling applies cross-account | ✅ | Resource-policy bypass of session policy ONLY works same-account. | Q96, Q169, Q613 | Session policy bypass same-account ONLY |
+
+
+### Session 67 — 2026-06-01
+
+**Domains:** D1 Detection + D4/D5 IAM/Data Protection (final leaks drill — C2=Trojan + cross-account KMS key policy)
+**Score:** 6 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 671 | D1 | Two GD findings: Impact DNS then active TCP to C2 IP (not mining) — ThreatPurpose of #2? | C: Trojan | ✅ | Trojan — active TCP to C2 server = Trojan | Q655 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) |
+| 672 | D1 | EC2 resolves pool.hashvault.pro DNS then TCP port 3333 — ThreatPurpose values in order? | B: Impact then CryptoCurrency | ✅ | DNS query = Impact. Active TCP to mining pool = CryptoCurrency. | Q655, Q226 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 673 | D1 | EKS pod resolves C2 beacon domain then TLS TCP to that IP — ThreatPurpose of #2? | C: Trojan | ✅ | C2 beacon = C2 server = Trojan regardless of port/protocol | Q655 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) |
+| 674 | D4/D5 | Key policy grants only Account A root, Account B (same org) calls Decrypt, RCP denies non-org — result? | C: Fails — key policy doesn't name Account B | ✅ | Root enables delegation same-account only. Cross-account needs explicit grant. RCP never grants. | Q541, Q669 | Cross-account KMS key policy must name external account |
+| 675 | D4/D5 | Key policy grants Account B root, SCP ViaService=s3, Lambda reads SSE-KMS cross-account — result? | C: Succeeds — ViaService satisfied by S3 server-side | ✅ | Key policy names B (cross-account satisfied). S3 calls KMS server-side → ViaService satisfied. | Q541, Q488 | Cross-account KMS + ViaService + SCP |
+| 676 | D4/D5 | Key policy grants only Account A root, Account B same org, uploads SSE-KMS — result? | C: Fails — key policy must name Account B | ✅ | Same-org doesn't override KMS key policy requirement. Root = same-account delegation only. | Q541, Q669 | Cross-account KMS key policy must name external account |
+
