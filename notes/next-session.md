@@ -1,38 +1,30 @@
-# Next Session — Final Leaks Drill
+# Next Session — EXAM READY
 
-> Goal: 100% on the two remaining leaks. Then book the exam.
-
----
-
-## Priority 1: GuardDuty finding types (C2 = Trojan, NOT CryptoCurrency)
-
-**The rule:**
-- DNS query to ANY malicious domain → Impact (always)
-- Active TCP to **mining pool** → CryptoCurrency
-- Active TCP to **C2 server** → Trojan
-
-**Leak:** Q655 — said CryptoCurrency for C2 domain TCP connection. Must be Trojan.
-
-**Drill:** 3 questions mixing C2 vs mining pool destinations with novel phrasing.
+> All leaks dominated. 6/6 on final drill (Session 67, 2026-06-01).
 
 ---
 
-## Priority 2: Cross-account KMS key policy must name external account
+## Status: BOOK THE EXAM
 
-**The rule:**
-- Root in key policy enables IAM delegation **same-account only**
-- Cross-account KMS: key policy MUST explicitly grant Account B's root or role
-- RCP never grants access — it only restricts. Same-org doesn't change this.
+### Final Stats (673 questions, 67 sessions)
+- Overall: 79% correct
+- D1 Detection: 71% (weakest but stabilized — last 3 sessions 100%)
+- D2 Incident Response: 86%
+- D3 Infrastructure Security: 82%
+- D4 Identity & Access Management: 84%
+- D5 Data Protection: 80%
+- D6 Governance: 79%
 
-**Leak:** Q669 — said "RCP same-org overrides" key policy requirement. Wrong.
+### Dominated Patterns (confirmed 100% in final sessions)
+- ✅ C2 = Trojan, mining pool = CryptoCurrency, DNS query = Impact
+- ✅ Cross-account KMS key policy must name external account
+- ✅ Session policy + server-side KMS (5-layer evaluation)
+- ✅ Detect vs prevent (GuardDuty vs EventBridge vs RCP)
+- ✅ RAM for sharing vs FM for enforcing
+- ✅ GuardDuty ≠ failed attempts
+- ✅ Default encryption vs bucket policy Deny
 
-**Drill:** 3 questions on cross-account KMS key policy requirement with novel scenarios.
-
----
-
-## Format
-
-- 6 questions total
-- Killer difficulty
-- Pass criteria: 6/6 = dominated. Book the exam.
-- If <6/6: drill 3 more on the leaked pattern.
+### Pre-Exam Day
+1. Re-read `cheat-sheet.md` morning of exam
+2. Focus on D1 Detection decision tree (GuardDuty vs EventBridge vs Access Analyzer)
+3. Remember: "zero code/infra" = GuardDuty, "specific API call fast" = EventBridge
