@@ -1,51 +1,38 @@
-# Next Session — Domination Drill
+# Next Session — Final Leaks Drill
 
-> Goal: 90%+ on every domain. Zero hesitation.
-
----
-
-## Priority 1: D1 Detection (current ~82%, target 90%)
-
-**Specific leaks:**
-- "Detect anomalous data access / least overhead" → **GuardDuty S3 Protection** (NOT CloudTrail, NOT EventBridge)
-- "Detect C2 with zero code / zero infra" → **GuardDuty** (NOT Network Firewall, NOT DNS Firewall)
-- "Detect specific API call fast" → **EventBridge** (NOT GuardDuty, NOT Config)
-
-**Drill:** 10 questions, cold, 90 seconds each. Mix all three patterns with novel phrasing.
+> Goal: 100% on the two remaining leaks. Then book the exam.
 
 ---
 
-## Priority 2: D5 Data Protection (current ~88%, target 90%)
+## Priority 1: GuardDuty finding types (C2 = Trojan, NOT CryptoCurrency)
 
-**Specific leak:**
-- SCP/bucket policy Deny evaluates request headers BEFORE default encryption applies
-- No header sent + Deny checks for header → rejected (default encryption never fires)
+**The rule:**
+- DNS query to ANY malicious domain → Impact (always)
+- Active TCP to **mining pool** → CryptoCurrency
+- Active TCP to **C2 server** → Trojan
 
-**Drill:** 3 questions on evaluation order (SCP Deny + default encryption timing).
+**Leak:** Q655 — said CryptoCurrency for C2 domain TCP connection. Must be Trojan.
+
+**Drill:** 3 questions mixing C2 vs mining pool destinations with novel phrasing.
 
 ---
 
-## Priority 3: D6 Governance (current ~85%, target 90%)
+## Priority 2: Cross-account KMS key policy must name external account
 
-**Specific leak:**
-- RAM shares vs FM enforces — under novel phrasing / time pressure
-- Verb signals: "share/visible/accessible" = RAM. "enforce/associate/re-apply" = FM.
+**The rule:**
+- Root in key policy enables IAM delegation **same-account only**
+- Cross-account KMS: key policy MUST explicitly grant Account B's root or role
+- RCP never grants access — it only restricts. Same-org doesn't change this.
 
-**Drill:** 5 questions mixing RAM/FM with novel wording (not the same scenarios seen before).
+**Leak:** Q669 — said "RCP same-org overrides" key policy requirement. Wrong.
+
+**Drill:** 3 questions on cross-account KMS key policy requirement with novel scenarios.
 
 ---
 
 ## Format
 
-- All killer difficulty
-- Zero warm-up (cold start)
-- Timed: 90 seconds per question
-- Total: ~18 questions
-- Pass criteria: 17/18 (94%+) = dominated
-
----
-
-## After passing this drill
-
-If 17/18+: You dominate all 6 domains. Book the exam.
-If <17/18: Identify which pattern leaked, drill 5 more on that pattern only.
+- 6 questions total
+- Killer difficulty
+- Pass criteria: 6/6 = dominated. Book the exam.
+- If <6/6: drill 3 more on the leaked pattern.
