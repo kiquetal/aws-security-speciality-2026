@@ -205,6 +205,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 63 | 2026-05-30 | Q611–Q620 | 10 | 0 | 0 | Cross-domain killer (session policy + server-side KMS + cross-account + RCP + ViaService) | [Jump](#session-63--2026-05-30) |
 | 64 | 2026-05-30 | Q621–Q630 | 9 | 0 | 1 | Cross-domain (AWS-style wording traps — all domains, novel phrasing) | [Jump](#session-64--2026-05-30) |
 | 65 | 2026-05-31 | Q631–Q648 | 15 | 0 | 3 | Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance) | [Jump](#session-65--2026-05-31) |
+| 66 | 2026-06-01 | Q649–Q670 | 11 | 1 | 2 | Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance + D4 IAM) | [Jump](#session-66--2026-06-01) |
 
 ---
 
@@ -1518,3 +1519,29 @@ After adding a session:
 | 647 | D6 | DNS FW rule groups visible to 300 members, NO auto-association needed — service? | B: RAM | ✅ | "Visible/accessible" without enforcement = RAM only. | Q441, Q562 | RAM for sharing vs FM for enforcing |
 | 648 | D6 | Match verbs: visible=?, associate=?, re-create=?, deploy IAM role=? | A: RAM, FM, FM, StackSets | ✅ | "Visible" = RAM. "Associate/re-create" = FM. "Deploy custom resource" = StackSets. | — | RAM vs FM vs StackSets verb signals |
 
+
+
+### Session 66 — 2026-06-01
+
+**Domains:** Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance + D4 IAM)
+**Score:** 11 ✅ · 1 ⚠️ · 2 ❌ (79% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 649 | D1 | S3 download volumes inconsistent with baselines, zero Lambda/filters/infra — service? | (not answered) | — | C: GuardDuty S3 Protection | Q568, Q581 | Detect vs prevent (GuardDuty vs policy) |
+| 650 | D1 | Detect iam:DeleteRolePolicy within 60s, org trail exists — approach? | (not answered) | — | C: EventBridge rule in management account | Q474, Q570 | EventBridge for API call detection |
+| 651 | D1 | EC2 communicating with threat intel IPs, finding generated, zero code/infra — service? | (not answered) | — | C: GuardDuty | Q571, Q584 | Detect C2 = GuardDuty (zero code) |
+| 655 | D1 | Lambda resolves C2 domain via DNS then establishes TCP — how many findings + ThreatPurpose? | C: Impact then CryptoCurrency | ❌ | **B: Two findings — Impact (DNS) then Trojan (TCP to C2).** CryptoCurrency only for mining pools. C2 = Trojan. | Q226, Q489 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) |
+| 659 | D5 | SCP Deny PutObject if KMS key header ≠ specific key, upload without header, default encryption set — result? | B: Denied — SCP evaluates before default encryption | ✅ | SCP evaluates request headers BEFORE default encryption applies. | Q426, Q626 | Default encryption vs bucket policy Deny |
+| 661 | D5 | Bucket policy Deny if encryption header ≠ aws:kms, upload without header, default encryption SSE-KMS — result? | B: Denied — bucket policy evaluates before default encryption | ✅ | Same rule as SCP — policy evaluates request as-received. | Q426, Q626, Q643 | Default encryption vs bucket policy Deny |
+| 663 | D6 | DNS FW rule group in security account, enforce on all VPCs, re-associate if removed — need RAM first? | B: Yes — RAM shares, FM enforces | ✅ | RAM shares rule group cross-account, then FM enforces association. | Q441, Q562 | RAM for sharing + FM for enforcing |
+| 652 | D1 | Bucket policy grants external account, no access yet, GD + AA enabled — which fire? | B+C: AA + Security Hub | ⚠️ | **B only: Access Analyzer (static policy analysis).** Security Hub S3 controls check public access, not specific cross-account grants. GD needs actual access. | Q518, Q573 | Access Analyzer + GuardDuty both fire |
+| 653 | D1 | RCP blocks external, 500 denied GetObjects, GD enabled — finding? | B: No — GD only fires on successful anomalous access | ✅ | GuardDuty doesn't fire on blocked attempts. | Q534, Q594 | GuardDuty ≠ failed attempts |
+| 662 | D6 | NF policies in central account, 300 members, auto-recreate if deleted — which TWO? | A+B: RAM + Firewall Manager | ✅ | RAM shares, FM enforces + auto-remediates. | Q441, Q562 | RAM for sharing + FM for enforcing |
+| 665 | D6 | Deploy Detective across 150 accounts, auto for new — StackSets? | B: Detective has native delegated admin with auto-enable | ✅ | Native org support = use native, not StackSets. | Q483, Q492 | Native org-wide deployment |
+| 666 | D6 | Match verbs: accessible=?, attached/re-attached=?, deployed=?, self-service=? | A: RAM, FM, StackSets, Service Catalog | ✅ | Correct verb-to-service mapping. | — | RAM vs FM vs StackSets vs Service Catalog |
+| 664 | D6 | FM deploys WAF, developer disassociates Web ACL — what happens? | B: FM re-associates automatically | ✅ | FM auto-remediates. | Q284, Q435 | Firewall Manager auto-remediation |
+| 667 | D1 | EC2 resolves pool.minexmr.com (DNS), then TCP mining traffic — ThreatPurpose values? | C: Impact then CryptoCurrency | ✅ | Mining pool DNS = Impact. Active mining traffic = CryptoCurrency. | Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 668 | D4/D5 | 5-layer cross-account SSE-KMS: key policy grants B root + SCP ViaService + RCP same-org + session=GetObject — result? | C: Succeeds — all gates pass | ✅ | Server-side KMS, ViaService satisfied, session doesn't gate, RCP same-org passes. | Q591, Q531 | Full 5-layer cross-account evaluation |
+| 669 | D4/D5 | Same as Q668 but key policy grants only Account A root (not B) — result? | C: Succeeds — RCP same-org overrides | ❌ | **B: Fails — key policy must explicitly name external account.** Root enables delegation same-account only. RCP never grants access. | Q541, Q559 | Cross-account KMS key policy must name external account |
+| 670 | D4 | Cross-account bucket policy grants DeleteObject, session policy=Get+Put only — result? | B: Denied — session policy ceiling applies cross-account | ✅ | Resource-policy bypass of session policy ONLY works same-account. | Q96, Q169, Q613 | Session policy bypass same-account ONLY |
