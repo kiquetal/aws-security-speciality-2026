@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 683 |
-| **✅ Correct** | 536 (78%) |
-| **⚠️ Partial** | 24 (4%) |
-| **❌ Wrong** | 120 (18%) |
-| **Sessions** | 68 |
-| **Re-tests Passed** | 304 of 368 |
+| **Total Questions** | 693 |
+| **✅ Correct** | 543 (78%) |
+| **⚠️ Partial** | 24 (3%) |
+| **❌ Wrong** | 123 (18%) |
+| **Sessions** | 69 |
+| **Re-tests Passed** | 310 of 376 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 123 | 6 | 43 | 172 | 72% | 🟡 |
-| D2: Incident Response | 13 | 1 | 1 | 15 | 87% | 🟢 |
-| D3: Infrastructure Security | 63 | 4 | 10 | 77 | 82% | 🟢 |
-| D4: Identity & Access Management | 161 | 8 | 25 | 194 | 83% | 🟢 |
-| D5: Data Protection | 77 | 3 | 17 | 97 | 79% | 🟡 |
-| D6: Governance | 99 | 2 | 24 | 125 | 79% | 🟡 |
+| D1: Detection | 124 | 6 | 44 | 174 | 71% | 🟡 |
+| D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
+| D3: Infrastructure Security | 63 | 4 | 11 | 78 | 81% | 🟢 |
+| D4: Identity & Access Management | 162 | 8 | 26 | 196 | 83% | 🟢 |
+| D5: Data Protection | 79 | 3 | 17 | 99 | 80% | 🟡 |
+| D6: Governance | 101 | 2 | 24 | 127 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -33,21 +33,21 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
 | 🔴 1 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153, Q156, Q158, Q546, Q568, Q581 | D1, D5 | 8 |
-| 🔴 2 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
-| 🔴 3 | EventBridge for API call detection | Q474, Q549, Q570, Q574 | D1 | 4 |
+| 🔴 2 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1 | 5 |
+| 🔴 3 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
 | 🔴 4 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
 | 🔴 5 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
-| 🔴 6 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
-| 🔴 7 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
-| 🔴 8 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
-| 🔴 9 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
-| 🔴 10 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 11 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 12 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
-| 🔴 13 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 14 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 15 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
-| 🔴 16 | KMS key policy root = delegation, not grant | Q264, Q503 | D5 | 2 |
+| 🔴 6 | KMS key policy root = delegation, not grant | Q264, Q503, Q687 | D4, D5 | 3 |
+| 🔴 7 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
+| 🔴 8 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
+| 🔴 9 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
+| 🔴 10 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
+| 🔴 11 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 12 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 13 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 14 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 15 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 16 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
 | 🔴 17 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
 | 🔴 18 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
 | 🔴 19 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
@@ -136,6 +136,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 102 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) | Q655 | D1 | 1 |
 | 🟡 103 | RCP scope (your resources only, not outbound) | Q683 | D4 | 1 |
 | 🟡 104 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D5 | 1 |
+| 🟡 105 | DGA = allow-list DNS Firewall | Q690 | D3 | 1 |
 
 ---
 
@@ -211,6 +212,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 66 | 2026-06-01 | Q649–Q670 | 11 | 1 | 2 | Cross-domain domination drill (D1 Detection + D5 Data Protection + D6 Governance + D4 IAM) | [Jump](#session-66--2026-06-01) |
 | 67 | 2026-06-01 | Q671–Q676 | 6 | 0 | 0 | D1 Detection + D4/D5 IAM/Data Protection (final leaks drill — C2=Trojan + cross-account KMS key policy) | [Jump](#session-67--2026-06-01) |
 | 68 | 2026-06-02 | Q677–Q686 | 7 | 0 | 3 | Cross-domain final validation killer set (all domains, maximum difficulty) | [Jump](#session-68--2026-06-02) |
+| 69 | 2026-06-02 | Q687–Q696 | 7 | 0 | 3 | Cross-domain killer exam simulation (all domains, maximum difficulty + novel patterns) | [Jump](#session-69--2026-06-02) |
 
 ---
 
@@ -1585,3 +1587,22 @@ After adding a session:
 | 684 | D2/D1/D4 | InstanceCredentialExfiltration.OutsideAWS, stop attacker + keep instance + fresh creds — single action? | B: Inline Deny TokenIssueTime | ✅ | Inline Deny with TokenIssueTime < now. IMDS refreshes new creds after timestamp. | Q536, Q598 | Credential exfiltration response |
 | 685 | D5/D3 | Lambda private subnet: Secrets Manager + S3 SSE-KMS + direct kms:Decrypt + DynamoDB — minimum endpoints? | A: 3 | ❌ | **B: 4 — Interface (SM) + Gateway (S3) + Interface (KMS for direct call) + Gateway (DynamoDB).** S3 SSE-KMS = server-side (no KMS endpoint). Direct kms:Decrypt = needs KMS endpoint. DynamoDB fetch = needs DDB endpoint. | Q378, Q522 | VPC endpoints (direct KMS + DynamoDB) |
 | 686 | D4/D5/D6 | Key policy grants only Account A root, Account B (same org) reads SSE-KMS, RCP denies non-org s3:* — result? | B: Fails — key policy must name Account B | ✅ | Key policy must explicitly name external account. Root = same-account delegation only. Same-org doesn't override. RCP never grants. | Q541, Q669 | Cross-account KMS key policy must name external account |
+
+
+### Session 69 — 2026-06-02
+
+**Domains:** Cross-domain killer exam simulation (all domains, maximum difficulty + novel patterns)
+**Score:** 7 ✅ · 0 ⚠️ · 3 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 687 | D4/D5 | Key policy grants root only, Lambda has s3:GetObject but no kms:Decrypt — reads SSE-KMS object? | C: Fails — root doesn't grant | ❌ | **D: Fails for TWO reasons — root = delegation not grant AND Lambda needs explicit kms:Decrypt.** Both B and C are correct. | Q264, Q503 | KMS key policy root = delegation, not grant |
+| 688 | D1/D6 | Prevent StopLogging + detect PutBucketPolicy within 2 min + auto-revert — which THREE services? | B: SCP + GuardDuty + Step Functions | ❌ | **A: SCP + EventBridge + Lambda.** GuardDuty detects behavior, not API calls. EventBridge for specific API detection. Lambda for simple revert. | Q474, Q549 | EventBridge for API call detection |
+| 689 | D4/D5/D6 | RCP same-org + SCP ViaService + cross-account SSE-KMS read — result? | B: Succeeds — ViaService satisfied | ✅ | S3 calls KMS server-side → ViaService satisfied. RCP same-org passes. All gates clear. | Q591, Q531 | Full 5-layer cross-account evaluation |
+| 690 | D3/D1 | Trojan:EC2/DGADomainRequest — DGA domains, all via DNS, block VPC-wide? | A: Network Firewall DROP | ❌ | **D: DNS Firewall allow-list (block all except known-good).** DGA = unpredictable domains, can't enumerate. Allow-list approach. DNS layer since no hardcoded IPs. | — | DGA = allow-list DNS Firewall |
+| 691 | D5/D4 | Bucket policy Deny unless KMS key header matches, developer uploads WITH correct header — result? | B: Succeeds — header matches, Deny doesn't fire | ✅ | Header present and matches → StringNotEquals FALSE → Deny doesn't fire. | Q426, Q626 | Default encryption vs bucket policy Deny |
+| 692 | D6 | Custom SCP added outside Control Tower, drift detected — what happens? | B: Alert but no auto-fix | ✅ | Control Tower detects drift but does NOT auto-revert. Manual resolution required. | — | Control Tower drift |
+| 693 | D2/D4/D1 | InstanceCredentialExfiltration.InsideAWS — attacker on different EC2 same account, contain without breaking legitimate instance? | A: Deny-all SG on compromised instance | ✅ | InsideAWS = TokenIssueTime would block both. Isolate compromised instance with deny-all SG instead. | Q536 | InsideAWS credential exfiltration containment |
+| 694 | D5/D3/D4 | Lambda private subnet: Secrets Manager + SQS + S3 SSE-KMS + SNS — minimum endpoints? | B: 4 | ✅ | Interface (SM) + Interface (SQS) + Gateway (S3, KMS server-side) + Interface (SNS) = 4. | Q685 | VPC endpoints counting |
+| 695 | D1/D4/D5 | RCP deployed, external reads blocked, AA + GD enabled — which TWO true after RCP? | A+D: AA still flags + GD doesn't fire on blocked | ✅ | AA = static policy analysis (policy unchanged). GD = no successful access = no finding. | Q534, Q518 | AA static + GD ≠ failed attempts |
+| 696 | D6/D3/D4 | Baseline SG all EC2 + DNS FW on all VPCs + auto-remediate removal — which THREE? | A+B+D: FM SG common + RAM + FM DNS FW | ✅ | FM SG common creates SG. RAM shares DNS FW rules. FM DNS FW enforces association. All auto-remediate. | Q454, Q441 | FM SG common + RAM + FM DNS FW |
