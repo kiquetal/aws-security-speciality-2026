@@ -14,6 +14,7 @@
 
 ### Data Perimeter
 - 🧠 **RCP blocks outsiders IN. SCP blocks insiders OUT.** Full data perimeter = both together. Bucket policy per-bucket doesn't scale org-wide.
+- 🧠 **RCP protects YOUR resources only (inbound). Outbound to external resources = SCP's job.** If your SLR replicates to a partner's bucket, RCP doesn't apply — the partner's bucket isn't your resource.
 
 ### Cross-Account
 - RAM opens, RCP closes. RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.
@@ -107,6 +108,7 @@
 
 ### Network
 - Gateway endpoint (S3, DynamoDB) = free, route table entry. Interface endpoint = ENI + PrivateLink, costs money, needs SG.
+- 🧠 **S3 SSE-KMS = server-side (no KMS endpoint needed). Direct kms:Decrypt/GenerateDataKey in YOUR code = needs KMS Interface endpoint.** Count DynamoDB separately (Gateway endpoint).
 - Endpoint policy + bucket policy BOTH evaluated. Endpoint policy doesn't replace resource policies.
 - NACLs are stateless — need explicit inbound rule for ephemeral ports (1024–65535) on return traffic. SGs are stateful — handle it automatically.
 - Verified Access = zero-trust access to internal apps without VPN. Evaluates identity + device posture.

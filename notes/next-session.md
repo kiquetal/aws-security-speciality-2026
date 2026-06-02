@@ -1,30 +1,30 @@
-# Next Session — EXAM READY
+# Next Session — FINAL RE-TEST
 
-> All leaks dominated. 6/6 on final drill (Session 67, 2026-06-01).
+> Session 68: 7/10 (70%). Three errors need re-test.
 
 ---
 
-## Status: BOOK THE EXAM
+## Re-Test Targets (3 questions)
 
-### Final Stats (673 questions, 67 sessions)
-- Overall: 79% correct
-- D1 Detection: 71% (weakest but stabilized — last 3 sessions 100%)
-- D2 Incident Response: 86%
-- D3 Infrastructure Security: 82%
-- D4 Identity & Access Management: 84%
-- D5 Data Protection: 80%
-- D6 Governance: 79%
+### 1. Session policy + server-side KMS (Q679)
+- Pattern: Session policy gates caller's DIRECT calls only. S3's internal KMS call is server-side — not gated.
+- Trap: "session policy doesn't include kms:Decrypt" sounds right but misses the server-side distinction.
+- Count: 3rd miss on this pattern (Q591, Q679)
 
-### Dominated Patterns (confirmed 100% in final sessions)
-- ✅ C2 = Trojan, mining pool = CryptoCurrency, DNS query = Impact
-- ✅ Cross-account KMS key policy must name external account
-- ✅ Session policy + server-side KMS (5-layer evaluation)
-- ✅ Detect vs prevent (GuardDuty vs EventBridge vs RCP)
-- ✅ RAM for sharing vs FM for enforcing
-- ✅ GuardDuty ≠ failed attempts
-- ✅ Default encryption vs bucket policy Deny
+### 2. RCP scope — your resources only, not outbound (Q683)
+- Pattern: RCP protects YOUR resources (inbound). Outbound to external resources = SCP's job.
+- Trap: SLR exemption is TRUE but irrelevant when target resource isn't yours.
+- Count: New concept — first encounter.
 
-### Pre-Exam Day
-1. Re-read `cheat-sheet.md` morning of exam
-2. Focus on D1 Detection decision tree (GuardDuty vs EventBridge vs Access Analyzer)
-3. Remember: "zero code/infra" = GuardDuty, "specific API call fast" = EventBridge
+### 3. VPC endpoints — direct KMS + DynamoDB (Q685)
+- Pattern: S3 SSE-KMS = server-side (no KMS endpoint). Direct kms:Decrypt in code = needs KMS endpoint. DynamoDB = separate Gateway endpoint.
+- Trap: Easy to miss DynamoDB as a separate endpoint requirement.
+- Count: First miss with all 4 together.
+
+---
+
+## Status: RE-TEST THEN BOOK EXAM
+
+### Post-Re-Test
+If 3/3 pass → exam ready. Book it.
+If any miss → one more targeted drill on that specific pattern.
