@@ -8,21 +8,21 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 698 |
-| **✅ Correct** | 547 (78%) |
+| **Total Questions** | 703 |
+| **✅ Correct** | 551 (78%) |
 | **⚠️ Partial** | 24 (3%) |
-| **❌ Wrong** | 124 (18%) |
-| **Sessions** | 70 |
-| **Re-tests Passed** | 314 of 381 |
+| **❌ Wrong** | 125 (18%) |
+| **Sessions** | 71 |
+| **Re-tests Passed** | 318 of 386 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 125 | 6 | 44 | 175 | 71% | 🟡 |
+| D1: Detection | 125 | 6 | 45 | 176 | 71% | 🟡 |
 | D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
 | D3: Infrastructure Security | 63 | 4 | 11 | 78 | 81% | 🟢 |
-| D4: Identity & Access Management | 164 | 8 | 27 | 199 | 82% | 🟢 |
+| D4: Identity & Access Management | 168 | 8 | 27 | 203 | 83% | 🟢 |
 | D5: Data Protection | 80 | 3 | 17 | 100 | 80% | 🟢 |
 | D6: Governance | 101 | 2 | 24 | 127 | 80% | 🟡 |
 
@@ -137,6 +137,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 103 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) | Q655 | D1 | 1 |
 | 🟡 104 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D5 | 1 |
 | 🟡 105 | DGA = allow-list DNS Firewall | Q690 | D3 | 1 |
+| 🟡 106 | Access Analyzer static + GuardDuty ≠ failed attempts | Q706 | D1 | 1 |
 
 ---
 
@@ -214,6 +215,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 68 | 2026-06-02 | Q677–Q686 | 7 | 0 | 3 | Cross-domain final validation killer set (all domains, maximum difficulty) | [Jump](#session-68--2026-06-02) |
 | 69 | 2026-06-02 | Q687–Q696 | 7 | 0 | 3 | Cross-domain killer exam simulation (all domains, maximum difficulty + novel patterns) | [Jump](#session-69--2026-06-02) |
 | 70 | 2026-06-05 | Q697–Q701 | 4 | 0 | 1 | Cross-domain (pre-Dojo killer drill — session policy + RCP scope + VPC endpoints + ViaService) | [Jump](#session-70--2026-06-05) |
+| 71 | 2026-06-05 | Q702–Q706 | 4 | 0 | 1 | Cross-domain (pre-Dojo RCP scope drill + AA vs GD static/dynamic) | [Jump](#session-71--2026-06-05) |
 
 ---
 
@@ -1621,3 +1623,17 @@ After adding a session:
 | 699 | D5/D3 | Lambda private subnet: Secrets Manager + S3 SSE-KMS + direct kms:GenerateDataKey + DynamoDB — minimum endpoints? | B: 4 | ✅ | Interface (SM) + Gateway (S3) + Interface (KMS for direct call) + Gateway (DynamoDB) = 4. | Q685 | VPC endpoints (direct KMS + DynamoDB) |
 | 700 | D4/D5/D6 | SCP ViaService + session policy=GetObject only + key policy grants B root + RCP same-org — cross-account SSE-KMS read? | C: Succeeds — ViaService satisfied, session doesn't gate server-side KMS | ✅ | All gates pass: ViaService satisfied (server-side), session doesn't gate, key policy enables delegation, RCP same-org passes. | Q591, Q679 | Full 5-layer cross-account evaluation |
 | 701 | D1/D6 | Detect iam:DeleteRolePolicy 60s + detect anomalous S3 downloads + prevent StopLogging — which THREE? | B: EventBridge + GuardDuty S3 Protection + SCP | ✅ | EventBridge for fast API detection. GuardDuty S3 Protection for behavioral anomalies. SCP for prevention. | Q688, Q681 | EventBridge + GuardDuty S3 + SCP |
+
+
+### Session 71 — 2026-06-05
+
+**Domains:** Cross-domain (pre-Dojo RCP scope drill + AA vs GD static/dynamic)
+**Score:** 4 ✅ · 0 ⚠️ · 1 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 702 | D4/D6 | RCP denies non-org s3:*, SLR replicates to EXTERNAL partner bucket, replication failing — cause? | C: RCP doesn't apply — partner's bucket is not your resource | ✅ | RCP protects YOUR resources only. Partner's bucket isn't yours. Access Denied from something else (partner bucket policy, destination permissions). | Q683, Q698 | RCP scope (your resources only, not outbound) |
+| 703 | D4/D6 | RCP denies non-org s3:*, Lambda writes to own bucket + partner bucket — which succeed? (TWO) | A+C | ✅ | A: Own bucket succeeds (PrincipalOrgID matches). C: Partner bucket succeeds (RCP doesn't apply to external resources). | Q683, Q698 | RCP scope (your resources only, not outbound) |
+| 704 | D4/D6 | Data perimeter: block external reads IN + block insider writes OUT — which TWO? | A: RCP + SCP with ResourceAccount | ✅ | RCP blocks outsiders IN. SCP blocks insiders OUT. Full data perimeter = both. | Q398, Q622 | Data perimeter (RCP blocks IN, SCP blocks OUT) |
+| 705 | D4/D5 | RCP denies non-org kms:Decrypt, Account B (same org) calls Decrypt on Account A key — result? | C: Allowed — PrincipalOrgID matches | ✅ | Same-org caller → condition FALSE → Deny doesn't fire. | Q427, Q521 | RCP same-org evaluation |
+| 706 | D1/D4 | RCP blocks external + AA + GD enabled + 100 denied GetObjects by attacker — which TWO true? | A+C (contradictory) | ❌ | **B+C: Access Analyzer flags policy (static) + GuardDuty doesn't fire (no successful access).** AA is static policy analysis — doesn't know about RCP runtime enforcement. | Q518, Q534, Q594 | Access Analyzer static + GuardDuty ≠ failed attempts |
