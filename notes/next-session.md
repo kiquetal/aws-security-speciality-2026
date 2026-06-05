@@ -1,30 +1,28 @@
-# Next Session — FINAL RE-TEST
+# Next Session — DOJO EXAM
 
-> Session 68: 7/10 (70%). Three errors need re-test.
+> Session 70: 4/5 (80%). One remaining leak.
 
 ---
 
-## Re-Test Targets (3 questions)
+## Remaining Leak (1 pattern)
 
-### 1. Session policy + server-side KMS (Q679)
-- Pattern: Session policy gates caller's DIRECT calls only. S3's internal KMS call is server-side — not gated.
-- Trap: "session policy doesn't include kms:Decrypt" sounds right but misses the server-side distinction.
-- Count: 3rd miss on this pattern (Q591, Q679)
-
-### 2. RCP scope — your resources only, not outbound (Q683)
+### 1. RCP scope — your resources only, not outbound (Q683, Q698)
 - Pattern: RCP protects YOUR resources (inbound). Outbound to external resources = SCP's job.
 - Trap: SLR exemption is TRUE but irrelevant when target resource isn't yours.
-- Count: New concept — first encounter.
-
-### 3. VPC endpoints — direct KMS + DynamoDB (Q685)
-- Pattern: S3 SSE-KMS = server-side (no KMS endpoint). Direct kms:Decrypt in code = needs KMS endpoint. DynamoDB = separate Gateway endpoint.
-- Trap: Easy to miss DynamoDB as a separate endpoint requirement.
-- Count: First miss with all 4 together.
+- Count: 2nd miss on this pattern.
+- Rule: "RCP = shield on YOUR castle walls. Doesn't follow soldiers to other castles."
 
 ---
 
-## Status: RE-TEST THEN BOOK EXAM
+## Status: DOJO EXAM THEN BOOK
 
-### Post-Re-Test
-If 3/3 pass → exam ready. Book it.
-If any miss → one more targeted drill on that specific pattern.
+### Passed patterns (locked in):
+- Session policy + server-side KMS (Q697, Q700) ✅
+- VPC endpoints direct KMS + DynamoDB (Q699) ✅
+- EventBridge + GuardDuty S3 + SCP mapping (Q701) ✅
+- Full 5-layer cross-account evaluation (Q700) ✅
+
+### Next action:
+1. Take Dojo practice exam (timed, 65 questions)
+2. Bring back wrong answers for targeted drill
+3. If Dojo score >= 75% → book exam
