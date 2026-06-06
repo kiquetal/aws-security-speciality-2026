@@ -173,6 +173,7 @@
 - "Fast API call investigation" → CloudTrail Lake. "Normalize all logs into one schema" → Security Lake. "Query app/VPC logs" → CloudWatch Logs Insights.
 - 🧠 **Three "lakes": CloudTrail Lake (API calls, SQL, managed store) vs Security Lake (all logs, OCSF, your S3) vs CloudWatch Logs Insights (app logs, custom syntax, CloudWatch store). No "CloudWatch Lake" exists.**
 - 🧠 **CloudWatch Logs Insights = open-ended queries on data already in CW. Detective = investigate from a specific finding/entity.** "Top talkers" = Insights. "What else did this IP do?" = Detective.
+- 🧠 **`/var/log/awslogs.log` = runtime errors (logs stopped flowing). `/var/log/awslogs-agent-setup.log` = installation errors only.** "Was working, now stopped" = check runtime log.
 
 ---
 
