@@ -52,6 +52,19 @@
 4. Re-take Dojo → target 75%+
 5. If >= 75% → book exam
 
+## Question Style Guide (MATCH DOJO DIFFICULTY)
+
+Use `notes/dojo-exam-review.md` as the reference for question style:
+- Scenarios are 2-4 sentences with real-world context (hospital, bank, startup)
+- Options include plausible AWS services that SOUND correct but are wrong
+- Distractors use real AWS features applied to the WRONG use case
+- Multi-select questions (Select TWO/THREE) are common
+- Questions test WHICH service, not HOW to configure it
+- Troubleshooting questions give symptoms and ask for root cause
+- Wording traps: "MOST secure", "LEAST cost", "MOST suitable"
+- Do NOT make questions harder than Dojo — match the level exactly
+- Reference the full Dojo dump for phrasing patterns and distractor style
+
 ---
 
 ## Locked Patterns (do NOT re-test)
