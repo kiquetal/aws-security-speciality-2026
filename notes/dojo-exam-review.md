@@ -369,7 +369,7 @@
 | 57 | CW metric filter for SG changes | Missed metric value | AuthorizeSecurityGroupIngress filter + metric value = 1 |
 | 61 | NACL ephemeral ports | Picked SG ephemeral | NACL outbound rule for ports 1024-65535 |
 | 63 | CW Logs agent log file | Picked setup log | /var/log/awslogs.log (runtime) not setup.log |
-| 65 | S3 + SSE-KMS | Picked SSE-S3 or Glacier | S3 + SSE-KMS (envelope encryption + audit trail + rotation) |
+| 65 | S3 + SSE-KMS | Picked Glacier Deep Archive (weekly access disqualifies it) | S3 Standard + SSE-KMS (envelope encryption + audit trail + rotation) |
 
 ### Key Gaps Identified:
 
