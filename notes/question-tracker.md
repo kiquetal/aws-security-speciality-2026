@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 709 |
-| **✅ Correct** | 553 (78%) |
-| **⚠️ Partial** | 25 (4%) |
-| **❌ Wrong** | 128 (18%) |
-| **Sessions** | 72 |
+| **Total Questions** | 719 |
+| **✅ Correct** | 562 (78%) |
+| **⚠️ Partial** | 25 (3%) |
+| **❌ Wrong** | 129 (18%) |
+| **Sessions** | 73 |
 | **Re-tests Passed** | 318 of 386 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 126 | 6 | 47 | 179 | 70% | 🟡 |
+| D1: Detection | 129 | 6 | 47 | 182 | 71% | 🟡 |
 | D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
-| D3: Infrastructure Security | 63 | 5 | 11 | 79 | 80% | 🟡 |
-| D4: Identity & Access Management | 168 | 8 | 28 | 204 | 82% | 🟢 |
-| D5: Data Protection | 81 | 3 | 17 | 101 | 80% | 🟢 |
+| D3: Infrastructure Security | 65 | 5 | 12 | 82 | 79% | 🟡 |
+| D4: Identity & Access Management | 170 | 8 | 28 | 206 | 83% | 🟢 |
+| D5: Data Protection | 83 | 3 | 17 | 103 | 81% | 🟢 |
 | D6: Governance | 101 | 2 | 24 | 127 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -142,6 +142,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 108 | Directory Service + trust direction (Dojo Q5) | Q709 | D4 | 1 |
 | 🟡 109 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
 | 🟡 110 | GuardDuty Trusted IP list (Dojo Q22) | Q711 | D1 | 1 |
+| 🟡 111 | VPN types (Dojo Q56) | Q719 | D3 | 1 |
 
 ---
 
@@ -221,6 +222,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 70 | 2026-06-05 | Q697–Q701 | 4 | 0 | 1 | Cross-domain (pre-Dojo killer drill — session policy + RCP scope + VPC endpoints + ViaService) | [Jump](#session-70--2026-06-05) |
 | 71 | 2026-06-05 | Q702–Q706 | 4 | 0 | 1 | Cross-domain (pre-Dojo RCP scope drill + AA vs GD static/dynamic) | [Jump](#session-71--2026-06-05) |
 | 72 | 2026-06-09 | Q707–Q712 | 2 | 1 | 3 | Cross-domain (Dojo Test 1 gap drill — operational troubleshooting, Directory Service, GuardDuty, CloudTrail, S3 encryption) | [Jump](#session-72--2026-06-09) |
+| 73 | 2026-06-09 | Q713–Q722 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #2 — CloudTrail, IoT, ENI, SQS, VPN, GuardDuty, IAM, S3 encryption) | [Jump](#session-73--2026-06-09) |
 
 ---
 
@@ -1657,3 +1659,21 @@ After adding a session:
 | 710 | D1 | EventBridge rule on ConsoleLogin never fires, events visible in console — cause? | A: us-east-1 for global events | ❌ | B: Management events set to Write-only. ConsoleLogin = Read event. EventBridge only fires on configured trail events. | — | CloudTrail management events Read/Write (Dojo Q16) |
 | 711 | D1 | Suppress GD findings from pen-test EC2 (private IPs only) — approach? | A: Add private IPs to Trusted IP list | ❌ | B: Attach EIPs + add to Trusted IP list. Trusted IP list = PUBLIC IPs only. | — | GuardDuty Trusted IP list (Dojo Q22) |
 | 712 | D5 | Company generates own keys, keys must NEVER be in AWS — which S3 encryption? | D: Client-side encryption with client master key | ✅ | Client-side = keys never leave your environment. SSE-C = key touches AWS briefly. | — | S3 encryption matrix (Dojo Q17) |
+
+### Session 73 — 2026-06-09
+
+**Domains:** Cross-domain (Dojo Test 1 gap drill #2 — CloudTrail, IoT, ENI, SQS, VPN, GuardDuty, IAM, S3 encryption)
+**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 713 | D1 | CloudTrail log file integrity validation — what does it do? | B: SHA-256 digest (detect tampering) | ✅ | Integrity = detect tampering. Encryption = prevent reading. Different controls. | — | CloudTrail log integrity (Dojo Q9) |
+| 714 | D3 | IoT Core client ID injection — prevent unauthorized topic access? | C: Bind iot:Connect to ThingName | ✅ | ThingName = server-registered (trusted). ClientId = client-supplied (untrusted). | — | IoT Core ThingName vs ClientId (Dojo Q30) |
+| 715 | D3 | ALB health checks failing — which TWO to check? | A+B: NACL ephemeral + target registration | ✅ | Dojo answer was B+D (target registration + ENI SG mapping). Both valid. | — | ENI/ALB troubleshooting (Dojo Q29) |
+| 716 | D4 | Lambda Access Denied on SQS, IAM role has ReceiveMessage — cause? | B: SQS resource policy explicitly denies | ✅ | Explicit Deny in resource policy always wins over identity Allow. | — | SQS resource policy (Dojo Q12) |
+| 717 | D5 | API keys in CloudFormation securely — approach? | B: Secrets Manager + resolve dynamic reference | ✅ | Secrets Manager = encrypted + rotatable + never plaintext in template. | — | Secrets Manager in CF (Dojo Q50) |
+| 718 | D1 | CloudTrail org trail, new account logs not appearing — TWO causes? | A+C: Bucket policy + Requester Pays | ✅ | Org trail = auto for members. Delivery = bucket policy + Requester Pays OFF. | — | CloudTrail multi-account (Dojo Q9, Q52) |
+| 719 | D3 | 3 branch offices with firewalls need encrypted connectivity to AWS — solution? | D: Transit Gateway + Client VPN | ❌ | B: Site-to-Site VPN. Office with router = Site-to-Site (IPsec). Client VPN = laptops. | — | VPN types (Dojo Q56) |
+| 720 | D1 | GuardDuty enabled, zero findings 90d, active workloads — cause? | C: Suppression rule | ✅ | Zero findings + active workloads + confirmed enabled = suppression rule. | — | GuardDuty suppression rules (Dojo Q10) |
+| 721 | D4 | s3:PutObject with Resource arn:aws:s3:::bucket (no /*) — result? | B: Access Denied — wrong ARN | ✅ | Bucket ARN = bucket-level actions. Object ARN (/*) = object-level actions. | — | S3 ARN bucket vs object (Dojo Q23) |
+| 722 | D5 | Key provided per request, AWS encrypts then discards key — which encryption? | C: SSE-C | ✅ | SSE-C = customer key per request, AWS discards immediately. | — | S3 encryption matrix (Dojo Q17) |
