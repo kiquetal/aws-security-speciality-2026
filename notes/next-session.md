@@ -1,31 +1,69 @@
-# Next Session — 2026-06-06
+# Next Session — Dojo Combined Gap Drill
 
-## Priority: Re-test Dojo Gaps + AD/VPN Lock-in
+> Source: Dojo Test 1 (27 wrong) + Dojo Test 2 (18 wrong) = 45 total, deduplicated to ~25 unique patterns
+> Target: 10 killer questions covering the most frequent/impactful gaps
+> Format: Exam-style, novel scenarios, Dojo-style wording
 
-### Part 1: AD + VPN recall drill (SHORT DRILL mode)
-- AWS Managed AD vs AD Connector vs Simple AD (capabilities, trusts, RDS SQL)
-- Trust direction (one-way: who trusts whom)
-- Client VPN vs Site-to-Site VPN vs Verified Access
-- Why AD Connector can't do RDS SQL auth (no local DC)
+---
 
-### Part 2: Dojo wrong answers re-test (EXAM FORMAT)
-Target the 27 wrong questions from Dojo exam. Focus on:
-1. AD/Directory Service — trust directions, ADFS federation (Q5, Q48)
-2. Operational troubleshooting — agent logs, NACL ephemeral ports, metric filters (Q13, Q19, Q22, Q25, Q57, Q61, Q63)
-3. KMS Grants vs key policies (Q47)
-4. IoT Core — thing policy variables (Q30)
-5. VPN types — SSL VPN vs IPsec (Q56)
-6. S3 encryption matrix — SSE-S3 vs SSE-KMS vs SSE-C vs client-side (Q17)
-7. GuardDuty master/member permissions (Q10, Q22)
-8. CloudTrail config — management events Write-only/All for EventBridge (Q16)
-9. Storage tier traps — Glacier Deep Archive vs S3 Standard (Q65)
-10. SQS resource policy troubleshooting (Q12)
-11. ENI/ALB target registration (Q29)
-12. Kinesis + OpenSearch combo (Q41)
-13. ACM cert region requirements for CF+ALB (Q43)
-14. IAM policy interpretation — Resource:* implications (Q38)
-15. Secrets Manager in CloudFormation (Q50)
-16. Disable instance metadata (Q55)
-17. CloudTrail multi-account troubleshooting (Q9, Q52)
+## Priority 1: KMS Operational (failed in BOTH tests)
 
-### Question count: 10 exam-format questions covering top gaps
+- GenerateDataKey vs GenerateDataKeyWithoutPlaintext
+- kms:CreateGrant for EBS start (vs GenerateDataKey)
+- Multipart upload needs kms:Decrypt
+- KMS key deleted → rsync data before expiry
+- KMS Grants vs key policy (when to use which)
+- Encryption Context = AAD
+
+**Generate: 3 questions**
+
+---
+
+## Priority 2: IAM Wording Traps (failed in BOTH tests)
+
+- "Least permissive" = single action (not managed policy)
+- Permission Boundaries (delegate creation) vs SCP (restrict account)
+- SCP is ceiling — if not listed, blocked
+- AssumeRoleWithWebIdentity vs GetSessionToken vs AssumeRoleWithSAML
+- ExternalID for confused deputy (not GetAccessKeyInfo)
+- AWS Config for "track changes over time / point-in-time"
+
+**Generate: 3 questions**
+
+---
+
+## Priority 3: Service/Architecture Selection (failed in BOTH tests)
+
+- NLB (custom protocol) vs ALB (HTTP only) vs GWLB (appliances, L3)
+- CloudFront/ALB for SNI (not GWLB)
+- CodeDeploy (on-prem) vs Elastic Beanstalk (EC2 only)
+- SSM runbook (least config) vs Lambda (custom code)
+- Parameter Store SecureString (cost-effective) vs Secrets Manager (rotation)
+- Kinesis (real-time ingest) + OpenSearch (analytics)
+- GuardDuty direct to EventBridge (no Security Hub middle layer needed)
+
+**Generate: 2 questions**
+
+---
+
+## Priority 4: Operational Troubleshooting (Test 1 heavy)
+
+- NACL stateless: inbound ACCEPT + outbound REJECT = NACL
+- CW Logs agent: /var/log/awslogs.log (runtime) not setup.log
+- CloudTrail: Write-only trail = ConsoleLogin won't fire EventBridge
+- GuardDuty Trusted IP list = PUBLIC IPs only
+- AD: Managed AD + one-way trust (need trusts/separate domain)
+- VPN: Site-to-Site (offices) vs Client VPN (laptops)
+
+**Generate: 2 questions**
+
+---
+
+## Delivery Rules
+
+- 10 questions total
+- Exam format (scenario + 4-5 options)
+- Novel wording (don't repeat Dojo verbatim)
+- Include at least 2 "Select TWO" questions
+- At least 1 cross-domain combo
+- Use "LEAST permissive/MOST cost-effective/LEAST overhead" wording traps
