@@ -52,6 +52,7 @@
 - 🧠 **One-way trust "AWS trusts on-prem" = on-prem users access AWS. Cloud users CANNOT access on-prem.** Trust direction: users in the TRUSTED domain access resources in the TRUSTING domain.
 - 🧠 **AD Connector = pipe. On-prem goes down = all AWS auth fails.** No caching, no data in AWS.
 - 🧠 **Federation with on-prem AD = ADFS + IAM ROLES + AssumeRoleWithSAML.** Never IAM users/groups. Cognito = customer apps, not enterprise.
+- 🧠 **ADFS federation does NOT need AD Connector.** ADFS uses SAML directly to STS. AD Connector is a separate pattern for Directory Service integration (WorkSpaces, domain-join).
 
 ---
 
@@ -123,7 +124,7 @@
 - VPC Reachability Analyzer = "why can't A reach B?" (specific pair, troubleshooting one connection).
 - 🧠 **"What's exposed?" = Network Access Analyzer (auditor). "Why can't A reach B?" = Reachability Analyzer (debugger).** Different tools, different questions.
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
-- MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
+- 🧠 **"Individual remote users (home)" = Client VPN (SSL). "Two fixed networks (office↔AWS)" = Site-to-Site VPN (IPsec). "Physical dedicated link" = Direct Connect.**
 
 ### Edge
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
