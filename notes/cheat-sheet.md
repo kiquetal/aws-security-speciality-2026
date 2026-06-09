@@ -46,6 +46,13 @@
 - Permission set = IAM role auto-created in target accounts. No manual role management.
 - 🧠 **SCIM = auto-sync users + groups from IdP.** New user added to group in Okta → auto-inherits permission set assignment. No manual action in Identity Center.
 
+### Directory Service
+- 🧠 **Simple AD = Samba (no trusts, no RDS SQL, no Identity Center). AD Connector = proxy (no data in AWS, no trusts). Managed AD = full MS AD (trusts, RDS SQL, Identity Center).**
+- 🧠 **"Need trusts" or "RDS SQL Server" or "Identity Center" = Managed AD. Always.** Simple AD and AD Connector are automatically eliminated.
+- 🧠 **One-way trust "AWS trusts on-prem" = on-prem users access AWS. Cloud users CANNOT access on-prem.** Trust direction: users in the TRUSTED domain access resources in the TRUSTING domain.
+- 🧠 **AD Connector = pipe. On-prem goes down = all AWS auth fails.** No caching, no data in AWS.
+- 🧠 **Federation with on-prem AD = ADFS + IAM ROLES + AssumeRoleWithSAML.** Never IAM users/groups. Cognito = customer apps, not enterprise.
+
 ---
 
 ## D5: Data Protection (18%)
@@ -161,6 +168,7 @@
 - 🧠 **GuardDuty doesn't fire on BLOCKED/DENIED attempts.** It detects successful anomalous access. If RCP/SCP blocks the request, no successful access occurs = no finding. Access Analyzer fires on policy (static) regardless.
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
+- 🧠 **GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.
 
 ### Log Sources
 - **"Which domain was queried?" = Resolver Query Logs.** VPC Flow Logs only show IP:port — domain name is gone after DNS resolves.
@@ -174,6 +182,7 @@
 - 🧠 **Three "lakes": CloudTrail Lake (API calls, SQL, managed store) vs Security Lake (all logs, OCSF, your S3) vs CloudWatch Logs Insights (app logs, custom syntax, CloudWatch store). No "CloudWatch Lake" exists.**
 - 🧠 **CloudWatch Logs Insights = open-ended queries on data already in CW. Detective = investigate from a specific finding/entity.** "Top talkers" = Insights. "What else did this IP do?" = Detective.
 - 🧠 **`/var/log/awslogs.log` = runtime errors (logs stopped flowing). `/var/log/awslogs-agent-setup.log` = installation errors only.** "Was working, now stopped" = check runtime log.
+- 🧠 **CloudTrail management events: Write-only trail = ConsoleLogin (Read event) won't trigger EventBridge.** Must be "All" or "Read-only/Read+Write" for login events. Event History always shows all events regardless.
 
 ---
 

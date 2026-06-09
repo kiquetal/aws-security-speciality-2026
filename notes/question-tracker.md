@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 703 |
-| **✅ Correct** | 551 (78%) |
-| **⚠️ Partial** | 24 (3%) |
-| **❌ Wrong** | 125 (18%) |
-| **Sessions** | 71 |
+| **Total Questions** | 709 |
+| **✅ Correct** | 553 (78%) |
+| **⚠️ Partial** | 25 (4%) |
+| **❌ Wrong** | 128 (18%) |
+| **Sessions** | 72 |
 | **Re-tests Passed** | 318 of 386 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 125 | 6 | 45 | 176 | 71% | 🟡 |
+| D1: Detection | 126 | 6 | 47 | 179 | 70% | 🟡 |
 | D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
-| D3: Infrastructure Security | 63 | 4 | 11 | 78 | 81% | 🟢 |
-| D4: Identity & Access Management | 168 | 8 | 27 | 203 | 83% | 🟢 |
-| D5: Data Protection | 80 | 3 | 17 | 100 | 80% | 🟢 |
+| D3: Infrastructure Security | 63 | 5 | 11 | 79 | 80% | 🟡 |
+| D4: Identity & Access Management | 168 | 8 | 28 | 204 | 82% | 🟢 |
+| D5: Data Protection | 81 | 3 | 17 | 101 | 80% | 🟢 |
 | D6: Governance | 101 | 2 | 24 | 127 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -138,6 +138,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 104 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D5 | 1 |
 | 🟡 105 | DGA = allow-list DNS Firewall | Q690 | D3 | 1 |
 | 🟡 106 | Access Analyzer static + GuardDuty ≠ failed attempts | Q706 | D1 | 1 |
+| 🟡 107 | NACLs stateless (Dojo Q19, Q61) | Q707 | D3 | 1 |
+| 🟡 108 | Directory Service + trust direction (Dojo Q5) | Q709 | D4 | 1 |
+| 🟡 109 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
+| 🟡 110 | GuardDuty Trusted IP list (Dojo Q22) | Q711 | D1 | 1 |
 
 ---
 
@@ -216,6 +220,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 69 | 2026-06-02 | Q687–Q696 | 7 | 0 | 3 | Cross-domain killer exam simulation (all domains, maximum difficulty + novel patterns) | [Jump](#session-69--2026-06-02) |
 | 70 | 2026-06-05 | Q697–Q701 | 4 | 0 | 1 | Cross-domain (pre-Dojo killer drill — session policy + RCP scope + VPC endpoints + ViaService) | [Jump](#session-70--2026-06-05) |
 | 71 | 2026-06-05 | Q702–Q706 | 4 | 0 | 1 | Cross-domain (pre-Dojo RCP scope drill + AA vs GD static/dynamic) | [Jump](#session-71--2026-06-05) |
+| 72 | 2026-06-09 | Q707–Q712 | 2 | 1 | 3 | Cross-domain (Dojo Test 1 gap drill — operational troubleshooting, Directory Service, GuardDuty, CloudTrail, S3 encryption) | [Jump](#session-72--2026-06-09) |
 
 ---
 
@@ -1637,3 +1642,18 @@ After adding a session:
 | 704 | D4/D6 | Data perimeter: block external reads IN + block insider writes OUT — which TWO? | A: RCP + SCP with ResourceAccount | ✅ | RCP blocks outsiders IN. SCP blocks insiders OUT. Full data perimeter = both. | Q398, Q622 | Data perimeter (RCP blocks IN, SCP blocks OUT) |
 | 705 | D4/D5 | RCP denies non-org kms:Decrypt, Account B (same org) calls Decrypt on Account A key — result? | C: Allowed — PrincipalOrgID matches | ✅ | Same-org caller → condition FALSE → Deny doesn't fire. | Q427, Q521 | RCP same-org evaluation |
 | 706 | D1/D4 | RCP blocks external + AA + GD enabled + 100 denied GetObjects by attacker — which TWO true? | A+C (contradictory) | ❌ | **B+C: Access Analyzer flags policy (static) + GuardDuty doesn't fire (no successful access).** AA is static policy analysis — doesn't know about RCP runtime enforcement. | Q518, Q534, Q594 | Access Analyzer static + GuardDuty ≠ failed attempts |
+
+
+### Session 72 — 2026-06-09
+
+**Domains:** Cross-domain (Dojo Test 1 gap drill — operational troubleshooting, Directory Service, GuardDuty, CloudTrail, S3 encryption)
+**Score:** 4 ✅ · 1 ⚠️ · 3 ❌ (50% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 707 | D3 | VPC Flow Logs: inbound ACCEPT, outbound REJECT — SG or NACL problem? | NACL (wrong reason: said SG is stateless) | ⚠️ | NACL — because NACLs are stateLESS (need explicit outbound). SGs are stateFUL (auto-allow return). | — | NACLs stateless (Dojo Q19, Q61) |
+| 708 | D1 | CW Logs agent was working, logs stopped — which log file? | B: /var/log/awslogs.log | ✅ | /var/log/awslogs.log = runtime errors. setup.log = install only. | — | CW Logs agent troubleshooting (Dojo Q63) |
+| 709 | D4 | On-prem admins need AWS, cloud users must NOT access on-prem — which Directory + trust? | B: AD Connector | ❌ | C: Managed Microsoft AD + one-way trust (AWS trusts on-prem). AD Connector = no cloud users, no trusts. | — | Directory Service + trust direction (Dojo Q5) |
+| 710 | D1 | EventBridge rule on ConsoleLogin never fires, events visible in console — cause? | A: us-east-1 for global events | ❌ | B: Management events set to Write-only. ConsoleLogin = Read event. EventBridge only fires on configured trail events. | — | CloudTrail management events Read/Write (Dojo Q16) |
+| 711 | D1 | Suppress GD findings from pen-test EC2 (private IPs only) — approach? | A: Add private IPs to Trusted IP list | ❌ | B: Attach EIPs + add to Trusted IP list. Trusted IP list = PUBLIC IPs only. | — | GuardDuty Trusted IP list (Dojo Q22) |
+| 712 | D5 | Company generates own keys, keys must NEVER be in AWS — which S3 encryption? | D: Client-side encryption with client master key | ✅ | Client-side = keys never leave your environment. SSE-C = key touches AWS briefly. | — | S3 encryption matrix (Dojo Q17) |
