@@ -296,6 +296,7 @@ SCENARIO: SaaS platform, 500 customers, each in their own AWS account
 |---|---|
 | **Eventually consistent** | May take up to 5 min. Use **grant token** for immediate use. |
 | **AWS services use grants internally** | EBS, RDS, Lambda create grants on your key. Visible in CloudTrail. |
+| **EC2 + encrypted EBS** | Start existing = `kms:CreateGrant` + `kms:Decrypt`. Create new = `kms:CreateGrant` + `kms:GenerateDataKey(WithoutPlaintext)`. Always needs CreateGrant. |
 | **RetireGrant vs RevokeGrant** | Grantee can retire own grant. Only key admin can revoke. |
 | **RCPs exempt `kms:RetireGrant`** | Even if RCP restricts KMS, RetireGrant still works. |
 | **Grants don't appear in key policy** | Use `aws kms list-grants` to see them. |
