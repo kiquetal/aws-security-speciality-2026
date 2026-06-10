@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 759 |
-| **✅ Correct** | 596 (79%) |
+| **Total Questions** | 769 |
+| **✅ Correct** | 605 (79%) |
 | **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 135 (18%) |
-| **Sessions** | 77 |
-| **Re-tests Passed** | 334 of 404 |
+| **❌ Wrong** | 136 (18%) |
+| **Sessions** | 78 |
+| **Re-tests Passed** | 335 of 405 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 136 | 6 | 48 | 190 | 72% | 🟡 |
+| D1: Detection | 137 | 6 | 48 | 191 | 72% | 🟡 |
 | D2: Incident Response | 14 | 1 | 2 | 17 | 82% | 🟢 |
-| D3: Infrastructure Security | 70 | 5 | 12 | 87 | 80% | 🟢 |
-| D4: Identity & Access Management | 184 | 8 | 31 | 223 | 83% | 🟢 |
-| D5: Data Protection | 90 | 3 | 18 | 111 | 81% | 🟢 |
+| D3: Infrastructure Security | 71 | 5 | 12 | 88 | 81% | 🟢 |
+| D4: Identity & Access Management | 186 | 8 | 31 | 225 | 83% | 🟢 |
+| D5: Data Protection | 95 | 3 | 19 | 117 | 81% | 🟢 |
 | D6: Governance | 102 | 2 | 24 | 128 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -149,6 +149,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 115 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
 | 🟡 116 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
 | 🟡 117 | InsideAWS = SG isolation | Q761 | D2 | 1 |
+| 🟡 118 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
 
 ---
 
@@ -233,6 +234,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 75 | 2026-06-10 | Q733–Q742 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #4 — AD/Directory Service focus + operational troubleshooting) | [Jump](#session-75--2026-06-10) |
 | 76 | 2026-06-10 | Q743–Q752 | 8 | 0 | 2 | Cross-domain (Dojo Test 2 gap drill — KMS operational, IAM/SCP, STS variants, SSM remediation, load balancers) | [Jump](#session-76--2026-06-10) |
 | 77 | 2026-06-10 | Q753–Q762 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, maximum difficulty) | [Jump](#session-77--2026-06-10) |
+| 78 | 2026-06-10 | Q763–Q772 | 9 | 0 | 1 | Cross-domain (Dojo Test 2 gap drill #2 — KMS operational, SCP, permission boundaries, SSE-C, Secrets Manager, CloudTrail Insights) | [Jump](#session-78--2026-06-10) |
 
 ---
 
@@ -1759,3 +1761,21 @@ After adding a session:
 | 760 | D1/D6 | Prevent ScheduleKeyDeletion + detect PutBucketPolicy 2min + block external S3 — THREE services? | B: SCP + EventBridge + RCP | ✅ | SCP prevents. EventBridge detects API. RCP blocks consequence. | Q688 | Full detect/prevent architecture |
 | 761 | D2/D4 | InstanceCredentialExfiltration.InsideAWS, contain without breaking legitimate instance? | A: TokenIssueTime | ❌ | B: Deny-all SG on attacker's instance. InsideAWS = both share role, TokenIssueTime breaks both. | Q693 | InsideAWS = SG isolation |
 | 762 | D4 | Cross-account bucket policy grants DeleteObject, session=Get+Put only — result? | B: Denied — session ceiling applies cross-account | ✅ | Resource-policy bypass ONLY works same-account. Cross-account = ceiling always applies. | Q613, Q670 | Session policy bypass same-account ONLY |
+
+### Session 78 — 2026-06-10
+
+**Domains:** Cross-domain (Dojo Test 2 gap drill #2 — KMS operational, SCP, permission boundaries, SSE-C, Secrets Manager, CloudTrail Insights)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 763 | D4 | Centrally allow/deny services per account, least complexity — approach? | B: Organizations + OUs + SCPs | ✅ | SCPs = one policy at OU level, least complexity. | — | SCPs for org-wide control (Dojo T2 Q48) |
+| 764 | D5 | KMS PendingDeletion, EC2 running, unauthorized deletion — TWO recovery approaches? | B+C: CancelKeyDeletion + rsync | ✅ | Cancel saves key. Rsync copies decrypted data while instance runs. | — | KMS PendingDeletion recovery (Dojo T2 Q22) |
+| 765 | D5 | Store encrypted key for later + upload 20GB multipart SSE-KMS — which THREE KMS perms? | B+D+C (wrong: picked Encrypt) | ❌ | A+B+C: GenerateDataKey (S3 upload) + GenerateDataKeyWithoutPlaintext (store for later) + Decrypt (multipart reassembly). S3 never uses kms:Encrypt. | — | S3 envelope encryption never uses kms:Encrypt |
+| 766 | D3 | Public app, CloudFront→ALB, protect SQLi + geo-restrict — approach? | A+D: WAF on CF + geo-restriction | ✅ | Block at the edge (CloudFront), not deeper (ALB). | — | WAF on CloudFront + geo-restriction (Dojo T2 Q12) |
+| 767 | D5 | EC2 start with existing encrypted EBS, has kms:Decrypt — what's missing? | B: kms:CreateGrant | ✅ | Start existing = CreateGrant + Decrypt. Always needs CreateGrant. | Q745 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) |
+| 768 | D4 | Developers create roles but roles can't exceed s3+ec2 — mechanism? | B: Permission boundary | ✅ | Boundary caps created roles regardless of attached policies. | — | Permission boundary delegation (Dojo T2 Q61) |
+| 769 | D5 | SSE-C upload via HTTP (not HTTPS) — result? | B: S3 rejects — HTTPS required | ✅ | SSE-C mandates HTTPS. Key would be exposed in plaintext over HTTP. | — | SSE-C requires HTTPS (Dojo T2) |
+| 770 | D5 | Lambda needs DB creds, rotate every 30d, RDS PostgreSQL — service? | B: Secrets Manager native rotation | ✅ | Rotation + RDS = Secrets Manager. Zero custom code. | — | Secrets Manager native rotation (Dojo T2) |
+| 771 | D1 | CloudTrail Insights detects what kind of anomaly? | C: Unusual API call volume | ✅ | Insights = volume (statistical). GuardDuty = behavior (threat intel). | — | CloudTrail Insights vs GuardDuty (Dojo T2) |
+| 772 | D5 | Lambda reads Parameter Store SecureString (CMK), has ssm:GetParameter — fails. Missing? | B: kms:Decrypt on customer-managed key | ✅ | Customer-managed key = always explicit kms:Decrypt. AWS-managed may auto-grant. | — | Parameter Store + kms:Decrypt (Dojo T2) |
