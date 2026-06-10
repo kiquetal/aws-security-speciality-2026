@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 739 |
-| **✅ Correct** | 579 (78%) |
+| **Total Questions** | 749 |
+| **✅ Correct** | 587 (78%) |
 | **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 132 (18%) |
-| **Sessions** | 75 |
+| **❌ Wrong** | 134 (18%) |
+| **Sessions** | 76 |
 | **Re-tests Passed** | 325 of 394 |
 
 ## Domain Breakdown
@@ -21,10 +21,10 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 134 | 6 | 48 | 188 | 71% | 🟡 |
 | D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
-| D3: Infrastructure Security | 68 | 5 | 12 | 85 | 80% | 🟢 |
-| D4: Identity & Access Management | 176 | 8 | 30 | 214 | 82% | 🟢 |
-| D5: Data Protection | 86 | 3 | 17 | 106 | 81% | 🟢 |
-| D6: Governance | 101 | 2 | 24 | 127 | 80% | 🟡 |
+| D3: Infrastructure Security | 69 | 5 | 12 | 86 | 80% | 🟢 |
+| D4: Identity & Access Management | 179 | 8 | 31 | 218 | 82% | 🟢 |
+| D5: Data Protection | 89 | 3 | 18 | 110 | 81% | 🟢 |
+| D6: Governance | 102 | 2 | 24 | 128 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -146,6 +146,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 112 | CW metric filter value (Dojo Q57) | Q724 | D1 | 1 |
 | 🟡 113 | ADFS vs AD Connector (Dojo Q48) | Q731 | D4 | 1 |
 | 🟡 114 | AD Connector vs Simple AD | Q739 | D4 | 1 |
+| 🟡 115 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
+| 🟡 116 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
 
 ---
 
@@ -228,6 +230,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 73 | 2026-06-09 | Q713–Q722 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #2 — CloudTrail, IoT, ENI, SQS, VPN, GuardDuty, IAM, S3 encryption) | [Jump](#session-73--2026-06-09) |
 | 74 | 2026-06-10 | Q723–Q732 | 8 | 0 | 2 | Cross-domain (Dojo Test 1 gap drill #3 — GuardDuty admin, CW metric filters, IAM boundaries, KMS Grants, OpenSearch, ACM, CloudTrail Read/Write, metadata, AD/ADFS, S3 encryption) | [Jump](#session-74--2026-06-10) |
 | 75 | 2026-06-10 | Q733–Q742 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #4 — AD/Directory Service focus + operational troubleshooting) | [Jump](#session-75--2026-06-10) |
+| 76 | 2026-06-10 | Q743–Q752 | 8 | 0 | 2 | Cross-domain (Dojo Test 2 gap drill — KMS operational, IAM/SCP, STS variants, SSM remediation, load balancers) | [Jump](#session-76--2026-06-10) |
 
 ---
 
@@ -1718,3 +1721,21 @@ After adding a session:
 | 740 | D3 | IMDSv2 hop limit 1, container PUT to metadata — no response. Cause? | B: Container network adds extra hop, TTL expires | ✅ | Docker bridge = extra hop. Hop limit 1 = TTL expires. Fix: increase to 2. | — | IMDSv2 hop limit + containers |
 | 741 | D4 | Already have ADFS, want AWS SSO, no new Directory Service resources — which TWO? | B+C: ADFS as SAML IdP + permission sets | ✅ | ADFS external IdP in Identity Center + permission sets for group mapping. | Q731 | ADFS + Identity Center |
 | 742 | D4 | Match 4 AD scenarios to correct service (Connector, Managed, ADFS, two-way) | All correct: A, B, C, D | ✅ | Full AD decision tree applied correctly. | Q709, Q731 | AD decision tree |
+
+### Session 76 — 2026-06-10
+
+**Domains:** Cross-domain (Dojo Test 2 gap drill — KMS operational, IAM/SCP, STS variants, SSM remediation, load balancers)
+**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 743 | D5 | Encrypt later, only need encrypted key now — which KMS API? | B: GenerateDataKeyWithoutPlaintext | ✅ | No plaintext exposed until actually needed. | — | GenerateDataKey variants (Dojo T2 Q33) |
+| 744 | D5 | S3 multipart >10GB + SSE-KMS fails on reassembly — missing permission? | B: kms:Decrypt | ✅ | Multipart = GenerateDataKey + Decrypt (reassembly). Single = GenerateDataKey only. | — | S3 multipart + KMS (Dojo T2 Q43) |
+| 745 | D5 | EC2 can't start with encrypted EBS, has kms:Decrypt — what's missing? | B: kms:Encrypt | ❌ | C: kms:CreateGrant. EC2 delegates key access to EBS backend via grants. Always needed. | — | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) |
+| 746 | D4 | Delegate user creation but cap permissions of created users — mechanism? | B: Permission boundary | ✅ | Boundary on created users limits effective permissions regardless of attached policies. | — | Permission boundary delegation (Dojo T2 Q61) |
+| 747 | D4 | SCP allows ec2+lambda only, IAM has s3:*, calls s3:PutObject — result? | A: IAM missing Resource ARN | ❌ | B: SCP ceiling — s3 not in SCP Allow = implicitly denied regardless of IAM. | — | SCP ceiling implicit deny (Dojo T2 Q65) |
+| 748 | D4 | Mobile app, Cognito, needs temp creds for S3 — which STS API? | C: AssumeRoleWithWebIdentity | ✅ | Web/mobile = WebIdentity. Enterprise SAML = SAML. EC2/Lambda = AssumeRole. | — | AssumeRole variants (Dojo T2 Q11) |
+| 749 | D4 | Cross-account role, Access Denied ExternalId required — cause? | A: Trust policy requires ExternalId, caller didn't pass it | ✅ | Confused deputy prevention. Must pass matching ExternalId in AssumeRole call. | — | ExternalId (Dojo T2 Q40) |
+| 750 | D6 | VPC Flow Logs not enabled, auto-remediate, least config — approach? | B: SSM runbook triggered by Config rule | ✅ | SSM runbook = pre-built, least config. Lambda = custom code, more overhead. | — | SSM runbook remediation (Dojo T2 Q44) |
+| 751 | D5 | KMS key PendingDeletion, EC2 still running — recover data? | B: CancelKeyDeletion | ✅ | CancelKeyDeletion saves key. Rsync also valid for data migration. Both work. | — | KMS PendingDeletion recovery (Dojo T2 Q22) |
+| 752 | D3 | Custom TCP protocol, NOT HTTP, need load balancer — which type? | B: NLB TCP listener | ✅ | NLB = any TCP/UDP. ALB = HTTP only. GWLB = L3 security appliances. | — | NLB vs ALB vs GWLB (Dojo T2 Q49) |
