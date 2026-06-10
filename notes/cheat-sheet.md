@@ -150,6 +150,7 @@
 - Security Hub = aggregate findings + compliance dashboards (wraps Config rules). Requires Config enabled.
 - Detective = investigate AFTER detection (root cause, blast radius, timeline).
 - 🧠 **CloudTrail = raw API log. Detective = the investigator who reads the logs FOR you.** "Who did what" = CloudTrail. "Show me the full picture / timeline / scope" = Detective.
+- 🧠 **"Track config changes over time" = AWS Config (configuration history). "Who made the API call" = CloudTrail.** Config shows WHAT changed. CloudTrail shows WHO changed it.
 - CloudTrail Lake = fast + dashboards + managed + near real-time. S3+Athena = cheap + DIY + unlimited retention.
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Different verbs.
 - "In progress" / "happening now" = active threat = GuardDuty. "What data exists?" = Macie. "What vulns exist?" = Inspector.
