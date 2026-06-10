@@ -66,6 +66,7 @@
 - Default encryption = safety net (applies silently if no header). Bucket policy Deny = enforcement (rejects non-compliant uploads). They solve different problems.
 - ⚠️ **Bucket policy Deny evaluates request headers BEFORE default encryption applies.** If Deny checks for a KMS key header and caller sends none → rejected. Default encryption never gets a chance.
 - SSE-KMS permissions: **upload** = `s3:PutObject` + `kms:GenerateDataKey`. **Download** = `s3:GetObject` + `kms:Decrypt`. Not Encrypt — it's envelope encryption.
+- 🧠 **S3 NEVER calls kms:Encrypt.** Upload = GenerateDataKey. Multipart = GenerateDataKey + Decrypt (reassembly). kms:Encrypt is only for direct <4KB encryption, not S3.
 - Object Lock requires versioning. Compliance mode = nobody can delete, not even root. Governance mode = overridable with `s3:BypassGovernanceRetention`.
 - Legal Hold = no expiration, independent of retention period. "Lawsuit" / "preserve indefinitely" → Legal Hold.
 - 🧠 **Cross-account S3 + SSE-KMS = THREE policies:** bucket policy (Account A) + key policy (Account A) + identity policy (Account B). Forget any one = Access Denied.
