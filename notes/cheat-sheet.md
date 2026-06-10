@@ -200,6 +200,7 @@
 - Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
 - Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
 - Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.
+- 🧠 **OutsideAWS = TokenIssueTime (creds used externally, instance gets fresh ones). InsideAWS = deny-all SG on attacker's instance (TokenIssueTime would break both instances sharing same role).**
 
 ---
 

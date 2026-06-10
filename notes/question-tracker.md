@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 749 |
-| **✅ Correct** | 587 (78%) |
+| **Total Questions** | 759 |
+| **✅ Correct** | 596 (79%) |
 | **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 134 (18%) |
-| **Sessions** | 76 |
-| **Re-tests Passed** | 325 of 394 |
+| **❌ Wrong** | 135 (18%) |
+| **Sessions** | 77 |
+| **Re-tests Passed** | 334 of 404 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 134 | 6 | 48 | 188 | 71% | 🟡 |
-| D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
-| D3: Infrastructure Security | 69 | 5 | 12 | 86 | 80% | 🟢 |
-| D4: Identity & Access Management | 179 | 8 | 31 | 218 | 82% | 🟢 |
-| D5: Data Protection | 89 | 3 | 18 | 110 | 81% | 🟢 |
+| D1: Detection | 136 | 6 | 48 | 190 | 72% | 🟡 |
+| D2: Incident Response | 14 | 1 | 2 | 17 | 82% | 🟢 |
+| D3: Infrastructure Security | 70 | 5 | 12 | 87 | 80% | 🟢 |
+| D4: Identity & Access Management | 184 | 8 | 31 | 223 | 83% | 🟢 |
+| D5: Data Protection | 90 | 3 | 18 | 111 | 81% | 🟢 |
 | D6: Governance | 102 | 2 | 24 | 128 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -148,6 +148,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 114 | AD Connector vs Simple AD | Q739 | D4 | 1 |
 | 🟡 115 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
 | 🟡 116 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
+| 🟡 117 | InsideAWS = SG isolation | Q761 | D2 | 1 |
 
 ---
 
@@ -231,6 +232,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 74 | 2026-06-10 | Q723–Q732 | 8 | 0 | 2 | Cross-domain (Dojo Test 1 gap drill #3 — GuardDuty admin, CW metric filters, IAM boundaries, KMS Grants, OpenSearch, ACM, CloudTrail Read/Write, metadata, AD/ADFS, S3 encryption) | [Jump](#session-74--2026-06-10) |
 | 75 | 2026-06-10 | Q733–Q742 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #4 — AD/Directory Service focus + operational troubleshooting) | [Jump](#session-75--2026-06-10) |
 | 76 | 2026-06-10 | Q743–Q752 | 8 | 0 | 2 | Cross-domain (Dojo Test 2 gap drill — KMS operational, IAM/SCP, STS variants, SSM remediation, load balancers) | [Jump](#session-76--2026-06-10) |
+| 77 | 2026-06-10 | Q753–Q762 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, maximum difficulty) | [Jump](#session-77--2026-06-10) |
 
 ---
 
@@ -1739,3 +1741,21 @@ After adding a session:
 | 750 | D6 | VPC Flow Logs not enabled, auto-remediate, least config — approach? | B: SSM runbook triggered by Config rule | ✅ | SSM runbook = pre-built, least config. Lambda = custom code, more overhead. | — | SSM runbook remediation (Dojo T2 Q44) |
 | 751 | D5 | KMS key PendingDeletion, EC2 still running — recover data? | B: CancelKeyDeletion | ✅ | CancelKeyDeletion saves key. Rsync also valid for data migration. Both work. | — | KMS PendingDeletion recovery (Dojo T2 Q22) |
 | 752 | D3 | Custom TCP protocol, NOT HTTP, need load balancer — which type? | B: NLB TCP listener | ✅ | NLB = any TCP/UDP. ALB = HTTP only. GWLB = L3 security appliances. | — | NLB vs ALB vs GWLB (Dojo T2 Q49) |
+
+### Session 77 — 2026-06-10
+
+**Domains:** Cross-domain killer exam simulation (all domains, maximum difficulty)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 753 | D4/D5 | Cross-account KMS, key policy grants only Account A root, Account B same org — result? | B: Fails — key policy must name Account B | ✅ | Root enables delegation same-account only. Cross-account needs explicit grant. | Q541, Q669 | Cross-account KMS key policy must name external account |
+| 754 | D4 | Session=GetObject only, same-account bucket policy grants role DeleteObject — result? | B: Allowed — same-account bypass | ✅ | Same-account resource-based policy naming role bypasses session ceiling. | Q96, Q169 | Session policy bypass by resource-based policy |
+| 755 | D1/D4 | RCP blocks external, AA + GD enabled, 100 denied GetObjects — which TWO true? | B+C: AA flags + GD doesn't fire | ✅ | AA = static policy analysis. GD = needs successful access. | Q534, Q594 | AA static + GD ≠ failed attempts |
+| 756 | D3/D1 | DGA domains, block VPC-wide — approach? | C: DNS Firewall allow-list | ✅ | DGA = unpredictable, can't enumerate. Allow-list = block all except known-good. | Q690 | DGA = allow-list DNS Firewall |
+| 757 | D4/D6 | RCP denies non-org s3:*, Lambda writes to own bucket + partner bucket — which succeed? | C: Both | ✅ | Own bucket: PrincipalOrgID matches. Partner bucket: RCP doesn't apply (not your resource). | Q683, Q698 | RCP scope (your resources only) |
+| 758 | D5 | S3 multipart 15GB + SSE-KMS fails on reassembly — missing permission? | B: kms:Decrypt | ✅ | Multipart = GenerateDataKey + Decrypt (reassembly). | Q744 | S3 multipart + KMS |
+| 759 | D4/D5 | SCP ViaService=s3, Lambda S3 read + direct Decrypt + CLI Decrypt — which succeed? | B: Only #1 (S3 read) | ✅ | Only S3 sets ViaService. Direct calls have no context → SCP Deny fires. | Q488, Q506 | kms:ViaService + SCP |
+| 760 | D1/D6 | Prevent ScheduleKeyDeletion + detect PutBucketPolicy 2min + block external S3 — THREE services? | B: SCP + EventBridge + RCP | ✅ | SCP prevents. EventBridge detects API. RCP blocks consequence. | Q688 | Full detect/prevent architecture |
+| 761 | D2/D4 | InstanceCredentialExfiltration.InsideAWS, contain without breaking legitimate instance? | A: TokenIssueTime | ❌ | B: Deny-all SG on attacker's instance. InsideAWS = both share role, TokenIssueTime breaks both. | Q693 | InsideAWS = SG isolation |
+| 762 | D4 | Cross-account bucket policy grants DeleteObject, session=Get+Put only — result? | B: Denied — session ceiling applies cross-account | ✅ | Resource-policy bypass ONLY works same-account. Cross-account = ceiling always applies. | Q613, Q670 | Session policy bypass same-account ONLY |
