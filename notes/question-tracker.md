@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 719 |
-| **✅ Correct** | 562 (78%) |
+| **Total Questions** | 729 |
+| **✅ Correct** | 570 (78%) |
 | **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 129 (18%) |
-| **Sessions** | 73 |
-| **Re-tests Passed** | 318 of 386 |
+| **❌ Wrong** | 131 (18%) |
+| **Sessions** | 74 |
+| **Re-tests Passed** | 320 of 389 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 129 | 6 | 47 | 182 | 71% | 🟡 |
+| D1: Detection | 132 | 6 | 48 | 186 | 71% | 🟡 |
 | D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
-| D3: Infrastructure Security | 65 | 5 | 12 | 82 | 79% | 🟡 |
-| D4: Identity & Access Management | 170 | 8 | 28 | 206 | 83% | 🟢 |
-| D5: Data Protection | 83 | 3 | 17 | 103 | 81% | 🟢 |
+| D3: Infrastructure Security | 66 | 5 | 12 | 83 | 80% | 🟡 |
+| D4: Identity & Access Management | 171 | 8 | 29 | 208 | 82% | 🟢 |
+| D5: Data Protection | 86 | 3 | 17 | 106 | 81% | 🟢 |
 | D6: Governance | 101 | 2 | 24 | 127 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -143,6 +143,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 109 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
 | 🟡 110 | GuardDuty Trusted IP list (Dojo Q22) | Q711 | D1 | 1 |
 | 🟡 111 | VPN types (Dojo Q56) | Q719 | D3 | 1 |
+| 🟡 112 | CW metric filter value (Dojo Q57) | Q724 | D1 | 1 |
+| 🟡 113 | ADFS vs AD Connector (Dojo Q48) | Q731 | D4 | 1 |
 
 ---
 
@@ -223,6 +225,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 71 | 2026-06-05 | Q702–Q706 | 4 | 0 | 1 | Cross-domain (pre-Dojo RCP scope drill + AA vs GD static/dynamic) | [Jump](#session-71--2026-06-05) |
 | 72 | 2026-06-09 | Q707–Q712 | 2 | 1 | 3 | Cross-domain (Dojo Test 1 gap drill — operational troubleshooting, Directory Service, GuardDuty, CloudTrail, S3 encryption) | [Jump](#session-72--2026-06-09) |
 | 73 | 2026-06-09 | Q713–Q722 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #2 — CloudTrail, IoT, ENI, SQS, VPN, GuardDuty, IAM, S3 encryption) | [Jump](#session-73--2026-06-09) |
+| 74 | 2026-06-10 | Q723–Q732 | 8 | 0 | 2 | Cross-domain (Dojo Test 1 gap drill #3 — GuardDuty admin, CW metric filters, IAM boundaries, KMS Grants, OpenSearch, ACM, CloudTrail Read/Write, metadata, AD/ADFS, S3 encryption) | [Jump](#session-74--2026-06-10) |
 
 ---
 
@@ -1677,3 +1680,21 @@ After adding a session:
 | 720 | D1 | GuardDuty enabled, zero findings 90d, active workloads — cause? | C: Suppression rule | ✅ | Zero findings + active workloads + confirmed enabled = suppression rule. | — | GuardDuty suppression rules (Dojo Q10) |
 | 721 | D4 | s3:PutObject with Resource arn:aws:s3:::bucket (no /*) — result? | B: Access Denied — wrong ARN | ✅ | Bucket ARN = bucket-level actions. Object ARN (/*) = object-level actions. | — | S3 ARN bucket vs object (Dojo Q23) |
 | 722 | D5 | Key provided per request, AWS encrypts then discards key — which encryption? | C: SSE-C | ✅ | SSE-C = customer key per request, AWS discards immediately. | — | S3 encryption matrix (Dojo Q17) |
+
+### Session 74 — 2026-06-10
+
+**Domains:** Cross-domain (Dojo Test 1 gap drill #3 — GuardDuty admin, CW metric filters, IAM boundaries, KMS Grants, OpenSearch, ACM, CloudTrail Read/Write, metadata, AD/ADFS, S3 encryption)
+**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 723 | D1 | GuardDuty member account tries CreateIPSet — result? | B: Fails — only delegated admin manages IP lists | ✅ | Only administrator can manage Trusted/Threat IP lists. Members cannot regardless of IAM. | — | GuardDuty master/member permissions (Dojo Q10) |
+| 724 | D1 | CW alarm for CreateAccessKey never fires, trail Write-only, events in Event History — cause? | C: Region mismatch | ❌ | D: Metric filter metric value set to 0 instead of 1. Event History shows all events regardless of trail config. | — | CW metric filter value (Dojo Q57) |
+| 725 | D4 | Restrict dev to one bucket without modifying existing Allow s3:Get*/List* on * — approach? | B: Permission boundary scoped to dev-data | ✅ | Boundary = ceiling. Effective = identity ∩ boundary. No policy modification needed. | — | Permission boundary as ceiling (Dojo Q38) |
+| 726 | D5 | Key policy at 28KB, onboard/offboard monthly, need Decrypt only — mechanism? | B: KMS Grants | ✅ | Grants = programmatic, per-operation, no policy edits, no size limit, revocable. | — | KMS Grants (Dojo Q47) |
+| 727 | D1 | Real-time full-text search + dashboards + sub-minute + 30-day hot — architecture? | B: Kinesis Firehose + OpenSearch | ✅ | Real-time + full-text search + dashboards = OpenSearch. Kinesis handles ingestion. | — | Kinesis + OpenSearch (Dojo Q41) |
+| 728 | D5 | CloudFront custom domain + ALB in eu-west-1, HTTPS — cert config? | B: us-east-1 for CF + eu-west-1 for ALB | ✅ | CF custom domain cert always us-east-1. ALB cert in ALB's region. | — | ACM region requirements (Dojo Q43) |
+| 729 | D1 | EventBridge rule on ConsoleLogin never fires, Event History shows events — cause? | B: Trail Write-only, ConsoleLogin is Read | ✅ | EventBridge only receives events the trail is configured to deliver. Event History shows all. | Q710 | CloudTrail management events Read/Write (Dojo Q16) |
+| 730 | D3 | Legacy app doesn't need metadata, SSRF to 169.254.169.253 — eliminate? | C: HttpEndpoint disabled | ✅ | HttpEndpoint=disabled = metadata service completely off. NACLs can't block link-local. | — | Disable instance metadata (Dojo Q55) |
+| 731 | D4 | On-prem AD, SSO to AWS Console, NO AWS Directory Service infra, AD groups → permissions? | B: AD Connector + Identity Center | ❌ | C: ADFS on-prem as SAML IdP + Identity Center external IdP. AD Connector IS AWS Directory Service infrastructure. | Q709 | ADFS vs AD Connector (Dojo Q48) |
+| 732 | D5 | Upload without encryption headers, bucket has default SSE-KMS + Deny policy checking headers — result? | B: Access Denied — policy evaluates before default encryption | ✅ | Bucket policy evaluates request headers BEFORE default encryption applies. | Q626, Q643 | Default encryption vs bucket policy Deny (Dojo Q65) |

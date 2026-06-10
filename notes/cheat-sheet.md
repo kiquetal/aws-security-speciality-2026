@@ -53,6 +53,7 @@
 - 🧠 **AD Connector = pipe. On-prem goes down = all AWS auth fails.** No caching, no data in AWS.
 - 🧠 **Federation with on-prem AD = ADFS + IAM ROLES + AssumeRoleWithSAML.** Never IAM users/groups. Cognito = customer apps, not enterprise.
 - 🧠 **ADFS federation does NOT need AD Connector.** ADFS uses SAML directly to STS. AD Connector is a separate pattern for Directory Service integration (WorkSpaces, domain-join).
+- 🧠 **"No AWS Directory Service infrastructure" = ADFS on-prem + Identity Center external IdP.** AD Connector IS Directory Service infrastructure (you deploy + maintain it in AWS). ADFS lives entirely on-prem.
 
 ---
 
@@ -184,6 +185,7 @@
 - 🧠 **CloudWatch Logs Insights = open-ended queries on data already in CW. Detective = investigate from a specific finding/entity.** "Top talkers" = Insights. "What else did this IP do?" = Detective.
 - 🧠 **`/var/log/awslogs.log` = runtime errors (logs stopped flowing). `/var/log/awslogs-agent-setup.log` = installation errors only.** "Was working, now stopped" = check runtime log.
 - 🧠 **CloudTrail management events: Write-only trail = ConsoleLogin (Read event) won't trigger EventBridge.** Must be "All" or "Read-only/Read+Write" for login events. Event History always shows all events regardless.
+- 🧠 **CW metric filter: metric value must be 1 (not 0).** Value=0 means every match publishes nothing — alarm threshold >= 1 never fires. Common troubleshooting trap.
 
 ---
 
