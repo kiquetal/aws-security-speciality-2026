@@ -54,6 +54,7 @@
 - 🧠 **Federation with on-prem AD = ADFS + IAM ROLES + AssumeRoleWithSAML.** Never IAM users/groups. Cognito = customer apps, not enterprise.
 - 🧠 **ADFS federation does NOT need AD Connector.** ADFS uses SAML directly to STS. AD Connector is a separate pattern for Directory Service integration (WorkSpaces, domain-join).
 - 🧠 **"No AWS Directory Service infrastructure" = ADFS on-prem + Identity Center external IdP.** AD Connector IS Directory Service infrastructure (you deploy + maintain it in AWS). ADFS lives entirely on-prem.
+- 🧠 **AD Connector = connects to on-prem AD (proxy). Simple AD = standalone Samba (own users, NO connection to on-prem).** Never pick Simple AD when question says "on-prem AD."
 
 ---
 

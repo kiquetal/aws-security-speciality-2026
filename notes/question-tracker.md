@@ -8,21 +8,21 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 729 |
-| **✅ Correct** | 570 (78%) |
+| **Total Questions** | 739 |
+| **✅ Correct** | 579 (78%) |
 | **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 131 (18%) |
-| **Sessions** | 74 |
-| **Re-tests Passed** | 320 of 389 |
+| **❌ Wrong** | 132 (18%) |
+| **Sessions** | 75 |
+| **Re-tests Passed** | 325 of 394 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 132 | 6 | 48 | 186 | 71% | 🟡 |
+| D1: Detection | 134 | 6 | 48 | 188 | 71% | 🟡 |
 | D2: Incident Response | 14 | 1 | 1 | 16 | 88% | 🟢 |
-| D3: Infrastructure Security | 66 | 5 | 12 | 83 | 80% | 🟡 |
-| D4: Identity & Access Management | 171 | 8 | 29 | 208 | 82% | 🟢 |
+| D3: Infrastructure Security | 68 | 5 | 12 | 85 | 80% | 🟢 |
+| D4: Identity & Access Management | 176 | 8 | 30 | 214 | 82% | 🟢 |
 | D5: Data Protection | 86 | 3 | 17 | 106 | 81% | 🟢 |
 | D6: Governance | 101 | 2 | 24 | 127 | 80% | 🟡 |
 
@@ -145,6 +145,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 111 | VPN types (Dojo Q56) | Q719 | D3 | 1 |
 | 🟡 112 | CW metric filter value (Dojo Q57) | Q724 | D1 | 1 |
 | 🟡 113 | ADFS vs AD Connector (Dojo Q48) | Q731 | D4 | 1 |
+| 🟡 114 | AD Connector vs Simple AD | Q739 | D4 | 1 |
 
 ---
 
@@ -226,6 +227,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 72 | 2026-06-09 | Q707–Q712 | 2 | 1 | 3 | Cross-domain (Dojo Test 1 gap drill — operational troubleshooting, Directory Service, GuardDuty, CloudTrail, S3 encryption) | [Jump](#session-72--2026-06-09) |
 | 73 | 2026-06-09 | Q713–Q722 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #2 — CloudTrail, IoT, ENI, SQS, VPN, GuardDuty, IAM, S3 encryption) | [Jump](#session-73--2026-06-09) |
 | 74 | 2026-06-10 | Q723–Q732 | 8 | 0 | 2 | Cross-domain (Dojo Test 1 gap drill #3 — GuardDuty admin, CW metric filters, IAM boundaries, KMS Grants, OpenSearch, ACM, CloudTrail Read/Write, metadata, AD/ADFS, S3 encryption) | [Jump](#session-74--2026-06-10) |
+| 75 | 2026-06-10 | Q733–Q742 | 9 | 0 | 1 | Cross-domain (Dojo Test 1 gap drill #4 — AD/Directory Service focus + operational troubleshooting) | [Jump](#session-75--2026-06-10) |
 
 ---
 
@@ -1698,3 +1700,21 @@ After adding a session:
 | 730 | D3 | Legacy app doesn't need metadata, SSRF to 169.254.169.253 — eliminate? | C: HttpEndpoint disabled | ✅ | HttpEndpoint=disabled = metadata service completely off. NACLs can't block link-local. | — | Disable instance metadata (Dojo Q55) |
 | 731 | D4 | On-prem AD, SSO to AWS Console, NO AWS Directory Service infra, AD groups → permissions? | B: AD Connector + Identity Center | ❌ | C: ADFS on-prem as SAML IdP + Identity Center external IdP. AD Connector IS AWS Directory Service infrastructure. | Q709 | ADFS vs AD Connector (Dojo Q48) |
 | 732 | D5 | Upload without encryption headers, bucket has default SSE-KMS + Deny policy checking headers — result? | B: Access Denied — policy evaluates before default encryption | ✅ | Bucket policy evaluates request headers BEFORE default encryption applies. | Q626, Q643 | Default encryption vs bucket policy Deny (Dojo Q65) |
+
+### Session 75 — 2026-06-10
+
+**Domains:** Cross-domain (Dojo Test 1 gap drill #4 — AD/Directory Service focus + operational troubleshooting)
+**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 733 | D4 | 3000 employees, SSO, ZERO AWS infra, AD groups → permissions — approach? | C: ADFS on-prem + Identity Center external IdP | ✅ | "Zero AWS infra" = ADFS on-prem + Identity Center. AD Connector IS AWS infra. | Q709, Q731 | ADFS vs AD Connector (no infra) |
+| 734 | D4 | On-prem users need AWS + cloud users need on-prem (bidirectional) — config? | C: Managed AD + two-way trust | ✅ | Bidirectional = two-way trust. One-way = one direction only. | — | Directory Service + trust direction |
+| 735 | D4 | WorkSpaces domain-join + RDS SQL Server Windows Auth — minimum Directory Service? | C: Managed AD + one-way trust | ✅ | "RDS SQL Server" = Managed AD always. Simple AD and AD Connector can't. | — | Managed AD requirements |
+| 736 | D1 | CW alarm fired (threshold >=5), only 2 events in Event History — why? | B: Data events not in Event History | ✅ | Event History = management events only. Data event AccessDenied matches filter but invisible there. | — | Event History vs data events |
+| 737 | D1 | Suppress GD findings from pen-test EC2 with private IPs only — approach? | B: Attach EIPs + add to Trusted IP list | ✅ | Trusted IP list = public IPs only. Private IPs cannot be added. | Q711 | GuardDuty Trusted IP list |
+| 738 | D3 | 3 offices with routers + static IPs, encrypted to AWS, centralized routing — solution? | B: Site-to-Site VPN + Transit Gateway | ✅ | Office + router = Site-to-Site. Client VPN = laptops. TGW = centralized. | Q719 | VPN types |
+| 739 | D4 | On-prem AD, SSO only, no trusts, no cloud users, some AWS infra OK — simplest? | D: Simple AD | ❌ | B: AD Connector. Simple AD = standalone (own users), doesn't connect to on-prem AD. | — | AD Connector vs Simple AD |
+| 740 | D3 | IMDSv2 hop limit 1, container PUT to metadata — no response. Cause? | B: Container network adds extra hop, TTL expires | ✅ | Docker bridge = extra hop. Hop limit 1 = TTL expires. Fix: increase to 2. | — | IMDSv2 hop limit + containers |
+| 741 | D4 | Already have ADFS, want AWS SSO, no new Directory Service resources — which TWO? | B+C: ADFS as SAML IdP + permission sets | ✅ | ADFS external IdP in Identity Center + permission sets for group mapping. | Q731 | ADFS + Identity Center |
+| 742 | D4 | Match 4 AD scenarios to correct service (Connector, Managed, ADFS, two-way) | All correct: A, B, C, D | ✅ | Full AD decision tree applied correctly. | Q709, Q731 | AD decision tree |
