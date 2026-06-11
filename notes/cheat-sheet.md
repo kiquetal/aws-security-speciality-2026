@@ -217,6 +217,7 @@
 ## D6: Governance (14%)
 - Management account exempt from BOTH SCPs and RCPs. Don't put workloads there.
 - Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).
+- 🧠 **Control Tower prerequisites: STS enabled in all regions + IAM Identity Center enabled + DISABLE existing trusted access for Config/CloudTrail (CT manages these itself).** Existing trusted access = conflict.
 - Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.
 - 🧠 **"Which mechanism prevents X?" = SCP. "Which service automates guardrails?" = Control Tower.** Control Tower uses SCPs — the mechanism is SCP, the automation is Control Tower.
 - 🧠 **"PREVENT/BLOCK launches" = SCP (preventive). "DETECT + FIX after" = Config (detective).** If the instance should NEVER exist, SCP. If it can exist briefly then get fixed, Config.
