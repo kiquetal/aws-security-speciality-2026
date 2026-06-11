@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 769 |
-| **✅ Correct** | 605 (79%) |
+| **Total Questions** | 779 |
+| **✅ Correct** | 613 (79%) |
 | **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 136 (18%) |
-| **Sessions** | 78 |
-| **Re-tests Passed** | 335 of 405 |
+| **❌ Wrong** | 138 (18%) |
+| **Sessions** | 79 |
+| **Re-tests Passed** | 342 of 413 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 137 | 6 | 48 | 191 | 72% | 🟡 |
+| D1: Detection | 138 | 6 | 48 | 192 | 72% | 🟡 |
 | D2: Incident Response | 14 | 1 | 2 | 17 | 82% | 🟢 |
-| D3: Infrastructure Security | 71 | 5 | 12 | 88 | 81% | 🟢 |
-| D4: Identity & Access Management | 186 | 8 | 31 | 225 | 83% | 🟢 |
-| D5: Data Protection | 95 | 3 | 19 | 117 | 81% | 🟢 |
+| D3: Infrastructure Security | 72 | 5 | 13 | 90 | 80% | 🟢 |
+| D4: Identity & Access Management | 189 | 8 | 32 | 229 | 83% | 🟢 |
+| D5: Data Protection | 98 | 3 | 19 | 120 | 82% | 🟢 |
 | D6: Governance | 102 | 2 | 24 | 128 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -150,6 +150,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 116 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
 | 🟡 117 | InsideAWS = SG isolation | Q761 | D2 | 1 |
 | 🟡 118 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
+| 🟡 119 | Cognito Identity Pool + role (not direct STS) | Q778 | D4 | 1 |
+| 🟡 120 | NACLs stateless (inbound ACCEPT + outbound REJECT) | Q781 | D3 | 1 |
 
 ---
 
@@ -235,6 +237,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 76 | 2026-06-10 | Q743–Q752 | 8 | 0 | 2 | Cross-domain (Dojo Test 2 gap drill — KMS operational, IAM/SCP, STS variants, SSM remediation, load balancers) | [Jump](#session-76--2026-06-10) |
 | 77 | 2026-06-10 | Q753–Q762 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, maximum difficulty) | [Jump](#session-77--2026-06-10) |
 | 78 | 2026-06-10 | Q763–Q772 | 9 | 0 | 1 | Cross-domain (Dojo Test 2 gap drill #2 — KMS operational, SCP, permission boundaries, SSE-C, Secrets Manager, CloudTrail Insights) | [Jump](#session-78--2026-06-10) |
+| 79 | 2026-06-11 | Q773–Q782 | 8 | 0 | 2 | Cross-domain (Dojo combined gap reinforcement drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-79--2026-06-11) |
 
 ---
 
@@ -1779,3 +1782,21 @@ After adding a session:
 | 770 | D5 | Lambda needs DB creds, rotate every 30d, RDS PostgreSQL — service? | B: Secrets Manager native rotation | ✅ | Rotation + RDS = Secrets Manager. Zero custom code. | — | Secrets Manager native rotation (Dojo T2) |
 | 771 | D1 | CloudTrail Insights detects what kind of anomaly? | C: Unusual API call volume | ✅ | Insights = volume (statistical). GuardDuty = behavior (threat intel). | — | CloudTrail Insights vs GuardDuty (Dojo T2) |
 | 772 | D5 | Lambda reads Parameter Store SecureString (CMK), has ssm:GetParameter — fails. Missing? | B: kms:Decrypt on customer-managed key | ✅ | Customer-managed key = always explicit kms:Decrypt. AWS-managed may auto-grant. | — | Parameter Store + kms:Decrypt (Dojo T2) |
+
+### Session 79 — 2026-06-11
+
+**Domains:** Cross-domain (Dojo combined gap reinforcement drill — KMS operational, IAM wording traps, service selection, troubleshooting)
+**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 773 | D5 | S3 multipart 50GB + SSE-KMS, Access Denied on complete step — missing permission? | B: kms:Decrypt | ✅ | Multipart reassembly needs kms:Decrypt. Single-part only needs GenerateDataKey. | Q744, Q765 | S3 multipart + KMS (Dojo T2 Q43) |
+| 774 | D5 | EC2 encrypted EBS won't start, key policy only has Decrypt + GenerateDataKeyWithoutPlaintext — cause? | B: kms:CreateGrant missing | ✅ | EC2 always delegates to EBS backend via CreateGrant. Always needed. | Q745, Q767 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) |
+| 775 | D5 | Need encrypted data key NOW but plaintext LATER — which API? | B: GenerateDataKeyWithoutPlaintext | ✅ | Returns only encrypted key. Call Decrypt later when ready. | Q743 | GenerateDataKey variants (Dojo T2 Q33) |
+| 776 | D4 | SCP allows ec2+s3+lambda only, IAM grants kms:CreateKey — result? | C: Denied — implicit deny (not in SCP Allow) | ✅ | SCP is ceiling. Action not listed = implicitly denied. | Q747 | SCP ceiling implicit deny (Dojo T2 Q65) |
+| 777 | D4 | Created roles must never exceed s3:GetObject+logs:*, least admin effort — approach? | B: Permission boundary via SCP condition | ✅ | Boundary delegation pattern. SCP forces boundary on CreateRole. | Q746, Q768 | Permission boundary delegation (Dojo T2 Q61) |
+| 778 | D4 | Cognito User Pool + need temp AWS creds for S3 upload — which TWO? | B+A (wrong: picked AssumeRoleWithWebIdentity) | ❌ | B+D: Identity Pool + define authenticated IAM role. Identity Pool handles STS internally. | — | Cognito Identity Pool + role (not direct STS) |
+| 779 | D3 | Non-HTTP binary protocol, TLS on port 9100, health checks — which LB? | B: NLB with TLS listener | ✅ | NLB = any TCP/UDP + TLS termination on any port. ALB = HTTP only. | Q752 | NLB vs ALB vs GWLB (Dojo T2 Q49) |
+| 780 | D1 | GuardDuty findings severity >= 7, trigger Lambda, least services — architecture? | B: GuardDuty → EventBridge → Lambda | ✅ | GuardDuty publishes directly to EventBridge. No Security Hub needed. | — | GuardDuty direct to EventBridge |
+| 781 | D3 | Flow Log: inbound ACCEPT + outbound REJECT — which TWO true? | A+E (wrong: picked SG outbound) | ❌ | B+C: NACL blocking return + issue on response path. SG is stateful — never causes this pattern. | Q707 | NACLs stateless (inbound ACCEPT + outbound REJECT) |
+| 782 | D4 | On-prem AD + SSO + WorkSpaces + RDS SQL + cloud-only accounts — which Directory? | B: Managed AD + two-way trust | ✅ | RDS SQL + cloud users = Managed AD always. Two-way = bidirectional access. | Q709, Q734 | Managed AD + two-way trust |
