@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 792 |
-| **✅ Correct** | 626 (79%) |
-| **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 138 (17%) |
-| **Sessions** | 80 |
+| **Total Questions** | 805 |
+| **✅ Correct** | 635 (79%) |
+| **⚠️ Partial** | 27 (3%) |
+| **❌ Wrong** | 140 (17%) |
+| **Sessions** | 81 |
 | **Re-tests Passed** | 354 of 425 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 141 | 6 | 48 | 195 | 72% | 🟡 |
+| D1: Detection | 142 | 7 | 49 | 198 | 72% | 🟡 |
 | D2: Incident Response | 15 | 1 | 2 | 18 | 83% | 🟢 |
-| D3: Infrastructure Security | 74 | 5 | 13 | 92 | 80% | 🟢 |
-| D4: Identity & Access Management | 193 | 8 | 32 | 233 | 83% | 🟢 |
-| D5: Data Protection | 101 | 3 | 19 | 123 | 82% | 🟢 |
-| D6: Governance | 102 | 2 | 24 | 128 | 80% | 🟡 |
+| D3: Infrastructure Security | 74 | 5 | 14 | 93 | 80% | 🟡 |
+| D4: Identity & Access Management | 194 | 8 | 32 | 234 | 83% | 🟢 |
+| D5: Data Protection | 106 | 4 | 19 | 129 | 82% | 🟢 |
+| D6: Governance | 104 | 2 | 24 | 130 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -152,6 +152,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 118 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
 | 🟡 119 | Cognito Identity Pool + role (not direct STS) | Q778 | D4 | 1 |
 | 🟡 120 | NACLs stateless (inbound ACCEPT + outbound REJECT) | Q781 | D3 | 1 |
+| 🟡 121 | EKS Runtime Monitoring (agent required) | Q797 | D1 | 1 |
+| 🟡 122 | Glacier Vault Lock vs Object Lock | Q800 | D5 | 1 |
+| 🟡 123 | CloudFront response headers policy | Q801 | D3 | 1 |
+| 🟡 124 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
 
 ---
 
@@ -239,6 +243,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 78 | 2026-06-10 | Q763–Q772 | 9 | 0 | 1 | Cross-domain (Dojo Test 2 gap drill #2 — KMS operational, SCP, permission boundaries, SSE-C, Secrets Manager, CloudTrail Insights) | [Jump](#session-78--2026-06-10) |
 | 79 | 2026-06-11 | Q773–Q782 | 8 | 0 | 2 | Cross-domain (Dojo combined gap reinforcement drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-79--2026-06-11) |
 | 80 | 2026-06-11 | Q783–Q795 | 13 | 0 | 0 | Cross-domain (Dojo combined gap drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-80--2026-06-11) |
+| 81 | 2026-06-11 | Q796–Q808 | 9 | 2 | 2 | Cross-domain (novel topics drill — encryption context, EKS runtime, presigned URLs, Glacier Vault Lock, CloudFront headers, IAM Roles Anywhere, S3 Object Lambda, declarative policies) | [Jump](#session-81--2026-06-11) |
 
 ---
 
@@ -1822,3 +1827,24 @@ After adding a session:
 | 793 | D1 | Detect unusual API call volume vs 30-day baseline, least overhead? | B: CloudTrail Insights | ✅ | Insights = volume (statistical baseline). GuardDuty = behavior (threat intel). | — | CloudTrail Insights vs GuardDuty |
 | 794 | D1 | EventBridge rule on ConsoleLogin never fires, Event History shows logins, Write-only trail — cause? | B: Trail Write-only, ConsoleLogin is Read | ✅ | EventBridge only receives events the trail delivers. Event History shows all. | Q710 | CloudTrail management events Read/Write |
 | 795 | D1 | Suppress GD findings from pen-test EC2 with private IPs only — approach? (TWO) | B+A: EIPs + Trusted IP list, or suppression rule on instance IDs | ✅ | Trusted IP list = public IPs only. Suppression rule = alternative. | Q711 | GuardDuty Trusted IP list + suppression rules |
+
+### Session 81 — 2026-06-11
+
+**Domains:** Cross-domain (novel topics drill — encryption context, EKS runtime, presigned URLs, Glacier Vault Lock, CloudFront headers, IAM Roles Anywhere, S3 Object Lambda, declarative policies)
+**Score:** 9 ✅ · 2 ⚠️ · 2 ❌ (69% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 796 | D5/D4 | Encryption context in key policy + PrincipalTag ABAC, engineering Lambda reads finance object — result? | B: Fails — context mismatch blocks Decrypt | ✅ | Key policy evaluates encryption context against caller's PrincipalTag at decrypt time. | — | Encryption context + key policy ABAC |
+| 797 | D1/D3 | EKS Runtime Monitoring enabled, crypto miner in pod, no findings, audit log works — cause? | B: Runtime only detects network threats | ❌ | A: Runtime Monitoring needs agent (DaemonSet). Audit Log = agentless. No agent = no runtime findings. | — | EKS Runtime Monitoring (agent required) |
+| 798 | D5/D3 | Lambda generates presigned URL, partners upload from internet fails, VPC Gateway endpoint exists — cause? | B: Bucket policy sourceVpce condition | ✅ | Bucket policy restricts to VPC endpoint. Partner's internet request doesn't traverse endpoint. | — | Presigned URL + sourceVpce |
+| 799 | D6/D5 | Deploy to EC2 + on-prem + rotate creds, proposes Elastic Beanstalk — TWO issues? | A+E: EB can't do on-prem + CodeDeploy is correct | ✅ | Elastic Beanstalk = EC2 only. CodeDeploy + Secrets Manager is correct. | — | CodeDeploy on-prem + Secrets Manager |
+| 800 | D5 | WORM 7yr, root can't delete, irreversible once confirmed — approach? | A: Object Lock Compliance | ⚠️ | B: Glacier Vault Lock. "Irreversible once confirmed" = Vault Lock (24hr confirm, then permanent). Object Lock = per-object retention. | — | Glacier Vault Lock vs Object Lock |
+| 801 | D3 | CloudFront missing HSTS/CSP/X-Content-Type headers, least overhead — approach? | B: Lambda@Edge | ❌ | A: CloudFront response headers policy (managed, zero code). Lambda@Edge = only for dynamic/conditional logic. | — | CloudFront response headers policy |
+| 802 | D5/D4 | S3 Access Point VPC-only, partner needs internet access — solution? | A: Create second Access Point with NetworkOrigin Internet | ✅ | VPC-only AP is permanent. Create separate AP for internet access. | — | S3 Access Points VPC restriction |
+| 803 | D1/D3 | Container CVE in Inspector + active reverse shell — which statement true? | B: GD Runtime detects exploitation, Inspector detects CVE — both needed | ✅ | Inspector = static CVE. GuardDuty Runtime = active exploitation. Complementary. | — | Inspector + GuardDuty Runtime complementary |
+| 804 | D5 | S3 CRR + encryption context + destination key policy condition — staging object replication? | B: Fails — destination key rejects staging context | ✅ | CRR preserves encryption context. Destination key policy evaluates it. Per-object failure. | — | Encryption context + CRR |
+| 805 | D4 | On-prem server, X.509 cert, short-lived creds, least overhead — approach? | B: IAM Roles Anywhere + trust anchor + profile | ✅ | Roles Anywhere = exchange X.509 for temp STS creds. Designed for on-prem. | — | IAM Roles Anywhere |
+| 806 | D1 | Two GD findings correlated into attack sequence in console — which feature? | B: Security Hub insight | ⚠️ | C: GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet). Too new for exam. | — | GuardDuty Extended Threat Detection (too new) |
+| 807 | D5/D4 | Same bucket, analytics needs PII redacted, compliance needs full — least duplication? | B: S3 Object Lambda AP for analytics + standard AP for compliance | ✅ | Object Lambda transforms on read. Zero duplication, per-team view. | — | S3 Object Lambda Access Point |
+| 808 | D6/D3 | Guarantee no public IPs regardless of ANY API (current or future) — approach? | B: Declarative policy | ✅ | Declarative policy enforces STATE. SCP blocks specific APIs (must enumerate). | — | Declarative policies vs SCP |
