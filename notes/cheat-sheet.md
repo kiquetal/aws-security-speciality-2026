@@ -178,6 +178,7 @@
 - 🧠 **GuardDuty doesn't fire on BLOCKED/DENIED attempts.** It detects successful anomalous access. If RCP/SCP blocks the request, no successful access occurs = no finding. Access Analyzer fires on policy (static) regardless.
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
+- 🧠 **GuardDuty EKS: Audit Log Monitoring = agentless. Runtime Monitoring = needs agent (DaemonSet).** Runtime detects process-level (crypto miners, shells). No agent = no runtime findings.
 - 🧠 **GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.
 
 ### Log Sources

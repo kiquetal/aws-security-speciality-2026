@@ -47,10 +47,21 @@
 - **Security Hub integration**: Cross-region aggregation
 
 ### Runtime Monitoring
-- **Automatic agent deployment**: GuardDuty manages agent lifecycle
+- **ONLY GuardDuty feature that requires an agent** — everything else is agentless
+- **EKS Audit Log Monitoring** = agentless (reads K8s API server audit logs via internal feed)
+- **EKS Runtime Monitoring** = needs GuardDuty security agent (DaemonSet on nodes)
+- **What Runtime detects that Audit Log cannot:** process-level activity — crypto miners, reverse shells, suspicious file access, container escape
+- **No agent deployed = no runtime findings** (audit log findings still work)
+- **Automatic agent deployment**: GuardDuty manages agent lifecycle (recommended)
 - **Manual deployment**: Customer manages agent updates
 - **VPC endpoints**: Created automatically in VPCs with monitored workloads
 - **Resource overhead**: Minimal CPU/memory impact
+- **Also covers**: EC2 instances, ECS/Fargate tasks (all via agent)
+
+### 🧠 Cheat-Sheet One-Liners (EKS)
+- EKS Audit Log = agentless (who did what in K8s API). Runtime = agent (what's running inside pods).
+- No agent deployed → zero runtime findings. Audit log findings still appear.
+- "Crypto miner running in pod, no GuardDuty finding" → missing Runtime Monitoring agent.
 
 ### Malware Protection
 - **EBS scanning**: Once per 24 hours per instance
