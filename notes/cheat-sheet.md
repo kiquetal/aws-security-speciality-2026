@@ -181,6 +181,7 @@
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
 - 🧠 **GuardDuty EKS: Audit Log Monitoring = agentless. Runtime Monitoring = needs agent (DaemonSet).** Runtime detects process-level (crypto miners, shells). No agent = no runtime findings.
+- 🧠 **GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet):** correlates multiple findings into attack sequences in the GD console. If tested, answer = "Extended Threat Detection." Otherwise "correlate/investigate" = Detective.
 - 🧠 **GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.
 
 ### Log Sources
