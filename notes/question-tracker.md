@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 779 |
-| **✅ Correct** | 613 (79%) |
+| **Total Questions** | 792 |
+| **✅ Correct** | 626 (79%) |
 | **⚠️ Partial** | 25 (3%) |
-| **❌ Wrong** | 138 (18%) |
-| **Sessions** | 79 |
-| **Re-tests Passed** | 342 of 413 |
+| **❌ Wrong** | 138 (17%) |
+| **Sessions** | 80 |
+| **Re-tests Passed** | 354 of 425 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 138 | 6 | 48 | 192 | 72% | 🟡 |
-| D2: Incident Response | 14 | 1 | 2 | 17 | 82% | 🟢 |
-| D3: Infrastructure Security | 72 | 5 | 13 | 90 | 80% | 🟢 |
-| D4: Identity & Access Management | 189 | 8 | 32 | 229 | 83% | 🟢 |
-| D5: Data Protection | 98 | 3 | 19 | 120 | 82% | 🟢 |
+| D1: Detection | 141 | 6 | 48 | 195 | 72% | 🟡 |
+| D2: Incident Response | 15 | 1 | 2 | 18 | 83% | 🟢 |
+| D3: Infrastructure Security | 74 | 5 | 13 | 92 | 80% | 🟢 |
+| D4: Identity & Access Management | 193 | 8 | 32 | 233 | 83% | 🟢 |
+| D5: Data Protection | 101 | 3 | 19 | 123 | 82% | 🟢 |
 | D6: Governance | 102 | 2 | 24 | 128 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -238,6 +238,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 77 | 2026-06-10 | Q753–Q762 | 9 | 0 | 1 | Cross-domain killer exam simulation (all domains, maximum difficulty) | [Jump](#session-77--2026-06-10) |
 | 78 | 2026-06-10 | Q763–Q772 | 9 | 0 | 1 | Cross-domain (Dojo Test 2 gap drill #2 — KMS operational, SCP, permission boundaries, SSE-C, Secrets Manager, CloudTrail Insights) | [Jump](#session-78--2026-06-10) |
 | 79 | 2026-06-11 | Q773–Q782 | 8 | 0 | 2 | Cross-domain (Dojo combined gap reinforcement drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-79--2026-06-11) |
+| 80 | 2026-06-11 | Q783–Q795 | 13 | 0 | 0 | Cross-domain (Dojo combined gap drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-80--2026-06-11) |
 
 ---
 
@@ -1800,3 +1801,24 @@ After adding a session:
 | 780 | D1 | GuardDuty findings severity >= 7, trigger Lambda, least services — architecture? | B: GuardDuty → EventBridge → Lambda | ✅ | GuardDuty publishes directly to EventBridge. No Security Hub needed. | — | GuardDuty direct to EventBridge |
 | 781 | D3 | Flow Log: inbound ACCEPT + outbound REJECT — which TWO true? | A+E (wrong: picked SG outbound) | ❌ | B+C: NACL blocking return + issue on response path. SG is stateful — never causes this pattern. | Q707 | NACLs stateless (inbound ACCEPT + outbound REJECT) |
 | 782 | D4 | On-prem AD + SSO + WorkSpaces + RDS SQL + cloud-only accounts — which Directory? | B: Managed AD + two-way trust | ✅ | RDS SQL + cloud users = Managed AD always. Two-way = bidirectional access. | Q709, Q734 | Managed AD + two-way trust |
+
+### Session 80 — 2026-06-11
+
+**Domains:** Cross-domain (Dojo combined gap drill — KMS operational, IAM wording traps, service selection, troubleshooting)
+**Score:** 13 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 783 | D4 | Cognito User Pool + need temp AWS creds for S3 upload — which TWO? | B+D: Identity Pool + authenticated role mapping | ✅ | Identity Pool + define authenticated IAM role. Identity Pool handles STS internally. | Q778 | Cognito Identity Pool + role (not direct STS) |
+| 784 | D3 | Flow Log: inbound ACCEPT port 443 + outbound REJECT ephemeral — cause? | B: NACL missing outbound ephemeral | ✅ | NACLs stateless — need explicit outbound rule. SGs are stateful. | Q781 | NACLs stateless (inbound ACCEPT + outbound REJECT) |
+| 785 | D2 | InstanceCredentialExfiltration.InsideAWS, contain without breaking legitimate? | B: Deny-all SG on attacker's instance | ✅ | InsideAWS = both share role, TokenIssueTime breaks both. Isolate attacker. | Q761 | InsideAWS = SG isolation |
+| 786 | D5 | S3 multipart 15-50GB + SSE-KMS, fails at complete step — missing permission? | B: kms:Decrypt | ✅ | Multipart = GenerateDataKey + Decrypt (reassembly). S3 never uses kms:Encrypt. | Q744, Q765 | S3 multipart + KMS |
+| 787 | D5 | EC2 encrypted EBS won't start, has kms:Decrypt + GenerateDataKeyWithoutPlaintext — missing? | B: kms:CreateGrant | ✅ | EC2 always delegates to EBS backend via grants. Always needed. | Q745, Q767 | EC2 EBS + kms:CreateGrant |
+| 788 | D5 | Need encrypted data key now, plaintext later — which API? | B: GenerateDataKeyWithoutPlaintext | ✅ | Returns only encrypted key. Call Decrypt later when ready. | Q743 | GenerateDataKey variants |
+| 789 | D4 | SCP Allow ec2+s3+lambda only, IAM grants kms:CreateKey — result? | C: Denied — implicit deny | ✅ | SCP is ceiling. Action not listed = implicitly denied. | Q747 | SCP ceiling implicit deny |
+| 790 | D4 | Devs create roles but can't exceed s3:GetObject+logs:*, least effort? | B: SCP requiring PermissionsBoundary | ✅ | Boundary delegation pattern. SCP forces boundary on CreateRole. | Q746, Q768 | Permission boundary delegation |
+| 791 | D4 | Cognito User Pool token + direct AssumeRoleWithWebIdentity — what's wrong? | A: User Pool tokens can't be used with STS directly — use Identity Pool | ✅ | Identity Pool is the managed STS layer. Don't call STS directly. | Q778 | Cognito Identity Pool + role (not direct STS) |
+| 792 | D3 | Non-HTTP binary protocol, TLS on port 6379, health checks — which LB? | B: NLB with TLS listener | ✅ | NLB = any TCP/UDP + TLS on any port. ALB = HTTP only. | Q752 | NLB vs ALB vs GWLB |
+| 793 | D1 | Detect unusual API call volume vs 30-day baseline, least overhead? | B: CloudTrail Insights | ✅ | Insights = volume (statistical baseline). GuardDuty = behavior (threat intel). | — | CloudTrail Insights vs GuardDuty |
+| 794 | D1 | EventBridge rule on ConsoleLogin never fires, Event History shows logins, Write-only trail — cause? | B: Trail Write-only, ConsoleLogin is Read | ✅ | EventBridge only receives events the trail delivers. Event History shows all. | Q710 | CloudTrail management events Read/Write |
+| 795 | D1 | Suppress GD findings from pen-test EC2 with private IPs only — approach? (TWO) | B+A: EIPs + Trusted IP list, or suppression rule on instance IDs | ✅ | Trusted IP list = public IPs only. Suppression rule = alternative. | Q711 | GuardDuty Trusted IP list + suppression rules |
