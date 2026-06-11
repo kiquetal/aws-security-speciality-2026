@@ -75,6 +75,7 @@
 
 ### KMS
 - Grants are **eventually consistent** (up to 5 min). To use immediately after CreateGrant, pass the **grant token** in the subsequent API call (`--grant-tokens`). No token = AccessDenied until propagation completes.
+- 🧠 **EBS encryption by default = opt-in PER REGION.** Must enable in each region's EC2 settings. Not retroactive. S3 encryption is automatic globally (no opt-in since Jan 2023). "Regional opt-in + encryption at rest" = EBS.
 - 🧠 **EC2 + encrypted EBS always needs `kms:CreateGrant`.** Start existing = CreateGrant + Decrypt. Create new = CreateGrant + GenerateDataKey(WithoutPlaintext). EC2 delegates key access to EBS backend via grants.
 - Grants have **no expiration** — they last forever until explicitly revoked (`RevokeGrant`) or retired (`RetireGrant`). No auto-cleanup.
 - 🧠 **Admin revokes (takes away). Grantee retires (gives back).** `RevokeGrant` = key admin. `RetireGrant` = the grantee themselves.
