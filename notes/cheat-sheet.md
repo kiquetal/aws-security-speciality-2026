@@ -43,6 +43,7 @@
 
 ### Identity Center
 - Identity Center = workforce SSO. Cognito = customer apps. Never mix them.
+- 🧠 **Cognito Identity Pool = managed STS.** You define the IAM role, Identity Pool calls AssumeRoleWithWebIdentity FOR you. Don't call STS directly when using Identity Pool.
 - Only ONE identity source at a time: built-in OR AD OR external IdP (SAML 2.0).
 - Permission set = IAM role auto-created in target accounts. No manual role management.
 - 🧠 **SCIM = auto-sync users + groups from IdP.** New user added to group in Okta → auto-inherits permission set assignment. No manual action in Identity Center.
@@ -142,6 +143,7 @@
 - 🧠 **Interface endpoint = TWO SGs must cooperate.** Lambda SG needs outbound 443. Endpoint SG needs inbound 443. Miss either one = timeout.
 - 🧠 **C2Activity finding = active IP connection. DNS Firewall useless (IP already known). Use Network Firewall DROP on C2 IP.** DNS FW only helps if attacker needs DNS resolution.
 - 🧠 **DGA (Domain Generation Algorithm) = unpredictable domains, can't block-list. Flip to DNS Firewall ALLOW-LIST (block all except known-good).** DNS layer since attacker relies on DNS resolution.
+- 🧠 **Flow Log: inbound ACCEPT + outbound REJECT = always NACL.** SGs are stateful — accepted inbound = auto-allowed return. NACLs are stateless — need explicit outbound ephemeral port rule.
 
 ---
 
