@@ -1,69 +1,36 @@
-# Next Session — Dojo Combined Gap Drill
+# Next Weekly Session
 
-> Source: Dojo Test 1 (27 wrong) + Dojo Test 2 (18 wrong) = 45 total, deduplicated to ~25 unique patterns
-> Target: 10 killer questions covering the most frequent/impactful gaps
-> Format: Exam-style, novel scenarios, Dojo-style wording
-
----
-
-## Priority 1: KMS Operational (failed in BOTH tests)
-
-- GenerateDataKey vs GenerateDataKeyWithoutPlaintext
-- kms:CreateGrant for EBS start (vs GenerateDataKey)
-- Multipart upload needs kms:Decrypt
-- KMS key deleted → rsync data before expiry
-- KMS Grants vs key policy (when to use which)
-- Encryption Context = AAD
-
-**Generate: 3 questions**
+> Say "run the weekly session" and I'll generate questions from the current week below.
+> After grading, I mark it ✅ and advance to the next week.
 
 ---
 
-## Priority 2: IAM Wording Traps (failed in BOTH tests)
+## Current Week: 1 (Jun 16-22)
 
-- "Least permissive" = single action (not managed policy)
-- Permission Boundaries (delegate creation) vs SCP (restrict account)
-- SCP is ceiling — if not listed, blocked
-- AssumeRoleWithWebIdentity vs GetSessionToken vs AssumeRoleWithSAML
-- ExternalID for confused deputy (not GetAccessKeyInfo)
-- AWS Config for "track changes over time / point-in-time"
+**Focus:** Novel topics — ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules, S3 Batch Operations, CloudTrail Lake SQL
 
-**Generate: 3 questions**
+**Generate:** 10 questions, killer difficulty, novel scenarios only
 
----
-
-## Priority 3: Service/Architecture Selection (failed in BOTH tests)
-
-- NLB (custom protocol) vs ALB (HTTP only) vs GWLB (appliances, L3)
-- CloudFront/ALB for SNI (not GWLB)
-- CodeDeploy (on-prem) vs Elastic Beanstalk (EC2 only)
-- SSM runbook (least config) vs Lambda (custom code)
-- Parameter Store SecureString (cost-effective) vs Secrets Manager (rotation)
-- Kinesis (real-time ingest) + OpenSearch (analytics)
-- GuardDuty direct to EventBridge (no Security Hub middle layer needed)
-
-**Generate: 2 questions**
-
----
-
-## Priority 4: Operational Troubleshooting (Test 1 heavy)
-
-- NACL stateless: inbound ACCEPT + outbound REJECT = NACL
-- CW Logs agent: /var/log/awslogs.log (runtime) not setup.log
-- CloudTrail: Write-only trail = ConsoleLogin won't fire EventBridge
-- GuardDuty Trusted IP list = PUBLIC IPs only
-- AD: Managed AD + one-way trust (need trusts/separate domain)
-- VPN: Site-to-Site (offices) vs Client VPN (laptops)
-
-**Generate: 2 questions**
-
----
-
-## Delivery Rules
-
-- 10 questions total
-- Exam format (scenario + 4-5 options)
-- Novel wording (don't repeat Dojo verbatim)
-- Include at least 2 "Select TWO" questions
+**Constraints:**
+- Never repeat patterns with 3+ correct in tracker
+- At least 2 "Select TWO"
 - At least 1 cross-domain combo
-- Use "LEAST permissive/MOST cost-effective/LEAST overhead" wording traps
+- Use "least overhead" / "most cost-effective" wording traps
+- Topics must be from this week's focus OR untested tracker gaps
+
+---
+
+## Upcoming Weeks
+
+| Week | Dates | Focus | Status |
+|------|-------|-------|--------|
+| 1 | Jun 16-22 | ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | ⬜ Current |
+| 2 | Jun 23-29 | S3 Access Grants, Inspector SBOM, CloudTrail Lake queries, Macie custom identifiers | ⬜ |
+| 3 | Jun 30 - Jul 6 | D1 weak areas (detect vs prevent novel phrasing) | ⬜ |
+| 4 | Jul 7-13 | Private CA, VPC Lattice, GWLB + appliances, WAF Bot Control | ⬜ |
+| 5 | Jul 14-20 | Cross-domain killer set (5-layer evaluations, governance combos) | ⬜ |
+| 6 | Jul 21-27 | Re-test all ⚠️/❌ from Sessions 81+ | ⬜ |
+| 7 | Jul 28 - Aug 3 | Resilience Hub, FIS, ECS Exec, Lambda SnapStart security | ⬜ |
+| 8 | Aug 4-10 | D1 Detection final push (target 80%) | ⬜ |
+| 9 | Aug 11-17 | Cross-domain 65-question untimed simulation | ⬜ |
+| 10 | Aug 18-24 | Cheat sheet review + 2 short drills only | ⬜ |
