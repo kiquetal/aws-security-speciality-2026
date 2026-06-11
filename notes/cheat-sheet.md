@@ -70,6 +70,7 @@
 - 🧠 **S3 NEVER calls kms:Encrypt.** Upload = GenerateDataKey. Multipart = GenerateDataKey + Decrypt (reassembly). kms:Encrypt is only for direct <4KB encryption, not S3.
 - Object Lock requires versioning. Compliance mode = nobody can delete, not even root. Governance mode = overridable with `s3:BypassGovernanceRetention`.
 - Legal Hold = no expiration, independent of retention period. "Lawsuit" / "preserve indefinitely" → Legal Hold.
+- 🧠 **"Irreversible once confirmed" = Glacier Vault Lock (24hr confirm window, then permanent).** Object Lock Compliance = per-object retention. Vault Lock = per-vault immutable policy.
 - 🧠 **Cross-account S3 + SSE-KMS = THREE policies:** bucket policy (Account A) + key policy (Account A) + identity policy (Account B). Forget any one = Access Denied.
 
 ### KMS
@@ -135,6 +136,7 @@
 ### Edge
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
 - WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.
+- 🧠 **"Add security headers (HSTS, CSP, X-Content-Type-Options) to CloudFront, least overhead" = CloudFront response headers policy (managed, zero code).** Lambda@Edge = only if you need dynamic/conditional logic.
 - Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
 
