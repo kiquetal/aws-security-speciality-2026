@@ -2,6 +2,7 @@
 
 ## Overview
 - **Exam:** AWS Certified Security - Specialty (SCS-C03)
+- **Exam Date:** August 27, 2026
 - **Target:** ~12 topics (self-paced, no calendar deadlines)
 - **Passing Score:** 750/1000
 - **Strategy:** Domain-weighted study → Hands-on labs → Exam simulation
