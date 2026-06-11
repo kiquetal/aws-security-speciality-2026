@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 805 |
-| **✅ Correct** | 635 (79%) |
+| **Total Questions** | 810 |
+| **✅ Correct** | 638 (79%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 140 (17%) |
+| **❌ Wrong** | 142 (18%) |
 | **Sessions** | 81 |
-| **Re-tests Passed** | 354 of 425 |
+| **Re-tests Passed** | 355 of 426 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 142 | 7 | 49 | 198 | 72% | 🟡 |
-| D2: Incident Response | 15 | 1 | 2 | 18 | 83% | 🟢 |
-| D3: Infrastructure Security | 74 | 5 | 14 | 93 | 80% | 🟡 |
+| D1: Detection | 143 | 7 | 49 | 199 | 72% | 🟡 |
+| D2: Incident Response | 15 | 1 | 3 | 19 | 79% | 🟡 |
+| D3: Infrastructure Security | 75 | 5 | 14 | 94 | 80% | 🟡 |
 | D4: Identity & Access Management | 194 | 8 | 32 | 234 | 83% | 🟢 |
-| D5: Data Protection | 106 | 4 | 19 | 129 | 82% | 🟢 |
+| D5: Data Protection | 107 | 4 | 20 | 131 | 82% | 🟢 |
 | D6: Governance | 104 | 2 | 24 | 130 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -156,6 +156,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 122 | Glacier Vault Lock vs Object Lock | Q800 | D5 | 1 |
 | 🟡 123 | CloudFront response headers policy | Q801 | D3 | 1 |
 | 🟡 124 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
+| 🟡 125 | No-reboot AMI for volatile memory | Q810 | D2 | 1 |
+| 🟡 126 | Sign=private, verify=public | Q812 | D5 | 1 |
 
 ---
 
@@ -243,7 +245,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 78 | 2026-06-10 | Q763–Q772 | 9 | 0 | 1 | Cross-domain (Dojo Test 2 gap drill #2 — KMS operational, SCP, permission boundaries, SSE-C, Secrets Manager, CloudTrail Insights) | [Jump](#session-78--2026-06-10) |
 | 79 | 2026-06-11 | Q773–Q782 | 8 | 0 | 2 | Cross-domain (Dojo combined gap reinforcement drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-79--2026-06-11) |
 | 80 | 2026-06-11 | Q783–Q795 | 13 | 0 | 0 | Cross-domain (Dojo combined gap drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-80--2026-06-11) |
-| 81 | 2026-06-11 | Q796–Q808 | 9 | 2 | 2 | Cross-domain (novel topics drill — encryption context, EKS runtime, presigned URLs, Glacier Vault Lock, CloudFront headers, IAM Roles Anywhere, S3 Object Lambda, declarative policies) | [Jump](#session-81--2026-06-11) |
+| 81 | 2026-06-11 | Q796–Q813 | 12 | 2 | 4 | Cross-domain (novel topics drill — encryption context, EKS runtime, presigned URLs, Glacier Vault Lock, CloudFront headers, IAM Roles Anywhere, S3 Object Lambda, declarative policies) | [Jump](#session-81--2026-06-11) |
 
 ---
 
@@ -1831,7 +1833,7 @@ After adding a session:
 ### Session 81 — 2026-06-11
 
 **Domains:** Cross-domain (novel topics drill — encryption context, EKS runtime, presigned URLs, Glacier Vault Lock, CloudFront headers, IAM Roles Anywhere, S3 Object Lambda, declarative policies)
-**Score:** 9 ✅ · 2 ⚠️ · 2 ❌ (69% correct)
+**Score:** 12 ✅ · 2 ⚠️ · 4 ❌ (67% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -1848,3 +1850,8 @@ After adding a session:
 | 806 | D1 | Two GD findings correlated into attack sequence in console — which feature? | B: Security Hub insight | ⚠️ | C: GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet). Too new for exam. | — | GuardDuty Extended Threat Detection (too new) |
 | 807 | D5/D4 | Same bucket, analytics needs PII redacted, compliance needs full — least duplication? | B: S3 Object Lambda AP for analytics + standard AP for compliance | ✅ | Object Lambda transforms on read. Zero duplication, per-team view. | — | S3 Object Lambda Access Point |
 | 808 | D6/D3 | Guarantee no public IPs regardless of ANY API (current or future) — approach? | B: Declarative policy | ✅ | Declarative policy enforces STATE. SCP blocks specific APIs (must enumerate). | — | Declarative policies vs SCP |
+| 809 | D1 | Route 53 Resolver logs not appearing in CW Logs, VPC Flow Logs work fine — cause? | B: Log group resource policy missing | ✅ | Route 53 Resolver → CW Logs uses log group resource policy, not IAM role. | — | Log delivery mechanisms (R53 Resolver) |
+| 810 | D2 | Trojan finding, preserve volatile memory + disk evidence — sequence? | C: Deny-all SG → EBS snapshot → terminate | ❌ | B: Deny-all SG → no-reboot AMI (memory) → EBS snapshot (disk). Terminate = memory lost. | — | No-reboot AMI for volatile memory |
+| 811 | D5/D3 | S3 SSE-KMS uploads work, direct kms:Decrypt times out — fix? | B: Add Interface endpoint for KMS + SG 443 | ✅ | S3 SSE-KMS = server-side (no endpoint needed). Direct KMS call = needs KMS Interface endpoint. | Q685 | KMS endpoint for direct calls only |
+| 812 | D5 | Asymmetric KMS keys, sign artifacts, customers verify — which flow? | A: Sign with public key | ❌ | B: Sign with private → verify with public → integrity + non-repudiation. Can't sign with public. | — | Sign=private, verify=public |
+| 813 | D3 | Credential stuffing from 3 countries + rate limit 200/5min — where + rules? (TWO) | B+C: WAF on CloudFront + geo-match + rate-based | ✅ | WAF on CF blocks at edge. Geo-match + rate-based in same Web ACL. | — | WAF geo + rate on CloudFront |
