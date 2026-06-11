@@ -189,6 +189,12 @@
 - **"Which domain was queried?" = Resolver Query Logs.** VPC Flow Logs only show IP:port — domain name is gone after DNS resolves.
 - GuardDuty reads BOTH: DNS logs (domain) + VPC Flow Logs (traffic volume/destination). That's why it catches C2 that other services miss.
 - 🧠 **VPC Flow Logs = only service using IAM role for ALL delivery targets (S3, CloudWatch Logs, Kinesis Firehose).** CloudTrail uses bucket policy for S3, not an IAM role.
+- 🧠 **Log delivery mechanisms:**
+  - VPC Flow Logs → S3/CW Logs/Firehose = **IAM role** (all three)
+  - CloudTrail → S3 = **bucket policy**, CW Logs = **IAM role**, EventBridge = automatic
+  - Route 53 Resolver → CW Logs = **log group resource policy**, S3 = bucket policy, Firehose = IAM role
+  - WAF Logs → CW Logs = **log group resource policy**, S3 = bucket policy, Firehose = IAM role
+- 🧠 **CW Logs as destination = usually log group resource policy (service principal).** Exception: VPC Flow Logs uses IAM role for everything.
 
 ### CloudTrail / Logging
 - CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
