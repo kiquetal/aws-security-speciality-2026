@@ -71,6 +71,7 @@
 - Object Lock requires versioning. Compliance mode = nobody can delete, not even root. Governance mode = overridable with `s3:BypassGovernanceRetention`.
 - Legal Hold = no expiration, independent of retention period. "Lawsuit" / "preserve indefinitely" → Legal Hold.
 - 🧠 **"Irreversible once confirmed" = Glacier Vault Lock (24hr confirm window, then permanent).** Object Lock Compliance = per-object retention. Vault Lock = per-vault immutable policy.
+- 🧠 **Vault Lock vs Object Lock decision: "24hr confirm + permanently irreversible POLICY" = Vault Lock. "Fixed retention period per OBJECT, auto-expires" = Object Lock Compliance.** Vault Lock = policy-level forever. Object Lock = object-level with expiry.
 - 🧠 **Cross-account S3 + SSE-KMS = THREE policies:** bucket policy (Account A) + key policy (Account A) + identity policy (Account B). Forget any one = Access Denied.
 
 ### KMS
