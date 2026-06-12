@@ -48,4 +48,4 @@
 | — | 2026-06-09 | 09:18 | 20:52 | 180 | Sessions 72-73 (Dojo gap drills) |
 | — | 2026-06-10 | 09:03 | 18:11 | 180 | Sessions 74-78 (Dojo gap + killer) |
 | — | 2026-06-11 | 08:48 | 22:33 | 180 | Sessions 79-82 (novel topics) |
-| 1 | 2026-06-12 | 10:44 | — | — | Sessions 83-85 (priority re-test + D1/D2 killer drill) |
+| 1 | 2026-06-12 | 10:44 | 11:28 | 44 | Sessions 83-85 (priority re-test + D1/D2 killer drill, 43%→93%→100%) |
