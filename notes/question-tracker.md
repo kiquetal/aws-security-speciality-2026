@@ -8,19 +8,19 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 831 |
-| **✅ Correct** | 652 (78%) |
+| **Total Questions** | 838 |
+| **✅ Correct** | 658 (79%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 149 (18%) |
-| **Sessions** | 84 |
-| **Re-tests Passed** | 364 of 440 |
+| **❌ Wrong** | 150 (18%) |
+| **Sessions** | 85 |
+| **Re-tests Passed** | 370 of 447 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 146 | 7 | 51 | 204 | 72% | 🟡 |
-| D2: Incident Response | 17 | 1 | 6 | 24 | 71% | 🟡 |
+| D1: Detection | 151 | 7 | 52 | 210 | 72% | 🟡 |
+| D2: Incident Response | 18 | 1 | 6 | 25 | 72% | 🟡 |
 | D3: Infrastructure Security | 77 | 5 | 14 | 96 | 80% | 🟢 |
 | D4: Identity & Access Management | 195 | 8 | 32 | 235 | 83% | 🟢 |
 | D5: Data Protection | 113 | 4 | 22 | 139 | 81% | 🟢 |
@@ -160,6 +160,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 126 | CloudFront response headers policy | Q801 | D3 | 1 |
 | 🟡 127 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
 | 🟡 128 | OutsideAWS IR + IMDSv2 hardening | Q820 | D2 | 1 |
+| 🟡 129 | GuardDuty ≠ failed attempts + AA static | Q839 | D1 | 1 |
 
 ---
 
@@ -251,6 +252,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 82 | 2026-06-11 | Q814–Q820 | 5 | 0 | 2 | Cross-domain (novel topics killer drill — ACM regions, Config remediation, encryption context ABAC, GWLB, declarative policies, S3 Access Grants, IR forensics) | [Jump](#session-82--2026-06-11) |
 | 83 | 2026-06-12 | Q821–Q827 | 3 | 0 | 4 | Cross-domain (priority re-test — Sessions 81-82 errors) | [Jump](#session-83--2026-06-12) |
 | 84 | 2026-06-12 | Q828–Q834 | 6 | 0 | 1 | Cross-domain (priority re-test #2 — Sessions 81-83 errors, reinforcement) | [Jump](#session-84--2026-06-12) |
+| 85 | 2026-06-12 | Q835–Q841 | 6 | 0 | 1 | D1 Detection + D2 Incident Response (killer targeted drill — weakest domains) | [Jump](#session-85--2026-06-12) |
 
 ---
 
@@ -1908,3 +1910,19 @@ After adding a session:
 | 832 | D2/D4 | InsideAWS, stolen creds on different EC2 same role, stop attacker without breaking production? | B: Deny-all SG on attacker's instance | ✅ | InsideAWS = SG isolation. TokenIssueTime breaks both. | Q761, Q825 | InsideAWS = SG isolation |
 | 833 | D5 | S3 objects undeletable 5 years exactly, auto-deletable after, root can't override — config? | B: Object Lock Compliance 5yr | ✅ | Fixed per-object retention with expiry = Object Lock Compliance. | Q800, Q822 | Glacier Vault Lock vs Object Lock |
 | 834 | D5 | Asymmetric KMS sign, on-prem Jenkins no AWS creds, verify signature — how? | B: Download public key, verify locally OpenSSL | ✅ | Public key offline verification. No AWS needed. | Q812, Q824 | Sign=private, verify=public |
+
+
+### Session 85 — 2026-06-12
+
+**Domains:** D1 Detection + D2 Incident Response (killer targeted drill — weakest domains)
+**Score:** 6 ✅ · 0 ⚠️ · 1 ❌ (86% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 835 | D1 | SSE-KMS, alert on 10x volume + never-seen IP, no Lambda/filters/infra — service? | B: GuardDuty S3 Protection | ✅ | Anomalous volume + novel IP + zero infra = GuardDuty S3 Protection. | Q568, Q581 | Detect vs prevent (GuardDuty vs policy) |
+| 836 | D1/D6 | Alert 90s on iam:DeleteRolePolicy + alert on S3 baseline deviation — which TWO? | B: EventBridge + GuardDuty S3 Protection | ✅ | Specific API fast = EventBridge. Behavioral = GuardDuty. | Q474, Q681 | EventBridge + GuardDuty S3 Protection |
+| 837 | D1/D3 | C2Activity finding, attacker hardcoded IP (no DNS), block VPC-wide — action? | B: Network Firewall DROP on C2 IP | ✅ | Hardcoded IP = DNS FW useless. NF drops by IP. SGs can't deny. | Q526, Q571 | Network FW for IP-level C2 block |
+| 838 | D2 | Trojan 8.9, capture running processes + network conns + kernel modules, no reboot — action? | B: No-reboot AMI | ✅ | No-reboot AMI = volatile memory capture. EBS = disk only. | Q810, Q825, Q830 | No-reboot AMI for volatile memory |
+| 839 | D1 | RCP blocks external, 500 denied GetObjects, GD + AA enabled — which true? | C: Only AA fires | ❌ | D: Both B+C true. GD no finding (blocked). AA flags policy (static). Both independent. | Q534, Q594 | GuardDuty ≠ failed attempts + AA static |
+| 840 | D1 | EC2 DNS to C2 beacon, then TLS TCP to resolved IP — ThreatPurpose order? | B: Impact then Trojan | ✅ | DNS = Impact. Active TCP to C2 = Trojan. CryptoCurrency = mining only. | Q655, Q671 | GuardDuty finding types (C2 = Trojan) |
+| 841 | D1 | GD enabled 6 months all regions, 50 EC2s, zero findings, VPC Flow Logs not enabled — cause? | C: Suppression rule | ✅ | GD reads Flow Logs internally. Zero findings + active workloads = suppression rule. | Q372, Q389 | GuardDuty suppression rules |
