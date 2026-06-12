@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 810 |
-| **✅ Correct** | 638 (79%) |
+| **Total Questions** | 817 |
+| **✅ Correct** | 643 (79%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 142 (18%) |
-| **Sessions** | 81 |
+| **❌ Wrong** | 144 (18%) |
+| **Sessions** | 82 |
 | **Re-tests Passed** | 355 of 426 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 143 | 7 | 49 | 199 | 72% | 🟡 |
-| D2: Incident Response | 15 | 1 | 3 | 19 | 79% | 🟡 |
-| D3: Infrastructure Security | 75 | 5 | 14 | 94 | 80% | 🟡 |
-| D4: Identity & Access Management | 194 | 8 | 32 | 234 | 83% | 🟢 |
-| D5: Data Protection | 107 | 4 | 20 | 131 | 82% | 🟢 |
+| D1: Detection | 144 | 7 | 50 | 201 | 72% | 🟡 |
+| D2: Incident Response | 15 | 1 | 4 | 20 | 75% | 🟡 |
+| D3: Infrastructure Security | 76 | 5 | 14 | 95 | 80% | 🟢 |
+| D4: Identity & Access Management | 195 | 8 | 32 | 235 | 83% | 🟢 |
+| D5: Data Protection | 109 | 4 | 20 | 133 | 82% | 🟢 |
 | D6: Governance | 104 | 2 | 24 | 130 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -158,6 +158,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 124 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
 | 🟡 125 | No-reboot AMI for volatile memory | Q810 | D2 | 1 |
 | 🟡 126 | Sign=private, verify=public | Q812 | D5 | 1 |
+| 🟡 127 | S3 Access Grants prefix overlap | Q819 | D1 | 1 |
+| 🟡 128 | OutsideAWS IR + IMDSv2 hardening | Q820 | D2 | 1 |
 
 ---
 
@@ -246,6 +248,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 79 | 2026-06-11 | Q773–Q782 | 8 | 0 | 2 | Cross-domain (Dojo combined gap reinforcement drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-79--2026-06-11) |
 | 80 | 2026-06-11 | Q783–Q795 | 13 | 0 | 0 | Cross-domain (Dojo combined gap drill — KMS operational, IAM wording traps, service selection, troubleshooting) | [Jump](#session-80--2026-06-11) |
 | 81 | 2026-06-11 | Q796–Q813 | 12 | 2 | 4 | Cross-domain (novel topics drill — encryption context, EKS runtime, presigned URLs, Glacier Vault Lock, CloudFront headers, IAM Roles Anywhere, S3 Object Lambda, declarative policies) | [Jump](#session-81--2026-06-11) |
+| 82 | 2026-06-11 | Q814–Q820 | 5 | 0 | 2 | Cross-domain (novel topics killer drill — ACM regions, Config remediation, encryption context ABAC, GWLB, declarative policies, S3 Access Grants, IR forensics) | [Jump](#session-82--2026-06-11) |
 
 ---
 
@@ -1855,3 +1858,19 @@ After adding a session:
 | 811 | D5/D3 | S3 SSE-KMS uploads work, direct kms:Decrypt times out — fix? | B: Add Interface endpoint for KMS + SG 443 | ✅ | S3 SSE-KMS = server-side (no endpoint needed). Direct KMS call = needs KMS Interface endpoint. | Q685 | KMS endpoint for direct calls only |
 | 812 | D5 | Asymmetric KMS keys, sign artifacts, customers verify — which flow? | A: Sign with public key | ❌ | B: Sign with private → verify with public → integrity + non-repudiation. Can't sign with public. | — | Sign=private, verify=public |
 | 813 | D3 | Credential stuffing from 3 countries + rate limit 200/5min — where + rules? (TWO) | B+C: WAF on CloudFront + geo-match + rate-based | ✅ | WAF on CF blocks at edge. Geo-match + rate-based in same Web ACL. | — | WAF geo + rate on CloudFront |
+
+
+### Session 82 — 2026-06-11
+
+**Domains:** Cross-domain (novel topics killer drill — ACM regions, Config remediation, encryption context ABAC, GWLB, declarative policies, S3 Access Grants, IR forensics)
+**Score:** 5 ✅ · 0 ⚠️ · 2 ❌ (71% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 814 | D5/D3 | CloudFront + 2 ALBs (us-west-2 + eu-west-1), eu-west-1 ALB cert errors — cause? | C: Cert provisioned in us-west-2 instead of eu-west-1 | ✅ | ALB cert must be in ALB's region. CF cert = us-east-1. ALB cert = ALB's region. | — | ACM region requirements |
+| 815 | D1/D6 | RDS DeletionProtection enforcement, 200 accounts, remediate 15min, least overhead? | B: Org Config managed rule + SSM Automation | ✅ | Org Config rule + SSM = detect + auto-remediate, least overhead, delegated admin. | — | Config org rule + SSM remediation |
+| 816 | D5/D4 | Encryption context TenantId + PrincipalTag ABAC, alpha Lambda decrypts beta object — which TWO true? | B+C | ✅ | Context mismatch blocks Decrypt (B). Encryption context evaluated at KMS layer (C). | — | Encryption context + key policy ABAC |
+| 817 | D3/D1 | Third-party IDS/IPS appliances, centralized inspection, scale + health check + transparent — component? | B: GWLB with GENEVE encapsulation | ✅ | GWLB = transparent inline inspection, GENEVE preserves headers, scales, health checks. | — | GWLB + third-party appliances |
+| 818 | D4/D6 | Declarative policy vs SCP, new API assigns public IP — which protects without changes? | B: Declarative policy enforces state regardless of API | ✅ | Declarative = state enforcement. SCP = API-specific (must enumerate). | — | Declarative policies vs SCP |
+| 819 | D1/D5 | S3 Access Grants, Finance analyst accesses Marketing prefix — cause? | C: Session policy bypass by bucket policy | ❌ | D: Access Grant location prefix overlaps with Marketing's prefix. Prefix misconfiguration = #1 operational issue. | — | S3 Access Grants prefix overlap |
+| 820 | D2/D1/D4 | OutsideAWS credential exfil, can't stop instance, preserve + prevent IMDS — FOUR actions? | A+B+C+G | ❌ | A+C+D (+ question design error for 4th). TokenIssueTime (A) + EBS snapshot (C) + IMDSv2 hop limit 1 (D). B kills API traffic. G irrelevant. | — | OutsideAWS IR + IMDSv2 hardening |
