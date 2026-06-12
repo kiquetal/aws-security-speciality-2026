@@ -8,19 +8,19 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 838 |
-| **✅ Correct** | 658 (79%) |
+| **Total Questions** | 845 |
+| **✅ Correct** | 665 (79%) |
 | **⚠️ Partial** | 27 (3%) |
 | **❌ Wrong** | 150 (18%) |
 | **Sessions** | 85 |
-| **Re-tests Passed** | 370 of 447 |
+| **Re-tests Passed** | 377 of 454 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 151 | 7 | 52 | 210 | 72% | 🟡 |
-| D2: Incident Response | 18 | 1 | 6 | 25 | 72% | 🟡 |
+| D1: Detection | 157 | 7 | 52 | 216 | 73% | 🟡 |
+| D2: Incident Response | 19 | 1 | 6 | 26 | 73% | 🟡 |
 | D3: Infrastructure Security | 77 | 5 | 14 | 96 | 80% | 🟢 |
 | D4: Identity & Access Management | 195 | 8 | 32 | 235 | 83% | 🟢 |
 | D5: Data Protection | 113 | 4 | 22 | 139 | 81% | 🟢 |
@@ -252,7 +252,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 82 | 2026-06-11 | Q814–Q820 | 5 | 0 | 2 | Cross-domain (novel topics killer drill — ACM regions, Config remediation, encryption context ABAC, GWLB, declarative policies, S3 Access Grants, IR forensics) | [Jump](#session-82--2026-06-11) |
 | 83 | 2026-06-12 | Q821–Q827 | 3 | 0 | 4 | Cross-domain (priority re-test — Sessions 81-82 errors) | [Jump](#session-83--2026-06-12) |
 | 84 | 2026-06-12 | Q828–Q834 | 6 | 0 | 1 | Cross-domain (priority re-test #2 — Sessions 81-83 errors, reinforcement) | [Jump](#session-84--2026-06-12) |
-| 85 | 2026-06-12 | Q835–Q841 | 6 | 0 | 1 | D1 Detection + D2 Incident Response (killer targeted drill — weakest domains) | [Jump](#session-85--2026-06-12) |
+| 85 | 2026-06-12 | Q835–Q848 | 13 | 0 | 1 | D1 Detection + D2 Incident Response (killer targeted drill — weakest domains) | [Jump](#session-85--2026-06-12) |
 
 ---
 
@@ -1915,7 +1915,7 @@ After adding a session:
 ### Session 85 — 2026-06-12
 
 **Domains:** D1 Detection + D2 Incident Response (killer targeted drill — weakest domains)
-**Score:** 6 ✅ · 0 ⚠️ · 1 ❌ (86% correct)
+**Score:** 13 ✅ · 0 ⚠️ · 1 ❌ (93% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -1926,3 +1926,10 @@ After adding a session:
 | 839 | D1 | RCP blocks external, 500 denied GetObjects, GD + AA enabled — which true? | C: Only AA fires | ❌ | D: Both B+C true. GD no finding (blocked). AA flags policy (static). Both independent. | Q534, Q594 | GuardDuty ≠ failed attempts + AA static |
 | 840 | D1 | EC2 DNS to C2 beacon, then TLS TCP to resolved IP — ThreatPurpose order? | B: Impact then Trojan | ✅ | DNS = Impact. Active TCP to C2 = Trojan. CryptoCurrency = mining only. | Q655, Q671 | GuardDuty finding types (C2 = Trojan) |
 | 841 | D1 | GD enabled 6 months all regions, 50 EC2s, zero findings, VPC Flow Logs not enabled — cause? | C: Suppression rule | ✅ | GD reads Flow Logs internally. Zero findings + active workloads = suppression rule. | Q372, Q389 | GuardDuty suppression rules |
+| 842 | D1/D4 | Bucket policy grants external, no access yet, GD + AA enabled — which TWO true? | B+D: AA fires (static) + GD fires after actual access | ✅ | AA = static policy. GD = needs actual anomalous access. Independent. | Q518, Q534 | Access Analyzer + GuardDuty both fire |
+| 843 | D1 | Detect kms:DisableKey 400 accounts within 60s, org trail exists — approach? | C: EventBridge in management account | ✅ | Specific API + fast + org trail = EventBridge. | Q474, Q570 | EventBridge for API call detection |
+| 844 | D1 | EC2 active TCP to mining pool IP port 3333, sustained — ThreatPurpose? | C: CryptoCurrency | ✅ | Active TCP to mining pool = CryptoCurrency. | Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 845 | D1/D3 | DGADomainRequest finding, all via DNS, block VPC-wide — approach? | C: DNS Firewall allow-list | ✅ | DGA = unpredictable. Can't enumerate. Allow-list = block all except known-good. | Q690 | DGA = allow-list DNS Firewall |
+| 846 | D1/D6 | Prevent StopLogging + detect PutBucketPolicy 2min + block external S3 — THREE services? | B: SCP + EventBridge + RCP | ✅ | SCP prevents. EventBridge detects API. RCP blocks consequence. | Q688 | Full detect/prevent architecture |
+| 847 | D2/D1 | OutsideAWS, API must stay up, stop attacker + preserve + prevent SSRF — combo? | B: TokenIssueTime + EBS snapshot + IMDSv2 hop 1 | ✅ | Deny-all SG kills API. TokenIssueTime + snapshot + IMDSv2. | Q820, Q827 | OutsideAWS IR + IMDSv2 hardening |
+| 848 | D1 | GD org-wide, admin suppression <4, member suppression all pen-test — both valid? | B: Both valid, operate independently | ✅ | Admin + member can both create suppression rules independently. | Q372 | GuardDuty suppression rules |
