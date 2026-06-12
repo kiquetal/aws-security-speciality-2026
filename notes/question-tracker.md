@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 824 |
-| **✅ Correct** | 646 (78%) |
+| **Total Questions** | 831 |
+| **✅ Correct** | 652 (78%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 148 (18%) |
-| **Sessions** | 83 |
-| **Re-tests Passed** | 358 of 433 |
+| **❌ Wrong** | 149 (18%) |
+| **Sessions** | 84 |
+| **Re-tests Passed** | 364 of 440 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 145 | 7 | 51 | 203 | 71% | 🟡 |
-| D2: Incident Response | 16 | 1 | 5 | 22 | 73% | 🟡 |
+| D1: Detection | 146 | 7 | 51 | 204 | 72% | 🟡 |
+| D2: Incident Response | 17 | 1 | 6 | 24 | 71% | 🟡 |
 | D3: Infrastructure Security | 77 | 5 | 14 | 96 | 80% | 🟢 |
 | D4: Identity & Access Management | 195 | 8 | 32 | 235 | 83% | 🟢 |
-| D5: Data Protection | 109 | 4 | 22 | 135 | 81% | 🟢 |
+| D5: Data Protection | 113 | 4 | 22 | 139 | 81% | 🟢 |
 | D6: Governance | 104 | 2 | 24 | 130 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -42,23 +42,23 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 8 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
 | 🔴 9 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
 | 🔴 10 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
-| 🔴 11 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 12 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 13 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
-| 🔴 14 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 15 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 16 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
-| 🔴 17 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
-| 🔴 18 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
-| 🔴 19 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
-| 🔴 20 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
-| 🔴 21 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1 | 2 |
-| 🔴 22 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
-| 🔴 23 | Cross-account KMS key policy must name external account | Q541, Q669 | D4 | 2 |
-| 🔴 24 | Session policy + server-side KMS | Q591, Q679 | D4 | 2 |
-| 🔴 25 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4 | 2 |
-| 🔴 26 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
-| 🔴 27 | No-reboot AMI for volatile memory | Q810, Q825 | D2 | 2 |
+| 🔴 11 | No-reboot AMI for volatile memory | Q810, Q825, Q830 | D2 | 3 |
+| 🔴 12 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 13 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 14 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 15 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 16 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 17 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
+| 🔴 18 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🔴 19 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
+| 🔴 20 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
+| 🔴 21 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
+| 🔴 22 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1 | 2 |
+| 🔴 23 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
+| 🔴 24 | Cross-account KMS key policy must name external account | Q541, Q669 | D4 | 2 |
+| 🔴 25 | Session policy + server-side KMS | Q591, Q679 | D4 | 2 |
+| 🔴 26 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4 | 2 |
+| 🔴 27 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
 | 🔴 28 | Sign=private, verify=public | Q812, Q824 | D5 | 2 |
 | 🔴 29 | S3 Access Grants prefix overlap | Q819, Q826 | D1 | 2 |
 | 🟡 30 | CloudTrail data vs management events | Q1 | D1 | 1 |
@@ -250,6 +250,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 81 | 2026-06-11 | Q796–Q813 | 12 | 2 | 4 | Cross-domain (novel topics drill — encryption context, EKS runtime, presigned URLs, Glacier Vault Lock, CloudFront headers, IAM Roles Anywhere, S3 Object Lambda, declarative policies) | [Jump](#session-81--2026-06-11) |
 | 82 | 2026-06-11 | Q814–Q820 | 5 | 0 | 2 | Cross-domain (novel topics killer drill — ACM regions, Config remediation, encryption context ABAC, GWLB, declarative policies, S3 Access Grants, IR forensics) | [Jump](#session-82--2026-06-11) |
 | 83 | 2026-06-12 | Q821–Q827 | 3 | 0 | 4 | Cross-domain (priority re-test — Sessions 81-82 errors) | [Jump](#session-83--2026-06-12) |
+| 84 | 2026-06-12 | Q828–Q834 | 6 | 0 | 1 | Cross-domain (priority re-test #2 — Sessions 81-83 errors, reinforcement) | [Jump](#session-84--2026-06-12) |
 
 ---
 
@@ -1891,3 +1892,19 @@ After adding a session:
 | 825 | D2 | Trojan C2Activity, preserve volatile memory + disk, can't stop instance — TWO actions? | B+E | ❌ | A+B: EBS snapshot (disk) + no-reboot AMI (memory). Deny-all SG doesn't dump memory. | Q810 | No-reboot AMI for volatile memory |
 | 826 | D1/D5 | S3 Access Grants, Finance grant for /finance/, analyst lists marketing-budgets/ — cause? | B: Prefix /finance matches finance-adjacent | ❌ | D: Grant location set to root (s3://data-lake/) instead of s3://data-lake/finance/. marketing-budgets starts with 'm', never matches 'finance' prefix. | Q819 | S3 Access Grants prefix overlap |
 | 827 | D2/D4 | OutsideAWS, API must stay up, stop attacker + preserve disk + prevent IMDS SSRF — THREE? | A+C+D | ✅ | TokenIssueTime (A) + EBS snapshot (C) + IMDSv2 hop limit 1 (D). Deny-all SG kills API. | Q820 | OutsideAWS IR + IMDSv2 hardening |
+
+
+### Session 84 — 2026-06-12
+
+**Domains:** Cross-domain (priority re-test #2 — Sessions 81-83 errors, reinforcement)
+**Score:** 6 ✅ · 0 ⚠️ · 1 ❌ (86% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 828 | D5 | Audit records in Glacier, policy cannot be altered after validation, brief testing before permanent? | C: Glacier Vault Lock | ✅ | Vault Lock — initiate, 24hr test, complete = permanent. | Q800, Q822 | Glacier Vault Lock vs Object Lock |
+| 829 | D5 | Asymmetric KMS, signed binaries, customers verify offline, junior says verification needs KMS — correct? | B: No — public key verifies offline | ✅ | Private signs (KMS). Public verifies (offline). | Q812, Q824 | Sign=private, verify=public |
+| 830 | D2 | Trojan C2Activity, capture volatile memory + disk, instance must not stop — TWO actions? | B+C (dd /dev/mem) | ❌ | A+B: EBS snapshot (disk) + no-reboot AMI (memory). dd /dev/mem restricted on modern kernels. | Q810, Q825 | No-reboot AMI for volatile memory |
+| 831 | D1/D5 | Access Grants, Engineering grant for /engineering/, engineer reads /hr/salaries/ — check FIRST? | B: Grant location set to root | ✅ | Prefix too broad (root instead of department). | Q819, Q826 | S3 Access Grants prefix overlap |
+| 832 | D2/D4 | InsideAWS, stolen creds on different EC2 same role, stop attacker without breaking production? | B: Deny-all SG on attacker's instance | ✅ | InsideAWS = SG isolation. TokenIssueTime breaks both. | Q761, Q825 | InsideAWS = SG isolation |
+| 833 | D5 | S3 objects undeletable 5 years exactly, auto-deletable after, root can't override — config? | B: Object Lock Compliance 5yr | ✅ | Fixed per-object retention with expiry = Object Lock Compliance. | Q800, Q822 | Glacier Vault Lock vs Object Lock |
+| 834 | D5 | Asymmetric KMS sign, on-prem Jenkins no AWS creds, verify signature — how? | B: Download public key, verify locally OpenSSL | ✅ | Public key offline verification. No AWS needed. | Q812, Q824 | Sign=private, verify=public |
