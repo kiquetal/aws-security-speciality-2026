@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 845 |
-| **✅ Correct** | 665 (79%) |
+| **Total Questions** | 862 |
+| **✅ Correct** | 675 (78%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 150 (18%) |
-| **Sessions** | 85 |
-| **Re-tests Passed** | 377 of 454 |
+| **❌ Wrong** | 157 (18%) |
+| **Sessions** | 86 |
+| **Re-tests Passed** | 380 of 458 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 157 | 7 | 52 | 216 | 73% | 🟡 |
-| D2: Incident Response | 19 | 1 | 6 | 26 | 73% | 🟡 |
-| D3: Infrastructure Security | 77 | 5 | 14 | 96 | 80% | 🟢 |
-| D4: Identity & Access Management | 195 | 8 | 32 | 235 | 83% | 🟢 |
-| D5: Data Protection | 113 | 4 | 22 | 139 | 81% | 🟢 |
-| D6: Governance | 104 | 2 | 24 | 130 | 80% | 🟢 |
+| D1: Detection | 160 | 7 | 53 | 220 | 73% | 🟡 |
+| D2: Incident Response | 19 | 1 | 7 | 27 | 70% | 🟡 |
+| D3: Infrastructure Security | 79 | 5 | 14 | 98 | 81% | 🟢 |
+| D4: Identity & Access Management | 196 | 8 | 35 | 239 | 82% | 🟢 |
+| D5: Data Protection | 116 | 4 | 24 | 144 | 81% | 🟢 |
+| D6: Governance | 105 | 2 | 24 | 131 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -41,21 +41,21 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 7 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
 | 🔴 8 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
 | 🔴 9 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
-| 🔴 10 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
-| 🔴 11 | No-reboot AMI for volatile memory | Q810, Q825, Q830 | D2 | 3 |
-| 🔴 12 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 13 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 14 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
-| 🔴 15 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 16 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 17 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
-| 🔴 18 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
-| 🔴 19 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
-| 🔴 20 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
-| 🔴 21 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
-| 🔴 22 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1 | 2 |
-| 🔴 23 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
-| 🔴 24 | Cross-account KMS key policy must name external account | Q541, Q669 | D4 | 2 |
+| 🔴 10 | Cross-account KMS key policy must name external account | Q541, Q669, Q850 | D4 | 3 |
+| 🔴 11 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
+| 🔴 12 | No-reboot AMI for volatile memory | Q810, Q825, Q830 | D2 | 3 |
+| 🔴 13 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 14 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 15 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 16 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 17 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 18 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
+| 🔴 19 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🔴 20 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
+| 🔴 21 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
+| 🔴 22 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
+| 🔴 23 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1 | 2 |
+| 🔴 24 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
 | 🔴 25 | Session policy + server-side KMS | Q591, Q679 | D4 | 2 |
 | 🔴 26 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4 | 2 |
 | 🔴 27 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
@@ -161,6 +161,12 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 127 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
 | 🟡 128 | OutsideAWS IR + IMDSv2 hardening | Q820 | D2 | 1 |
 | 🟡 129 | GuardDuty ≠ failed attempts + AA static | Q839 | D1 | 1 |
+| 🟡 130 | S3 Batch Operations cross-account + manifest region | Q855 | D5 | 1 |
+| 🟡 131 | S3 Batch cross-account needs bucket policy | Q857 | D4 | 1 |
+| 🟡 132 | SCP prevention > detect+remediate | Q858 | D4 | 1 |
+| 🟡 133 | StopLogging kills own CW Logs delivery | Q860 | D1 | 1 |
+| 🟡 134 | Credential leak IR (Deny-all before investigate) | Q862 | D2 | 1 |
+| 🟡 135 | S3 server access logging = ACLs | Q864 | D5 | 1 |
 
 ---
 
@@ -253,6 +259,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 83 | 2026-06-12 | Q821–Q827 | 3 | 0 | 4 | Cross-domain (priority re-test — Sessions 81-82 errors) | [Jump](#session-83--2026-06-12) |
 | 84 | 2026-06-12 | Q828–Q834 | 6 | 0 | 1 | Cross-domain (priority re-test #2 — Sessions 81-83 errors, reinforcement) | [Jump](#session-84--2026-06-12) |
 | 85 | 2026-06-12 | Q835–Q848 | 13 | 0 | 1 | D1 Detection + D2 Incident Response (killer targeted drill — weakest domains) | [Jump](#session-85--2026-06-12) |
+| 86 | 2026-06-12 | Q849–Q865 | 10 | 0 | 7 | Cross-domain (killer difficulty — novel operational scenarios, cross-account patterns, ACM, Config, Kinesis) | [Jump](#session-86--2026-06-12) |
 
 ---
 
@@ -1933,3 +1940,29 @@ After adding a session:
 | 846 | D1/D6 | Prevent StopLogging + detect PutBucketPolicy 2min + block external S3 — THREE services? | B: SCP + EventBridge + RCP | ✅ | SCP prevents. EventBridge detects API. RCP blocks consequence. | Q688 | Full detect/prevent architecture |
 | 847 | D2/D1 | OutsideAWS, API must stay up, stop attacker + preserve + prevent SSRF — combo? | B: TokenIssueTime + EBS snapshot + IMDSv2 hop 1 | ✅ | Deny-all SG kills API. TokenIssueTime + snapshot + IMDSv2. | Q820, Q827 | OutsideAWS IR + IMDSv2 hardening |
 | 848 | D1 | GD org-wide, admin suppression <4, member suppression all pen-test — both valid? | B: Both valid, operate independently | ✅ | Admin + member can both create suppression rules independently. | Q372 | GuardDuty suppression rules |
+
+
+### Session 86 — 2026-06-12
+
+**Domains:** Cross-domain (killer difficulty — novel operational scenarios, cross-account patterns, ACM, Config, Kinesis)
+**Score:** 9 ✅ · 0 ⚠️ · 8 ❌ (53% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 849 | D1/D4 | RCP blocks external, 200 denied GetObjects, AA + GD enabled — which TWO true? | B+C: AA fires + GD doesn't fire | ✅ | AA = static policy. GD = no successful access = no finding. | Q534, Q839 | GuardDuty ≠ failed attempts + AA static |
+| 850 | D4/D5 | ECS task retrieves secret, KMS key policy updated to remove task's account, retry Decrypt — result? | D: Fails on secretsmanager:GetSecretValue | ❌ | B: Fails on kms:Decrypt — key policy no longer names external account, cross-account KMS broken. | Q541, Q669 | Cross-account KMS key policy must name external account |
+| 851 | D3 | IoT device publishes to other device's topic by spoofing MQTT client ID — fix? | B: Replace ${iot:ClientId} with ${iot:Connection.Thing.ThingName} | ✅ | ThingName = server-registered (trusted). ClientId = client-supplied (untrusted). | — | IoT ThingName vs ClientId |
+| 852 | D1 | CloudTrail Lake org-level, architect expects 30s latency — limitation? | C: Lake latency is 5-15 min, not sub-minute | ✅ | Near real-time ≠ sub-minute. EventBridge for seconds. | — | CloudTrail Lake latency |
+| 853 | D6/D1 | Org Config custom rule fails in member accounts "Lambda function not found" — fix? | C: Lambda resource-based policy allowing config.amazonaws.com from members | ✅ | Org custom rule invokes Lambda in delegated admin account. Resource policy needed. | — | Config org custom rule cross-account invoke |
+| 854 | D1/D3 | 50GB/hr WAF logs, real-time full-text search + 90d retention + User-Agent alerts — architecture? | A: Firehose + OpenSearch + UltraWarm + alerting | ✅ | Full-text + sub-second + dashboards = OpenSearch. | — | Kinesis + OpenSearch architecture |
+| 855 | D5/D4 | S3 Batch Operations cross-account re-encrypt 12M objects — which TWO required? | A+E: Decrypt/GenerateDataKey + service principal key policy | ❌ | A+D: KMS perms correct + manifest must be in same region as job. Batch uses YOUR role, not service principal. | — | S3 Batch Operations cross-account + manifest region |
+| 856 | D3/D5 | Lambda private subnet, direct kms:Decrypt times out, SM + DDB work — cause? | A: KMS Interface endpoint deleted | ✅ | Direct KMS call = needs endpoint. Timeout = network. SM has its own endpoint. | Q685 | KMS endpoint for direct calls only |
+| 857 | D4/D6 | S3 Batch Operations 100% failure PutObjectTagging cross-account, role has s3:* Resource:* — cause? | A: Batch Operations can't operate cross-account | ❌ | B: Member bucket policies don't grant the batch job role access. Cross-account S3 = both sides. | — | S3 Batch cross-account needs bucket policy |
+| 858 | D4/D6 | Detect CreateRole without boundary within 2 min + delete within 5 min — which TWO? | A (only one selected) | ❌ | C: SCP preventing creation entirely = least overhead (prevention > detection). A valid for detect+fix. | — | SCP prevention > detect+remediate |
+| 859 | D5/D3 | ACM cert "not found" on ap-southeast-1 ALB, cert issued and valid — cause? | A: Cert in wrong region (must be in ALB's region) | ✅ | ACM certs are regional. ALB cert must be in ALB's region. | — | ACM region requirements |
+| 860 | D1 | CW metric filter on StopLogging, alarm worked in test, real attack undetected — cause? | D: Trail already stopped by prior StopLogging | ❌ | A: StopLogging stops delivery of its own event to CW Logs — metric filter never sees it. | — | StopLogging kills own CW Logs delivery |
+| 861 | D5 | Private CA cert renewed, existing 24hr microservice certs have 20hr remaining — what happens? | B: Existing certs continue working until natural expiry | ✅ | CA renewal doesn't invalidate previously-issued certs. | — | Private CA renewal ≠ revocation |
+| 862 | D2 | Developer keys on GitHub 6hrs, attacker used from foreign IP — which TWO FIRST? | B+D: Deactivate keys + Detective | ❌ | B+C: Deactivate keys + inline Deny-all (covers second key/console/sessions). Contain before investigate. | — | Credential leak IR (Deny-all before investigate) |
+| 863 | D4/D5 | SCP Deny kms:* unless ViaService=s3, Lambda reads+writes S3 SSE-KMS — result? | A: Both succeed — S3 calls KMS server-side | ✅ | ViaService satisfied for both Decrypt and GenerateDataKey when S3 initiates. | Q488 | kms:ViaService + SCP |
+| 864 | D5/D6 | Config auto-remediation S3 logging fails "role does not have permission" — missing? | D: s3:PutBucketPolicy on target | ❌ | A: s3:GetBucketAcl — S3 access logging uses ACLs (legacy), not bucket policies. | — | S3 server access logging = ACLs |
+| 865 | D5/D3 | Kinesis encrypted stream, new consumer Lambda Access Denied — missing permission? | A: kms:Decrypt on stream's KMS key | ✅ | Consumer decrypts. Producer generates data key. Same pattern as S3. | — | Kinesis consumer = kms:Decrypt |
