@@ -218,6 +218,8 @@
 - Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
 - Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.
 - 🧠 **OutsideAWS = TokenIssueTime (creds used externally, instance gets fresh ones). InsideAWS = deny-all SG on attacker's instance (TokenIssueTime would break both instances sharing same role).**
+- 🧠 **OutsideAWS + can't stop instance: TokenIssueTime (stop attacker) + EBS snapshot (forensics) + IMDSv2 hop limit 1 (prevent future SSRF). Deny-all SG kills legitimate traffic — wrong choice if API must stay up.**
+- 🧠 **S3 Access Grants scope access by prefix (location). Overlapping prefixes = unintended cross-department access.** This is the #1 operational misconfiguration — not IAM bypass.
 
 ---
 
