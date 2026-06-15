@@ -509,7 +509,15 @@
                         These areas of logical friction represent opportunities for growth. Sorted by frequency of mistake, focus on these 🔴 Red-Priority and 🟡 Yellow-Priority items. Click any topic to explore and test yourself against the exact questions you missed.
                     </p>
                 </div>
-
+                
+                <!-- Weak Areas Switcher Toggle -->
+                <div class="flex justify-center mb-6">
+                    <div class="inline-flex rounded p-1 bg-surface-container-low border border-outline-variant">
+                        <button onclick="setWeakAreasFilter('all')" id="weak-filter-all" class="px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all bg-secondary text-on-secondary shadow">All Gaps</button>
+                        <button onclick="setWeakAreasFilter('red')" id="weak-filter-red" class="px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all text-on-surface-variant hover:text-on-surface">🔴 Top Priority</button>
+                        <button onclick="setWeakAreasFilter('yellow')" id="weak-filter-yellow" class="px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all text-on-surface-variant hover:text-on-surface">🟡 Other Gaps</button>
+                    </div>
+                </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="weak-areas-grid">
                     <!-- Dynamic cards loaded via JS -->
@@ -628,7 +636,9 @@
         let activeTab = 'dashboard';
         let activeQcQuestion = null;
         let currentRoadmapType = 'domains';
-const EXAM_DOMAINS_TIMELINE = [
+        let currentWeakAreasFilter = 'all';
+
+        const EXAM_DOMAINS_TIMELINE = [
             {
                 phase: "I",
                 domainCode: "D4",
@@ -1253,12 +1263,20 @@ const EXAM_DOMAINS_TIMELINE = [
             }
         }
 
-                // Render weak gaps board card grid
+        // Render weak gaps board card grid
         function buildWeakAreasBoard() {
             const grid = document.getElementById('weak-areas-grid');
+            if (!grid) return;
             grid.innerHTML = '';
             
-            TRACKER_DATA.weak_areas.forEach((item, index) => {
+            const weakAreas = TRACKER_DATA.weak_areas || [];
+            
+            weakAreas.forEach((item, index) => {
+                // Apply filter
+                if (currentWeakAreasFilter !== 'all' && item.level !== currentWeakAreasFilter) {
+                    return;
+                }
+                
                 const priorityBadge = item.level === 'red' ? "bg-error-container text-error border border-error/20" : "bg-secondary/15 text-secondary border border-secondary/20";
                 
                 const card = document.createElement('div');
@@ -1297,6 +1315,23 @@ const EXAM_DOMAINS_TIMELINE = [
                 `;
                 grid.appendChild(card);
             });
+        }
+
+        // Filter weak areas board
+        function setWeakAreasFilter(filterType) {
+            currentWeakAreasFilter = filterType;
+            const btnAll = document.getElementById('weak-filter-all');
+            const btnRed = document.getElementById('weak-filter-red');
+            const btnYellow = document.getElementById('weak-filter-yellow');
+            
+            if (btnAll) btnAll.className = "px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all " + 
+                (filterType === 'all' ? "bg-secondary text-on-secondary shadow" : "text-on-surface-variant hover:text-on-surface");
+            if (btnRed) btnRed.className = "px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all " + 
+                (filterType === 'red' ? "bg-secondary text-on-secondary shadow" : "text-on-surface-variant hover:text-on-surface");
+            if (btnYellow) btnYellow.className = "px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all " + 
+                (filterType === 'yellow' ? "bg-secondary text-on-secondary shadow" : "text-on-surface-variant hover:text-on-surface");
+                
+            buildWeakAreasBoard();
         }
 
         // Switch roadmap timeline source
