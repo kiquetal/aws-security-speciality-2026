@@ -262,8 +262,8 @@ const TRACKER_DATA = {
         "Q687"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 3,
       "level": "red"
@@ -305,8 +305,8 @@ const TRACKER_DATA = {
         "Q495"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 3,
       "level": "red"
@@ -12749,6 +12749,1443 @@ const TRACKER_DATA = {
           "correct_answer": "B: kms:CreateGrant + kms:DescribeKey \u2014 DynamoDB delegates via grants like EBS.",
           "retest": "Q899",
           "review": "DynamoDB + CMK = CreateGrant + DescribeKey"
+        }
+      ]
+    }
+  ],
+  "cheat_sheet": [
+    {
+      "title": "D4: Identity & Access Management (20%)",
+      "category": "D4",
+      "subsections": [
+        {
+          "title": "Policy Layers",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "SCP restricts your principals. RCP restricts your resources \u2014 blocks external callers that SCPs can't touch.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**SCP is a CEILING (allowlist).** If an action isn't in the SCP Allow, it's implicitly denied \u2014 IAM policy Allow is irrelevant. SCP Allow ec2+lambda only \u2192 s3:* in IAM = denied.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**SLRs escape the RESOURCE gate (RCP), not the PRINCIPAL gate (SCP).** SLRs are exempt from RCPs only. SCPs still apply to SLRs because they live in your account. AWS service principals are a different thing \u2014 exempt via `PrincipalIsAWSService` condition.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Boundary = ceiling on ONE role. Identity \u2229 boundary = effective. Never grants.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Delegation pattern: Deny CreateRole without boundary + Deny remove/swap boundary = safe self-service IAM.",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Data Perimeter",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**RCP blocks outsiders IN. SCP blocks insiders OUT.** Full data perimeter = both together. Bucket policy per-bucket doesn't scale org-wide.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**RCP protects YOUR resources only (inbound). Outbound to external resources = SCP's job.** If your SLR replicates to a partner's bucket, RCP doesn't apply \u2014 the partner's bucket isn't your resource.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Cross-Account",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "RAM opens, RCP closes. RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "RAM doesn't support KMS. Use KMS Grants for per-operation, per-principal, revocable cross-account key access.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "RAM supports: Transit Gateways, Subnets, Route 53 Resolver rules, DNS Firewall rule groups, Aurora DB clusters, License Manager, EC2 Image Builder. NOT S3, NOT KMS.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "RCP DOES support KMS (also S3, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito). Don't confuse with RAM's list.",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "STS",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "Cross-account KMS always needs BOTH sides: key policy (Account A) + identity policy (Account B). Resource policy alone is never enough for KMS.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Direct cross-account (no AssumeRole): caller's SCP applies, not resource owner's. SCP governs the principal's account, period.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"SCP follows the PERSON, not the building.\"** Your account's SCP applies to you even when you visit another account's resource.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Revoke active STS sessions: inline Deny with `aws:TokenIssueTime` < timestamp. Only way \u2014 can't invalidate individual tokens.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Session tags from IdP (SAML/OIDC) land in `aws:PrincipalTag/Key`. Same key used for ABAC matching.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Session policy = temporary scope-down passed at AssumeRole time. Filters down, never escalates. Effective = role \u2229 session policy \u2229 boundary \u2229 SCP.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Session policy is a CEILING just like boundary \u2014 not \"after\" it. Both are intersected in parallel. If session allows only Get+Put, Delete is denied even if boundary allows s3:*.",
+              "is_insight": false,
+              "is_warning": true
+            },
+            {
+              "type": "bullet",
+              "text": "**Exception:** Resource-based policies that name the session ARN directly BYPASS the session policy ceiling. The filter only restricts identity-based grants.",
+              "is_insight": false,
+              "is_warning": true
+            },
+            {
+              "type": "bullet",
+              "text": "**SAME-ACCOUNT ONLY.** The resource-policy bypass of session policies and boundaries ONLY works same-account. Cross-account, session policy ceiling ALWAYS applies \u2014 no bypass possible.",
+              "is_insight": false,
+              "is_warning": true
+            },
+            {
+              "type": "bullet",
+              "text": "SCPs and RCPs can NEVER be bypassed \u2014 not by resource-based policies, not by anything. Only session policies and boundaries have the resource-policy bypass exception (same-account only).",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "ABAC",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "PrincipalTag = who. ResourceTag = what. RequestTag = what you're sending. Three different tags, three different moments.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "RequestTag = creation time (\"must tag\"). ResourceTag = access time (\"can only touch matching\"). Don't confuse them.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Request = birth certificate (creation). Resource = ID badge (access).\"**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "ResourceTag for access control (StartInstances, StopInstances). RequestTag for creation enforcement (RunInstances). They are NOT interchangeable.",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Identity Center",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "Identity Center = workforce SSO. Cognito = customer apps. Never mix them.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Cognito Identity Pool = managed STS.** You define the IAM role, Identity Pool calls AssumeRoleWithWebIdentity FOR you. Don't call STS directly when using Identity Pool.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Only ONE identity source at a time: built-in OR AD OR external IdP (SAML 2.0).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Permission set = IAM role auto-created in target accounts. No manual role management.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**SCIM = auto-sync users + groups from IdP.** New user added to group in Okta \u2192 auto-inherits permission set assignment. No manual action in Identity Center.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Directory Service",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**Simple AD = Samba (no trusts, no RDS SQL, no Identity Center). AD Connector = proxy (no data in AWS, no trusts). Managed AD = full MS AD (trusts, RDS SQL, Identity Center).**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Need trusts\" or \"RDS SQL Server\" or \"Identity Center\" = Managed AD. Always.** Simple AD and AD Connector are automatically eliminated.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**One-way trust \"AWS trusts on-prem\" = on-prem users access AWS. Cloud users CANNOT access on-prem.** Trust direction: users in the TRUSTED domain access resources in the TRUSTING domain.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**AD Connector = pipe. On-prem goes down = all AWS auth fails.** No caching, no data in AWS.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Federation with on-prem AD = ADFS + IAM ROLES + AssumeRoleWithSAML.** Never IAM users/groups. Cognito = customer apps, not enterprise.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**ADFS federation does NOT need AD Connector.** ADFS uses SAML directly to STS. AD Connector is a separate pattern for Directory Service integration (WorkSpaces, domain-join).",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"No AWS Directory Service infrastructure\" = ADFS on-prem + Identity Center external IdP.** AD Connector IS Directory Service infrastructure (you deploy + maintain it in AWS). ADFS lives entirely on-prem.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**AD Connector = connects to on-prem AD (proxy). Simple AD = standalone Samba (own users, NO connection to on-prem).** Never pick Simple AD when question says \"on-prem AD.\"",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "D5: Data Protection (18%)",
+      "category": "D5",
+      "subsections": [
+        {
+          "title": "S3",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "`s3:prefix` condition key ONLY works with `s3:ListBucket` (bucket-level). For object-level path restriction (GetObject, PutObject), use a variable in the Resource ARN instead.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Default encryption = safety net (applies silently if no header). Bucket policy Deny = enforcement (rejects non-compliant uploads). They solve different problems.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Bucket policy Deny evaluates request headers BEFORE default encryption applies.** If Deny checks for a KMS key header and caller sends none \u2192 rejected. Default encryption never gets a chance.",
+              "is_insight": false,
+              "is_warning": true
+            },
+            {
+              "type": "bullet",
+              "text": "SSE-KMS permissions: **upload** = `s3:PutObject` + `kms:GenerateDataKey`. **Download** = `s3:GetObject` + `kms:Decrypt`. Not Encrypt \u2014 it's envelope encryption.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**S3 NEVER calls kms:Encrypt.** Upload = GenerateDataKey. Multipart = GenerateDataKey + Decrypt (reassembly). kms:Encrypt is only for direct <4KB encryption, not S3.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Object Lock requires versioning. Compliance mode = nobody can delete, not even root. Governance mode = overridable with `s3:BypassGovernanceRetention`.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Legal Hold = no expiration, independent of retention period. \"Lawsuit\" / \"preserve indefinitely\" \u2192 Legal Hold.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Irreversible once confirmed\" = Glacier Vault Lock (24hr confirm window, then permanent).** Object Lock Compliance = per-object retention. Vault Lock = per-vault immutable policy.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Vault Lock vs Object Lock decision: \"24hr confirm + permanently irreversible POLICY\" = Vault Lock. \"Fixed retention period per OBJECT, auto-expires\" = Object Lock Compliance.** Vault Lock = policy-level forever. Object Lock = object-level with expiry.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Cross-account S3 + SSE-KMS = THREE policies:** bucket policy (Account A) + key policy (Account A) + identity policy (Account B). Forget any one = Access Denied.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**S3 server access logging = ACLs (legacy).** Target logging bucket needs WRITE + READ_ACP ACL for log delivery group. Not bucket policies.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**S3 Batch Operations cross-account: identity policy alone is insufficient.** Destination bucket policies must also grant the batch job role. Same \"both sides\" rule as all cross-account S3.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**S3 Batch Operations = regional.** Job + manifest + target bucket must ALL be in the same region. No cross-region support.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "KMS",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**Sign = private key \u2192 verify = public key \u2192 integrity + non-repudiation. Encrypt = public key \u2192 decrypt = private key \u2192 confidentiality.** Direction determines the security property.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Grants are **eventually consistent** (up to 5 min). To use immediately after CreateGrant, pass the **grant token** in the subsequent API call (`--grant-tokens`). No token = AccessDenied until propagation completes.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**EBS encryption by default = opt-in PER REGION.** Must enable in each region's EC2 settings. Not retroactive. S3 encryption is automatic globally (no opt-in since Jan 2023). \"Regional opt-in + encryption at rest\" = EBS.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**EC2 + encrypted EBS always needs `kms:CreateGrant`.** Start existing = CreateGrant + Decrypt. Create new = CreateGrant + GenerateDataKey(WithoutPlaintext). EC2 delegates key access to EBS backend via grants.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Grants have **no expiration** \u2014 they last forever until explicitly revoked (`RevokeGrant`) or retired (`RetireGrant`). No auto-cleanup.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Admin revokes (takes away). Grantee retires (gives back).** `RevokeGrant` = key admin. `RetireGrant` = the grantee themselves.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Multi-region keys share the **same key ID** (`mrk-` prefix) and **same key material** across regions. Encrypt in one region, decrypt in another locally. Imported keys CANNOT be multi-region.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "MRK key policies are **independent per region** \u2014 updating policy on primary does NOT propagate to replicas. Must update each separately.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "\"Global Table + SSE-KMS + multi-region\" \u2192 answer is always MRK. AWS managed keys (`aws/dynamodb`) are single-region only.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Key deletion waiting period: **7\u201330 days** (default 30). Can cancel with `CancelKeyDeletion` anytime during wait.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Prevent accidental deletion: **SCP Deny `kms:ScheduleKeyDeletion`**. Detect: **CloudTrail + EventBridge + Lambda** (auto-cancel + alert).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Key store backends:** Default (multi-tenant, all ops) vs Custom Key Store (single-tenant CloudHSM, symmetric only via KMS) vs XKS (keys outside AWS, symmetric only via KMS). The symmetric-only limit is KMS, not the HSM.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Keys never IN AWS\" = XKS. \"Single-tenant HSM inside AWS\" = CloudHSM custom key store.** Both integrate with KMS API, but only XKS satisfies \"never in AWS infrastructure.\"",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "CloudHSM **directly** = all operations (symmetric, asymmetric, sign, HMAC). CloudHSM **through KMS** (custom key store) = symmetric only.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "`CancelKeyDeletion` \u2192 key moves to **Disabled** (not Enabled). Must manually re-enable.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**4 KB max** for direct KMS Encrypt/Decrypt. Anything larger \u2192 envelope encryption (GenerateDataKey \u2192 encrypt locally).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Root in key policy\" = enables IAM delegation, NOT a blanket grant.** Each principal still needs explicit kms:Decrypt in their identity policy. Root opens the door for IAM \u2014 it doesn't let everyone through.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**KMS keys are REGIONAL.** Cross-account call to wrong region = Access Denied (key not found). Always verify the endpoint region matches the key's region.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Cross-account KMS: key policy MUST name the external account.** Root in key policy enables IAM delegation same-account only. For Account B to use Account A's key, key policy must grant Account B's root or role explicitly.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**CRR + SSE-KMS: source = kms:Decrypt. Destination = kms:GenerateDataKey (not kms:Encrypt).** Same rule as all S3 uploads \u2014 S3 never uses kms:Encrypt.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**CRR rewrites encryption context to destination bucket ARN.** Key policy conditions on dest key must reference dest bucket, not source.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**DynamoDB + customer-managed KMS = needs `kms:CreateGrant` + `kms:DescribeKey`.** DynamoDB delegates via grants internally (like EBS). Never uses kms:Encrypt.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Secrets Manager",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Secrets Manager = built-in rotation (RDS, Aurora, DocumentDB, Redshift). Parameter Store = no native rotation.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Deletion has 7\u201330 day recovery window. Cannot delete immediately.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Credentials available in DR region\" = Secrets Manager cross-region replication.** MRK replicates key material, not the secret itself. Different layers.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Access Denied on DATABASE after rotation\" = rotation Lambda failed to update DB password.** Secret changed but DB didn't. \"Access Denied on Secrets Manager\" = IAM problem. Different layers.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Data Masking (New in C03)",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "\"Mask PII in logs\" \u2192 **CloudWatch Logs data protection policy**. Real-time, no app changes, managed data identifiers.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "\"Find PII in S3\" \u2192 **Macie**. Completely different service, S3 only.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "SNS message data protection = same concept for SNS topics.",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Encryption in Transit (New in C03)",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "\"Encrypt between instances, no app changes\" \u2192 **Nitro inter-instance encryption**. Automatic, hardware-level, zero config.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Covers EC2-to-EC2, EKS inter-node, EMR, SageMaker. Only Nitro-based instance types.",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Detect vs Prevent (D5 Trap)",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**\"Detect external decryption\" = GuardDuty S3 Protection. \"Prevent external decryption\" = KMS key policy condition.** The verb tells you the service.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "D3: Infrastructure Security (18%)",
+      "category": "D3",
+      "subsections": [
+        {
+          "title": "Firewalls",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "Network Firewall: 1 endpoint per AZ, dedicated firewall subnet, route tables direct traffic through it. ~$288/month per AZ.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Stateless evaluated FIRST. If stateless says \"pass\" \u2192 skips stateful entirely. \"Forward\" \u2192 sends to stateful engine.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "TLS inspection requires a CA certificate in ACM \u2014 firewall decrypts, inspects, re-encrypts (MITM pattern).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "DNS Firewall = domain resolution filtering (VPC-level). Network Firewall = traffic content inspection (subnet-level). Different layers.",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Network",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "Gateway endpoint (S3, DynamoDB) = free, route table entry. Interface endpoint = ENI + PrivateLink, costs money, needs SG.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**S3 SSE-KMS = server-side (no KMS endpoint needed). Direct kms:Decrypt/GenerateDataKey in YOUR code = needs KMS Interface endpoint.** Count DynamoDB separately (Gateway endpoint).",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Endpoint policy + bucket policy BOTH evaluated. Endpoint policy doesn't replace resource policies.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "NACLs are stateless \u2014 need explicit inbound rule for ephemeral ports (1024\u201365535) on return traffic. SGs are stateful \u2014 handle it automatically.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Verified Access = zero-trust access to internal apps without VPN. Evaluates identity + device posture.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Network Access Analyzer = find unintended network paths (reachable from internet when shouldn't be).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "VPC Reachability Analyzer = \"why can't A reach B?\" (specific pair, troubleshooting one connection).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"What's exposed?\" = Network Access Analyzer (auditor). \"Why can't A reach B?\" = Reachability Analyzer (debugger).** Different tools, different questions.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection \u2192 use Site-to-Site VPN over DX (IPsec).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Individual remote users (home)\" = Client VPN (SSL). \"Two fixed networks (office\u2194AWS)\" = Site-to-Site VPN (IPsec). \"Physical dedicated link\" = Direct Connect.**",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Edge",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Add security headers (HSTS, CSP, X-Content-Type-Options) to CloudFront, least overhead\" = CloudFront response headers policy (managed, zero code).** Lambda@Edge = only if you need dynamic/conditional logic.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Rate-based rule = \"too many requests from one IP.\" Min threshold: 100 per 5 min. Bot Control = identify/manage bots.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.",
+              "is_insight": false,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Troubleshooting",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**Timeout = network problem (SG, NACL, routing, missing endpoint). Access Denied = permissions problem (IAM, policy, key policy).** The error type tells you where to look.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Interface endpoint = TWO SGs must cooperate.** Lambda SG needs outbound 443. Endpoint SG needs inbound 443. Miss either one = timeout.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**C2Activity finding = active IP connection. DNS Firewall useless (IP already known). Use Network Firewall DROP on C2 IP.** DNS FW only helps if attacker needs DNS resolution.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**DGA (Domain Generation Algorithm) = unpredictable domains, can't block-list. Flip to DNS Firewall ALLOW-LIST (block all except known-good).** DNS layer since attacker relies on DNS resolution.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**IoT ThingName = bound to certificate, not physical hardware.** Stolen cert = full impersonation. Mitigation = revoke cert in IoT Core.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**IoT Core cert revocation = instant.** Registry status checked at TLS handshake \u2014 no CRL propagation delay.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Flow Log: inbound ACCEPT + outbound REJECT = always NACL.** SGs are stateful \u2014 accepted inbound = auto-allowed return. NACLs are stateless \u2014 need explicit outbound ephemeral port rule.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "D1: Detection (16%)",
+      "category": "D1",
+      "subsections": [
+        {
+          "title": "Service Selection",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "GuardDuty = active threats NOW (C2, crypto mining, exfil). Inspector = known CVEs (software vulns). Macie = sensitive data in S3.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Security Hub = aggregate findings + compliance dashboards (wraps Config rules). Requires Config enabled.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Detective = investigate AFTER detection (root cause, blast radius, timeline).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**CloudTrail = raw API log. Detective = the investigator who reads the logs FOR you.** \"Who did what\" = CloudTrail. \"Show me the full picture / timeline / scope\" = Detective.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Track config changes over time\" = AWS Config (configuration history). \"Who made the API call\" = CloudTrail.** Config shows WHAT changed. CloudTrail shows WHO changed it.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "CloudTrail Lake = fast + dashboards + managed + near real-time. S3+Athena = cheap + DIY + unlimited retention.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Different verbs.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "\"In progress\" / \"happening now\" = active threat = GuardDuty. \"What data exists?\" = Macie. \"What vulns exist?\" = Inspector.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "\"Detect C2\" = GuardDuty. \"Block C2 domains\" = DNS Firewall. Detect \u2260 prevent.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Detect [bad thing] with zero custom code\" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**DNS Firewall ALERT \u2260 \"generate a finding.\"** ALERT logs but doesn't produce security findings. GuardDuty reads DNS logs natively and generates findings with threat intel. \"Detect + finding\" = GuardDuty.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Detect external decryption\" = GuardDuty. \"Prevent external decryption\" = key policy condition.** The verb tells you the service.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "\"Unused permissions\" / \"overly permissive\" = IAM Access Analyzer. \"Credentials being misused\" = GuardDuty.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Unused PERMISSIONS (per-action)\" = Access Analyzer unused access. \"Unused ROLE (last assumed)\" = Config/credential report.** Different granularity.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Access Analyzer unused access + policy generation = find bloat + auto-generate replacement.** Two features, one service, designed together.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Access Analyzer + GuardDuty can BOTH fire on the same resource.** AA = \"who CAN access?\" (static policy analysis). GD = \"who IS accessing abnormally?\" (dynamic behavior). Independent services.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Detect [bad thing] with zero custom code\" = always GuardDuty.** It has built-in threat intel for Tor (TorIPCaller), malicious IPs, crypto mining, C2, DNS exfil. No setup needed.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Detect API call fast + least overhead\" + org trail exists = EventBridge rule in management account.** Near real-time, one rule. Config is slower + heavier \u2014 use for remediation, not pure fast detection.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Detect specific API call fast\" = EventBridge on CloudTrail. \"Detect malicious behavior\" = GuardDuty.** GuardDuty doesn't alert on policy changes or blocked attempts.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "GuardDuty Operational",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**GuardDuty is REGIONAL.** Must enable in every region where workloads run. No findings from a region where it's not enabled.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**GuardDuty reads VPC Flow Logs + DNS logs via internal feed \u2014 you DON'T need to enable them yourself.** Your VPC Flow Logs are for YOUR queries (Insights, Athena). GuardDuty has its own tap.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Unusual IP\" / \"never-seen location\" = active threat = GuardDuty.** NOT Access Analyzer (that's permission audit, not real-time threats).",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Zero findings despite active workloads + GuardDuty confirmed enabled\" = suppression rule archiving findings.** GuardDuty WILL generate findings on production \u2014 if you see none, something is hiding them.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**GuardDuty doesn't fire on BLOCKED/DENIED attempts.** It detects successful anomalous access. If RCP/SCP blocks the request, no successful access occurs = no finding. Access Analyzer fires on policy (static) regardless.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**GuardDuty EKS: Audit Log Monitoring = agentless. Runtime Monitoring = needs agent (DaemonSet).** Runtime detects process-level (crypto miners, shells). No agent = no runtime findings.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet):** correlates multiple findings into attack sequences in the GD console. If tested, answer = \"Extended Threat Detection.\" Otherwise \"correlate/investigate\" = Detective.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "Log Sources",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**\"Which domain was queried?\" = Resolver Query Logs.** VPC Flow Logs only show IP:port \u2014 domain name is gone after DNS resolves.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "GuardDuty reads BOTH: DNS logs (domain) + VPC Flow Logs (traffic volume/destination). That's why it catches C2 that other services miss.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**VPC Flow Logs = only service using IAM role for ALL delivery targets (S3, CloudWatch Logs, Kinesis Firehose).** CloudTrail uses bucket policy for S3, not an IAM role.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Log delivery mechanisms:**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "VPC Flow Logs \u2192 S3/CW Logs/Firehose = **IAM role** (all three)",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "CloudTrail \u2192 S3 = **bucket policy**, CW Logs = **IAM role**, EventBridge = automatic",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Route 53 Resolver \u2192 CW Logs = **log group resource policy**, S3 = bucket policy, Firehose = IAM role",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "WAF Logs \u2192 CW Logs = **log group resource policy**, S3 = bucket policy, Firehose = IAM role",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**CW Logs as destination = usually log group resource policy (service principal).** Exception: VPC Flow Logs uses IAM role for everything.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        },
+        {
+          "title": "CloudTrail / Logging",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Security Lake = YOUR S3 bucket, OCSF format, normalizes ALL log sources (CloudTrail + VPC Flow + WAF + GuardDuty + third-party).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "CloudWatch Logs Insights = query app logs / VPC Flow Logs / Lambda logs. Custom syntax (not SQL). Already-ingested data.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "\"Fast API call investigation\" \u2192 CloudTrail Lake. \"Normalize all logs into one schema\" \u2192 Security Lake. \"Query app/VPC logs\" \u2192 CloudWatch Logs Insights.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Three \"lakes\": CloudTrail Lake (API calls, SQL, managed store) vs Security Lake (all logs, OCSF, your S3) vs CloudWatch Logs Insights (app logs, custom syntax, CloudWatch store). No \"CloudWatch Lake\" exists.**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**CloudWatch Logs Insights = open-ended queries on data already in CW. Detective = investigate from a specific finding/entity.** \"Top talkers\" = Insights. \"What else did this IP do?\" = Detective.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**`/var/log/awslogs.log` = runtime errors (logs stopped flowing). `/var/log/awslogs-agent-setup.log` = installation errors only.** \"Was working, now stopped\" = check runtime log.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**CloudTrail management events: Write-only trail = ConsoleLogin (Read event) won't trigger EventBridge.** Must be \"All\" or \"Read-only/Read+Write\" for login events. Event History always shows all events regardless.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**CW metric filter: metric value must be 1 (not 0).** Value=0 means every match publishes nothing \u2014 alarm threshold >= 1 never fires. Common troubleshooting trap.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**StopLogging kills its own CW Logs delivery.** Metric filter on the log group can never detect StopLogging \u2014 use EventBridge instead (receives from CloudTrail's management event stream directly).",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "D2: Incident Response (14%)",
+      "category": "D2",
+      "subsections": [
+        {
+          "title": "",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "IR sequence: Isolate (swap SG to deny-all) \u2192 Snapshot (EBS forensic copy) \u2192 Tag \u2192 Investigate \u2192 Remediate. NEVER terminate first.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Validate findings\" = first step before full IR (Task 2.2.3, new in C03).** Assess scope, check false positives, confirm severity. Exam keyword is \"validate\" or \"triage\", not \"evaluate\".",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Validate findings BEFORE full IR \u2014 assess scope, check false positives, correlate in Security Hub, investigate in Detective.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**OutsideAWS = TokenIssueTime (creds used externally, instance gets fresh ones). InsideAWS = deny-all SG on attacker's instance (TokenIssueTime would break both instances sharing same role).**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**OutsideAWS + can't stop instance: TokenIssueTime (stop attacker) + EBS snapshot (forensics) + IMDSv2 hop limit 1 (prevent future SSRF). Deny-all SG kills legitimate traffic \u2014 wrong choice if API must stay up.**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Credential leak IR (keys on GitHub): Deactivate exposed keys + attach inline Deny-all to user (covers second key/console/sessions).** Contain ALL access paths BEFORE investigating. Detective comes after containment.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**S3 Access Grants scope access by prefix (location). Overlapping prefixes = unintended cross-department access.** This is the #1 operational misconfiguration \u2014 not IAM bypass.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "D6: Governance (14%)",
+      "category": "D6",
+      "subsections": [
+        {
+          "title": "",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "Management account exempt from BOTH SCPs and RCPs. Don't put workloads there.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Control Tower = automated landing zone + guardrails (SCPs/RCPs for preventive, Config for detective).",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Control Tower prerequisites: STS enabled in all regions + IAM Identity Center enabled + DISABLE existing trusted access for Config/CloudTrail (CT manages these itself).** Existing trusted access = conflict.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "Firewall Manager = DEPLOY rules across org. Security Hub = VIEW findings across org. Control Tower = ONBOARD accounts.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Which mechanism prevents X?\" = SCP. \"Which service automates guardrails?\" = Control Tower.** Control Tower uses SCPs \u2014 the mechanism is SCP, the automation is Control Tower.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"PREVENT/BLOCK launches\" = SCP (preventive). \"DETECT + FIX after\" = Config (detective).** If the instance should NEVER exist, SCP. If it can exist briefly then get fixed, Config.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Share resources cross-account\" = RAM. \"Enforce guardrails cross-account\" = SCP/Control Tower.** DNS Firewall rule groups, TGWs, subnets = RAM. Deny actions org-wide = SCP.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Audit Manager = YOUR compliance evidence. Artifact = AWS's compliance reports.** \"Collect evidence for our audit\" = Audit Manager. \"Download AWS's SOC 2\" = Artifact.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**StackSets = push IaC to many accounts (any resource). Firewall Manager = push security RULES only (WAF/SG/NF/DNS FW).** \"Deploy GuardDuty + Config\" = StackSets. \"Deploy WAF rules\" = FM.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**FM auto-remediates. StackSets does NOT.** Someone removes WAF from ALB \u2192 FM re-applies. Someone disables Config \u2192 StackSets does nothing.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**StackSets = deploy resources/services. Conformance pack = deploy compliance rules + remediation.** \"Enable GuardDuty org-wide\" = StackSets. \"Check encryption + fix\" = conformance pack.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Service Catalog = users PULL pre-approved resources (self-service). StackSets = admin PUSHES.** Launch role means dev doesn't need broad IAM.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Config conformance pack = bundle of rules + remediation as ONE unit, org-wide from delegated admin.** Security Hub standard = same rules but dashboard + no built-in remediation.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**FM creates WAF/Shield/SG directly (no RAM). FM only enforces DNS FW + Network FW (needs RAM to share first).** Ask: \"Does the resource already exist in another account?\" Yes = RAM.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Config can't remediate its own disablement.** If someone stops Config, the rule can't fire. Use SCP to prevent `StopConfigurationRecorder`.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Control Tower guardrails: Preventive = SCP (block API). Detective = Config (detect after). Proactive = CF Hook (validate template before deploy).**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Validate template content\" = Proactive guardrail (CF Hook). \"Block API call\" = SCP.** SCP can't see what's inside a CloudFormation template.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**SCP can't inspect API payload content (e.g., bucket policy JSON).** To prevent the consequence of `Principal:*`, use RCP (blocks external access) + EventBridge (detects the call).",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Every security service supports delegated admin.** GuardDuty, Security Hub, FM, Config, Audit Manager, Macie, Inspector, Detective, Security Lake, Access Analyzer.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Detect specific API call fast\" = EventBridge on CloudTrail. \"Detect malicious behavior\" = GuardDuty.** GuardDuty doesn't alert on policy changes.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**If the service has delegated admin + auto-enable \u2192 use native, not StackSets.** GuardDuty, Inspector, Security Hub, Macie, Detective, Config, Access Analyzer.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**No single governance service does everything.** CT doesn't share (RAM), deploy WAF (FM), or remediate (Config).",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Declarative policy = \"this state is impossible to violate\" (EC2/VPC/EBS only).** SCP = \"this API call is blocked.\" Different layers. \"Regardless of which API\" = declarative.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Quotas That Trick You (4-5-8-32-5120)",
+      "category": "General",
+      "subsections": [
+        {
+          "title": "",
+          "items": [
+            {
+              "type": "table",
+              "headers": [
+                "Service",
+                "Limit",
+                "Value"
+              ],
+              "rows": [
+                [
+                  "KMS direct Encrypt/Decrypt",
+                  "Max data size",
+                  "4 KB"
+                ],
+                [
+                  "SCP / RCP",
+                  "Max per target",
+                  "5"
+                ],
+                [
+                  "WAF",
+                  "Body inspection default",
+                  "8 KB (up to 64 KB paid)"
+                ],
+                [
+                  "KMS key policy",
+                  "Max size",
+                  "32 KB"
+                ],
+                [
+                  "SCP / RCP",
+                  "Max characters",
+                  "5,120"
+                ],
+                [
+                  "KMS key deletion",
+                  "Wait period",
+                  "7\u201330 days (default 30)"
+                ],
+                [
+                  "Role chaining",
+                  "Max session",
+                  "1 hour (always resets)"
+                ]
+              ]
+            },
+            {
+              "type": "bullet",
+              "text": "**`GetCallerIdentity` cannot be denied by anything.** Not IAM, not SCP, not boundary, not session policy.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**`aws:TokenIssueTime` = revoke sessions.** Inline Deny with DateLessThan. Only way to kill active STS tokens.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Condition Keys to Know Cold",
+      "category": "General",
+      "subsections": [
+        {
+          "title": "",
+          "items": [
+            {
+              "type": "table",
+              "headers": [
+                "Key",
+                "When to Use"
+              ],
+              "rows": [
+                [
+                  "`aws:PrincipalOrgID`",
+                  "Restrict to your org"
+                ],
+                [
+                  "`aws:PrincipalIsAWSService`",
+                  "Exempt AWS services from org-deny rules"
+                ],
+                [
+                  "`aws:SourceArn`",
+                  "Confused deputy prevention"
+                ],
+                [
+                  "`sts:ExternalId`",
+                  "Third-party cross-account roles"
+                ],
+                [
+                  "`aws:PrincipalServiceName`",
+                  "Identify which AWS service is calling"
+                ],
+                [
+                  "`aws:TokenIssueTime`",
+                  "Revoke STS sessions issued before a timestamp"
+                ],
+                [
+                  "`aws:SourceVpce`",
+                  "Restrict access to specific VPC endpoint"
+                ],
+                [
+                  "`aws:SourceVpc`",
+                  "Restrict access to any endpoint in a VPC"
+                ],
+                [
+                  "`aws:MultiFactorAuthPresent`",
+                  "Require MFA for sensitive operations"
+                ],
+                [
+                  "`aws:RequestTag/Key`",
+                  "Enforce tag at creation time"
+                ],
+                [
+                  "`aws:ResourceTag/Key`",
+                  "Control access based on existing resource tags"
+                ]
+              ]
+            }
+          ]
         }
       ]
     }

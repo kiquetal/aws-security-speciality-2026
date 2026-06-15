@@ -10,6 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TRACKER_PATH = BASE_DIR / "notes" / "question-tracker.md"
 STUDY_PLAN_PATH = BASE_DIR / "study-plan.md"
 EXPORT_JS_PATH = BASE_DIR / "design" / "tracker_data.js"
+CHEAT_SHEET_PATH = BASE_DIR / "notes" / "cheat-sheet.md"
 
 DOMAIN_NAMES = {
     "D1": "Detection",
@@ -209,6 +210,155 @@ def parse_tracker_sessions():
     
     return sessions, domain_proficiency, weak_areas, stats
 
+def parse_cheat_sheet():
+    """Parse notes/cheat-sheet.md into structured sections with subsections, lists, and tables."""
+    if not CHEAT_SHEET_PATH.exists():
+        return []
+    
+    text = CHEAT_SHEET_PATH.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    
+    sections = []
+    current_section = None
+    current_subsection = None
+    
+    # Simple table parsing state
+    in_table = False
+    table_headers = []
+    table_rows = []
+    
+    for line in lines:
+        line_stripped = line.strip()
+        
+        # Parse main headings: ## Section Name
+        if line_stripped.startswith("## "):
+            # If we were in a table, close it
+            if in_table and current_subsection:
+                current_subsection["items"].append({
+                    "type": "table",
+                    "headers": table_headers,
+                    "rows": table_rows
+                })
+                in_table = False
+                table_headers = []
+                table_rows = []
+            
+            title = line_stripped[3:].strip()
+            # Determine category (D1-D6 or other)
+            category = "General"
+            for d in ["D1", "D2", "D3", "D4", "D5", "D6"]:
+                if d in title:
+                    category = d
+                    break
+            
+            current_section = {
+                "title": title,
+                "category": category,
+                "subsections": []
+            }
+            sections.append(current_section)
+            current_subsection = None
+            continue
+            
+        # Parse subheadings: ### Subsection Name
+        elif line_stripped.startswith("### "):
+            if not current_section:
+                continue
+                
+            # If we were in a table, close it
+            if in_table and current_subsection:
+                current_subsection["items"].append({
+                    "type": "table",
+                    "headers": table_headers,
+                    "rows": table_rows
+                })
+                in_table = False
+                table_headers = []
+                table_rows = []
+                
+            sub_title = line_stripped[4:].strip()
+            current_subsection = {
+                "title": sub_title,
+                "items": []
+            }
+            current_section["subsections"].append(current_subsection)
+            continue
+            
+        # Parse bullet points or tables or regular text
+        elif current_section:
+            # If no subsection exists yet, create an empty-title one
+            if not current_subsection:
+                current_subsection = {
+                    "title": "",
+                    "items": []
+                }
+                current_section["subsections"].append(current_subsection)
+                
+            # Table row parsing
+            if line_stripped.startswith("|"):
+                parts = [c.strip() for c in line_stripped.split("|")[1:-1]]
+                if not in_table:
+                    # This is the header row
+                    table_headers = parts
+                    table_rows = []
+                    in_table = True
+                else:
+                    # Check if it is the separator row like |---|---|
+                    if all(re.match(r"^:?-+:?$", p) for p in parts if p):
+                        continue
+                    table_rows.append(parts)
+                continue
+            else:
+                # If we were in a table and see a non-table line, close the table
+                if in_table:
+                    current_subsection["items"].append({
+                        "type": "table",
+                        "headers": table_headers,
+                        "rows": table_rows
+                    })
+                    in_table = False
+                    table_headers = []
+                    table_rows = []
+            
+            # Bullet point parsing
+            if line_stripped.startswith("- ") or line_stripped.startswith("* "):
+                bullet_text = line_stripped[2:].strip()
+                
+                # Check for emojis/status
+                is_insight = "🧠" in bullet_text
+                is_warning = "⚠️" in bullet_text
+                
+                # Clean up the text (remove leading emojis if any)
+                clean_text = bullet_text.replace("🧠", "").replace("⚠️", "").strip()
+                
+                current_subsection["items"].append({
+                    "type": "bullet",
+                    "text": clean_text,
+                    "is_insight": is_insight,
+                    "is_warning": is_warning
+                })
+                
+            # Regular text
+            elif line_stripped and not line_stripped.startswith("---") and not line_stripped.startswith(">"):
+                current_subsection["items"].append({
+                    "type": "text",
+                    "text": line_stripped
+                })
+                
+    # Close any trailing table at the very end of the file
+    if in_table and current_subsection:
+        current_subsection["items"].append({
+            "type": "table",
+            "headers": table_headers,
+            "rows": table_rows
+        })
+        
+    # Clean up subsections: discard those with no items
+    for s in sections:
+        s["subsections"] = [sub for sub in s["subsections"] if len(sub["items"]) > 0]
+        
+    return sections
+
 def main():
     print("Parsing study-plan.md...")
     weeks = parse_study_plan()
@@ -216,12 +366,16 @@ def main():
     print("Parsing question-tracker.md...")
     sessions, domain_proficiency, weak_areas, stats = parse_tracker_sessions()
     
+    print("Parsing cheat-sheet.md...")
+    cheat_sheet = parse_cheat_sheet()
+    
     tracker_data = {
         "stats": stats,
         "weeks": weeks,
         "domain_proficiency": domain_proficiency,
         "weak_areas": weak_areas,
-        "sessions": sessions
+        "sessions": sessions,
+        "cheat_sheet": cheat_sheet
     }
     
     # Ensure export directory exists
@@ -232,7 +386,7 @@ def main():
     EXPORT_JS_PATH.write_text(js_content, encoding="utf-8")
     
     print(f"Successfully exported tracker data to {EXPORT_JS_PATH}")
-    print(f"Parsed {stats['total_questions']} questions, {len(sessions)} sessions, {len(weeks)} study-plan weeks.")
+    print(f"Parsed {stats['total_questions']} questions, {len(sessions)} sessions, {len(weeks)} study-plan weeks, {len(cheat_sheet)} cheat-sheet sections.")
 
 if __name__ == "__main__":
     main()
