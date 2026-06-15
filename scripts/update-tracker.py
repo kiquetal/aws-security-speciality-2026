@@ -113,8 +113,9 @@ def build_domain_breakdown(sessions):
             lines.append(f"| {DOMAIN_NAMES[key]} | 0 | 0 | 0 | 0 | — | — |")
         else:
             pct = c["correct"] / total * 100
-            flag = "🔴" if pct < 50 else ("🟡" if pct < 80 else "🟢")
-            lines.append(f"| {DOMAIN_NAMES[key]} | {c['correct']} | {c['partial']} | {c['wrong']} | {total} | {pct:.0f}% | {flag} |")
+            rounded_pct = round(pct)
+            flag = "🔴" if rounded_pct < 50 else ("🟡" if rounded_pct < 80 else "🟢")
+            lines.append(f"| {DOMAIN_NAMES[key]} | {c['correct']} | {c['partial']} | {c['wrong']} | {total} | {rounded_pct}% | {flag} |")
     lines.append("")
     lines.append("Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%")
     return "\n".join(lines)

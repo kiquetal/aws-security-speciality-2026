@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 85 | 5 | 17 | 107 | 79% | 🟡 |
 | D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
 | D5: Data Protection | 133 | 4 | 35 | 172 | 77% | 🟡 |
-| D6: Governance | 109 | 2 | 26 | 137 | 80% | 🟡 |
+| D6: Governance | 109 | 2 | 26 | 137 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
