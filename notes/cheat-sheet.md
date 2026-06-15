@@ -75,6 +75,7 @@
 - 🧠 **Cross-account S3 + SSE-KMS = THREE policies:** bucket policy (Account A) + key policy (Account A) + identity policy (Account B). Forget any one = Access Denied.
 - 🧠 **S3 server access logging = ACLs (legacy).** Target logging bucket needs WRITE + READ_ACP ACL for log delivery group. Not bucket policies.
 - 🧠 **S3 Batch Operations cross-account: identity policy alone is insufficient.** Destination bucket policies must also grant the batch job role. Same "both sides" rule as all cross-account S3.
+- 🧠 **S3 Batch Operations = regional.** Job + manifest + target bucket must ALL be in the same region. No cross-region support.
 
 ### KMS
 - 🧠 **Sign = private key → verify = public key → integrity + non-repudiation. Encrypt = public key → decrypt = private key → confidentiality.** Direction determines the security property.
@@ -96,6 +97,7 @@
 - 🧠 **"Root in key policy" = enables IAM delegation, NOT a blanket grant.** Each principal still needs explicit kms:Decrypt in their identity policy. Root opens the door for IAM — it doesn't let everyone through.
 - 🧠 **KMS keys are REGIONAL.** Cross-account call to wrong region = Access Denied (key not found). Always verify the endpoint region matches the key's region.
 - 🧠 **Cross-account KMS: key policy MUST name the external account.** Root in key policy enables IAM delegation same-account only. For Account B to use Account A's key, key policy must grant Account B's root or role explicitly.
+- 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.
 
 ### Secrets Manager
 - Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
