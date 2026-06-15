@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Aether Guard — AWS SCS-C03 Stoic Mastery</title>
+    <!-- Tailwind CSS with Forms and Container Queries -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist.min.css" rel="stylesheet"/>
+    
+    <!-- Link to our generated tracker data -->
+    <script src="tracker_data.js"></script>
+
+    <style>
+        body {
+            background-color: #061422;
+            color: #d6e4f7;
+            font-family: 'Geist', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #020f1c;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e2b39;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #2d3a49;
+        }
+        .path-glow {
+            box-shadow: 0 0 20px rgba(233, 195, 73, 0.15);
+        }
+        .stoic-border {
+            border: 1px solid #1e2b39;
+        }
+        .text-glow-gold {
+            text-shadow: 0 0 10px rgba(233, 195, 73, 0.3);
+        }
+        /* Smooth page fade transition */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-container": "#4a0e17",
+                        "on-error-container": "#ffdad6",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#293644",
+                        "tertiary-fixed": "#dde4e6",
+                        "surface-bright": "#2d3a49",
+                        "on-primary-fixed-variant": "#45474a",
+                        "outline": "#8f9094",
+                        "on-secondary-container": "#342800",
+                        "primary-container": "#121417",
+                        "on-tertiary": "#2b3234",
+                        "on-primary-fixed": "#1a1c1f",
+                        "on-tertiary-container": "#788082",
+                        "tertiary": "#c1c8ca",
+                        "primary-fixed-dim": "#c6c6ca",
+                        "surface-container-low": "#0f1d2a",
+                        "on-secondary-fixed": "#241a00",
+                        "on-surface-variant": "#c6c6ca",
+                        "primary": "#c6c6ca",
+                        "on-primary-container": "#7d7e82",
+                        "secondary-fixed": "#ffe088",
+                        "tertiary-container": "#0e1517",
+                        "surface-container-lowest": "#020f1c",
+                        "secondary": "#e9c349", // Muted Gold (Virtue)
+                        "on-primary": "#2f3034",
+                        "surface-container": "#13212e",
+                        "surface-container-high": "#1e2b39",
+                        "primary-fixed": "#e2e2e6",
+                        "surface-variant": "#293644",
+                        "on-secondary-fixed-variant": "#574500",
+                        "outline-variant": "#1e2b39",
+                        "on-background": "#d6e4f7",
+                        "on-tertiary-fixed-variant": "#41484a",
+                        "on-surface": "#d6e4f7",
+                        "on-tertiary-fixed": "#161d1f",
+                        "on-secondary": "#3c2f00",
+                        "inverse-surface": "#d6e4f7",
+                        "secondary-container": "#af8d11",
+                        "surface": "#061422",
+                        "secondary-fixed-dim": "#e9c349",
+                        "surface-dim": "#061422",
+                        "background": "#061422",
+                        "surface-tint": "#c6c6ca",
+                        "tertiary-fixed-dim": "#c1c8ca",
+                        "inverse-primary": "#5d5e62",
+                        "inverse-on-surface": "#243240",
+                        
+                        // Domain Colors (Semantic Status)
+                        "d1-detect": "#38bdf8",     // Cyan
+                        "d2-ir": "#f43f5e",         // Red (Courage)
+                        "d3-infra": "#fb923c",      // Orange
+                        "d4-iam": "#a855f7",        // Purple
+                        "d5-data": "#10b981",       // Sage/Emerald Green
+                        "d6-gov": "#94a3b8"         // Slate/Grey
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "section-gap": "64px",
+                        "gutter": "24px",
+                        "container-padding": "32px",
+                        "unit": "8px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["\"Source Serif 4\""],
+                        "code-md": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "label-sm": ["JetBrains Mono"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "body-md": ["Geist"],
+                        "body-lg": ["Geist"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <!-- SIDE NAVIGATION BAR -->
+    <aside class="w-full md:w-64 shrink-0 bg-surface-container border-b md:border-b-0 md:border-r border-outline-variant flex flex-col py-6 z-30">
+        <div class="px-6 mb-8 flex items-center md:block">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-secondary flex items-center justify-center rounded">
+                    <span class="material-symbols-outlined text-on-secondary text-2xl font-bold" style="font-variation-settings: 'FILL' 1;">shield</span>
+                </div>
+                <div>
+                    <h2 class="font-headline-md text-xl font-bold text-secondary">Aether Guard</h2>
+                    <p class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-widest mt-0.5">SCS-C03 Mastery</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabs Nav -->
+        <nav class="flex-1 px-4 space-y-1" id="nav-tabs">
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full flex items-center gap-4 px-4 py-3 rounded text-secondary font-bold bg-surface-container-highest transition-all duration-200">
+                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                <span class="font-body-md text-sm">Dashboard</span>
+            </button>
+            <button onclick="switchTab('syllabus')" id="btn-syllabus" class="w-full flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200">
+                <span class="material-symbols-outlined text-xl">terminal</span>
+                <span class="font-body-md text-sm">Syllabus & Questions</span>
+            </button>
+            <button onclick="switchTab('roadmap')" id="btn-roadmap" class="w-full flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200">
+                <span class="material-symbols-outlined text-xl">format_list_numbered</span>
+                <span class="font-body-md text-sm">Study Roadmap</span>
+            </button>
+            <button onclick="switchTab('weakareas')" id="btn-weakareas" class="w-full flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200">
+                <span class="material-symbols-outlined text-xl">analytics</span>
+                <span class="font-body-md text-sm">Weak Gaps Board</span>
+            </button>
+        </nav>
+        
+        <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
+            <div class="p-4 bg-surface-container-low border border-outline-variant rounded">
+                <p class="text-xs font-label-sm text-secondary uppercase tracking-wider mb-1">MEMENTO MORI</p>
+                <p class="text-xs text-on-surface-variant italic leading-relaxed" id="sidebar-quote">"Think of yourself as dead. You have lived your life. Now take what's left and live it properly." — Marcus Aurelius</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col min-h-0 overflow-hidden relative">
+        
+        <!-- HEADER -->
+        <header class="w-full shrink-0 bg-surface border-b border-outline-variant flex justify-between items-center px-8 py-4 z-20">
+            <div>
+                <h1 class="font-headline-md text-xl font-bold text-secondary" id="page-title">SCS-C03 Prep Dashboard</h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <!-- Simple global stats -->
+                <div class="hidden sm:flex items-center gap-4 border-l border-outline-variant pl-4">
+                    <div class="text-right">
+                        <p class="text-[10px] uppercase font-label-sm text-on-surface-variant tracking-wider leading-none">Total Items</p>
+                        <p class="text-sm font-semibold font-code-md text-secondary" id="header-total-q">919</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] uppercase font-label-sm text-on-surface-variant tracking-wider leading-none">Overall Accuracy</p>
+                        <p class="text-sm font-semibold font-code-md text-secondary" id="header-accuracy">78%</p>
+                    </div>
+                </div>
+                <div class="w-10 h-10 overflow-hidden rounded-full border border-secondary">
+                    <div class="w-full h-full bg-surface-container-highest flex items-center justify-center">
+                        <span class="material-symbols-outlined text-secondary">psychology</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT PANEL -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8">
+            
+            <!-- ---------------------------------------------------- -->
+            <!-- TAB 1: DASHBOARD -->
+            <!-- ---------------------------------------------------- -->
+            <div id="tab-dashboard" class="tab-content active space-y-6">
+                
+                <!-- Main Stats and Progress -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Overall Score & Progress Grid -->
+                    <section class="lg:col-span-8 bg-surface-container border border-outline-variant p-6 rounded flex flex-col justify-between min-h-[280px]">
+                        <div>
+                            <p class="font-label-sm text-xs text-on-surface-variant uppercase tracking-widest mb-2">Overall Exam Readiness</p>
+                            <h2 class="font-headline-lg text-2xl text-on-surface mb-6">Equanimity in Knowledge</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
+                                <div>
+                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Cumulative Accuracy</p>
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="font-display-lg text-4xl font-bold text-secondary" id="dash-accuracy-pct">78%</span>
+                                        <span class="font-label-sm text-xs text-secondary opacity-60" id="dash-accuracy-ratio">713 / 919</span>
+                                    </div>
+                                    <div class="w-full h-1 bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+                                        <div class="h-full bg-secondary" id="dash-accuracy-bar" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Sessions Completed</p>
+                                    <span class="font-display-lg text-4xl font-bold text-on-surface" id="dash-sessions-count">91</span>
+                                    <p class="font-label-sm text-[10px] text-on-surface-variant mt-2 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[12px] text-secondary">trending_up</span>
+                                        Latest Session: Active
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Retest Recovery</p>
+                                    <span class="font-display-lg text-4xl font-bold text-d5-data" id="dash-retests-pct">82%</span>
+                                    <p class="font-label-sm text-[10px] text-on-surface-variant mt-2" id="dash-retests-ratio">408 of 494 re-tests passed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Study Tempo progress ring -->
+                    <section class="lg:col-span-4 bg-surface-container border border-outline-variant p-6 rounded flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-headline-md text-lg text-on-surface">Study Tempo</h3>
+                                <p class="font-label-sm text-xs text-on-surface-variant">Time is the architect of wisdom.</p>
+                            </div>
+                            <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">hourglass_empty</span>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-center items-center py-2">
+                            <div class="relative w-36 h-36">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle class="text-surface-container-highest" cx="72" cy="72" fill="transparent" r="62" stroke="currentColor" stroke-width="4"></circle>
+                                    <circle class="text-secondary transition-all duration-1000" id="tempo-circle" cx="72" cy="72" fill="transparent" r="62" stroke="currentColor" stroke-dasharray="390" stroke-dashoffset="65" stroke-width="4"></circle>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                    <span class="font-display-lg text-3xl font-bold text-on-surface" id="tempo-pct">83%</span>
+                                    <span class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant">Syllabus Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-outline-variant/30 flex justify-between text-xs text-on-surface-variant">
+                            <span id="tempo-weeks-done">10 of 12 weeks complete</span>
+                            <span class="text-secondary" id="tempo-days-left">Active Study Plan</span>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Bento Row: Knowledge Check & Domain Proficiency -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Stoic Knowledge Check Active Recall Card -->
+                    <section class="lg:col-span-7 bg-surface-container border border-outline-variant rounded flex flex-col min-h-[380px]">
+                        <div class="p-4 border-b border-outline-variant bg-surface-container-high flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary">psychology_alt</span>
+                                <h3 class="font-label-sm text-xs uppercase tracking-widest text-on-surface">Knowledge Check: Active Recall</h3>
+                            </div>
+                            <button onclick="loadRandomQuestion()" class="text-[10px] font-label-sm text-secondary uppercase tracking-wider hover:underline flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[12px]">refresh</span> Load Another
+                            </button>
+                        </div>
+                        
+                        <div class="flex-1 p-6 flex flex-col justify-between space-y-4" id="qc-box">
+                            <!-- Question Meta -->
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="px-2 py-0.5 bg-surface-container-highest rounded text-on-surface-variant font-code-md uppercase tracking-wider" id="qc-meta-domain">D1: Detection</span>
+                                <span class="text-secondary font-code-md" id="qc-meta-num">Q100</span>
+                            </div>
+                            
+                            <!-- Question Scenario -->
+                            <div class="bg-surface-container-low border border-outline-variant p-4 rounded flex-1">
+                                <p class="text-sm font-semibold text-on-surface italic leading-relaxed" id="qc-scenario">
+                                    Loading a challenge of logic...
+                                </p>
+                            </div>
+                            
+                            <!-- Reveal controls and Answer block -->
+                            <div class="space-y-4">
+                                <div id="qc-revealed-section" class="hidden space-y-3">
+                                    <!-- Your Attempt -->
+                                    <div class="p-3 border border-outline-variant bg-surface/40 rounded">
+                                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Your Previous Answer:</p>
+                                        <p class="text-xs font-code-md text-error" id="qc-your-answer"></p>
+                                    </div>
+                                    <!-- Correct Answer -->
+                                    <div class="p-3 border-l-2 border-secondary bg-primary-container rounded">
+                                        <p class="text-[10px] font-label-sm text-secondary uppercase tracking-wider mb-1 font-bold">Reason & Resolution:</p>
+                                        <p class="text-xs text-on-surface" id="qc-correct-answer"></p>
+                                    </div>
+                                    <!-- Quote -->
+                                    <div class="italic text-center text-[11px] text-on-tertiary-container border-t border-outline-variant/30 pt-3" id="qc-stoic-quote">
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between items-center pt-2">
+                                    <button onclick="revealAnswer()" id="qc-reveal-btn" class="bg-secondary text-on-secondary px-5 py-2 font-label-sm text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-opacity">
+                                        Flip Card & Reveal Insight
+                                    </button>
+                                    <button onclick="loadRandomQuestion()" class="text-on-surface-variant hover:text-on-surface font-label-sm text-[11px] uppercase tracking-widest">
+                                        Skip Gaps
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Domain Performance table -->
+                    <section class="lg:col-span-5 bg-surface-container border border-outline-variant rounded flex flex-col">
+                        <div class="p-4 border-b border-outline-variant bg-surface-container-high flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary">analytics</span>
+                                <h3 class="font-label-sm text-xs uppercase tracking-widest text-on-surface">Domain Proficiency</h3>
+                            </div>
+                        </div>
+                        <div class="flex-1 overflow-y-auto custom-scrollbar max-h-[350px]">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="sticky top-0 bg-surface-container-high border-b border-outline-variant z-10">
+                                    <tr>
+                                        <th class="p-3 font-label-sm text-[10px] text-on-surface-variant uppercase tracking-wider">Domain</th>
+                                        <th class="p-3 font-label-sm text-[10px] text-on-surface-variant uppercase tracking-wider text-center">Score %</th>
+                                        <th class="p-3 font-label-sm text-[10px] text-on-surface-variant uppercase tracking-wider">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant/30 text-xs" id="dash-domain-table">
+                                    <!-- Dynamic rows from JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- ---------------------------------------------------- -->
+            <!-- TAB 2: SYLLABUS & QUESTIONS -->
+            <!-- ---------------------------------------------------- -->
+            <div id="tab-syllabus" class="tab-content space-y-6">
+                
+                <!-- Filter bar -->
+                <div class="bg-surface-container border border-outline-variant p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <!-- Text Search -->
+                    <div class="relative flex items-center bg-surface-container-low border border-outline-variant w-full md:w-80 px-3 py-1.5">
+                        <span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+                        <input id="q-search" oninput="filterQuestions()" class="bg-transparent border-none focus:ring-0 text-xs text-on-surface placeholder:text-on-surface-variant w-full p-0" placeholder="Search scenario, reviews, topics..." type="text"/>
+                    </div>
+                    
+                    <!-- Result filter tabs -->
+                    <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                        <button onclick="setResultFilter('all')" id="q-filter-all" class="px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider bg-secondary text-on-secondary rounded">All</button>
+                        <button onclick="setResultFilter('correct')" id="q-filter-correct" class="px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded">✅ Correct</button>
+                        <button onclick="setResultFilter('partial')" id="q-filter-partial" class="px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded">⚠️ Partial</button>
+                        <button onclick="setResultFilter('wrong')" id="q-filter-wrong" class="px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded">❌ Wrong</button>
+                        <button onclick="toggleRetestFilter()" id="q-filter-retest" class="px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded">🔄 Re-tests Only</button>
+                    </div>
+                </div>
+
+                <!-- Questions organized in accordion list -->
+                <div id="questions-container" class="space-y-6">
+                    <!-- Organized by domain cards -->
+                </div>
+            </div>
+
+            <!-- ---------------------------------------------------- -->
+            <!-- TAB 3: STUDY ROADMAP -->
+            <!-- ---------------------------------------------------- -->
+            <div id="tab-roadmap" class="tab-content space-y-6">
+                <!-- Progress banner -->
+                <div class="bg-surface-container p-6 rounded border border-outline-variant relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <span class="material-symbols-outlined text-8xl">school</span>
+                    </div>
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+                        <div>
+                            <p class="font-label-sm text-xs text-secondary uppercase tracking-widest mb-1">Certification Progress</p>
+                            <h2 class="font-headline-lg text-2xl">SCS-C03 Study Roadmap</h2>
+                            <p class="font-body-md text-sm text-on-surface-variant max-w-lg mt-2">Achieving mastery in AWS Security requires a disciplined approach across five critical domains. Your current trajectory ensures a deep understanding of architectural integrity.</p>
+                        </div>
+                        <div class="flex flex-col items-end shrink-0">
+                            <span class="font-code-md text-lg text-secondary mb-1" id="roadmap-prepared-pct">83% Prepared</span>
+                            <div class="w-64 h-3 bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant">
+                                <div class="h-full bg-secondary transition-all duration-1000 shadow-[0_0_10px_rgba(233,195,73,0.4)]" id="roadmap-prepared-bar" style="width: 83%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline structure -->
+                <div class="relative py-10 max-w-4xl mx-auto">
+                    <!-- Vertical Spine -->
+                    <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-outline-variant transform md:-translate-x-1/2 z-0"></div>
+                    
+                    <!-- Dynamic timeline elements loaded via JS -->
+                    <div id="timeline-container" class="space-y-12"></div>
+                </div>
+            </div>
+
+            <!-- ---------------------------------------------------- -->
+            <!-- TAB 4: WEAK AREAS BOARD -->
+            <!-- ---------------------------------------------------- -->
+            <div id="tab-weakareas" class="tab-content space-y-6">
+                <div class="bg-surface-container p-6 rounded border border-outline-variant">
+                    <p class="font-label-sm text-xs text-secondary uppercase tracking-widest mb-1">Weak Gaps Board</p>
+                    <h2 class="font-headline-lg text-2xl">Active Recall Targets</h2>
+                    <p class="text-sm text-on-surface-variant mt-2 leading-relaxed">
+                        These areas of logical friction represent opportunities for growth. Sorted by frequency of mistake, focus on these 🔴 Red-Priority and 🟡 Yellow-Priority items. Click any topic to explore and test yourself against the exact questions you missed.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="weak-areas-grid">
+                    <!-- Dynamic cards loaded via JS -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FLOATING MODAL FOR QUESTION IN-DEPTH VIEWER -->
+    <div id="question-modal" class="fixed inset-0 bg-surface/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-200">
+        <div class="bg-surface-container-high border border-outline-variant p-6 rounded-lg max-w-2xl w-full shadow-2xl space-y-4">
+            <div class="flex justify-between items-start border-b border-outline-variant pb-3">
+                <div>
+                    <span id="modal-domain" class="px-2 py-0.5 text-[10px] font-code-md rounded uppercase bg-surface-container-highest text-on-surface-variant font-bold">D1: Detection</span>
+                    <h3 id="modal-title" class="font-headline-md text-lg text-on-surface mt-1">Question Details</h3>
+                </div>
+                <button onclick="closeModal()" class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container-highest">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+            
+            <div class="space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar text-sm pr-1">
+                <!-- Question Scenario -->
+                <div class="space-y-1">
+                    <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Scenario / Challenge:</p>
+                    <p id="modal-scenario" class="p-3 bg-surface border border-outline-variant rounded font-body-md text-on-surface leading-relaxed italic"></p>
+                </div>
+                
+                <!-- Your Attempt -->
+                <div class="space-y-1">
+                    <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Your Previous Answer:</p>
+                    <p id="modal-your-answer" class="p-3 bg-surface border border-outline-variant rounded font-code-md text-xs text-error"></p>
+                </div>
+                
+                <!-- Correct Answer -->
+                <div class="space-y-1">
+                    <p class="text-[10px] font-label-sm text-secondary uppercase tracking-wider font-bold">Reason & Resolution:</p>
+                    <p id="modal-correct-answer" class="p-3 bg-primary-container border-l-2 border-secondary rounded text-xs text-on-surface leading-relaxed"></p>
+                </div>
+
+                <!-- Review Topic -->
+                <div class="grid grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Review Topic:</p>
+                        <p id="modal-review" class="p-2 bg-surface/50 border border-outline-variant/50 rounded font-semibold text-secondary"></p>
+                    </div>
+                    <div id="modal-retest-container">
+                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Re-test of:</p>
+                        <p id="modal-retest" class="p-2 bg-surface/50 border border-outline-variant/50 rounded font-code-md text-on-surface-variant"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-outline-variant pt-3 flex justify-end">
+                <button onclick="closeModal()" class="bg-secondary text-on-secondary px-5 py-2 font-label-sm text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-opacity rounded">
+                    Acknowledged
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
+    <script>
+        let currentResultFilter = 'all';
+        let currentRetestFilterOnly = false;
+        let activeTab = 'dashboard';
+        let activeQcQuestion = null;
+
+        const STOIC_QUOTES = [
+            { text: "Think of yourself as dead. You have lived your life. Now take what's left and live it properly.", author: "Marcus Aurelius" },
+            { text: "It is not that we have a short time to live, but that we waste much of it.", author: "Seneca" },
+            { text: "We suffer more often in imagination than in reality.", author: "Seneca" },
+            { text: "If it is not right, do not do it; if it is not true, do not say it.", author: "Marcus Aurelius" },
+            { text: "No bull dogmas. First, say to yourself what you would be; and then do what you have to do.", author: "Epictetus" },
+            { text: "The impediment to action advances action. What stands in the way becomes the way.", author: "Marcus Aurelius" },
+            { text: "Don't explain your philosophy. Embody it.", author: "Epictetus" },
+            { text: "A rational being can turn every obstacle into raw material, and use it to achieve his goal.", author: "Marcus Aurelius" },
+            { text: "Choose not to be harmed—and you won't feel harmed. Don't feel harmed—and you haven't been.", author: "Marcus Aurelius" }
+        ];
+
+        const DOMAIN_STYLES = {
+            "D1": { code: "D1", border: "border-d1-detect/30", text: "text-d1-detect", badgeBg: "bg-d1-detect/10 text-d1-detect", label: "Detection" },
+            "D2": { code: "D2", border: "border-d2-ir/30", text: "text-d2-ir", badgeBg: "bg-d2-ir/10 text-d2-ir", label: "Incident Response" },
+            "D3": { code: "D3", border: "border-d3-infra/30", text: "text-d3-infra", badgeBg: "bg-d3-infra/10 text-d3-infra", label: "Infrastructure Security" },
+            "D4": { code: "D4", border: "border-d4-iam/30", text: "text-d4-iam", badgeBg: "bg-d4-iam/10 text-d4-iam", label: "Identity & Access" },
+            "D5": { code: "D5", border: "border-d5-data/30", text: "text-d5-data", badgeBg: "bg-d5-data/10 text-d5-data", label: "Data Protection" },
+            "D6": { code: "D6", border: "border-d6-gov/30", text: "text-d6-gov", badgeBg: "bg-d6-gov/10 text-d6-gov", label: "Governance" }
+        };
+
+        // On document load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof TRACKER_DATA === 'undefined') {
+                console.error("Tracker data was not found. Please run scripts/export_to_json.py first.");
+                return;
+            }
+            
+            // Randomize sidebar quote
+            const randQuote = STOIC_QUOTES[Math.floor(Math.random() * STOIC_QUOTES.length)];
+            document.getElementById('sidebar-quote').innerHTML = `"${randQuote.text}" — ${randQuote.author}`;
+
+            // Initialize views
+            initGlobalHeaderStats();
+            initDashboardProgress();
+            initDomainProficiency();
+            loadRandomQuestion();
+            buildQuestionsSyllabus();
+            buildRoadmapTimeline();
+            buildWeakAreasBoard();
+        });
+
+        // Initialize top header and general stats
+        function initGlobalHeaderStats() {
+            document.getElementById('header-total-q').innerText = TRACKER_DATA.stats.total_questions;
+            document.getElementById('header-accuracy').innerText = `${TRACKER_DATA.stats.accuracy_pct}%`;
+        }
+
+        // Initialize Dashboard metrics
+        function initDashboardProgress() {
+            document.getElementById('dash-accuracy-pct').innerText = `${TRACKER_DATA.stats.accuracy_pct}%`;
+            document.getElementById('dash-accuracy-ratio').innerText = `${TRACKER_DATA.stats.correct} / ${TRACKER_DATA.stats.total_questions}`;
+            document.getElementById('dash-accuracy-bar').style.width = `${TRACKER_DATA.stats.accuracy_pct}%`;
+            document.getElementById('dash-sessions-count').innerText = TRACKER_DATA.stats.sessions_count;
+            
+            const retestsPct = intPct(TRACKER_DATA.stats.retests_passed, TRACKER_DATA.stats.retests_total);
+            document.getElementById('dash-retests-pct').innerText = `${retestsPct}%`;
+            document.getElementById('dash-retests-ratio').innerText = `${TRACKER_DATA.stats.retests_passed} of ${TRACKER_DATA.stats.retests_total} re-tests passed`;
+
+            // Calculate Weeks complete
+            const completedWeeks = TRACKER_DATA.weeks.filter(w => w.status === 'completed').length;
+            const totalWeeks = TRACKER_DATA.weeks.length;
+            const weekPct = intPct(completedWeeks, totalWeeks);
+            
+            document.getElementById('tempo-pct').innerText = `${weekPct}%`;
+            document.getElementById('tempo-weeks-done').innerText = `${completedWeeks} of ${totalWeeks} weeks complete`;
+            
+            // Circular SVG calculations (perimeter is 390 for r=62)
+            const strokeDashOffset = 390 - (390 * (weekPct / 100));
+            document.getElementById('tempo-circle').setAttribute('stroke-dashoffset', strokeDashOffset);
+        }
+
+        // Render Domain Proficiency table on Dashboard
+        function initDomainProficiency() {
+            const tableBody = document.getElementById('dash-domain-table');
+            tableBody.innerHTML = '';
+            
+            const domainOrder = ["D4", "D5", "D3", "D1", "D2", "D6"];
+            domainOrder.forEach(code => {
+                const item = TRACKER_DATA.domain_proficiency[code];
+                if (!item) return;
+                
+                const style = DOMAIN_STYLES[code] || { text: 'text-on-surface', badgeBg: 'bg-surface-container-highest' };
+                
+                let badgeClass = "bg-surface-container-highest text-on-surface-variant";
+                if (item.status === 'Master') badgeClass = "bg-secondary/15 text-secondary border border-secondary/20";
+                else if (item.status === 'Solid') badgeClass = "bg-d5-data/15 text-d5-data border border-d5-data/20";
+                else if (item.status === 'Critical') badgeClass = "bg-error-container text-error border border-error/20";
+                
+                const row = document.createElement('tr');
+                row.className = "hover:bg-surface-container-high transition-colors cursor-pointer border-b border-outline-variant/20";
+                row.onclick = () => {
+                    // Switch to syllabus filtered by this domain
+                    switchTab('syllabus');
+                    document.getElementById('q-search').value = code + ":";
+                    filterQuestions();
+                };
+                row.innerHTML = `
+                    <td class="p-3">
+                        <div class="font-bold flex items-center gap-1.5 ${style.text}">
+                            <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${style.badgeBg.split(' ')[1] || 'currentColor'}"></span>
+                            ${item.name}
+                        </div>
+                        <div class="text-[10px] text-on-surface-variant font-code-md">Domain ${code.substring(1)} — ${item.correct} ✅ / ${item.wrong} ❌</div>
+                    </td>
+                    <td class="p-3 text-center font-bold font-code-md ${style.text}">${item.score_pct}%</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${badgeClass}">
+                            ${item.status}
+                        </span>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Active Recall Question Card: Load a random incorrect/partial question
+        function loadRandomQuestion() {
+            // Hide revealed elements
+            document.getElementById('qc-revealed-section').classList.add('hidden');
+            document.getElementById('qc-reveal-btn').innerText = "Flip Card & Reveal Insight";
+            document.getElementById('qc-reveal-btn').disabled = false;
+            
+            // Gather incorrect / partial questions
+            const wrongQs = [];
+            TRACKER_DATA.sessions.forEach(s => {
+                s.questions.forEach(q => {
+                    if (q.result === 'wrong' || q.result === 'partial') {
+                        wrongQs.push(q);
+                    }
+                });
+            });
+            
+            if (wrongQs.length === 0) {
+                document.getElementById('qc-scenario').innerText = "All virtues are in absolute alignment. Zero gaps to review! Explore the Syllabus to review questions.";
+                return;
+            }
+            
+            // Select random question
+            const q = wrongQs[Math.floor(Math.random() * wrongQs.length)];
+            activeQcQuestion = q;
+            
+            const domainStyle = DOMAIN_STYLES[q.domain] || { text: 'text-on-surface', badgeBg: 'bg-surface-container-highest', label: 'Security' };
+            
+            document.getElementById('qc-meta-domain').className = `px-2 py-0.5 text-[9px] font-code-md rounded uppercase tracking-wider font-bold ${domainStyle.badgeBg}`;
+            document.getElementById('qc-meta-domain').innerText = `D${q.domain.substring(1)}: ${domainStyle.label}`;
+            document.getElementById('qc-meta-num').innerText = `QUESTION Q${q.num}`;
+            document.getElementById('qc-scenario').innerText = q.scenario;
+            
+            // Prefill answer
+            document.getElementById('qc-your-answer').innerText = q.your_answer || "N/A (No previous answer recorded)";
+            document.getElementById('qc-correct-answer').innerHTML = q.correct_answer;
+            
+            // Pick a random quote
+            const randQuote = STOIC_QUOTES[Math.floor(Math.random() * STOIC_QUOTES.length)];
+            document.getElementById('qc-stoic-quote').innerHTML = `<p class="italic">"${randQuote.text}"</p><p class="text-[9px] uppercase tracking-wider text-secondary mt-1">— ${randQuote.author}</p>`;
+        }
+
+        function revealAnswer() {
+            document.getElementById('qc-revealed-section').classList.remove('hidden');
+            document.getElementById('qc-reveal-btn').innerText = "Insight Unveiled";
+            document.getElementById('qc-reveal-btn').disabled = true;
+        }
+
+        // Render syllabus of questions separated in sections (by Domain)
+        function buildQuestionsSyllabus() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+            
+            // Group ALL questions by Domain
+            const questionsByDomain = {};
+            Object.keys(DOMAIN_NAMES).forEach(code => {
+                questionsByDomain[code] = [];
+            });
+            
+            TRACKER_DATA.sessions.forEach(s => {
+                s.questions.forEach(q => {
+                    const d = q.domain;
+                    if (questionsByDomain[d]) {
+                        questionsByDomain[d].push({ ...q, sessionNum: s.num, date: s.date });
+                    }
+                });
+            });
+            
+            // Render a card container for each domain
+            Object.keys(DOMAIN_STYLES).forEach(code => {
+                const list = questionsByDomain[code];
+                if (!list || list.length === 0) return;
+                
+                const style = DOMAIN_STYLES[code];
+                const domainHeader = document.createElement('div');
+                domainHeader.className = "bg-surface-container border border-outline-variant p-4 font-headline-md text-lg text-secondary border-l-4 " + style.border.replace('border-', 'border-');
+                
+                // Get counts for this domain
+                const total = list.length;
+                const correct = list.filter(q => q.result === 'correct').length;
+                const partial = list.filter(q => q.result === 'partial').length;
+                const wrong = list.filter(q => q.result === 'wrong').length;
+                
+                domainHeader.innerHTML = `
+                    <div class="flex justify-between items-center cursor-pointer" onclick="toggleDomainBlock('${code}')">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined ${style.text}">shield</span>
+                            <span>Domain ${code.substring(1)}: ${style.label}</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs font-code-md">
+                            <span class="text-on-surface-variant font-code-md"><span class="text-secondary">${correct}</span> / ${total} Correct</span>
+                            <span class="material-symbols-outlined text-sm text-on-surface-variant transform transition-transform" id="arrow-${code}">expand_more</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Nested Questions List -->
+                    <div id="list-${code}" class="mt-4 hidden space-y-3 pt-4 border-t border-outline-variant/30 max-h-[600px] overflow-y-auto custom-scrollbar pr-1">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="grid-${code}">
+                            <!-- Individual questions go here -->
+                        </div>
+                    </div>
+                `;
+                container.appendChild(domainHeader);
+                
+                // Populate questions inside this domain
+                const qGrid = document.getElementById(`grid-${code}`);
+                list.forEach(q => {
+                    let resultBadge = "bg-surface-container-highest text-on-surface-variant";
+                    if (q.result === 'correct') resultBadge = "bg-d5-data/20 text-d5-data";
+                    else if (q.result === 'partial') resultBadge = "bg-secondary/20 text-secondary border border-secondary/10";
+                    else if (q.result === 'wrong') resultBadge = "bg-error-container text-error border border-error/10";
+                    
+                    const card = document.createElement('div');
+                    card.className = "question-card bg-surface-container-low border border-outline-variant p-4 rounded hover:border-secondary transition-all cursor-pointer flex flex-col justify-between h-44 hover:scale-[1.01]";
+                    card.setAttribute('data-num', q.num);
+                    card.setAttribute('data-scenario', q.scenario.toLowerCase());
+                    card.setAttribute('data-review', q.review.toLowerCase());
+                    card.setAttribute('data-result', q.result);
+                    card.setAttribute('data-retest', q.retest ? 'true' : 'false');
+                    
+                    card.onclick = () => openQuestionModal(q);
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] font-code-md mb-2">
+                                <span class="text-on-surface-variant">S${q.sessionNum} • ${q.date}</span>
+                                <span class="px-2 py-0.5 rounded font-bold uppercase tracking-wider ${resultBadge}">Q${q.num}</span>
+                            </div>
+                            <p class="text-xs text-on-surface line-clamp-3 leading-relaxed font-body-md italic mb-2">"${q.scenario}"</p>
+                        </div>
+                        <div class="border-t border-outline-variant/20 pt-2 flex justify-between items-center text-[10px]">
+                            <span class="font-semibold text-secondary truncate max-w-[80%] font-code-md uppercase tracking-wider">${q.review || "General Practice"}</span>
+                            ${q.retest ? '<span class="material-symbols-outlined text-secondary text-sm animate-pulse">sync</span>' : ''}
+                        </div>
+                    `;
+                    qGrid.appendChild(card);
+                });
+            });
+            
+            // Expand the first domain default
+            toggleDomainBlock('D4');
+        }
+
+        function toggleDomainBlock(code) {
+            const listBlock = document.getElementById(`list-${code}`);
+            const arrow = document.getElementById(`arrow-${code}`);
+            if (listBlock.classList.contains('hidden')) {
+                listBlock.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                listBlock.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Advanced filter logic for syllabus questions
+        function filterQuestions() {
+            const searchVal = document.getElementById('q-search').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.question-card');
+            
+            // Parse prefix logic like "D4:" or "D1:"
+            let domainPrefix = "";
+            let cleanSearch = searchVal;
+            if (searchVal.match(/^d[1-6]:/)) {
+                domainPrefix = searchVal.substring(0, 2).toUpperCase();
+                cleanSearch = searchVal.substring(3).trim();
+            }
+
+            cards.forEach(card => {
+                const num = card.getAttribute('data-num');
+                const scenario = card.getAttribute('data-scenario');
+                const review = card.getAttribute('data-review');
+                const result = card.getAttribute('data-result');
+                const isRetest = card.getAttribute('data-retest') === 'true';
+                
+                // Matches domain prefix
+                let matchDomain = true;
+                if (domainPrefix) {
+                    // Card num index match to see if it is in domain
+                    const qData = findQuestionByNum(num);
+                    if (qData && qData.domain !== domainPrefix) {
+                        matchDomain = false;
+                    }
+                }
+                
+                // Matches result filter
+                let matchResult = true;
+                if (currentResultFilter !== 'all' && result !== currentResultFilter) {
+                    matchResult = false;
+                }
+                
+                // Matches retest filter
+                let matchRetest = true;
+                if (currentRetestFilterOnly && !isRetest) {
+                    matchRetest = false;
+                }
+                
+                // Matches text search
+                let matchText = true;
+                if (cleanSearch) {
+                    const cleanNum = `q${num}`;
+                    if (!scenario.includes(cleanSearch) && !review.includes(cleanSearch) && !cleanNum.includes(cleanSearch)) {
+                        matchText = false;
+                    }
+                }
+                
+                if (matchDomain && matchResult && matchRetest && matchText) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+            
+            // Auto expand domain blocks that have matching visible elements
+            Object.keys(DOMAIN_STYLES).forEach(code => {
+                const listBlock = document.getElementById(`list-${code}`);
+                const grid = document.getElementById(`grid-${code}`);
+                const arrow = document.getElementById(`arrow-${code}`);
+                if (!grid) return;
+                
+                const visibleCount = Array.from(grid.children).filter(c => c.style.display !== 'none').length;
+                if (visibleCount > 0 && searchVal !== "") {
+                    listBlock.classList.remove('hidden');
+                    arrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        }
+
+        function setResultFilter(type) {
+            currentResultFilter = type;
+            // Update UI buttons
+            const types = ['all', 'correct', 'partial', 'wrong'];
+            types.forEach(t => {
+                const btn = document.getElementById(`q-filter-${t}`);
+                if (t === type) {
+                    btn.className = "px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider bg-secondary text-on-secondary rounded";
+                } else {
+                    btn.className = "px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded";
+                }
+            });
+            filterQuestions();
+        }
+
+        function toggleRetestFilter() {
+            currentRetestFilterOnly = !currentRetestFilterOnly;
+            const btn = document.getElementById('q-filter-retest');
+            if (currentRetestFilterOnly) {
+                btn.className = "px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider bg-secondary text-on-secondary rounded";
+            } else {
+                btn.className = "px-3 py-1.5 font-label-sm text-[10px] uppercase font-bold tracking-wider border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded";
+            }
+            filterQuestions();
+        }
+
+        // Build vertical study path timeline roadmap
+        function buildRoadmapTimeline() {
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+            
+            // Render weeks from tracker_data
+            TRACKER_DATA.weeks.forEach((w, index) => {
+                const isLeft = index % 2 === 0;
+                
+                let weekStyle = {
+                    badge: "bg-surface-container-highest text-on-surface-variant",
+                    border: "border-outline-variant",
+                    cardClass: "bg-surface-container opacity-60 grayscale hover:grayscale-0 hover:opacity-100",
+                    nodeCircle: "bg-surface-container-highest text-on-surface-variant",
+                    nodeIcon: "lock",
+                    statusText: "LOCKED"
+                };
+                
+                if (w.status === 'completed') {
+                    weekStyle = {
+                        badge: "bg-secondary/15 text-secondary border border-secondary/20",
+                        border: "border-secondary",
+                        cardClass: "bg-surface-container-low border border-secondary hover:border-secondary hover:scale-[1.01] hover:shadow-[0_0_15px_rgba(233,195,73,0.1)]",
+                        nodeCircle: "bg-secondary text-primary font-bold",
+                        nodeIcon: "check",
+                        statusText: "COMPLETED"
+                    };
+                } else if (w.status === 'in_progress') {
+                    weekStyle = {
+                        badge: "bg-secondary text-primary font-bold animate-pulse",
+                        border: "border-secondary border-2",
+                        cardClass: "bg-surface-container-high border-2 border-secondary path-glow rounded hover:scale-[1.01]",
+                        nodeCircle: "bg-secondary text-primary font-bold path-glow animate-pulse",
+                        nodeIcon: "bolt",
+                        statusText: "ACTIVE MODULE"
+                    };
+                }
+                
+                const node = document.createElement('div');
+                node.className = "relative z-10 flex flex-col md:flex-row items-start md:items-center w-full transition-all duration-300";
+                
+                // Align left or right on desktop
+                const leftOrderClass = isLeft ? "md:order-1" : "md:order-2 md:pl-16";
+                const rightOrderClass = isLeft ? "md:order-2 md:pl-16" : "md:order-1 text-right md:pr-16";
+                const orderText = w.status === 'completed' ? "COMPLETED" : (w.status === 'in_progress' ? "ACTIVE" : "ESTIMATED");
+                
+                node.innerHTML = `
+                    <!-- Left Column (Card for Left-Side node, or Text for Right-Side node) -->
+                    <div class="w-full md:w-1/2 ${isLeft ? 'md:order-1 md:pr-16' : 'md:order-2 md:pl-16'} mt-4 md:mt-0">
+                        <div class="${weekStyle.cardClass} p-6 border rounded transition-all">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-label-sm text-[10px] uppercase tracking-wider px-2 py-0.5 rounded ${weekStyle.badge}">WEEK ${w.week}</span>
+                                <span class="material-symbols-outlined text-sm ${w.status === 'completed' ? 'text-secondary' : 'text-on-surface-variant'}">${weekStyle.nodeIcon}</span>
+                            </div>
+                            <h3 class="font-headline-md text-base text-on-surface mb-2">${w.focus}</h3>
+                            <p class="text-xs text-on-surface-variant mb-4 leading-relaxed">${w.notes || "Mastering specific domain objectives and completing the course challenges."}</p>
+                            
+                            <div class="border-t border-outline-variant/30 pt-3 italic text-[11px] text-on-tertiary-container">
+                                "Wisdom is the ultimate defense of the cloud architecture."
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Center Timeline Circle Node -->
+                    <div class="absolute left-6 md:left-1/2 w-8 h-8 rounded-full transform -translate-x-1/2 border-4 border-surface z-20 flex items-center justify-center ${weekStyle.nodeCircle}">
+                        <span class="material-symbols-outlined text-xs">${weekStyle.nodeIcon}</span>
+                    </div>
+                    
+                    <!-- Right Column (Status Text for Left-Side node, or Card for Right-Side node) -->
+                    <div class="w-full md:w-1/2 ${isLeft ? 'md:order-2 md:pl-16' : 'md:order-1 text-right md:pr-16'} hidden md:block">
+                        <p class="font-code-md text-xs text-on-surface-variant uppercase tracking-wider">${orderText}</p>
+                    </div>
+                `;
+                container.appendChild(node);
+            });
+        }
+
+        // Render weak gaps board card grid
+        function buildWeakAreasBoard() {
+            const grid = document.getElementById('weak-areas-grid');
+            grid.innerHTML = '';
+            
+            TRACKER_DATA.weak_areas.forEach((item, index) => {
+                const priorityBadge = item.level === 'red' ? "bg-error-container text-error border border-error/20" : "bg-secondary/15 text-secondary border border-secondary/20";
+                
+                const card = document.createElement('div');
+                card.className = "bg-surface-container border border-outline-variant p-5 rounded hover:border-secondary transition-all flex flex-col justify-between min-h-[160px]";
+                
+                // Format the lists of questions as buttons
+                const qListHtml = item.questions.map(qNum => {
+                    return `<button onclick="viewQuestionByNum('${qNum}')" class="px-2 py-0.5 bg-surface-container-low border border-outline-variant/45 rounded font-code-md text-[10px] text-secondary hover:text-on-surface hover:bg-secondary/20 transition-all font-bold">${qNum}</button>`;
+                }).join(' ');
+
+                // Map domain labels
+                const domainLabels = item.domains.map(d => {
+                    const style = DOMAIN_STYLES[d] || { label: 'Security' };
+                    return `<span class="px-1.5 py-0.5 rounded text-[9px] font-code-md bg-surface-container-highest text-on-surface-variant">${d}: ${style.label}</span>`;
+                }).join(' ');
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="flex items-center gap-1.5">
+                                ${domainLabels}
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-code-md ${priorityBadge}">
+                                PRIORITY ${item.priority}
+                            </span>
+                        </div>
+                        <h3 class="font-headline-md text-sm text-on-surface mb-2 font-bold">${item.topic}</h3>
+                    </div>
+                    
+                    <div class="border-t border-outline-variant/30 pt-3 mt-3">
+                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Target Questions (${item.count}):</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${qListHtml}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Modal Question Viewer
+        function openQuestionModal(q) {
+            const domainStyle = DOMAIN_STYLES[q.domain] || { label: 'Security', badgeBg: 'bg-surface-container-highest' };
+            
+            document.getElementById('modal-domain').className = `px-2 py-0.5 text-[9px] font-code-md rounded uppercase tracking-wider font-bold ${domainStyle.badgeBg}`;
+            document.getElementById('modal-domain').innerText = `D${q.domain.substring(1)}: ${domainStyle.label}`;
+            document.getElementById('modal-title').innerText = `Question Challenge Q${q.num}`;
+            
+            document.getElementById('modal-scenario').innerText = q.scenario;
+            document.getElementById('modal-your-answer').innerText = q.your_answer || "N/A (No previous answer recorded)";
+            document.getElementById('modal-correct-answer').innerHTML = q.correct_answer;
+            document.getElementById('modal-review').innerText = q.review || "General Practice Review";
+            
+            if (q.retest) {
+                document.getElementById('modal-retest-container').style.display = "block";
+                document.getElementById('modal-retest').innerText = q.retest;
+            } else {
+                document.getElementById('modal-retest-container').style.display = "none";
+            }
+            
+            // Show modal
+            const modal = document.getElementById('question-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('question-modal').classList.add('hidden');
+        }
+
+        // Lookups
+        function findQuestionByNum(num) {
+            let found = null;
+            TRACKER_DATA.sessions.forEach(s => {
+                s.questions.forEach(q => {
+                    if (q.num == num) {
+                        found = q;
+                    }
+                });
+            });
+            return found;
+        }
+
+        function viewQuestionByNum(qNumStr) {
+            const num = qNumStr.replace('Q', '').trim();
+            const q = findQuestionByNum(num);
+            if (q) {
+                openQuestionModal(q);
+            } else {
+                console.error(`Question ${qNumStr} not found.`);
+            }
+        }
+
+        // Switch Tabs logic
+        function switchTab(tabId) {
+            activeTab = tabId;
+            
+            // Update nav state
+            const tabs = ['dashboard', 'syllabus', 'roadmap', 'weakareas'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`btn-${t}`);
+                const pane = document.getElementById(`tab-${t}`);
+                if (t === tabId) {
+                    btn.className = "w-full flex items-center gap-4 px-4 py-3 rounded text-secondary font-bold bg-surface-container-highest transition-all duration-200";
+                    pane.classList.add('active');
+                } else {
+                    btn.className = "w-full flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200";
+                    pane.classList.remove('active');
+                }
+            });
+
+            // Page header sync
+            let pageTitle = "SCS-C03 Prep Dashboard";
+            if (tabId === 'syllabus') pageTitle = "Question Syllabus Database";
+            else if (tabId === 'roadmap') pageTitle = "Strategic Study Path";
+            else if (tabId === 'weakareas') pageTitle = "Stoic Weak Areas Radar";
+            
+            document.getElementById('page-title').innerText = pageTitle;
+        }
+
+        // Helper calculations
+        function intPct(num, total) {
+            return total > 0 ? Math.round((num / total) * 100) : 0;
+        }
+    </script>
+</body>
+</html>

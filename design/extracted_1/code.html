@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    body {
+      background-color: #061422;
+      color: #d6e4f7;
+      margin: 0;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f1d2a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #45474a;
+    }
+    .path-glow {
+      box-shadow: 0 0 15px rgba(233, 195, 73, 0.2);
+    }
+    .stoic-border-bottom {
+      border-bottom: 1px solid #2D3436;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error-container": "#93000a",
+            "on-error": "#690005",
+            "error": "#ffb4ab",
+            "surface-container-highest": "#293644",
+            "tertiary-fixed": "#dde4e6",
+            "surface-bright": "#2d3a49",
+            "on-primary-fixed-variant": "#45474a",
+            "outline": "#8f9094",
+            "on-secondary-container": "#342800",
+            "primary-container": "#121417",
+            "on-tertiary": "#2b3234",
+            "on-primary-fixed": "#1a1c1f",
+            "on-tertiary-container": "#788082",
+            "tertiary": "#c1c8ca",
+            "primary-fixed-dim": "#c6c6ca",
+            "surface-container-low": "#0f1d2a",
+            "on-secondary-fixed": "#241a00",
+            "on-surface-variant": "#c6c6ca",
+            "primary": "#c6c6ca",
+            "on-primary-container": "#7d7e82",
+            "secondary-fixed": "#ffe088",
+            "tertiary-container": "#0e1517",
+            "surface-container-lowest": "#020f1c",
+            "secondary": "#e9c349",
+            "on-primary": "#2f3034",
+            "surface-container": "#13212e",
+            "surface-container-high": "#1e2b39",
+            "primary-fixed": "#e2e2e6",
+            "surface-variant": "#293644",
+            "on-secondary-fixed-variant": "#574500",
+            "outline-variant": "#45474a",
+            "on-background": "#d6e4f7",
+            "on-tertiary-fixed-variant": "#41484a",
+            "on-error-container": "#ffdad6",
+            "on-surface": "#d6e4f7",
+            "on-tertiary-fixed": "#161d1f",
+            "on-secondary": "#3c2f00",
+            "inverse-surface": "#d6e4f7",
+            "secondary-container": "#af8d11",
+            "surface": "#061422",
+            "secondary-fixed-dim": "#e9c349",
+            "surface-dim": "#061422",
+            "background": "#061422",
+            "surface-tint": "#c6c6ca",
+            "tertiary-fixed-dim": "#c1c8ca",
+            "inverse-primary": "#5d5e62",
+            "inverse-on-surface": "#243240"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "section-gap": "64px",
+            "gutter": "24px",
+            "container-padding": "32px",
+            "unit": "8px"
+          },
+          "fontFamily": {
+            "headline-lg": ["\"Source Serif 4\""],
+            "code-md": ["JetBrains Mono"],
+            "headline-md": ["\"Source Serif 4\""],
+            "label-sm": ["JetBrains Mono"],
+            "display-lg": ["\"Source Serif 4\""],
+            "body-md": ["Geist"],
+            "body-lg": ["Geist"]
+          },
+          "fontSize": {
+            "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+            "code-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+            "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col md:flex-row overflow-hidden">
+<!-- Side Navigation Bar -->
+<aside class="hidden md:flex flex-col h-screen w-64 left-0 sticky bg-surface-container border-r border-outline-variant py-container-padding">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-secondary text-3xl">shield_lock</span>
+<h1 class="font-headline-md text-headline-md text-secondary">Aether Guard</h1>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">AWS SCS-C03 Mastery</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<div class="flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-body-md text-body-md">Syllabus</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-body-md text-body-md">Practice Labs</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="shield_lock">shield_lock</span>
+<span class="font-body-md text-body-md">Whitepapers</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 rounded text-secondary font-bold bg-surface-container-highest transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="font-body-md text-body-md">Roadmap</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-md text-body-md">Exam History</span>
+</div>
+</nav>
+<div class="px-4 mt-auto space-y-1 border-t border-outline-variant pt-6">
+<div class="flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-body-md text-body-md">Reference Docs</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md text-body-md">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-h-screen overflow-hidden">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky bg-surface border-b border-outline-variant flex justify-between items-center px-gutter py-unit z-20">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-secondary">AWS Security Specialty Path</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4">
+<span class="material-symbols-outlined text-primary hover:bg-surface-container-high p-2 rounded transition-colors cursor-pointer" data-icon="security">security</span>
+<span class="material-symbols-outlined text-primary hover:bg-surface-container-high p-2 rounded transition-colors cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-primary hover:bg-surface-container-high p-2 rounded transition-colors cursor-pointer" data-icon="settings">settings</span>
+</div>
+<img alt="Security Engineer Profile" class="w-10 h-10 rounded-full border border-outline" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWqwF7Lv2DTklia3feKs4YaB4RQSxNMvfSYc19Ahklubtm0wjubzhWfL8pfBO-W_dqETkVkj6ffcfRdXYMbtg2-N2Zoognn5-oQGj8tAL06gmwNM_hhX84NngUznzMwBLNz7rglNp8t9yhq8ebYVALgrhph9-InWoVydfCrJZRwMIEnrpZWXANzWTpa2cq83GZ-AcC1i1JUl9CWPegyXiWUoVme00458LFXtAQnStfepcroatAB9oeNHZE8mvl8JHMEnaUPAatep65"/>
+</div>
+</header>
+<!-- Content Canvas -->
+<section class="flex-1 overflow-y-auto custom-scrollbar px-container-padding py-8 bg-surface">
+<!-- Path of Virtue Tracker -->
+<div class="mb-12 max-w-5xl mx-auto">
+<div class="bg-surface-container p-8 rounded border border-outline-variant relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-9xl">school</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+<div>
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-1">Certification Progress</p>
+<h2 class="font-headline-lg text-headline-lg">SCS-C03 Study Path</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mt-2">Achieving mastery in AWS Security requires a disciplined approach across five critical domains. Your current trajectory ensures a deep understanding of architectural integrity.</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-code-md text-headline-md text-secondary mb-2">40% Prepared</span>
+<div class="w-64 h-3 bg-surface-container-highest rounded-full overflow-hidden border border-outline-variant">
+<div class="h-full bg-secondary w-[40%] transition-all duration-1000 shadow-[0_0_10px_rgba(233,195,73,0.4)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Roadmap Timeline Structure -->
+<div class="max-w-4xl mx-auto relative">
+<!-- Vertical Spine -->
+<div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-outline-variant transform md:-translate-x-1/2 z-0"></div>
+<!-- Node 1: Completed -->
+<div class="relative z-10 mb-20 flex flex-col md:flex-row items-start md:items-center w-full">
+<div class="md:w-1/2 md:pr-16 order-2 md:order-1 mt-4 md:mt-0">
+<div class="bg-surface-container p-6 border border-outline-variant rounded transition-all hover:border-secondary group">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container-highest px-3 py-1 rounded">PHASE I: DOMAIN 4</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">IAM &amp; Least Privilege</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Mastering IAM policies, Service Control Policies (SCPs), and cross-account access using AWS Organizations and IAM Access Analyzer.</p>
+<div class="border-t border-outline-variant pt-4 italic text-on-tertiary-container">
+<p class="font-body-md text-body-md">"Trust must be earned and explicitly defined, never assumed."</p>
+</div>
+</div>
+</div>
+<div class="absolute left-6 md:left-1/2 w-8 h-8 bg-secondary rounded-full transform -translate-x-1/2 border-4 border-surface z-20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<div class="md:w-1/2 md:pl-16 order-3">
+<p class="font-code-md text-on-surface-variant hidden md:block">COMPLETED: SESSION 01</p>
+</div>
+</div>
+<!-- Node 2: Active -->
+<div class="relative z-10 mb-20 flex flex-col md:flex-row items-start md:items-center w-full">
+<div class="md:w-1/2 md:pr-16 order-3 text-right hidden md:block">
+<p class="font-code-md text-secondary">IN PROGRESS: 65%</p>
+</div>
+<div class="absolute left-6 md:left-1/2 w-10 h-10 bg-secondary rounded-full transform -translate-x-1/2 border-4 border-surface-container-highest z-20 flex items-center justify-center path-glow">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div class="md:w-1/2 md:pl-16 order-2 mt-4 md:mt-0">
+<div class="bg-surface-container-high p-8 border-2 border-secondary rounded shadow-[0_0_30px_rgba(233,195,73,0.1)] relative">
+<div class="absolute -top-3 left-6 bg-secondary text-primary font-label-sm px-4 py-1 rounded text-xs font-bold uppercase">Active Module</div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container-highest px-3 py-1 rounded">PHASE II: DOMAIN 3</span>
+<div class="flex gap-1">
+<span class="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></span>
+<span class="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse delay-75"></span>
+<span class="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse delay-150"></span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Infrastructure &amp; Edge Security</h3>
+<p class="font-body-md text-body-md text-on-surface mb-4">Configuring AWS WAF, Shield, and Network Firewall. Hardening VPCs with Flow Logs and PrivateLink.</p>
+<div class="border-t border-outline-variant pt-4 italic text-secondary">
+<p class="font-body-md text-body-md">"A resilient perimeter is the first line of architectural sanity."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Node 3: Future -->
+<div class="relative z-10 mb-20 flex flex-col md:flex-row items-start md:items-center w-full opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+<div class="md:w-1/2 md:pr-16 order-2 md:order-1 mt-4 md:mt-0">
+<div class="bg-surface-container p-6 border border-outline-variant rounded transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-highest px-3 py-1 rounded">PHASE III: DOMAIN 2</span>
+<span class="material-symbols-outlined text-outline">pending</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Logging &amp; Monitoring</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Orchestrating CloudTrail, Config, and GuardDuty for continuous observability and automated remediation.</p>
+<div class="border-t border-outline-variant pt-4 italic text-on-tertiary-container">
+<p class="font-body-md text-body-md">"To monitor is to understand the soul of the system."</p>
+</div>
+</div>
+</div>
+<div class="absolute left-6 md:left-1/2 w-8 h-8 bg-surface-container-highest rounded-full transform -translate-x-1/2 border-4 border-surface z-20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">visibility</span>
+</div>
+<div class="md:w-1/2 md:pl-16 order-3">
+<p class="font-code-md text-on-surface-variant hidden md:block">SCHEDULED: NEXT WEEK</p>
+</div>
+</div>
+<!-- Node 4: Future -->
+<div class="relative z-10 mb-20 flex flex-col md:flex-row items-start md:items-center w-full opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+<div class="md:w-1/2 md:pr-16 order-3 text-right hidden md:block">
+<p class="font-code-md text-on-surface-variant">ESTIMATED: 2 WEEKS</p>
+</div>
+<div class="absolute left-6 md:left-1/2 w-8 h-8 bg-surface-container-highest rounded-full transform -translate-x-1/2 border-4 border-surface z-20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">lock</span>
+</div>
+<div class="md:w-1/2 md:pl-16 order-2 mt-4 md:mt-0">
+<div class="bg-surface-container p-6 border border-outline-variant rounded transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-highest px-3 py-1 rounded">PHASE IV: DOMAIN 5</span>
+<span class="material-symbols-outlined text-outline">pending</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Data Protection &amp; Encryption</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Deep dive into KMS Key Management, S3 Bucket Security, and Macie for sensitive data discovery.</p>
+<div class="border-t border-outline-variant pt-4 italic text-on-tertiary-container">
+<p class="font-body-md text-body-md">"Privacy is a fortress built with cryptographic precision."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Node 5: Future -->
+<div class="relative z-10 mb-20 flex flex-col md:flex-row items-start md:items-center w-full opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+<div class="md:w-1/2 md:pr-16 order-2 md:order-1 mt-4 md:mt-0">
+<div class="bg-surface-container p-6 border border-outline-variant rounded transition-all">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-highest px-3 py-1 rounded">PHASE V: DOMAIN 1</span>
+<span class="material-symbols-outlined text-outline">pending</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Incident Response &amp; Forensics</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Utilizing Amazon Detective and AWS Systems Manager for rapid investigation and automated response.</p>
+<div class="border-t border-outline-variant pt-4 italic text-on-tertiary-container">
+<p class="font-body-md text-body-md">"Preparedness turns a crisis into a manageable procedure."</p>
+</div>
+</div>
+</div>
+<div class="absolute left-6 md:left-1/2 w-8 h-8 bg-surface-container-highest rounded-full transform -translate-x-1/2 border-4 border-surface z-20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">emergency</span>
+</div>
+<div class="md:w-1/2 md:pl-16 order-3">
+<p class="font-code-md text-on-surface-variant hidden md:block">FINAL STRETCH</p>
+</div>
+</div>
+<!-- Final Destination -->
+<div class="relative z-10 flex flex-col items-center justify-center py-10">
+<div class="w-16 h-16 bg-surface-container border-2 border-outline-variant rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-outline text-3xl">workspace_premium</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-surface-variant">Exam Readiness Zenith</h4>
+<p class="font-label-sm text-label-sm text-on-tertiary-container uppercase tracking-widest mt-2">Certified Security Specialist</p>
+</div>
+</div>
+</section>
+<!-- Contextual FAB -->
+<button class="fixed bottom-8 right-8 bg-secondary text-primary w-14 h-14 rounded-lg flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all z-30 group">
+<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
+<span class="absolute right-16 bg-surface-container px-4 py-2 rounded border border-outline-variant text-on-surface font-body-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">Add Learning Goal</span>
+</button>
+</main>
+<!-- Mobile Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container flex justify-around items-center py-3 px-2 z-50">
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="text-[10px] uppercase font-bold">Learn</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="text-[10px] uppercase font-bold">Labs</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="text-[10px] uppercase font-bold">Path</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="shield_lock">shield_lock</span>
+<span class="text-[10px] uppercase font-bold">Docs</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] uppercase font-bold">Profile</span>
+</div>
+</nav>
+<script>
+    // Lightweight interaction for timeline elements
+    document.querySelectorAll('.bg-surface-container').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-2px)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0px)';
+      });
+    });
+
+    // Custom pulse effect via JS for smoother rendering
+    const activeNodes = document.querySelectorAll('.animate-pulse');
+    activeNodes.forEach((node, index) => {
+        node.style.animationDelay = `${index * 200}ms`;
+    });
+  </script>
+</body></html>
