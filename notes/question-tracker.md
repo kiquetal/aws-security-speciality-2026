@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 909 |
-| **✅ Correct** | 704 (77%) |
+| **Total Questions** | 919 |
+| **✅ Correct** | 713 (78%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 175 (19%) |
-| **Sessions** | 90 |
-| **Re-tests Passed** | 399 of 484 |
+| **❌ Wrong** | 176 (19%) |
+| **Sessions** | 91 |
+| **Re-tests Passed** | 408 of 494 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 165 | 7 | 54 | 226 | 73% | 🟡 |
-| D2: Incident Response | 20 | 1 | 8 | 29 | 69% | 🟡 |
-| D3: Infrastructure Security | 83 | 5 | 17 | 105 | 79% | 🟡 |
+| D1: Detection | 166 | 7 | 54 | 227 | 73% | 🟡 |
+| D2: Incident Response | 21 | 1 | 8 | 30 | 70% | 🟡 |
+| D3: Infrastructure Security | 85 | 5 | 17 | 107 | 79% | 🟡 |
 | D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
-| D5: Data Protection | 129 | 4 | 34 | 167 | 77% | 🟡 |
-| D6: Governance | 108 | 2 | 26 | 136 | 79% | 🟡 |
+| D5: Data Protection | 133 | 4 | 35 | 172 | 77% | 🟡 |
+| D6: Governance | 109 | 2 | 26 | 137 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -180,6 +180,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 146 | GWLB GENEVE decapsulation | Q905 | D3 | 1 |
 | 🟡 147 | Config org custom rule cross-account invoke | Q908 | D6 | 1 |
 | 🟡 148 | Reading comprehension (multiple missing perms) | Q911 | D5 | 1 |
+| 🟡 149 | Kinesis + KMS VPC endpoints (timeout = network) | Q918 | D5 | 1 |
 
 ---
 
@@ -277,6 +278,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 88 | 2026-06-15 | Q883–Q892 | 7 | 0 | 3 | Cross-domain (score uplift drill — CRR+KMS, StopLogging, IR containment, multipart, EBS, IoT, Config custom rules) | [Jump](#session-88--2026-06-15) |
 | 89 | 2026-06-15 | Q893–Q902 | 7 | 0 | 3 | Cross-domain (score uplift drill #2 — CRR, IoT, S3 Batch, DynamoDB KMS, ViaService, EBS encryption) | [Jump](#session-89--2026-06-15) |
 | 90 | 2026-06-15 | Q903–Q912 | 6 | 0 | 4 | Cross-domain (surprise drill — S3 ACLs, GWLB, Roles Anywhere, Private CA, declarative policies, Kinesis, VPC endpoints) | [Jump](#session-90--2026-06-15) |
+| 91 | 2026-06-15 | Q913–Q922 | 9 | 0 | 1 | Cross-domain (Week 1 killer drill — CRR encryption context, StopLogging, credential leak IR, S3 logging, IoT revocation, Kinesis endpoints, S3 Batch, GWLB, Config custom rules, DynamoDB KMS) | [Jump](#session-91--2026-06-15) |
 
 ---
 
@@ -2066,3 +2068,22 @@ After adding a session:
 | 910 | D6/D3 | Guarantee no public IPs regardless of ANY API (current or future) — mechanism? | B: Declarative policy | ✅ | State enforcement vs API enumeration. | — | Declarative policies vs SCP |
 | 911 | D5/D3 | Producer Lambda has PutRecord + GenerateDataKey, tries to read own records — why fails? | A: Only missing KMS perms | ❌ | C: Missing BOTH Kinesis read perms (GetRecords) AND KMS read perms (Decrypt+DescribeKey). | — | Reading comprehension (multiple missing perms) |
 | 912 | D5/D4 | SCP denies PutObject if KMS key header ≠ specific key, upload without flags, default encryption set — result? | B: Denied — SCP before default encryption | ✅ | SCP evaluates request as-received. | Q426, Q626 | Default encryption vs SCP Deny |
+
+
+### Session 91 — 2026-06-15
+
+**Domains:** Cross-domain (Week 1 killer drill — CRR encryption context, StopLogging, credential leak IR, S3 logging, IoT revocation, Kinesis endpoints, S3 Batch, GWLB, Config custom rules, DynamoDB KMS)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 913 | D5/D3 | CRR cross-account, dest key policy checks encryption context against source bucket ARN — why fails? (TWO) | B+E | ✅ | B+E: CRR rewrites context to dest bucket ARN + ViaService sidesteps the problem. | Q888 | CRR rewrites encryption context to dest |
+| 914 | D1/D6 | Org trail + CW metric filter on StopLogging doesn't fire, EventBridge does — why? | B | ✅ | B: StopLogging kills own CW Logs delivery — EventBridge receives directly from CloudTrail. | Q860, Q866 | StopLogging kills own CW Logs delivery |
+| 915 | D2/D4 | Keys on GitHub 8hrs, attacker created 2nd keys + console + EC2 — broadest single containment? | B | ✅ | B: Inline Deny * on IAM user — blocks all paths simultaneously. | Q862, Q867 | Credential leak IR (Deny-all before investigate) |
+| 916 | D5/D6 | Config auto-remediation S3 logging fails AccessDenied, has PutBucketLogging + PutObject — missing? | A | ✅ | A: s3:GetBucketAcl — S3 server access logging uses ACL mechanism for validation. | Q864, Q868, Q903 | S3 server access logging = ACLs |
+| 917 | D3/D1 | IoT cert revoked 3 seconds ago, device attempts new MQTT connection — result? | B | ✅ | B: Fails immediately — IoT Core checks registry status at TLS handshake, no CRL delay. | Q892, Q894 | IoT cert revocation = instant (no CRL delay) |
+| 918 | D5/D3 | Lambda private subnet, encrypted Kinesis, times out on GetRecords, SM works — fix? (TWO) | B+A | ❌ | A+D: Interface endpoint for Kinesis + Interface endpoint for KMS. Timeout = network, not permissions. | Q685, Q895 | Kinesis + KMS VPC endpoints (timeout = network) |
+| 919 | D5 | S3 Batch Operations job in us-east-1 targeting ap-southeast-1 bucket — error cause? | B | ✅ | B: Batch Operations is regional — job must be in same region as target bucket. | Q872, Q897 | S3 Batch Operations regional |
+| 920 | D3/D1 | GWLB + IDS, all logs show GWLB IP instead of client IPs — fix? | B | ✅ | B: Appliances must decapsulate GENEVE outer header — original IP in inner packet. | Q905 | GWLB GENEVE decapsulation |
+| 921 | D6/D1 | Org Config custom rule, Lambda works locally, "Unable to invoke" in 150 members — fix? | B | ✅ | B: Lambda resource-based policy granting config.amazonaws.com with SourceAccount condition. | Q876, Q908 | Config org custom rule cross-account invoke |
+| 922 | D5/D4 | DynamoDB CMK, Lambda has Decrypt+GenerateDataKey, PutItem Access Denied on KMS — missing? | B | ✅ | B: kms:CreateGrant + kms:DescribeKey — DynamoDB delegates via grants like EBS. | Q899 | DynamoDB + CMK = CreateGrant + DescribeKey |
