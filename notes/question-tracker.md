@@ -13,7 +13,7 @@
 | **⚠️ Partial** | 27 (3%) |
 | **❌ Wrong** | 165 (19%) |
 | **Sessions** | 87 |
-| **Re-tests Passed** | 382 of 465 |
+| **Re-tests Passed** | 390 of 473 |
 
 ## Domain Breakdown
 
