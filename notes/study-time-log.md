@@ -53,4 +53,5 @@
 | 3 | 2026-06-15 | 10:38 | 11:21 | 43 | Session 87 (Session 86 re-test + Week 1 killer) |
 | 4 | 2026-06-15 | 11:21 | 12:32 | 71 | Sessions 88-90 (score uplift drills, 53%→70%→70%→60%→80%) |
 | 5 | 2026-06-15 | 13:12 | 13:53 | 41 | Sessions 88-90 continued |
-| 6 | 2026-06-15 | 13:53 | | | Session 91 (Week 1 killer drill) |
+| 6 | 2026-06-15 | 13:53 | 14:35 | 42 | Session 91 (Week 1 killer drill — 90%) |
+| 7 | 2026-06-15 | 19:41 | 20:04 | 23 | Tracker fix + Q918 re-test (✅) |
