@@ -188,6 +188,10 @@
                 <span class="material-symbols-outlined text-xl">history</span>
                 <span class="font-body-md text-sm">Study Sessions</span>
             </button>
+            <button onclick="switchTab('cheatsheet')" id="btn-cheatsheet" class="w-full flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200">
+                <span class="material-symbols-outlined text-xl">menu_book</span>
+                <span class="font-body-md text-sm">Exam Cheat Sheet</span>
+            </button>
         </nav>
         
         <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
@@ -573,6 +577,48 @@
                 </div>
             </div>
 
+            <!-- ---------------------------------------------------- -->
+            <!-- TAB 6: EXAM CHEAT SHEET -->
+            <!-- ---------------------------------------------------- -->
+            <div id="tab-cheatsheet" class="tab-content space-y-6">
+                <div class="bg-surface-container p-6 rounded border border-outline-variant">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <p class="font-label-sm text-xs text-secondary uppercase tracking-widest mb-1">Knowledge Repository</p>
+                            <h2 class="font-headline-lg text-2xl">Stoic Exam-Day Cheat Sheet</h2>
+                            <p class="text-sm text-on-surface-variant mt-2 leading-relaxed">
+                                One-liners, core insights, and critical traps categorized by exam domains. Use the search bar to filter instantly through all sections.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search & Filters -->
+                <div class="bg-surface-container border border-outline-variant p-4 flex flex-col lg:flex-row gap-4 items-center justify-between">
+                    <!-- Live Search -->
+                    <div class="relative flex items-center bg-surface-container-low border border-outline-variant w-full lg:w-96 px-3 py-1.5 rounded">
+                        <span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+                        <input id="cheat-search" oninput="filterCheatSheet()" class="bg-transparent border-none focus:ring-0 text-xs text-on-surface placeholder:text-on-surface-variant w-full p-0" placeholder="Search keywords, services, condition keys..." type="text"/>
+                    </div>
+                    <!-- Quick Filters -->
+                    <div class="flex flex-wrap gap-2 text-xs" id="cheat-filter-buttons">
+                        <button onclick="setCheatFilter('all')" id="btn-cheat-all" class="px-3 py-1.5 rounded bg-secondary text-on-secondary font-bold transition-all duration-200">All</button>
+                        <button onclick="setCheatFilter('D4')" id="btn-cheat-D4" class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant">D4 IAM</button>
+                        <button onclick="setCheatFilter('D5')" id="btn-cheat-D5" class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant">D5 Data</button>
+                        <button onclick="setCheatFilter('D3')" id="btn-cheat-D3" class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant">D3 Infra</button>
+                        <button onclick="setCheatFilter('D1')" id="btn-cheat-D1" class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant">D1 Detect</button>
+                        <button onclick="setCheatFilter('D2')" id="btn-cheat-D2" class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant">D2 IR</button>
+                        <button onclick="setCheatFilter('D6')" id="btn-cheat-D6" class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant">D6 Gov</button>
+                        <button onclick="setCheatFilter('General')" id="btn-cheat-General" class="px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant">Limits & Keys</button>
+                    </div>
+                </div>
+
+                <!-- Cheat Sheet content area -->
+                <div class="space-y-6" id="cheatsheet-container">
+                    <!-- Dynamic cheat sheet content loaded via JS -->
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -731,6 +777,7 @@
             buildWeakAreasBoard();
             initSessionsStats();
             buildSessionsView();
+            buildCheatSheetView();
         });
 
         // Initialize top header and general stats
@@ -1530,7 +1577,7 @@
             activeTab = tabId;
             
             // Update nav state
-            const tabs = ['dashboard', 'syllabus', 'roadmap', 'weakareas', 'sessions'];
+            const tabs = ['dashboard', 'syllabus', 'roadmap', 'weakareas', 'sessions', 'cheatsheet'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`btn-${t}`);
                 const pane = document.getElementById(`tab-${t}`);
@@ -1550,6 +1597,7 @@
             else if (tabId === 'roadmap') pageTitle = "Strategic Study Path";
             else if (tabId === 'weakareas') pageTitle = "Stoic Weak Areas Radar";
             else if (tabId === 'sessions') pageTitle = "Study Sessions Audit Logs";
+            else if (tabId === 'cheatsheet') pageTitle = "Stoic Exam-Day Cheat Sheet";
             
             document.getElementById('page-title').innerText = pageTitle;
         }
@@ -1557,6 +1605,247 @@
         // Helper calculations
         function intPct(num, total) {
             return total > 0 ? Math.round((num / total) * 100) : 0;
+        }
+
+        // ----------------------------------------------------
+        // CHEAT SHEET INTERACTIVE SYSTEM
+        // ----------------------------------------------------
+        let activeCheatFilter = "all";
+
+        function setCheatFilter(category) {
+            activeCheatFilter = category;
+            
+            // Update filter buttons UI
+            const buttons = document.querySelectorAll('#cheat-filter-buttons button');
+            buttons.forEach(btn => {
+                if (btn.id === `btn-cheat-${category}`) {
+                    btn.className = "px-3 py-1.5 rounded bg-secondary text-on-secondary font-bold transition-all duration-200";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface transition-all duration-200 border border-outline-variant";
+                }
+            });
+            
+            buildCheatSheetView();
+        }
+
+        function filterCheatSheet() {
+            buildCheatSheetView();
+        }
+
+        function buildCheatSheetView() {
+            const container = document.getElementById('cheatsheet-container');
+            if (!container) return;
+            
+            const searchVal = document.getElementById('cheat-search').value.toLowerCase().trim();
+            const data = TRACKER_DATA.cheat_sheet || [];
+            
+            container.innerHTML = '';
+            
+            if (data.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-on-surface-variant">No cheat sheet data found. Run export_to_json.py.</div>';
+                return;
+            }
+            
+            let visibleSectionsCount = 0;
+            
+            data.forEach(section => {
+                // Apply domain/category filter
+                if (activeCheatFilter !== 'all' && section.category !== activeCheatFilter) {
+                    return;
+                }
+                
+                // We will build a filtered version of the subsections
+                const filteredSubsections = [];
+                
+                section.subsections.forEach(sub => {
+                    const filteredItems = [];
+                    
+                    sub.items.forEach(item => {
+                        let textToSearch = '';
+                        if (item.type === 'bullet' || item.type === 'text') {
+                            textToSearch = item.text.toLowerCase();
+                        } else if (item.type === 'table') {
+                            textToSearch = item.headers.join(' ').toLowerCase() + ' ' + 
+                                           item.rows.map(r => r.join(' ')).join(' ').toLowerCase();
+                        }
+                        
+                        // Check match
+                        const matchesSearch = searchVal === '' || 
+                                              sub.title.toLowerCase().includes(searchVal) ||
+                                              textToSearch.includes(searchVal);
+                                              
+                        if (matchesSearch) {
+                            filteredItems.push(item);
+                        }
+                    });
+                    
+                    if (filteredItems.length > 0) {
+                        filteredSubsections.push({
+                            title: sub.title,
+                            items: filteredItems
+                        });
+                    }
+                });
+                
+                const sectionMatchesTitle = searchVal !== '' && section.title.toLowerCase().includes(searchVal);
+                const finalSubsections = sectionMatchesTitle ? section.subsections : filteredSubsections;
+                
+                if (finalSubsections.length > 0) {
+                    visibleSectionsCount++;
+                    
+                    // Render Section Card
+                    const sectionCard = document.createElement('section');
+                    sectionCard.className = "bg-surface-container border border-outline-variant p-6 rounded space-y-6 transition-all duration-300 hover:border-outline";
+                    
+                    // Style domain border/icon specifically
+                    const domainColorClass = DOMAIN_STYLES[section.category] ? DOMAIN_STYLES[section.category].text : 'text-secondary';
+                    const iconName = getSectionIcon(section.category);
+                    
+                    let headerHTML = `
+                        <div class="flex items-center gap-4 border-b border-outline-variant/30 pb-4">
+                            <div class="w-10 h-10 rounded bg-surface-container-low flex items-center justify-center border border-outline-variant">
+                                <span class="material-symbols-outlined ${domainColorClass} text-xl">${iconName}</span>
+                            </div>
+                            <div>
+                                <h3 class="font-headline-md text-lg font-bold text-on-surface">${section.title}</h3>
+                                <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mt-0.5">${section.category === 'General' ? 'Core Reference' : 'Domain Weight Info'}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    let subsectionsHTML = '';
+                    
+                    finalSubsections.forEach(sub => {
+                        let subTitleHTML = sub.title ? `
+                            <h4 class="font-headline-sm text-md font-bold text-secondary mb-3 mt-4 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                ${sub.title}
+                            </h4>
+                        ` : '';
+                        
+                        let itemsHTML = '<div class="space-y-3 pl-2">';
+                        
+                        sub.items.forEach(item => {
+                            if (item.type === 'bullet') {
+                                if (item.is_insight) {
+                                    itemsHTML += `
+                                        <div class="flex items-start gap-3 bg-secondary/5 border-l-2 border-secondary p-3.5 rounded">
+                                            <span class="material-symbols-outlined text-secondary text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">psychology</span>
+                                            <div class="text-sm text-on-surface leading-relaxed font-body-md">${highlightText(item.text, searchVal)}</div>
+                                        </div>
+                                    `;
+                                } else if (item.is_warning) {
+                                    itemsHTML += `
+                                        <div class="flex items-start gap-3 bg-error-container/10 border-l-2 border-error p-3.5 rounded">
+                                            <span class="material-symbols-outlined text-error text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">warning</span>
+                                            <div class="text-sm text-on-surface leading-relaxed font-body-md">${highlightText(item.text, searchVal)}</div>
+                                        </div>
+                                    `;
+                                } else {
+                                    itemsHTML += `
+                                        <div class="flex items-start gap-3 py-1">
+                                            <span class="material-symbols-outlined text-on-surface-variant/40 text-sm shrink-0 mt-1">chevron_right</span>
+                                            <div class="text-sm text-on-surface-variant leading-relaxed font-body-md">${highlightText(item.text, searchVal)}</div>
+                                        </div>
+                                    `;
+                                }
+                            } else if (item.type === 'text') {
+                                itemsHTML += `
+                                    <p class="text-sm text-on-surface-variant leading-relaxed pl-6 mb-2 font-body-md">${highlightText(item.text, searchVal)}</p>
+                                `;
+                            } else if (item.type === 'table') {
+                                let tableHTML = `
+                                    <div class="overflow-x-auto custom-scrollbar border border-outline-variant/50 rounded mt-3 mb-4">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr class="bg-surface-container-low border-b border-outline-variant">
+                                `;
+                                
+                                item.headers.forEach(h => {
+                                    tableHTML += `
+                                        <th class="px-4 py-2.5 text-[10px] font-label-sm text-secondary uppercase tracking-wider font-semibold">${h}</th>
+                                    `;
+                                });
+                                
+                                tableHTML += `
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-outline-variant/20">
+                                `;
+                                
+                                item.rows.forEach(row => {
+                                    tableHTML += `
+                                        <tr class="hover:bg-surface-container-high/30 transition-colors duration-150">
+                                    `;
+                                    row.forEach(cell => {
+                                        tableHTML += `
+                                            <td class="px-4 py-3 text-xs text-on-surface-variant leading-relaxed font-body-md">${highlightText(cell, searchVal)}</td>
+                                        `;
+                                    });
+                                    tableHTML += `
+                                        </tr>
+                                    `;
+                                });
+                                
+                                tableHTML += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                `;
+                                itemsHTML += tableHTML;
+                            }
+                        });
+                        
+                        itemsHTML += '</div>';
+                        subsectionsHTML += `
+                            <div class="space-y-2 mt-4 first:mt-0">
+                                ${subTitleHTML}
+                                ${itemsHTML}
+                            </div>
+                        `;
+                    });
+                    
+                    sectionCard.innerHTML = headerHTML + `
+                        <div class="space-y-6">
+                            ${subsectionsHTML}
+                        </div>
+                    `;
+                    container.appendChild(sectionCard);
+                }
+            });
+            
+            if (visibleSectionsCount === 0) {
+                container.innerHTML = `
+                    <div class="bg-surface-container border border-outline-variant p-12 rounded text-center">
+                        <span class="material-symbols-outlined text-on-surface-variant/40 text-4xl mb-4">search_off</span>
+                        <h3 class="text-md font-bold text-on-surface mb-1">No matching cheat-sheet items</h3>
+                        <p class="text-sm text-on-surface-variant">Try searching for other keywords, service names (like 'S3', 'KMS'), or reset the category filter.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getSectionIcon(category) {
+            switch(category) {
+                case 'D1': return 'visibility';
+                case 'D2': return 'emergency_home';
+                case 'D3': return 'dns';
+                case 'D4': return 'fingerprint';
+                case 'D5': return 'lock';
+                case 'D6': return 'gavel';
+                default: return 'menu_book';
+            }
+        }
+
+        function highlightText(text, search) {
+            if (!search) return text;
+            try {
+                const escapedSearch = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                const regex = new RegExp(`(${escapedSearch})`, 'gi');
+                return text.replace(regex, '<mark class="bg-secondary/35 text-on-surface px-0.5 rounded">$1</mark>');
+            } catch (e) {
+                return text;
+            }
         }
     </script>
 </body>
