@@ -184,6 +184,10 @@
                 <span class="material-symbols-outlined text-xl">analytics</span>
                 <span class="font-body-md text-sm">Weak Gaps Board</span>
             </button>
+            <button onclick="switchTab('sessions')" id="btn-sessions" class="w-full flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200">
+                <span class="material-symbols-outlined text-xl">history</span>
+                <span class="font-body-md text-sm">Study Sessions</span>
+            </button>
         </nav>
         
         <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
@@ -240,28 +244,69 @@
                             <h2 class="font-headline-lg text-2xl text-on-surface mb-6">Equanimity in Knowledge</h2>
                             
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
+                                <!-- Composite Score -->
                                 <div>
-                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Cumulative Accuracy</p>
+                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Estimated Scaled Score</p>
                                     <div class="flex items-baseline gap-2">
-                                        <span class="font-display-lg text-4xl font-bold text-secondary" id="dash-accuracy-pct">78%</span>
-                                        <span class="font-label-sm text-xs text-secondary opacity-60" id="dash-accuracy-ratio">713 / 919</span>
+                                        <span class="font-display-lg text-4xl font-bold text-secondary text-glow-gold" id="dash-scaled-score">780</span>
+                                        <span class="font-label-sm text-xs text-secondary opacity-60">/ 1000</span>
                                     </div>
                                     <div class="w-full h-1 bg-surface-container-highest mt-2 rounded-full overflow-hidden">
-                                        <div class="h-full bg-secondary" id="dash-accuracy-bar" style="width: 78%"></div>
+                                        <div class="h-full bg-secondary" id="dash-scaled-bar" style="width: 78%"></div>
                                     </div>
-                                </div>
-                                <div>
-                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Sessions Completed</p>
-                                    <span class="font-display-lg text-4xl font-bold text-on-surface" id="dash-sessions-count">91</span>
-                                    <p class="font-label-sm text-[10px] text-on-surface-variant mt-2 flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-[12px] text-secondary">trending_up</span>
-                                        Latest Session: Active
+                                    <p class="font-label-sm text-[10px] text-secondary mt-2 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[12px]">check_circle</span>
+                                        Passing (Pass is 750)
                                     </p>
                                 </div>
+                                <!-- Domains Mastered -->
                                 <div>
-                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Retest Recovery</p>
-                                    <span class="font-display-lg text-4xl font-bold text-d5-data" id="dash-retests-pct">82%</span>
-                                    <p class="font-label-sm text-[10px] text-on-surface-variant mt-2" id="dash-retests-ratio">408 of 494 re-tests passed</p>
+                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Domains Mastered</p>
+                                    <span class="font-display-lg text-4xl font-bold text-on-surface" id="dash-domains-mastered">2 / 6</span>
+                                    <p class="font-label-sm text-[10px] text-on-surface-variant mt-2 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[12px] text-secondary">trending_up</span>
+                                        Targeting ≥ 80% accuracy
+                                    </p>
+                                </div>
+                                <!-- Focus Area -->
+                                <div>
+                                    <p class="font-label-sm text-xs text-on-surface-variant mb-1">Critical Focus Area</p>
+                                    <span class="font-display-lg text-4xl font-bold text-error" id="dash-focus-area">IR</span>
+                                    <p class="font-label-sm text-[10px] text-error opacity-80 mt-2" id="dash-focus-desc">Domain 2: Incident Response</p>
+                                </div>
+                            </div>
+
+                            <!-- Divider -->
+                            <div class="border-t border-outline-variant/30 my-6"></div>
+
+                            <!-- Row 2 Stats -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-secondary">
+                                        <span class="material-symbols-outlined text-sm">percent</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider leading-none">Cumulative Accuracy</p>
+                                        <p class="text-xs font-semibold font-code-md text-on-surface mt-1" id="dash-accuracy-ratio">713 of 919 items correct</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 border-l border-outline-variant/20 pl-0 md:pl-6">
+                                    <div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-secondary">
+                                        <span class="material-symbols-outlined text-sm">history</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider leading-none">Sessions Completed</p>
+                                        <p class="text-xs font-semibold font-code-md text-on-surface mt-1" id="dash-sessions-count">91 sessions logged</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 border-l border-outline-variant/20 pl-0 md:pl-6">
+                                    <div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-d5-data">
+                                        <span class="material-symbols-outlined text-sm">sync</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider leading-none">Retest Recovery</p>
+                                        <p class="text-xs font-semibold font-code-md text-on-surface mt-1" id="dash-retests-ratio">408 of 494 re-tests passed (82%)</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -421,8 +466,8 @@
                     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
                         <div>
                             <p class="font-label-sm text-xs text-secondary uppercase tracking-widest mb-1">Certification Progress</p>
-                            <h2 class="font-headline-lg text-2xl">SCS-C03 Study Roadmap</h2>
-                            <p class="font-body-md text-sm text-on-surface-variant max-w-lg mt-2">Achieving mastery in AWS Security requires a disciplined approach across five critical domains. Your current trajectory ensures a deep understanding of architectural integrity.</p>
+                            <h2 class="font-headline-lg text-2xl" id="roadmap-title">SCS-C03 Study Roadmap</h2>
+                            <p class="font-body-md text-sm text-on-surface-variant max-w-lg mt-2" id="roadmap-desc">Achieving mastery in AWS Security requires a disciplined approach across five critical domains. Your current trajectory ensures a deep understanding of architectural integrity.</p>
                         </div>
                         <div class="flex flex-col items-end shrink-0">
                             <span class="font-code-md text-lg text-secondary mb-1" id="roadmap-prepared-pct">83% Prepared</span>
@@ -430,6 +475,14 @@
                                 <div class="h-full bg-secondary transition-all duration-1000 shadow-[0_0_10px_rgba(233,195,73,0.4)]" id="roadmap-prepared-bar" style="width: 83%"></div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Roadmap Switcher Toggle -->
+                <div class="flex justify-center mb-6">
+                    <div class="inline-flex rounded p-1 bg-surface-container-low border border-outline-variant">
+                        <button onclick="setRoadmapType('domains')" id="roadmap-type-domains" class="px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all bg-secondary text-on-secondary shadow">Exam Domains Timeline</button>
+                        <button onclick="setRoadmapType('weeks')" id="roadmap-type-weeks" class="px-4 py-1.5 text-[11px] font-label-sm uppercase font-bold tracking-wider rounded transition-all text-on-surface-variant hover:text-on-surface">Weekly Study Plan</button>
                     </div>
                 </div>
 
