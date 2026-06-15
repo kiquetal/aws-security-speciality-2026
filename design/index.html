@@ -192,6 +192,10 @@
                 <span class="material-symbols-outlined text-xl">menu_book</span>
                 <span class="font-body-md text-sm">Exam Cheat Sheet</span>
             </button>
+            <button onclick="switchTab('faqs')" id="btn-faqs" class="w-full flex items-center gap-4 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200">
+                <span class="material-symbols-outlined text-xl">quiz</span>
+                <span class="font-body-md text-sm">Exam FAQs Database</span>
+            </button>
         </nav>
         
         <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
@@ -619,6 +623,54 @@
                 </div>
             </div>
 
+            <!-- ---------------------------------------------------- -->
+            <!-- TAB 7: AWS SERVICE FAQS DATABASE -->
+            <!-- ---------------------------------------------------- -->
+            <div id="tab-faqs" class="tab-content space-y-6">
+                <!-- Header Card -->
+                <div class="bg-surface-container p-6 rounded border border-outline-variant">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <p class="font-label-sm text-xs text-secondary uppercase tracking-widest mb-1">Knowledge Repository</p>
+                            <h2 class="font-headline-lg text-2xl">AWS Service Security FAQs</h2>
+                            <p class="text-sm text-on-surface-variant mt-2 leading-relaxed">
+                                Deep dive technical references compiled directly from official AWS FAQ sheets, exam guides, and service whitepapers. Select a service on the left or use the global FAQ search to find any answers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two-Column Layout for FAQs -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Sidebar: FAQ Guides List -->
+                    <div class="lg:col-span-1 space-y-4">
+                        <!-- Search & Count Info -->
+                        <div class="bg-surface-container border border-outline-variant p-4 rounded space-y-3">
+                            <div class="relative flex items-center bg-surface-container-low border border-outline-variant w-full px-3 py-1.5 rounded">
+                                <span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+                                <input id="faq-search" oninput="filterFaqs()" class="bg-transparent border-none focus:ring-0 text-xs text-on-surface placeholder:text-on-surface-variant w-full p-0" placeholder="Search FAQs..." type="text"/>
+                            </div>
+                            <div class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider flex justify-between">
+                                <span>Guides Available:</span>
+                                <span id="faq-guides-count" class="font-bold text-secondary">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Sticky Left Navigation -->
+                        <div id="faq-nav-list" class="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible lg:max-h-[60vh] lg:overflow-y-auto custom-scrollbar pr-1 pb-2 lg:pb-0">
+                            <!-- Dynamically loaded list of FAQ files -->
+                        </div>
+                    </div>
+
+                    <!-- Main Content Panel: Active FAQ Display -->
+                    <div class="lg:col-span-3 space-y-6">
+                        <div id="faq-active-content" class="bg-surface-container border border-outline-variant p-6 rounded min-h-[50vh] space-y-6">
+                            <!-- Dynamically loaded active FAQ content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -778,6 +830,7 @@
             initSessionsStats();
             buildSessionsView();
             buildCheatSheetView();
+            initFaqs();
         });
 
         // Initialize top header and general stats
@@ -1577,7 +1630,7 @@
             activeTab = tabId;
             
             // Update nav state
-            const tabs = ['dashboard', 'syllabus', 'roadmap', 'weakareas', 'sessions', 'cheatsheet'];
+            const tabs = ['dashboard', 'syllabus', 'roadmap', 'weakareas', 'sessions', 'cheatsheet', 'faqs'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`btn-${t}`);
                 const pane = document.getElementById(`tab-${t}`);
@@ -1598,6 +1651,7 @@
             else if (tabId === 'weakareas') pageTitle = "Stoic Weak Areas Radar";
             else if (tabId === 'sessions') pageTitle = "Study Sessions Audit Logs";
             else if (tabId === 'cheatsheet') pageTitle = "Stoic Exam-Day Cheat Sheet";
+            else if (tabId === 'faqs') pageTitle = "AWS Service Security FAQs";
             
             document.getElementById('page-title').innerText = pageTitle;
         }
@@ -1845,6 +1899,274 @@
                 return text.replace(regex, '<mark class="bg-secondary/35 text-on-surface px-0.5 rounded">$1</mark>');
             } catch (e) {
                 return text;
+            }
+        }
+
+        // ----------------------------------------------------
+        // FAQS INTERACTIVE DATABASE SYSTEM
+        // ----------------------------------------------------
+        let activeFaqIndex = 0;
+        let faqSearchQuery = "";
+
+        function initFaqs() {
+            buildFaqNav();
+            renderActiveFaq();
+        }
+
+        function buildFaqNav() {
+            const navList = document.getElementById('faq-nav-list');
+            if (!navList) return;
+            navList.innerHTML = '';
+
+            const faqs = TRACKER_DATA.faqs || [];
+            const countEl = document.getElementById('faq-guides-count');
+            if (countEl) countEl.innerText = faqs.length;
+
+            if (faqs.length === 0) {
+                navList.innerHTML = '<div class="text-xs text-on-surface-variant p-2">No FAQs parsed.</div>';
+                return;
+            }
+
+            faqs.forEach((faq, index) => {
+                const btn = document.createElement('button');
+                btn.id = `btn-faq-nav-${index}`;
+                
+                let baseClass = "text-left text-xs px-4 py-3 rounded transition-all duration-200 shrink-0 lg:w-full flex items-center justify-between gap-2 border ";
+                
+                if (index === activeFaqIndex) {
+                    btn.className = baseClass + "bg-surface-container-highest text-secondary border-secondary font-bold";
+                } else {
+                    btn.className = baseClass + "bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high border-outline-variant/30";
+                }
+
+                const displayTitle = faq.title.replace("AWS ", "").replace("Amazon ", "");
+
+                btn.innerHTML = `
+                    <span class="truncate pr-1">${displayTitle}</span>
+                    <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant border border-outline-variant/20">${faq.sections.length}</span>
+                `;
+                
+                btn.onclick = () => {
+                    selectFaq(index);
+                };
+
+                navList.appendChild(btn);
+            });
+        }
+
+        function selectFaq(index) {
+            activeFaqIndex = index;
+            buildFaqNav();
+            renderActiveFaq();
+            
+            // Scroll content pane to top
+            const contentPane = document.getElementById('faq-active-content');
+            if (contentPane) contentPane.scrollTop = 0;
+        }
+
+        function filterFaqs() {
+            const query = document.getElementById('faq-search').value.toLowerCase().trim();
+            faqSearchQuery = query;
+            renderActiveFaq();
+        }
+
+        function renderActiveFaq() {
+            const contentPane = document.getElementById('faq-active-content');
+            if (!contentPane) return;
+
+            const faqs = TRACKER_DATA.faqs || [];
+            if (faqs.length === 0) {
+                contentPane.innerHTML = '<div class="text-center py-12 text-on-surface-variant">No FAQ content compiled.</div>';
+                return;
+            }
+
+            const activeFaq = faqs[activeFaqIndex];
+            if (!activeFaq) {
+                contentPane.innerHTML = '<div class="text-center py-12 text-on-surface-variant">Selected FAQ guide not found.</div>';
+                return;
+            }
+
+            contentPane.innerHTML = '';
+
+            const faqHeader = document.createElement('div');
+            faqHeader.className = "border-b border-outline-variant/30 pb-4 mb-6";
+            faqHeader.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-secondary text-2xl">help</span>
+                    <h3 class="font-headline-lg text-xl font-bold text-on-surface">${activeFaq.title}</h3>
+                </div>
+                <p class="text-[10px] font-code-md text-on-surface-variant uppercase tracking-wider mt-1.5">Source File: notes/${activeFaq.filename}</p>
+            `;
+            contentPane.appendChild(faqHeader);
+
+            let renderedSectionsCount = 0;
+
+            activeFaq.sections.forEach(section => {
+                const filteredSubsections = [];
+
+                section.subsections.forEach(sub => {
+                    const filteredItems = [];
+
+                    sub.items.forEach(item => {
+                        let textToSearch = '';
+                        if (item.type === 'bullet' || item.type === 'text' || item.type === 'blockquote') {
+                            textToSearch = item.text.toLowerCase();
+                        } else if (item.type === 'table') {
+                            textToSearch = item.headers.join(' ').toLowerCase() + ' ' + 
+                                           item.rows.map(r => r.join(' ')).join(' ').toLowerCase();
+                        }
+
+                        const matchesSearch = faqSearchQuery === '' || 
+                                              section.title.toLowerCase().includes(faqSearchQuery) ||
+                                              sub.title.toLowerCase().includes(faqSearchQuery) ||
+                                              textToSearch.includes(faqSearchQuery);
+
+                        if (matchesSearch) {
+                            filteredItems.push(item);
+                        }
+                    });
+
+                    if (filteredItems.length > 0) {
+                        filteredSubsections.push({
+                            title: sub.title,
+                            items: filteredItems
+                        });
+                    }
+                });
+
+                if (filteredSubsections.length > 0) {
+                    renderedSectionsCount++;
+                    const sectionEl = document.createElement('div');
+                    sectionEl.className = "space-y-4 border-b border-outline-variant/10 pb-6 mb-6 last:border-b-0 last:pb-0 last:mb-0";
+                    
+                    let sectionHTML = `
+                        <h4 class="font-headline-md text-md font-bold text-on-surface flex items-center gap-2 border-l-4 border-secondary/40 pl-3">
+                            ${highlightText(section.title, faqSearchQuery)}
+                        </h4>
+                        <div class="space-y-4 mt-2">
+                    `;
+
+                    filteredSubsections.forEach(sub => {
+                        if (sub.title) {
+                            sectionHTML += `
+                                <h5 class="font-headline-sm text-sm font-bold text-secondary/90 mt-4 pl-1 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary/60"></span>
+                                    ${highlightText(sub.title, faqSearchQuery)}
+                                </h5>
+                            `;
+                        }
+
+                        sectionHTML += `<div class="space-y-3 pl-3">`;
+
+                        sub.items.forEach(item => {
+                            if (item.type === 'bullet') {
+                                if (item.is_insight) {
+                                    sectionHTML += `
+                                        <div class="flex items-start gap-3 bg-secondary/5 border-l-2 border-secondary p-3.5 rounded my-2">
+                                            <span class="material-symbols-outlined text-secondary text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">psychology</span>
+                                            <div class="text-sm text-on-surface leading-relaxed font-body-md">${highlightText(item.text, faqSearchQuery)}</div>
+                                        </div>
+                                    `;
+                                } else if (item.is_warning) {
+                                    sectionHTML += `
+                                        <div class="flex items-start gap-3 bg-error-container/10 border-l-2 border-error p-3.5 rounded my-2">
+                                            <span class="material-symbols-outlined text-error text-lg shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">warning</span>
+                                            <div class="text-sm text-on-surface leading-relaxed font-body-md">${highlightText(item.text, faqSearchQuery)}</div>
+                                        </div>
+                                    `;
+                                } else {
+                                    sectionHTML += `
+                                        <div class="flex items-start gap-3 py-1">
+                                            <span class="material-symbols-outlined text-on-surface-variant/40 text-sm shrink-0 mt-1">chevron_right</span>
+                                            <div class="text-sm text-on-surface-variant leading-relaxed font-body-md">${highlightText(item.text, faqSearchQuery)}</div>
+                                        </div>
+                                    `;
+                                }
+                            } else if (item.type === 'blockquote') {
+                                let quoteBg = "bg-surface-container-low border-l-4 border-outline-variant";
+                                let quoteIcon = "format_quote";
+                                let quoteIconColor = "text-on-surface-variant/50";
+                                
+                                if (item.is_insight) {
+                                    quoteBg = "bg-secondary/5 border-l-4 border-secondary";
+                                    quoteIcon = "psychology";
+                                    quoteIconColor = "text-secondary";
+                                } else if (item.is_warning) {
+                                    quoteBg = "bg-error-container/10 border-l-4 border-error";
+                                    quoteIcon = "warning";
+                                    quoteIconColor = "text-error";
+                                }
+                                
+                                sectionHTML += `
+                                    <div class="flex items-start gap-3 ${quoteBg} p-4 rounded my-3 italic">
+                                        <span class="material-symbols-outlined ${quoteIconColor} text-lg shrink-0 mt-0.5">${quoteIcon}</span>
+                                        <div class="text-sm text-on-surface leading-relaxed font-body-md">${highlightText(item.text, faqSearchQuery)}</div>
+                                    </div>
+                                `;
+                            } else if (item.type === 'text') {
+                                sectionHTML += `
+                                    <p class="text-sm text-on-surface-variant leading-relaxed pl-6 my-2 font-body-md">${highlightText(item.text, faqSearchQuery)}</p>
+                                `;
+                            } else if (item.type === 'table') {
+                                let tableHTML = `
+                                    <div class="overflow-x-auto custom-scrollbar border border-outline-variant/50 rounded mt-3 mb-4">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr class="bg-surface-container-low border-b border-outline-variant">
+                                `;
+                                
+                                item.headers.forEach(h => {
+                                    tableHTML += `
+                                        <th class="px-4 py-2.5 text-[10px] font-label-sm text-secondary uppercase tracking-wider font-semibold">${h}</th>
+                                    `;
+                                });
+                                
+                                tableHTML += `
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-outline-variant/20">
+                                `;
+                                
+                                item.rows.forEach(row => {
+                                    tableHTML += `
+                                        <tr class="hover:bg-surface-container-high/30 transition-colors duration-150">
+                                    `;
+                                    row.forEach(cell => {
+                                        tableHTML += `
+                                            <td class="px-4 py-3 text-xs text-on-surface-variant leading-relaxed font-body-md">${highlightText(cell, faqSearchQuery)}</td>
+                                        `;
+                                    });
+                                    tableHTML += `
+                                        </tr>
+                                    `;
+                                });
+                                
+                                tableHTML += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                `;
+                                sectionHTML += tableHTML;
+                            }
+                        });
+
+                        sectionHTML += `</div>`;
+                    });
+
+                    sectionHTML += `</div>`;
+                    sectionEl.innerHTML = sectionHTML;
+                    contentPane.appendChild(sectionEl);
+                }
+            });
+
+            if (renderedSectionsCount === 0) {
+                contentPane.innerHTML += `
+                    <div class="text-center py-16 text-on-surface-variant space-y-3">
+                        <span class="material-symbols-outlined text-4xl text-on-surface-variant/40">search_off</span>
+                        <p class="text-sm">No matching FAQ blocks found for "${faqSearchQuery}".</p>
+                        <p class="text-xs text-on-surface-variant/60">Try searching other keywords or clear your query.</p>
+                    </div>
+                `;
             }
         }
     </script>
