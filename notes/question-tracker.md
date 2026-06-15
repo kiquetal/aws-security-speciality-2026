@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 899 |
-| **✅ Correct** | 698 (78%) |
+| **Total Questions** | 909 |
+| **✅ Correct** | 704 (77%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 171 (19%) |
-| **Sessions** | 89 |
-| **Re-tests Passed** | 396 of 479 |
+| **❌ Wrong** | 175 (19%) |
+| **Sessions** | 90 |
+| **Re-tests Passed** | 399 of 484 |
 
 ## Domain Breakdown
 
@@ -21,10 +21,10 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 165 | 7 | 54 | 226 | 73% | 🟡 |
 | D2: Incident Response | 20 | 1 | 8 | 29 | 69% | 🟡 |
-| D3: Infrastructure Security | 82 | 5 | 16 | 103 | 80% | 🟡 |
-| D4: Identity & Access Management | 198 | 8 | 36 | 242 | 82% | 🟢 |
-| D5: Data Protection | 126 | 4 | 32 | 162 | 78% | 🟡 |
-| D6: Governance | 107 | 2 | 25 | 134 | 80% | 🟡 |
+| D3: Infrastructure Security | 83 | 5 | 17 | 105 | 79% | 🟡 |
+| D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
+| D5: Data Protection | 129 | 4 | 34 | 167 | 77% | 🟡 |
+| D6: Governance | 108 | 2 | 26 | 136 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -44,26 +44,26 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 10 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
 | 🔴 11 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
 | 🔴 12 | No-reboot AMI for volatile memory | Q810, Q825, Q830 | D2 | 3 |
-| 🔴 13 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 14 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 15 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
-| 🔴 16 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 17 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 18 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
-| 🔴 19 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
-| 🔴 20 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
-| 🔴 21 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
-| 🔴 22 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
-| 🔴 23 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1 | 2 |
-| 🔴 24 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
-| 🔴 25 | Session policy + server-side KMS | Q591, Q679 | D4 | 2 |
-| 🔴 26 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4 | 2 |
-| 🔴 27 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
-| 🔴 28 | Sign=private, verify=public | Q812, Q824 | D5 | 2 |
-| 🔴 29 | S3 Access Grants prefix overlap | Q819, Q826 | D1 | 2 |
-| 🔴 30 | StopLogging kills own CW Logs delivery | Q860, Q866 | D1 | 2 |
-| 🔴 31 | Credential leak IR (Deny-all before investigate) | Q862, Q867 | D2 | 2 |
-| 🔴 32 | S3 server access logging = ACLs | Q864, Q868 | D5 | 2 |
+| 🔴 13 | S3 server access logging = ACLs | Q864, Q868, Q903 | D5 | 3 |
+| 🔴 14 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 15 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 16 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 17 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 18 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 19 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
+| 🔴 20 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🔴 21 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
+| 🔴 22 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
+| 🔴 23 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
+| 🔴 24 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1 | 2 |
+| 🔴 25 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
+| 🔴 26 | Session policy + server-side KMS | Q591, Q679 | D4 | 2 |
+| 🔴 27 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4 | 2 |
+| 🔴 28 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
+| 🔴 29 | Sign=private, verify=public | Q812, Q824 | D5 | 2 |
+| 🔴 30 | S3 Access Grants prefix overlap | Q819, Q826 | D1 | 2 |
+| 🔴 31 | StopLogging kills own CW Logs delivery | Q860, Q866 | D1 | 2 |
+| 🔴 32 | Credential leak IR (Deny-all before investigate) | Q862, Q867 | D2 | 2 |
 | 🟡 33 | CloudTrail data vs management events | Q1 | D1 | 1 |
 | 🟡 34 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
 | 🟡 35 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
@@ -177,6 +177,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 143 | DynamoDB + CMK = CreateGrant + DescribeKey | Q899 | D5 | 1 |
 | 🟡 144 | Reading comprehension (perms already present) | Q901 | D5 | 1 |
 | 🟡 145 | EBS encryption by default + SCP = full prevention | Q902 | D5 | 1 |
+| 🟡 146 | GWLB GENEVE decapsulation | Q905 | D3 | 1 |
+| 🟡 147 | Config org custom rule cross-account invoke | Q908 | D6 | 1 |
+| 🟡 148 | Reading comprehension (multiple missing perms) | Q911 | D5 | 1 |
 
 ---
 
@@ -273,6 +276,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 87 | 2026-06-15 | Q866–Q882 | 9 | 0 | 8 | Cross-domain (Session 86 re-test + Week 1 novel topics — ACM, IoT, Kinesis, Config custom rules, CloudTrail Lake, S3 Batch) | [Jump](#session-87--2026-06-15) |
 | 88 | 2026-06-15 | Q883–Q892 | 7 | 0 | 3 | Cross-domain (score uplift drill — CRR+KMS, StopLogging, IR containment, multipart, EBS, IoT, Config custom rules) | [Jump](#session-88--2026-06-15) |
 | 89 | 2026-06-15 | Q893–Q902 | 7 | 0 | 3 | Cross-domain (score uplift drill #2 — CRR, IoT, S3 Batch, DynamoDB KMS, ViaService, EBS encryption) | [Jump](#session-89--2026-06-15) |
+| 90 | 2026-06-15 | Q903–Q912 | 6 | 0 | 4 | Cross-domain (surprise drill — S3 ACLs, GWLB, Roles Anywhere, Private CA, declarative policies, Kinesis, VPC endpoints) | [Jump](#session-90--2026-06-15) |
 
 ---
 
@@ -2043,3 +2047,22 @@ After adding a session:
 | 900 | D4/D5 | SCP denies kms:* unless ViaService=s3, Lambda reads S3 + writes DynamoDB — which succeed? | D: Only S3 — ViaService value doesn't match for DDB | ✅ | DDB sets ViaService but value ≠ s3, so SCP Deny fires. | Q488 | kms:ViaService + SCP (service-specific match) |
 | 901 | D5 | Lambda has s3:GetObject + kms:Decrypt + kms:GenerateDataKey, GetObject Access Denied — cause? | C: Needs kms:Decrypt explicitly | ❌ | B: Perms already correct — issue is another layer (endpoint policy, bucket policy). Reading trap. | — | Reading comprehension (perms already present) |
 | 902 | D5/D6 | Ensure every new EC2 has encrypted EBS, preventive only — approach? | A: SCP denying RunInstances unless Encrypted=true | ❌ | D: EBS encryption by default + SCP together = full prevention. Either alone has gaps. | — | EBS encryption by default + SCP = full prevention |
+
+
+### Session 90 — 2026-06-15
+
+**Domains:** Cross-domain (surprise drill — S3 ACLs, GWLB, Roles Anywhere, Private CA, declarative policies, Kinesis, VPC endpoints)
+**Score:** 6 ✅ · 0 ⚠️ · 4 ❌ (60% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 903 | D5 | S3 server access logging, target bucket policy uses service principal — why logs stopped? | C: Needs s3:PutObjectAcl | ❌ | A: S3 access logging uses ACLs, not service principals/bucket policies. | Q864, Q868 | S3 server access logging = ACLs |
+| 904 | D5 | Private CA renewed (new key pair), existing 24hr certs have 20hr remaining — what happens? | B: Existing certs continue until expiry | ✅ | CA renewal ≠ revocation. Previously-issued certs unaffected. | — | Private CA renewal ≠ revocation |
+| 905 | D3 | GWLB + IDS, source IP shows GWLB IP instead of original client — cause? | D: Enable X-Forwarded-For | ❌ | C: Appliance not decapsulating GENEVE outer header. GWLB preserves original via GENEVE. | — | GWLB GENEVE decapsulation |
+| 906 | D4 | Roles Anywhere, cert expires, server has cached STS creds — when does access stop? | B: When current session expires | ✅ | Certificate validated at issuance only. Existing sessions continue. | — | Roles Anywhere session validity |
+| 907 | D3 | Static HSTS/CSP headers on CloudFront, least overhead? | B: CF response headers policy | ✅ | Managed, zero code. Lambda@Edge = dynamic only. | Q801, Q823 | CloudFront response headers policy |
+| 908 | D6/D1 | Config org custom rule works in admin, times out in members — cause? | D: Lambda VPC blocks outbound | ❌ | B: Lambda resource-based policy missing config.amazonaws.com from members. | Q876 | Config org custom rule cross-account invoke |
+| 909 | D5/D3 | S3 Gateway endpoint policy allows Get+Put on data-bucket/*, Lambda calls ListBucket — result? | B: Fails — ListBucket not in endpoint policy | ✅ | Endpoint policy = explicit allow-list. | Q535 | Gateway endpoint policy as additional gate |
+| 910 | D6/D3 | Guarantee no public IPs regardless of ANY API (current or future) — mechanism? | B: Declarative policy | ✅ | State enforcement vs API enumeration. | — | Declarative policies vs SCP |
+| 911 | D5/D3 | Producer Lambda has PutRecord + GenerateDataKey, tries to read own records — why fails? | A: Only missing KMS perms | ❌ | C: Missing BOTH Kinesis read perms (GetRecords) AND KMS read perms (Decrypt+DescribeKey). | — | Reading comprehension (multiple missing perms) |
+| 912 | D5/D4 | SCP denies PutObject if KMS key header ≠ specific key, upload without flags, default encryption set — result? | B: Denied — SCP before default encryption | ✅ | SCP evaluates request as-received. | Q426, Q626 | Default encryption vs SCP Deny |
