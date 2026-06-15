@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 889 |
-| **✅ Correct** | 691 (78%) |
+| **Total Questions** | 899 |
+| **✅ Correct** | 698 (78%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 168 (19%) |
-| **Sessions** | 88 |
-| **Re-tests Passed** | 389 of 472 |
+| **❌ Wrong** | 171 (19%) |
+| **Sessions** | 89 |
+| **Re-tests Passed** | 396 of 479 |
 
 ## Domain Breakdown
 
@@ -21,9 +21,9 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 165 | 7 | 54 | 226 | 73% | 🟡 |
 | D2: Incident Response | 20 | 1 | 8 | 29 | 69% | 🟡 |
-| D3: Infrastructure Security | 81 | 5 | 16 | 102 | 79% | 🟡 |
-| D4: Identity & Access Management | 197 | 8 | 36 | 241 | 82% | 🟢 |
-| D5: Data Protection | 121 | 4 | 29 | 154 | 79% | 🟡 |
+| D3: Infrastructure Security | 82 | 5 | 16 | 103 | 80% | 🟡 |
+| D4: Identity & Access Management | 198 | 8 | 36 | 242 | 82% | 🟢 |
+| D5: Data Protection | 126 | 4 | 32 | 162 | 78% | 🟡 |
 | D6: Governance | 107 | 2 | 25 | 134 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -174,6 +174,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 140 | CRR dest = kms:GenerateDataKey (not Encrypt) | Q883 | D5 | 1 |
 | 🟡 141 | CRR rewrites encryption context to dest | Q888 | D5 | 1 |
 | 🟡 142 | IoT cert revocation = instant (no CRL delay) | Q892 | D3 | 1 |
+| 🟡 143 | DynamoDB + CMK = CreateGrant + DescribeKey | Q899 | D5 | 1 |
+| 🟡 144 | Reading comprehension (perms already present) | Q901 | D5 | 1 |
+| 🟡 145 | EBS encryption by default + SCP = full prevention | Q902 | D5 | 1 |
 
 ---
 
@@ -269,6 +272,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 86 | 2026-06-12 | Q849–Q865 | 10 | 0 | 7 | Cross-domain (killer difficulty — novel operational scenarios, cross-account patterns, ACM, Config, Kinesis) | [Jump](#session-86--2026-06-12) |
 | 87 | 2026-06-15 | Q866–Q882 | 9 | 0 | 8 | Cross-domain (Session 86 re-test + Week 1 novel topics — ACM, IoT, Kinesis, Config custom rules, CloudTrail Lake, S3 Batch) | [Jump](#session-87--2026-06-15) |
 | 88 | 2026-06-15 | Q883–Q892 | 7 | 0 | 3 | Cross-domain (score uplift drill — CRR+KMS, StopLogging, IR containment, multipart, EBS, IoT, Config custom rules) | [Jump](#session-88--2026-06-15) |
+| 89 | 2026-06-15 | Q893–Q902 | 7 | 0 | 3 | Cross-domain (score uplift drill #2 — CRR, IoT, S3 Batch, DynamoDB KMS, ViaService, EBS encryption) | [Jump](#session-89--2026-06-15) |
 
 ---
 
@@ -2020,3 +2024,22 @@ After adding a session:
 | 890 | D3/D1 | C2Activity finding, C2 IP hardcoded (no DNS), block VPC-wide — action? | B: Network Firewall DROP on C2 IP | ✅ | Hardcoded IP = DNS FW useless. NF drops by IP. | Q526, Q571 | Network FW for IP-level C2 block |
 | 891 | D6/D1 | Config org custom rule Lambda 8min, timing out at 3min — fix? | A: Increase Lambda timeout to 15 minutes | ✅ | Config evaluates with Lambda (sync, max 15min). | Q881 | Config custom rule = Lambda (max 15min timeout) |
 | 892 | D3 | IoT cert revoked in IoT Core, attacker still has private key, attempts connect — result? | D: Succeeds until CRL propagates | ❌ | B: Connection fails immediately — IoT Core checks registry status at TLS handshake (instant). | — | IoT cert revocation = instant (no CRL delay) |
+
+
+### Session 89 — 2026-06-15
+
+**Domains:** Cross-domain (score uplift drill #2 — CRR, IoT, S3 Batch, DynamoDB KMS, ViaService, EBS encryption)
+**Score:** 7 ✅ · 0 ⚠️ · 3 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 893 | D5 | S3 CRR cross-account, replication role has Decrypt+GenerateDataKey, dest key policy only grants dest root — cause? | A: CMK-B key policy must grant replication role | ✅ | Cross-account KMS: key policy must name external principal. | Q883 | CRR dest key policy must name replication role |
+| 894 | D3 | IoT cert revoked 30 seconds ago, attacker attempts new MQTT connection — result? | B: Fails immediately — registry check at TLS handshake | ✅ | IoT Core = instant revocation, no CRL delay. | Q892 | IoT cert revocation = instant |
+| 895 | D5/D3 | Lambda private subnet, direct GenerateDataKeyWithoutPlaintext times out, S3 reads work — fix? | A: Add KMS Interface endpoint | ✅ | S3 SSE-KMS = server-side. Direct KMS call = needs endpoint. | Q685 | KMS endpoint for direct calls only |
+| 896 | D5 | CRR dest key policy condition checks source bucket ARN in encryption context — why fails? | B: CRR rewrites context to dest bucket ARN | ✅ | Dest key policy must reference dest bucket ARN. | Q888 | CRR rewrites encryption context to dest |
+| 897 | D5 | S3 Batch Operations, manifest in us-east-1, job in ap-southeast-1 — result? | B: Job creation fails — manifest must be same region | ✅ | Batch = regional (job + manifest + target). | Q872 | S3 Batch Operations regional |
+| 898 | D5 | Secrets Manager cross-region replication, source uses single-region CMK — works? | B: Yes — specify different key in dest, SM re-encrypts | ✅ | MRK not required for SM replication. | Q428 | Secrets Manager replication ≠ MRK |
+| 899 | D5/D4 | DynamoDB CMK, Lambda has Decrypt+GenerateDataKey, Access Denied on PutItem — missing? | A: kms:Encrypt | ❌ | B: kms:CreateGrant + kms:DescribeKey — DynamoDB delegates via grants (like EBS). | — | DynamoDB + CMK = CreateGrant + DescribeKey |
+| 900 | D4/D5 | SCP denies kms:* unless ViaService=s3, Lambda reads S3 + writes DynamoDB — which succeed? | D: Only S3 — ViaService value doesn't match for DDB | ✅ | DDB sets ViaService but value ≠ s3, so SCP Deny fires. | Q488 | kms:ViaService + SCP (service-specific match) |
+| 901 | D5 | Lambda has s3:GetObject + kms:Decrypt + kms:GenerateDataKey, GetObject Access Denied — cause? | C: Needs kms:Decrypt explicitly | ❌ | B: Perms already correct — issue is another layer (endpoint policy, bucket policy). Reading trap. | — | Reading comprehension (perms already present) |
+| 902 | D5/D6 | Ensure every new EC2 has encrypted EBS, preventive only — approach? | A: SCP denying RunInstances unless Encrypted=true | ❌ | D: EBS encryption by default + SCP together = full prevention. Either alone has gaps. | — | EBS encryption by default + SCP = full prevention |
