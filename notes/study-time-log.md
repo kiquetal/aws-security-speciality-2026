@@ -50,4 +50,5 @@
 | — | 2026-06-11 | 08:48 | 22:33 | 180 | Sessions 79-82 (novel topics) |
 | 1 | 2026-06-12 | 10:44 | 11:28 | 44 | Sessions 83-85 (priority re-test + D1/D2 killer drill, 43%→93%→100%) |
 | 2 | 2026-06-12 | 11:33 | 11:48 | 15 | Session 86 (killer ops — 53%, novel patterns) |
-| 3 | 2026-06-15 | 10:38 | | | Session 87 (Session 86 re-test + Week 1 killer) |
+| 3 | 2026-06-15 | 10:38 | 11:21 | 43 | Session 87 (Session 86 re-test + Week 1 killer) |
+| 4 | 2026-06-15 | 11:21 | | | Session 88 (score uplift drill) |

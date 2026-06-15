@@ -98,6 +98,8 @@
 - 🧠 **KMS keys are REGIONAL.** Cross-account call to wrong region = Access Denied (key not found). Always verify the endpoint region matches the key's region.
 - 🧠 **Cross-account KMS: key policy MUST name the external account.** Root in key policy enables IAM delegation same-account only. For Account B to use Account A's key, key policy must grant Account B's root or role explicitly.
 - 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.
+- 🧠 **CRR + SSE-KMS: source = kms:Decrypt. Destination = kms:GenerateDataKey (not kms:Encrypt).** Same rule as all S3 uploads — S3 never uses kms:Encrypt.
+- 🧠 **CRR rewrites encryption context to destination bucket ARN.** Key policy conditions on dest key must reference dest bucket, not source.
 
 ### Secrets Manager
 - Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
@@ -152,6 +154,8 @@
 - 🧠 **Interface endpoint = TWO SGs must cooperate.** Lambda SG needs outbound 443. Endpoint SG needs inbound 443. Miss either one = timeout.
 - 🧠 **C2Activity finding = active IP connection. DNS Firewall useless (IP already known). Use Network Firewall DROP on C2 IP.** DNS FW only helps if attacker needs DNS resolution.
 - 🧠 **DGA (Domain Generation Algorithm) = unpredictable domains, can't block-list. Flip to DNS Firewall ALLOW-LIST (block all except known-good).** DNS layer since attacker relies on DNS resolution.
+- 🧠 **IoT ThingName = bound to certificate, not physical hardware.** Stolen cert = full impersonation. Mitigation = revoke cert in IoT Core.
+- 🧠 **IoT Core cert revocation = instant.** Registry status checked at TLS handshake — no CRL propagation delay.
 - 🧠 **Flow Log: inbound ACCEPT + outbound REJECT = always NACL.** SGs are stateful — accepted inbound = auto-allowed return. NACLs are stateless — need explicit outbound ephemeral port rule.
 
 ---

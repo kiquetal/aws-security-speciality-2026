@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 879 |
-| **✅ Correct** | 684 (78%) |
+| **Total Questions** | 889 |
+| **✅ Correct** | 691 (78%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 165 (19%) |
-| **Sessions** | 87 |
-| **Re-tests Passed** | 390 of 473 |
+| **❌ Wrong** | 168 (19%) |
+| **Sessions** | 88 |
+| **Re-tests Passed** | 389 of 472 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 163 | 7 | 54 | 224 | 73% | 🟡 |
-| D2: Incident Response | 19 | 1 | 8 | 28 | 68% | 🟡 |
-| D3: Infrastructure Security | 80 | 5 | 15 | 100 | 80% | 🟢 |
+| D1: Detection | 165 | 7 | 54 | 226 | 73% | 🟡 |
+| D2: Incident Response | 20 | 1 | 8 | 29 | 69% | 🟡 |
+| D3: Infrastructure Security | 81 | 5 | 16 | 102 | 79% | 🟡 |
 | D4: Identity & Access Management | 197 | 8 | 36 | 241 | 82% | 🟢 |
-| D5: Data Protection | 119 | 4 | 27 | 150 | 79% | 🟡 |
-| D6: Governance | 106 | 2 | 25 | 133 | 80% | 🟡 |
+| D5: Data Protection | 121 | 4 | 29 | 154 | 79% | 🟡 |
+| D6: Governance | 107 | 2 | 25 | 134 | 80% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -171,6 +171,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 137 | Kinesis consumer = Decrypt + DescribeKey | Q879 | D5 | 1 |
 | 🟡 138 | IoT ThingName = cert-bound, not hardware | Q880 | D3 | 1 |
 | 🟡 139 | Config custom rule = Lambda (max 15min timeout) | Q881 | D6 | 1 |
+| 🟡 140 | CRR dest = kms:GenerateDataKey (not Encrypt) | Q883 | D5 | 1 |
+| 🟡 141 | CRR rewrites encryption context to dest | Q888 | D5 | 1 |
+| 🟡 142 | IoT cert revocation = instant (no CRL delay) | Q892 | D3 | 1 |
 
 ---
 
@@ -265,6 +268,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 85 | 2026-06-12 | Q835–Q848 | 13 | 0 | 1 | D1 Detection + D2 Incident Response (killer targeted drill — weakest domains) | [Jump](#session-85--2026-06-12) |
 | 86 | 2026-06-12 | Q849–Q865 | 10 | 0 | 7 | Cross-domain (killer difficulty — novel operational scenarios, cross-account patterns, ACM, Config, Kinesis) | [Jump](#session-86--2026-06-12) |
 | 87 | 2026-06-15 | Q866–Q882 | 9 | 0 | 8 | Cross-domain (Session 86 re-test + Week 1 novel topics — ACM, IoT, Kinesis, Config custom rules, CloudTrail Lake, S3 Batch) | [Jump](#session-87--2026-06-15) |
+| 88 | 2026-06-15 | Q883–Q892 | 7 | 0 | 3 | Cross-domain (score uplift drill — CRR+KMS, StopLogging, IR containment, multipart, EBS, IoT, Config custom rules) | [Jump](#session-88--2026-06-15) |
 
 ---
 
@@ -1997,3 +2001,22 @@ After adding a session:
 | 880 | D3 | IoT policy uses ThingName, attacker steals cert, uses from different device — can publish? | B: No — hardware attestation | ❌ | A: Yes — ThingName bound to certificate, not physical device. Stolen cert = full impersonation. | — | IoT ThingName = cert-bound, not hardware |
 | 881 | D6/D1 | Config org custom rule, Lambda needs 5min, evaluations timeout — fix? | B: Switch to SSM Automation | ❌ | A: Increase Lambda timeout to 15 minutes. Config evaluates with Lambda (max 15min). | — | Config custom rule = Lambda (max 15min timeout) |
 | 882 | D1 | CloudTrail Lake org EDS, query returns zero results despite activity — TWO causes? | A+D: Management events only + no backfill | ✅ | EDS config (mgmt vs data) + Lake doesn't backfill historical events. | — | CloudTrail Lake no backfill + event type config |
+
+
+### Session 88 — 2026-06-15
+
+**Domains:** Cross-domain (score uplift drill — CRR+KMS, StopLogging, IR containment, multipart, EBS, IoT, Config custom rules)
+**Score:** 7 ✅ · 0 ⚠️ · 3 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 883 | D5 | S3 CRR cross-account, replication role has kms:Encrypt on dest key, fails — missing? | B: Source key policy missing Decrypt | ❌ | C: Dest key needs kms:GenerateDataKey, not kms:Encrypt. S3 never uses kms:Encrypt. | — | CRR dest = kms:GenerateDataKey (not Encrypt) |
+| 884 | D1 | Org trail + EventBridge rule in mgmt account, attacker calls StopLogging in member — fires? | A: Yes — org trail delivers to mgmt EventBridge | ✅ | Org trail delivers all member management events to management account EventBridge. | Q860, Q866 | Org trail + EventBridge detection |
+| 885 | D1 | Three detection mechanisms for StopLogging (CW filter, EventBridge, Config) — which work? | B: Only EventBridge + Config | ✅ | CW metric filter blind (StopLogging kills own delivery). EB + Config both detect. | Q860, Q866 | StopLogging kills own CW Logs delivery |
+| 886 | D2 | Attacker created 2nd key + console + EC2, broadest single containment action? | C: Inline Deny-all on IAM user | ✅ | Blocks all paths (both keys, console, sessions) with one action. | Q862, Q867 | Credential leak IR (Deny-all before investigate) |
+| 887 | D5 | 20GB multipart SSE-KMS fails at CompleteMultipartUpload, has GenerateDataKey — missing? | B: kms:Decrypt | ✅ | Multipart reassembly needs Decrypt. Single-part only needs GenerateDataKey. | Q744, Q765 | S3 multipart + KMS |
+| 888 | D5 | S3 CRR SSE-KMS, encryption context on dest object shows source or dest bucket ARN? | A: Source (preserves) | ❌ | B: Dest — S3 rewrites context to dest bucket ARN. Key policy conditions must reference dest. | — | CRR rewrites encryption context to dest |
+| 889 | D5 | EC2 encrypted EBS fails to start, key policy has Decrypt + GenerateDataKeyWithoutPlaintext only — missing? | B: kms:CreateGrant | ✅ | EC2 always delegates to EBS backend via grants. | Q745, Q767 | EC2 EBS + kms:CreateGrant |
+| 890 | D3/D1 | C2Activity finding, C2 IP hardcoded (no DNS), block VPC-wide — action? | B: Network Firewall DROP on C2 IP | ✅ | Hardcoded IP = DNS FW useless. NF drops by IP. | Q526, Q571 | Network FW for IP-level C2 block |
+| 891 | D6/D1 | Config org custom rule Lambda 8min, timing out at 3min — fix? | A: Increase Lambda timeout to 15 minutes | ✅ | Config evaluates with Lambda (sync, max 15min). | Q881 | Config custom rule = Lambda (max 15min timeout) |
+| 892 | D3 | IoT cert revoked in IoT Core, attacker still has private key, attempts connect — result? | D: Succeeds until CRL propagates | ❌ | B: Connection fails immediately — IoT Core checks registry status at TLS handshake (instant). | — | IoT cert revocation = instant (no CRL delay) |
