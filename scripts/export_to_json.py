@@ -359,6 +359,186 @@ def parse_cheat_sheet():
         
     return sections
 
+
+def parse_all_faqs():
+    """Parse all faq-*.md files in notes/ into structured FAQ list."""
+    faq_dir = BASE_DIR / "notes"
+    faq_files = sorted(faq_dir.glob("faq-*.md"))
+    
+    faqs = []
+    
+    for filepath in faq_files:
+        filename = filepath.name
+        try:
+            text = filepath.read_text(encoding="utf-8")
+        except Exception as e:
+            print(f"Error reading {filename}: {e}")
+            continue
+            
+        lines = text.splitlines()
+        
+        # Extract title from the first H1 line
+        title = filename.replace("faq-", "").replace(".md", "").replace("-", " ").title()
+        for line in lines:
+            if line.strip().startswith("# "):
+                title = line.strip()[2:].replace("FAQ:", "").replace("FAQ", "").strip()
+                break
+                
+        sections = []
+        current_section = None
+        current_subsection = None
+        
+        in_table = False
+        table_headers = []
+        table_rows = []
+        
+        for line in lines:
+            line_stripped = line.strip()
+            
+            # Skip H1 header line
+            if line_stripped.startswith("# "):
+                continue
+                
+            # Parse H2 section headings: ## Section Name
+            if line_stripped.startswith("## "):
+                # If we were in a table, close it
+                if in_table and current_subsection:
+                    current_subsection["items"].append({
+                        "type": "table",
+                        "headers": table_headers,
+                        "rows": table_rows
+                    })
+                    in_table = False
+                    table_headers = []
+                    table_rows = []
+                
+                section_title = line_stripped[3:].strip()
+                current_section = {
+                    "title": section_title,
+                    "subsections": []
+                }
+                sections.append(current_section)
+                current_subsection = None
+                continue
+                
+            # Parse H3 subsection headings: ### Subsection Name
+            elif line_stripped.startswith("### "):
+                if not current_section:
+                    # Create an implicit section if none exists
+                    current_section = {
+                        "title": "General",
+                        "subsections": []
+                    }
+                    sections.append(current_section)
+                    
+                # If we were in a table, close it
+                if in_table and current_subsection:
+                    current_subsection["items"].append({
+                        "type": "table",
+                        "headers": table_headers,
+                        "rows": table_rows
+                    })
+                    in_table = False
+                    table_headers = []
+                    table_rows = []
+                    
+                sub_title = line_stripped[4:].strip()
+                current_subsection = {
+                    "title": sub_title,
+                    "items": []
+                }
+                current_section["subsections"].append(current_subsection)
+                continue
+                
+            # Parse contents
+            elif current_section:
+                if not current_subsection:
+                    current_subsection = {
+                        "title": "",
+                        "items": []
+                    }
+                    current_section["subsections"].append(current_subsection)
+                    
+                # Table rows
+                if line_stripped.startswith("|"):
+                    parts = [c.strip() for c in line_stripped.split("|")[1:-1]]
+                    if not in_table:
+                        table_headers = parts
+                        table_rows = []
+                        in_table = True
+                    else:
+                        if all(re.match(r"^:?-+:?$", p) for p in parts if p):
+                            continue
+                        table_rows.append(parts)
+                    continue
+                else:
+                    if in_table:
+                        current_subsection["items"].append({
+                            "type": "table",
+                            "headers": table_headers,
+                            "rows": table_rows
+                        })
+                        in_table = False
+                        table_headers = []
+                        table_rows = []
+                
+                # Bullet points
+                if line_stripped.startswith("- ") or line_stripped.startswith("* "):
+                    bullet_text = line_stripped[2:].strip()
+                    is_insight = "🧠" in bullet_text
+                    is_warning = "⚠️" in bullet_text
+                    clean_text = bullet_text.replace("🧠", "").replace("⚠️", "").strip()
+                    
+                    current_subsection["items"].append({
+                        "type": "bullet",
+                        "text": clean_text,
+                        "is_insight": is_insight,
+                        "is_warning": is_warning
+                    })
+                    
+                # Blockquotes
+                elif line_stripped.startswith(">"):
+                    quote_text = line_stripped[1:].strip()
+                    is_insight = "🧠" in quote_text
+                    is_warning = "⚠️" in quote_text
+                    clean_text = quote_text.replace("🧠", "").replace("⚠️", "").strip()
+                    
+                    current_subsection["items"].append({
+                        "type": "blockquote",
+                        "text": clean_text,
+                        "is_insight": is_insight,
+                        "is_warning": is_warning
+                    })
+                    
+                # Regular text
+                elif line_stripped and not line_stripped.startswith("---"):
+                    current_subsection["items"].append({
+                        "type": "text",
+                        "text": line_stripped
+                    })
+                    
+        # Close any trailing table
+        if in_table and current_subsection:
+            current_subsection["items"].append({
+                "type": "table",
+                "headers": table_headers,
+                "rows": table_rows
+            })
+            
+        # Filter subsections with actual items
+        for s in sections:
+            s["subsections"] = [sub for sub in s["subsections"] if len(sub["items"]) > 0]
+        # Filter sections with actual subsections
+        sections = [s for s in sections if len(s["subsections"]) > 0]
+        
+        faqs.append({
+            "filename": filename,
+            "title": title,
+            "sections": sections
+        })
+        
+    return faqs
+
 def main():
     print("Parsing study-plan.md...")
     weeks = parse_study_plan()
@@ -369,13 +549,17 @@ def main():
     print("Parsing cheat-sheet.md...")
     cheat_sheet = parse_cheat_sheet()
     
+    print("Parsing notes/faq-*.md files...")
+    faqs = parse_all_faqs()
+    
     tracker_data = {
         "stats": stats,
         "weeks": weeks,
         "domain_proficiency": domain_proficiency,
         "weak_areas": weak_areas,
         "sessions": sessions,
-        "cheat_sheet": cheat_sheet
+        "cheat_sheet": cheat_sheet,
+        "faqs": faqs
     }
     
     # Ensure export directory exists
@@ -386,7 +570,7 @@ def main():
     EXPORT_JS_PATH.write_text(js_content, encoding="utf-8")
     
     print(f"Successfully exported tracker data to {EXPORT_JS_PATH}")
-    print(f"Parsed {stats['total_questions']} questions, {len(sessions)} sessions, {len(weeks)} study-plan weeks, {len(cheat_sheet)} cheat-sheet sections.")
+    print(f"Parsed {stats['total_questions']} questions, {len(sessions)} sessions, {len(weeks)} study-plan weeks, {len(cheat_sheet)} cheat-sheet sections, {len(faqs)} FAQ guides.")
 
 if __name__ == "__main__":
     main()

@@ -173,8 +173,8 @@ const TRACKER_DATA = {
         "Q581"
       ],
       "domains": [
-        "D1",
-        "D5"
+        "D5",
+        "D1"
       ],
       "count": 8,
       "level": "red"
@@ -14183,6 +14183,25095 @@ const TRACKER_DATA = {
                   "`aws:ResourceTag/Key`",
                   "Control access based on existing resource tags"
                 ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "filename": "faq-abac.md",
+      "title": "ABAC \u2014 Attribute-Based Access Control",
+      "sections": [
+        {
+          "title": "The Problem ABAC Solves",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "RBAC requires listing explicit ARNs in policies. Every new resource = policy edit."
+                },
+                {
+                  "type": "text",
+                  "text": "ABAC uses **tags** to match dynamically \u2014 no policy edits when resources change."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "RBAC (explicit ARNs):                  ABAC (tag-based):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 50 buckets = 50 ARNs in policy     \u251c\u2500\u2500 1 policy covers ALL buckets"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 New bucket = edit policy            \u251c\u2500\u2500 New bucket with tag = auto-access"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 New team = new policy               \u251c\u2500\u2500 New team = just tag the role"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Doesn't scale                       \u2514\u2500\u2500 Scales infinitely"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Three Tag Condition Keys",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WHO is calling?          \u2192 aws:PrincipalTag/Key    (tag on the role/user)"
+                },
+                {
+                  "type": "text",
+                  "text": "WHAT are they touching?  \u2192 aws:ResourceTag/Key     (tag on the resource)"
+                },
+                {
+                  "type": "text",
+                  "text": "WHAT are they sending?   \u2192 aws:RequestTag/Key      (tag in the API call itself)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "When to Use Each",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Condition Key",
+                    "Answers",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "`aws:PrincipalTag/Project`",
+                      "\"Who is this caller?\"",
+                      "Only Team=Security roles can access"
+                    ],
+                    [
+                      "`aws:ResourceTag/Project`",
+                      "\"What resource is being accessed?\"",
+                      "Only access resources matching your project"
+                    ],
+                    [
+                      "`aws:RequestTag/Project`",
+                      "\"What tags are being applied?\"",
+                      "Enforce tagging at resource creation"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "**Two different moments:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**RequestTag** = enforcement at **creation** (what tags are you sending right now?)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ResourceTag** = enforcement at **access** (what tags does the target already have?)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Concrete Example",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```bash"
+                },
+                {
+                  "type": "text",
+                  "text": "aws ec2 run-instances \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--tag-specifications \"ResourceType=instance,Tags=[{Key=Project,Value=Phoenix}]\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Key",
+                    "Value",
+                    "Source"
+                  ],
+                  "rows": [
+                    [
+                      "`aws:PrincipalTag/Project`",
+                      "`Phoenix`",
+                      "Tag on the calling role"
+                    ],
+                    [
+                      "`aws:RequestTag/Project`",
+                      "`Phoenix`",
+                      "Tag passed in the API call"
+                    ],
+                    [
+                      "`aws:ResourceTag/Project`",
+                      "N/A (instance doesn't exist yet)",
+                      "Tag on the target resource"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The ABAC Pattern \u2014 Match Principal to Resource",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"ABACProjectAccess\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": [\"s3:GetObject\", \"s3:PutObject\"],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:s3:::*/*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:ResourceTag/Project\": \"${aws:PrincipalTag/Project}\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Translation:** \"You can only access S3 objects in buckets tagged with YOUR project.\""
+                },
+                {
+                  "type": "text",
+                  "text": "No ARNs. No policy edits. New bucket tagged `Project=Phoenix` \u2192 Phoenix team gets access automatically."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Enforce Tagging at Creation",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"ForceSameProjectTag\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"ec2:RunInstances\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:ec2:*:*:instance/*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:RequestTag/Project\": \"${aws:PrincipalTag/Project}\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Translation:** \"You can only create instances tagged with YOUR project \u2014 can't tag them as someone else's.\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "ABAC vs RBAC Decision Table",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "RBAC",
+                    "ABAC"
+                  ],
+                  "rows": [
+                    [
+                      "**Scale**",
+                      "Policy per team/project",
+                      "One policy for all"
+                    ],
+                    [
+                      "**New resource**",
+                      "Edit policy",
+                      "Just tag it"
+                    ],
+                    [
+                      "**New team**",
+                      "New policy + attachments",
+                      "Tag the role"
+                    ],
+                    [
+                      "**Granularity**",
+                      "Explicit ARNs",
+                      "Tag-based matching"
+                    ],
+                    [
+                      "**Complexity**",
+                      "Simple to understand",
+                      "Requires tagging discipline"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"specific bucket\" / \"specific role\"",
+                      "\"scales\" / \"without policy changes\" / \"dynamic\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Session Tags (IdP \u2192 AWS)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Tags can come from your identity provider via SAML/OIDC assertions:"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Okta/Entra ID \u2192 SAML assertion includes:"
+                },
+                {
+                  "type": "text",
+                  "text": "PrincipalTag:Project = Phoenix"
+                },
+                {
+                  "type": "text",
+                  "text": "PrincipalTag:Team = Backend"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 IAM Identity Center maps these to session tags"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Role inherits tags for the session"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 ABAC policies evaluate against them"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam signal:** \"Federated users need project-scoped access without per-user policies\" \u2192 Session tags + ABAC"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Tags per IAM role/user",
+                      "50"
+                    ],
+                    [
+                      "Tag key max length",
+                      "128 characters"
+                    ],
+                    [
+                      "Tag value max length",
+                      "256 characters"
+                    ],
+                    [
+                      "Session tags per session",
+                      "50"
+                    ],
+                    [
+                      "Transitive session tags",
+                      "50"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Tags are case-sensitive**",
+                      "`Project` \u2260 `project` \u2014 mismatch = denied"
+                    ],
+                    [
+                      "**Not all services support ResourceTag**",
+                      "Check service docs \u2014 most do, some don't"
+                    ],
+                    [
+                      "**RequestTag only works on create/tag actions**",
+                      "Can't use it for GetObject (no tags in that call)"
+                    ],
+                    [
+                      "**PrincipalTag works everywhere**",
+                      "Always available for the caller"
+                    ],
+                    [
+                      "**Transitive tags**",
+                      "Persist through role chaining via `sts:TransitiveTagKeys`"
+                    ],
+                    [
+                      "**Tag propagation is not instant**",
+                      "Eventual consistency \u2014 new tag may take seconds"
+                    ],
+                    [
+                      "**ABAC + permission boundary**",
+                      "Boundary must also allow the actions \u2014 ABAC doesn't bypass ceilings"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "aws:PrincipalTag  \u2248  K8s ServiceAccount labels"
+                },
+                {
+                  "type": "text",
+                  "text": "aws:ResourceTag   \u2248  K8s resource labels (on pods, services)"
+                },
+                {
+                  "type": "text",
+                  "text": "aws:RequestTag    \u2248  K8s admission webhook validating labels on create"
+                },
+                {
+                  "type": "text",
+                  "text": "ABAC policy       \u2248  NetworkPolicy with matchLabels selector"
+                },
+                {
+                  "type": "text",
+                  "text": "Session tags      \u2248  OIDC token claims mapped to SA annotations"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**PrincipalTag = who. ResourceTag = what. RequestTag = what you're sending.** Three different tags, three different things.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ABAC magic:** `\"aws:ResourceTag/X\": \"${aws:PrincipalTag/X}\"` \u2014 match caller to resource, no ARNs needed.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Exam signal:** \"scales without policy changes\" / \"dynamic access\" \u2192 ABAC with tags.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-access-analyzer.md",
+      "title": "IAM Access Analyzer",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Finds overly permissive access (external exposure) and over-provisioned permissions (unused access).**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Two Analyzer Types \u2014 Different Questions",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "EXTERNAL ACCESS:                          UNUSED ACCESS:"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Who OUTSIDE can get IN?\"                 \"What INSIDE is never USED?\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510                   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Your Account/Org   \u2502                   \u2502  Your Account/Org   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u2502                   \u2502                     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  S3 bucket policy:  \u2502                   \u2502  Role: DataTeamRole \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Principal: \"*\"  \u25c4\u2500\u2500\u253c\u2500\u2500 Attacker?       \u2502  \u251c\u2500\u2500 s3:*        \u2190 used"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u2502                   \u2502  \u251c\u2500\u2500 ec2:*       \u2190 used"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  KMS key policy:    \u2502                   \u2502  \u251c\u2500\u2500 kms:*       \u2190 NEVER USED"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Account 999... \u25c4\u2500\u2500\u2500\u253c\u2500\u2500 Partner?        \u2502  \u2514\u2500\u2500 rds:*       \u2190 NEVER USED"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u2502                   \u2502                     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "Finding: \"This bucket is                  Finding: \"This role has kms:*"
+                },
+                {
+                  "type": "text",
+                  "text": "accessible by anyone                      and rds:* but hasn't used"
+                },
+                {
+                  "type": "text",
+                  "text": "on the internet\"                          them in 90 days \u2014 remove them\""
+                },
+                {
+                  "type": "text",
+                  "text": "SCANS: resource policies                  SCANS: CloudTrail activity logs"
+                },
+                {
+                  "type": "text",
+                  "text": "(bucket, key, queue, role trust)          (what was actually called)"
+                },
+                {
+                  "type": "text",
+                  "text": "ANSWERS: \"Am I exposed?\"                  ANSWERS: \"Am I over-provisioned?\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Side-by-Side",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "External Access",
+                    "Unused Access"
+                  ],
+                  "rows": [
+                    [
+                      "**Question**",
+                      "Who outside can reach my resources?",
+                      "Which permissions are never used?"
+                    ],
+                    [
+                      "**Scans**",
+                      "Resource-based policies",
+                      "CloudTrail activity (90\u2013180 days)"
+                    ],
+                    [
+                      "**Zone of trust**",
+                      "Account or Organization boundary",
+                      "N/A"
+                    ],
+                    [
+                      "**Resources checked**",
+                      "S3, KMS, SQS, IAM roles, Lambda, Secrets Manager, SNS, EFS, ECR",
+                      "IAM roles, users, access keys"
+                    ],
+                    [
+                      "**Finding examples**",
+                      "\"Bucket accessible by external account\"",
+                      "\"Role has unused s3:DeleteBucket permission\""
+                    ],
+                    [
+                      "**Cost**",
+                      "Free",
+                      "Paid (per role/user analyzed per month)"
+                    ],
+                    [
+                      "**Scope**",
+                      "ACCOUNT or ORGANIZATION",
+                      "ACCOUNT_UNUSED_ACCESS or ORGANIZATION_UNUSED_ACCESS"
+                    ],
+                    [
+                      "**Delegated admin**",
+                      "\u2705 Org-wide",
+                      "\u2705 Org-wide"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "All Five Features (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "#",
+                    "Feature",
+                    "Input",
+                    "Output",
+                    "Cost",
+                    "Exam Signal"
+                  ],
+                  "rows": [
+                    [
+                      "1",
+                      "**External access**",
+                      "Resource policies",
+                      "\"Bucket accessible by external account\"",
+                      "Free",
+                      "\"Who outside can reach?\""
+                    ],
+                    [
+                      "2",
+                      "**Unused access**",
+                      "CloudTrail 90d activity",
+                      "\"Role has kms:* but never called any kms action\"",
+                      "Paid",
+                      "\"Which permissions unused?\""
+                    ],
+                    [
+                      "3",
+                      "**Policy generation**",
+                      "CloudTrail activity for one role",
+                      "Ready-to-attach least-privilege JSON policy",
+                      "Free",
+                      "\"Generate replacement policy\""
+                    ],
+                    [
+                      "4",
+                      "**Policy validation**",
+                      "Policy JSON (before deploy)",
+                      "Warnings: \"overly permissive\", \"syntax error\"",
+                      "Free",
+                      "\"Check policy before attaching\""
+                    ],
+                    [
+                      "5",
+                      "**Custom policy checks**",
+                      "Policy JSON + your rules",
+                      "Pass/fail against your security standards",
+                      "Paid",
+                      "\"Validate against our standards\""
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Policy Generation \u2014 How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 1: Call GeneratePolicy with a role ARN"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 2: Access Analyzer reads 90 days of CloudTrail for that role"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 3: Returns a JSON policy with ONLY the actions actually called"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 4: You review and attach as replacement"
+                },
+                {
+                  "type": "text",
+                  "text": "Example:"
+                },
+                {
+                  "type": "text",
+                  "text": "Role currently has: s3:*, ec2:*, kms:*, rds:*"
+                },
+                {
+                  "type": "text",
+                  "text": "CloudTrail shows role only called: s3:GetObject, s3:PutObject, ec2:DescribeInstances"
+                },
+                {
+                  "type": "text",
+                  "text": "Generated policy: Allow s3:GetObject, s3:PutObject, ec2:DescribeInstances (specific ARNs)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Unused Access + Policy Generation = Complete Workflow",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "1. Enable UNUSED ACCESS analyzer (org-level)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Finds: \"DataTeamRole has 47 unused permissions\""
+                },
+                {
+                  "type": "text",
+                  "text": "2. Call POLICY GENERATION for DataTeamRole"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Returns: least-privilege policy based on actual usage"
+                },
+                {
+                  "type": "text",
+                  "text": "3. Replace the bloated policy with the generated one"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Done. No manual analysis needed."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\ud83e\udde0 **Two features, one service, designed to work together.** Unused access finds the problem. Policy generation gives you the fix."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Not GuardDuty**",
+                      "Access Analyzer = permission audit. GuardDuty = active threats."
+                    ],
+                    [
+                      "**Not a monitor**",
+                      "Doesn't detect attacks \u2014 finds misconfigurations and bloat"
+                    ],
+                    [
+                      "**Unused access is paid**",
+                      "External access is free, unused access costs per entity"
+                    ],
+                    [
+                      "**Org-level analyzer**",
+                      "One analyzer covers all member accounts (delegated admin pattern)"
+                    ],
+                    [
+                      "**Automated reasoning**",
+                      "Uses mathematical proofs, not sampling \u2014 findings are provably correct"
+                    ],
+                    [
+                      "**Integrates with Security Hub**",
+                      "Findings appear in Security Hub dashboard"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Decision Table",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Which resources are externally accessible?\"",
+                      "**Access Analyzer** (external access)"
+                    ],
+                    [
+                      "\"Right-size permissions\" / \"least privilege\"",
+                      "**Access Analyzer** (unused access) + policy generation"
+                    ],
+                    [
+                      "\"Credentials being misused RIGHT NOW\"",
+                      "**GuardDuty** (not Access Analyzer)"
+                    ],
+                    [
+                      "\"Validate policy before deploying\"",
+                      "**Access Analyzer** (policy validation)"
+                    ],
+                    [
+                      "\"Generate policy from actual usage\"",
+                      "**Access Analyzer** (policy generation)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**External access = \"Am I exposed?\" Unused access = \"Am I over-provisioned?\"** Two different analyzers, two different problems.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Access Analyzer finds misconfigurations. GuardDuty finds active threats.** Don't confuse them.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Unused permissions\" / \"overly permissive\" = IAM Access Analyzer. \"Credentials being misused\" = GuardDuty.**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-acm-private-ca.md",
+      "title": "ACM Private CA",
+      "sections": [
+        {
+          "title": "ACM Public vs ACM Private CA",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "ACM Public",
+                    "ACM Private CA"
+                  ],
+                  "rows": [
+                    [
+                      "**Domain validation**",
+                      "Must own public domain",
+                      "Any name (internal hostnames, IPs)"
+                    ],
+                    [
+                      "**Export private key**",
+                      "\u274c Never",
+                      "\u2705 Yes"
+                    ],
+                    [
+                      "**Install on your app**",
+                      "\u274c Only AWS services (ALB, CloudFront, API GW)",
+                      "\u2705 EC2, containers, on-prem"
+                    ],
+                    [
+                      "**Use case**",
+                      "Public websites HTTPS",
+                      "Internal mTLS, service mesh, IoT, Network Firewall TLS inspection"
+                    ],
+                    [
+                      "**Cost**",
+                      "Free",
+                      "~$400/month per CA + $0.75/cert"
+                    ],
+                    [
+                      "**Cross-region**",
+                      "Per-region (re-issue in each region)",
+                      "Share CA hierarchy across regions"
+                    ],
+                    [
+                      "**Rotation**",
+                      "Auto-renew (if attached to AWS service)",
+                      "You manage renewal (or automate via Lambda)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "When to Use (Exam Signals)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Internal TLS\" / \"mTLS between services\"",
+                      "**ACM Private CA**"
+                    ],
+                    [
+                      "\"Private certificates for internal hostnames\"",
+                      "**ACM Private CA**"
+                    ],
+                    [
+                      "\"Network Firewall TLS inspection CA\"",
+                      "**ACM Private CA**"
+                    ],
+                    [
+                      "\"IoT device certificates\"",
+                      "**ACM Private CA**"
+                    ],
+                    [
+                      "\"Public website HTTPS on ALB/CloudFront\"",
+                      "**ACM public** (free)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "CA Hierarchy",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Root CA (offline, long-lived, ~10yr validity)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Subordinate CA (online, shorter-lived, issues end-entity certs)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 orders.prod.internal"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 payments.prod.internal"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 *.staging.internal"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Root CA can be external (on-prem HSM) with subordinate in ACM Private CA",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Or both root + subordinate in ACM Private CA",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cross-Region (Task 5.3.5)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "CA itself lives in ONE region",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Certs issued by that CA can be used ANYWHERE (export private key \u2192 deploy globally)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "For HA: create subordinate CAs in multiple regions under same root",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Combine with **Multi-Region KMS keys** for cross-region encryption + cross-region certs",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "CAs per account per region",
+                      "200"
+                    ],
+                    [
+                      "Certificates per CA (lifetime)",
+                      "Unlimited"
+                    ],
+                    [
+                      "Certificate validity",
+                      "Up to 10 years (end-entity), 10+ years (CA)"
+                    ],
+                    [
+                      "Cost per CA",
+                      "~$400/month"
+                    ],
+                    [
+                      "Cost per certificate",
+                      "$0.75 (first 1000), lower at scale"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Can't export ACM public cert private key**",
+                      "Only Private CA certs are exportable"
+                    ],
+                    [
+                      "**$400/month per CA**",
+                      "Expensive \u2014 exam may test cost awareness"
+                    ],
+                    [
+                      "**Short-lived certs**",
+                      "Can issue certs valid for hours/days (IoT, ephemeral workloads)"
+                    ],
+                    [
+                      "**CRL + OCSP**",
+                      "Private CA supports both for revocation checking"
+                    ],
+                    [
+                      "**CloudHSM is NOT for issuing certs**",
+                      "CloudHSM stores keys; Private CA issues certs. Different jobs."
+                    ],
+                    [
+                      "**Network Firewall TLS inspection**",
+                      "Requires Private CA cert \u2014 firewall acts as MITM, must distribute CA to client trust stores"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "ACM Private CA  \u2248  cert-manager with a private ClusterIssuer"
+                },
+                {
+                  "type": "text",
+                  "text": "CA hierarchy    \u2248  Root CA \u2192 Intermediate \u2192 cert-manager issues leaf certs"
+                },
+                {
+                  "type": "text",
+                  "text": "Cross-region    \u2248  Sharing CA bundle across multiple clusters"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**ACM public = free, public domains, can't export key. ACM Private CA = $400/mo, any name, exportable, mTLS.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Internal TLS\" / \"mTLS\" / \"private hostnames\" \u2192 ACM Private CA. \"Public HTTPS\" \u2192 ACM public.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Network Firewall TLS inspection needs Private CA \u2014 distribute CA cert to client trust stores or users get warnings.**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-aws-firewalls-compared.md",
+      "title": "AWS \"Firewalls\" \u2014 All 5 Compared",
+      "sections": [
+        {
+          "title": "The Problem: 5 \"Firewalls\" at 5 Different Layers",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "THE INTERNET"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  LAYER 1: AWS WAF                                               \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHERE: CloudFront, ALB, API Gateway, AppSync, Cognito         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHAT:  HTTP/HTTPS request filtering (Layer 7)                 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  BLOCKS: SQLi, XSS, bad bots, geo, rate limits                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  ANALOGY: ModSecurity / OWASP CRS on NGINX Ingress            \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  COST: ~$5/month per Web ACL + $1/rule + $0.60/M requests     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  LAYER 2: AWS Shield                                            \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                            \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHERE: CloudFront, ALB, NLB, EIP, Global Accelerator, R53    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHAT:  DDoS protection (Layer 3/4, and 7 with Advanced)      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  BLOCKS: SYN floods, UDP reflection, volumetric attacks        \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  ANALOGY: Cloudflare DDoS protection                           \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  COST: Standard = FREE (always on). Advanced = $3,000/month   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  LAYER 3: Security Groups + NACLs                               \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHERE: SG = ENI (instance). NACL = Subnet.                   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHAT:  IP/port/protocol filtering (Layer 3-4)                 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  SG:    Stateful, allow-only, no deny rules, per-instance      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  NACL:  Stateless, allow+deny, needs ephemeral ports, per-subnet\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  ANALOGY: SG = K8s NetworkPolicy. NACL = iptables on the node.\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  COST: FREE                                                     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  LAYER 4: AWS Network Firewall                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHERE: Dedicated firewall subnet (inline, per AZ)             \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHAT:  Deep packet inspection, IDS/IPS (Layer 3-7)           \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  BLOCKS: Suricata signatures, domain filtering, TLS inspection \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  ANALOGY: Calico Enterprise DPI / Palo Alto in a pod           \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  COST: ~$288/month per AZ + $0.065/GB processed (EXPENSIVE)   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  LAYER 5: Route 53 Resolver DNS Firewall                        \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHERE: VPC-level (all resources in the VPC)                   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  WHAT:  DNS query filtering \u2014 allow/block domain resolution    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  BLOCKS: DNS exfiltration, C2 domains, unapproved domains     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  ANALOGY: CoreDNS policy plugin / Istio ServiceEntry           \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  COST: Low (~$0.0005/query after free tier)                    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "PLUS: AWS Firewall Manager (not a firewall \u2014 it's a MANAGER)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+                },
+                {
+                  "type": "text",
+                  "text": "WHERE: AWS Organizations (org-wide)"
+                },
+                {
+                  "type": "text",
+                  "text": "WHAT:  Centrally deploy and manage ALL of the above across accounts"
+                },
+                {
+                  "type": "text",
+                  "text": "MANAGES: WAF, Shield Advanced, SGs, Network Firewall, DNS Firewall"
+                },
+                {
+                  "type": "text",
+                  "text": "ANALOGY: ArgoCD deploying all your security policies across clusters"
+                },
+                {
+                  "type": "text",
+                  "text": "COST: ~$100/month per policy per region"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Matrix (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Question Says",
+                    "Answer",
+                    "Layer",
+                    "NOT This"
+                  ],
+                  "rows": [
+                    [
+                      "\"Block SQL injection\"",
+                      "**WAF**",
+                      "HTTP (L7)",
+                      "\u274c Network Firewall"
+                    ],
+                    [
+                      "\"Rate limit API requests\"",
+                      "**WAF** rate-based rules",
+                      "HTTP (L7)",
+                      "\u274c Shield"
+                    ],
+                    [
+                      "\"DDoS protection\"",
+                      "**Shield** (Standard=free, Advanced=$3K)",
+                      "L3/4/7",
+                      "\u274c WAF alone"
+                    ],
+                    [
+                      "\"Allow port 443 from this CIDR\"",
+                      "**Security Group**",
+                      "L3-4",
+                      "\u274c Network Firewall (overkill)"
+                    ],
+                    [
+                      "\"Need ephemeral port rules\"",
+                      "**NACL** (stateless)",
+                      "L3-4",
+                      "\u274c Security Group (stateful, handles it)"
+                    ],
+                    [
+                      "\"Inspect traffic content / IDS/IPS\"",
+                      "**Network Firewall**",
+                      "L3-7",
+                      "\u274c WAF (HTTP only)"
+                    ],
+                    [
+                      "\"Suricata signatures\"",
+                      "**Network Firewall**",
+                      "L3-7",
+                      "\u274c WAF"
+                    ],
+                    [
+                      "\"Block DNS lookup to bad domains\"",
+                      "**DNS Firewall**",
+                      "DNS",
+                      "\u274c Network Firewall"
+                    ],
+                    [
+                      "\"Prevent DNS exfiltration\"",
+                      "**DNS Firewall**",
+                      "DNS",
+                      "\u274c GuardDuty (detects, doesn't block)"
+                    ],
+                    [
+                      "\"Deploy WAF rules across 200 accounts\"",
+                      "**Firewall Manager**",
+                      "Org",
+                      "\u274c Manual per-account WAF"
+                    ],
+                    [
+                      "\"Ensure all VPCs have DNS Firewall\"",
+                      "**Firewall Manager**",
+                      "Org",
+                      "\u274c Manual per-VPC"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Side-by-Side Comparison",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "WAF",
+                    "Shield",
+                    "Security Groups",
+                    "NACLs",
+                    "Network Firewall",
+                    "DNS Firewall",
+                    "Firewall Manager"
+                  ],
+                  "rows": [
+                    [
+                      "**Layer**",
+                      "7 (HTTP)",
+                      "3/4/7",
+                      "3-4",
+                      "3-4",
+                      "3-7",
+                      "DNS",
+                      "N/A (manager)"
+                    ],
+                    [
+                      "**Scope**",
+                      "CloudFront/ALB/APIGW",
+                      "CloudFront/ALB/NLB/EIP",
+                      "ENI",
+                      "Subnet",
+                      "Subnet (inline)",
+                      "VPC",
+                      "Organization"
+                    ],
+                    [
+                      "**Stateful?**",
+                      "N/A",
+                      "N/A",
+                      "\u2705 Yes",
+                      "\u274c No",
+                      "Both",
+                      "N/A",
+                      "N/A"
+                    ],
+                    [
+                      "**IDS/IPS?**",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705 Yes",
+                      "\u274c",
+                      "\u274c"
+                    ],
+                    [
+                      "**Domain filtering?**",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705 (SNI)",
+                      "\u2705 (DNS)",
+                      "\u274c"
+                    ],
+                    [
+                      "**DDoS?**",
+                      "Partial",
+                      "\u2705 Primary",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c"
+                    ],
+                    [
+                      "**Cost**",
+                      "\ud83d\udcb0 Low",
+                      "\ud83c\udd93/\ud83d\udcb0\ud83d\udcb0\ud83d\udcb0",
+                      "\ud83c\udd93 Free",
+                      "\ud83c\udd93 Free",
+                      "\ud83d\udcb0\ud83d\udcb0\ud83d\udcb0 High",
+                      "\ud83d\udcb0 Low",
+                      "\ud83d\udcb0\ud83d\udcb0 Medium"
+                    ],
+                    [
+                      "**Blueprint task**",
+                      "3.1",
+                      "3.1",
+                      "3.3",
+                      "3.3",
+                      "3.3",
+                      "3.3",
+                      "6.1"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "AWS Firewall Manager \u2014 The Orchestrator (Task 6.1)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Firewall Manager is NOT a firewall. It's a **central management service** that deploys"
+                },
+                {
+                  "type": "text",
+                  "text": "and enforces firewall rules across your entire AWS Organization."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT Firewall Manager:"
+                },
+                {
+                  "type": "text",
+                  "text": "Account 1: manually configure WAF \u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "Account 2: manually configure WAF \u2500\u2500\u2524  200 accounts \u00d7 5 regions"
+                },
+                {
+                  "type": "text",
+                  "text": "Account 3: manually configure WAF \u2500\u2500\u2524  = 1,000 manual configs"
+                },
+                {
+                  "type": "text",
+                  "text": "...                                  \u2502  Someone forgets one = breach"
+                },
+                {
+                  "type": "text",
+                  "text": "Account 200: manually configure WAF \u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH Firewall Manager:"
+                },
+                {
+                  "type": "text",
+                  "text": "Security Account: ONE Firewall Manager policy"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 auto-deploys to all 200 accounts"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 auto-applies to new accounts"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 detects and remediates non-compliant resources"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 single pane of glass"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "What Firewall Manager Can Manage",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Policy Type",
+                    "What It Deploys",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**WAF**",
+                      "Web ACLs + rule groups",
+                      "Org-wide SQLi/XSS protection"
+                    ],
+                    [
+                      "**Shield Advanced**",
+                      "Shield protections",
+                      "Org-wide DDoS protection"
+                    ],
+                    [
+                      "**Security Groups**",
+                      "Common SG rules + audit",
+                      "Enforce baseline SG rules, find overly permissive SGs"
+                    ],
+                    [
+                      "**Network Firewall**",
+                      "Firewall policies",
+                      "Org-wide IDS/IPS"
+                    ],
+                    [
+                      "**DNS Firewall**",
+                      "Rule group associations",
+                      "Org-wide DNS filtering"
+                    ],
+                    [
+                      "**Third-party firewalls**",
+                      "Palo Alto, Fortinet via Marketplace",
+                      "Hybrid environments"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Firewall Manager Prerequisites",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **AWS Organizations** with all features enabled"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **AWS Config** enabled in all accounts/regions (Firewall Manager reads Config)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Delegated administrator** account (don't run in management account)"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Resource sets** define which resources the policy applies to"
+                }
+              ]
+            },
+            {
+              "title": "Firewall Manager Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Requires AWS Config**",
+                      "Won't work without Config enabled everywhere"
+                    ],
+                    [
+                      "**Requires Organizations**",
+                      "Cannot use with standalone accounts"
+                    ],
+                    [
+                      "**Delegated admin**",
+                      "Best practice: Security Tooling account, not management account"
+                    ],
+                    [
+                      "**Auto-remediation**",
+                      "Can automatically apply rules to non-compliant resources"
+                    ],
+                    [
+                      "**New accounts**",
+                      "Policies auto-apply to new accounts joining the org"
+                    ],
+                    [
+                      "**SG audit**",
+                      "Can find overly permissive SGs (0.0.0.0/0) and remediate"
+                    ],
+                    [
+                      "**Cost**",
+                      "~$100/month per policy per region \u2014 adds up fast"
+                    ],
+                    [
+                      "**Regional**",
+                      "Must create policies in each region (except WAF on CloudFront = us-east-1)"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "SRA Placement",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Security Tooling Account (delegated admin)      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Firewall Manager \u2500\u2500\u2500 creates policies \u2500\u2500\u2500\u2500\u2500\u2500\u25ba  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502                                          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u251c\u2500\u2500 WAF policy \u2500\u2500\u25ba all ALBs in all accounts\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u251c\u2500\u2500 Shield policy \u2500\u2500\u25ba all CloudFront dists \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u251c\u2500\u2500 SG audit policy \u2500\u2500\u25ba find 0.0.0.0/0    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u251c\u2500\u2500 Network Firewall \u2500\u2500\u25ba all egress VPCs   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2514\u2500\u2500 DNS Firewall \u2500\u2500\u25ba all VPCs              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Traffic Flow: How They Layer Together",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Internet"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "CloudFront \u25c4\u2500\u2500 Shield Standard (always on, free)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502             Shield Advanced (optional, $3K/month)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "WAF (Web ACL) \u25c4\u2500\u2500 blocks SQLi, XSS, bots, geo, rate limits"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "ALB \u25c4\u2500\u2500 Security Group (allow 443 from CloudFront prefix list)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  VPC                                     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  DNS Firewall \u25c4\u2500\u2500 blocks bad DNS lookups \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Firewall Subnet                         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500 Network Firewall \u25c4\u2500\u2500 IDS/IPS,      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502                   Suricata rules \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Private Subnet                          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500 EC2/EKS \u25c4\u2500\u2500 Security Group         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502           (allow from ALB only)  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  NACL on each subnet \u25c4\u2500\u2500 stateless      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       (backup layer, usually wide open)  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "Firewall Manager: deploys ALL of the above"
+                },
+                {
+                  "type": "text",
+                  "text": "across ALL accounts from ONE place"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s/Istio Mapping (Your Mental Model)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "AWS Firewall",
+                    "K8s/Istio Equivalent",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "**WAF**",
+                      "ModSecurity on Ingress / Istio EnvoyFilter",
+                      "L7 HTTP filtering at the edge"
+                    ],
+                    [
+                      "**Shield**",
+                      "Cloudflare / external DDoS proxy",
+                      "Volumetric attack absorption"
+                    ],
+                    [
+                      "**Security Groups**",
+                      "K8s NetworkPolicy",
+                      "Per-pod (per-ENI) allow rules"
+                    ],
+                    [
+                      "**NACLs**",
+                      "Node-level iptables",
+                      "Subnet-wide, stateless, backup layer"
+                    ],
+                    [
+                      "**Network Firewall**",
+                      "Calico Enterprise DPI / dedicated firewall pod",
+                      "Inline deep inspection"
+                    ],
+                    [
+                      "**DNS Firewall**",
+                      "CoreDNS policy / Istio ServiceEntry",
+                      "Control which domains can resolve"
+                    ],
+                    [
+                      "**Firewall Manager**",
+                      "ArgoCD + OPA/Gatekeeper deploying policies across clusters",
+                      "Central policy enforcement"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Traps \u2014 Common Distractors",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **\"Filter by domain name\"** \u2014 TWO services can do this:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**DNS Firewall**: blocks the DNS lookup (domain never resolves)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Network Firewall**: blocks the traffic (inspects SNI in TLS handshake)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Exam differentiator: \"restrict DNS resolution\" \u2192 DNS Firewall. \"Inspect traffic to domain\" \u2192 Network Firewall.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "2. **\"Protect against DDoS\"** \u2014 Shield, not WAF"
+                },
+                {
+                  "type": "bullet",
+                  "text": "WAF rate-based rules help, but Shield is the DDoS answer",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Shield Advanced includes WAF at no extra cost",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "3. **\"Deploy security rules across all accounts\"** \u2014 Firewall Manager"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Not \"create WAF rules in each account\" \u2014 that's manual",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Firewall Manager = org-wide automation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "4. **\"Find overly permissive security groups\"** \u2014 TWO answers:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Firewall Manager** SG audit policy (org-wide, auto-remediate)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Config** managed rule `restricted-ssh` (per-account, detect only)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Exam preference: Firewall Manager for org-wide + remediation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "5. **\"Stateless firewall\"** \u2014 TWO things:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**NACLs** (subnet-level, free)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Network Firewall stateless rules** (evaluated first, before stateful)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Don't confuse: Network Firewall has BOTH stateless and stateful engines",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "WAF",
+                      "Web ACLs per region",
+                      "100"
+                    ],
+                    [
+                      "WAF",
+                      "WCU per Web ACL",
+                      "1,500"
+                    ],
+                    [
+                      "Shield Advanced",
+                      "Cost",
+                      "$3,000/month + 1yr commitment"
+                    ],
+                    [
+                      "Security Groups",
+                      "Rules per SG",
+                      "60 inbound + 60 outbound"
+                    ],
+                    [
+                      "Security Groups",
+                      "SGs per ENI",
+                      "5"
+                    ],
+                    [
+                      "NACLs",
+                      "Rules per NACL",
+                      "20 (can increase to 40)"
+                    ],
+                    [
+                      "Network Firewall",
+                      "Endpoints per AZ",
+                      "1 per firewall"
+                    ],
+                    [
+                      "Network Firewall",
+                      "Cost per AZ",
+                      "~$288/month + $0.065/GB"
+                    ],
+                    [
+                      "DNS Firewall",
+                      "Rule groups per VPC",
+                      "1 (but group can have many rules)"
+                    ],
+                    [
+                      "Firewall Manager",
+                      "Cost per policy per region",
+                      "~$100/month"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "DNS Firewall vs Network Firewall \u2014 \"Block Unapproved Domains\"",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "This is a common exam distractor. Both can filter by domain, but at different layers."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "DNS Firewall (kill at DNS \u2014 cheapest, simplest):"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2192 \"resolve evil.com\" \u2192 DNS Firewall \u2192 NXDOMAIN \u2192 connection never happens"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2705 No traffic flows. No IP obtained. Dead before it starts."
+                },
+                {
+                  "type": "text",
+                  "text": "Network Firewall (kill at traffic \u2014 expensive, deeper):"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2192 \"resolve evil.com\" \u2192 gets IP 1.2.3.4 \u2192 sends traffic"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Network Firewall inspects SNI in TLS handshake \u2192 blocks"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2705 Works, but traffic already started. ~$288/mo per AZ."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "When to Use Which",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Scenario",
+                    "Answer",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "\"Restrict which domains Lambda can resolve\"",
+                      "**DNS Firewall**",
+                      "Block at DNS = no IP = no connection"
+                    ],
+                    [
+                      "\"Prevent DNS exfiltration (long subdomain queries)\"",
+                      "**DNS Firewall**",
+                      "Exfil happens in the DNS query itself"
+                    ],
+                    [
+                      "Attacker hardcodes an IP (bypasses DNS)",
+                      "**Network Firewall**",
+                      "No DNS query to block"
+                    ],
+                    [
+                      "\"Inspect traffic content\" / \"IDS/IPS signatures\"",
+                      "**Network Firewall**",
+                      "DNS Firewall can't see packet content"
+                    ],
+                    [
+                      "\"TLS inspection (decrypt + inspect)\"",
+                      "**Network Firewall**",
+                      "Requires inline decryption"
+                    ],
+                    [
+                      "\"Block bad domains AND inspect traffic\"",
+                      "**Both together**",
+                      "Defense in depth"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "K8s Mapping",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "DNS Firewall  \u2248  Istio ServiceEntry with NONE resolution"
+                },
+                {
+                  "type": "text",
+                  "text": "Pod can't even look up the address."
+                },
+                {
+                  "type": "text",
+                  "text": "Network Firewall  \u2248  Calico Enterprise DPI"
+                },
+                {
+                  "type": "text",
+                  "text": "Inspects packets after connection starts."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam rule:** If the question says \"domain\" and doesn't mention IP bypass or traffic inspection \u2192 **DNS Firewall** (cheaper, simpler, sufficient).",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "IDS/IPS \u2014 What It Means",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "IDS = Intrusion Detection System  \u2192 DETECTS and ALERTS (passive)"
+                },
+                {
+                  "type": "text",
+                  "text": "IPS = Intrusion Prevention System \u2192 DETECTS and BLOCKS (active)"
+                },
+                {
+                  "type": "text",
+                  "text": "Network Firewall does BOTH \u2014 it's an IDS/IPS."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "K8s mapping:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "IDS \u2248 Falco \u2192 watches traffic, sends alerts, doesn't block",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "IPS \u2248 Calico DPI \u2192 watches traffic AND drops malicious packets inline",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "In Network Firewall:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Suricata rule with `alert` action \u2192 IDS mode (log, let pass)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Suricata rule with `drop` action \u2192 IPS mode (log, kill packet)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam signal:** \"IDS,\" \"IPS,\" \"intrusion detection,\" \"intrusion prevention\" \u2192 **Network Firewall**. No other AWS service does this.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Attack Layers \u2014 Which Service Blocks What",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Layer",
+                    "Attack Type",
+                    "Who Blocks It"
+                  ],
+                  "rows": [
+                    [
+                      "**L3** (IP)",
+                      "IP spoofing, ICMP flood",
+                      "**Shield** + **SG/NACL** + **Network Firewall**"
+                    ],
+                    [
+                      "**L4** (TCP/UDP)",
+                      "SYN flood, UDP reflection, port scan",
+                      "**Shield** + **SG/NACL** + **Network Firewall**"
+                    ],
+                    [
+                      "**L3-4 volumetric** (DDoS)",
+                      "Massive traffic flood",
+                      "**Shield Standard** (free, auto)"
+                    ],
+                    [
+                      "**L7 HTTP**",
+                      "SQLi, XSS, bad bots, credential stuffing",
+                      "**WAF**"
+                    ],
+                    [
+                      "**L7 DDoS**",
+                      "Application-layer HTTP flood",
+                      "**Shield Advanced** ($3K)"
+                    ],
+                    [
+                      "**L7 DNS**",
+                      "DNS exfil, C2 domains",
+                      "**DNS Firewall**"
+                    ],
+                    [
+                      "**L3-7 deep**",
+                      "Malware signatures, Suricata rules, TLS inspection",
+                      "**Network Firewall**"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "Network Firewall has two engines:"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Network Firewall"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Stateless engine (L3-4) \u2014 evaluated FIRST"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 IP, port, protocol rules (like a fast NACL)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Stateful engine (L3-7) \u2014 evaluated SECOND"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 5-tuple rules (IP+port with connection tracking)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Domain filtering (SNI inspection)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Suricata IPS rules (deep packet inspection)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam rule:** If SG/NACL can solve it \u2192 don't pick Network Firewall (overkill + expensive). Network Firewall is the answer only when you need IDS/IPS, Suricata, domain filtering in traffic, or TLS inspection.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Shield Standard vs Shield Advanced",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Shield Standard (FREE \u2014 already on every AWS account):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 Always on, zero config"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 L3/L4 DDoS protection (SYN floods, UDP reflection)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u274c No visibility \u2014 you don't even know you're being attacked"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u274c No cost protection \u2014 auto-scaling bill is YOUR problem"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u274c No DDoS Response Team access"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u274c No L7 (application layer) protection"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 \u274c No health-based detection"
+                },
+                {
+                  "type": "text",
+                  "text": "Shield Advanced ($3,000/month + 1-year commitment):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 Everything in Standard, plus:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 L7 DDoS protection (application layer \u2014 HTTP floods)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 DDoS COST PROTECTION \u2014 AWS credits scaling costs during attack"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502     (CloudFront, ALB, Route 53, EIP, Global Accelerator)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 24/7 DDoS Response Team (DRT) \u2014 AWS experts manage your WAF"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 Real-time attack visibility + CloudWatch metrics"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 Health-based detection (Route 53 health checks = faster detection)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 WAF included at no extra cost"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \u2705 Proactive engagement \u2014 AWS contacts YOU when attack detected"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 \u274c 1-year commitment, cannot cancel early"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Shield Decision Table",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Question Says",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"DDoS protection\" (no cost concern)",
+                      "**Shield Advanced**"
+                    ],
+                    [
+                      "\"DDoS protection, **cost-sensitive** / startup\"",
+                      "**Shield Standard** (free)"
+                    ],
+                    [
+                      "\"Protect against **scaling costs** during DDoS\"",
+                      "**Shield Advanced** (cost protection)"
+                    ],
+                    [
+                      "\"Need **DDoS Response Team**\"",
+                      "**Shield Advanced**"
+                    ],
+                    [
+                      "\"**Application-layer** DDoS (HTTP floods)\"",
+                      "**Shield Advanced**"
+                    ],
+                    [
+                      "\"What's **free and automatic**?\"",
+                      "**Shield Standard**"
+                    ],
+                    [
+                      "\"**Rate limit** single IP / credential stuffing\"",
+                      "**WAF** (not Shield)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-cloudfront-oac.md",
+      "title": "CloudFront Origin Access Control (OAC)",
+      "sections": [
+        {
+          "title": "The Problem OAC Solves",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Without OAC, you must make your S3 bucket public for CloudFront to serve content."
+                },
+                {
+                  "type": "text",
+                  "text": "A public bucket means users can bypass CloudFront and access S3 directly \u2014 skipping"
+                },
+                {
+                  "type": "text",
+                  "text": "your WAF rules, geo-restrictions, caching, and access logging."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT OAC (bucket is public):"
+                },
+                {
+                  "type": "text",
+                  "text": "User \u2500\u2500\u25ba CloudFront \u2500\u2500\u25ba S3 Bucket (public)    \u2705 works"
+                },
+                {
+                  "type": "text",
+                  "text": "User \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u25ba S3 Bucket (public)    \u2705 also works (bypass!)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2191"
+                },
+                {
+                  "type": "text",
+                  "text": "WAF, geo-blocks, logging all skipped"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH OAC (bucket is private):"
+                },
+                {
+                  "type": "text",
+                  "text": "User \u2500\u2500\u25ba CloudFront \u2500\u2500(OAC signs request)\u2500\u2500\u25ba S3 Bucket (private)  \u2705 works"
+                },
+                {
+                  "type": "text",
+                  "text": "User \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u25ba S3 Bucket (private)  \u274c denied"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2191"
+                },
+                {
+                  "type": "text",
+                  "text": "Only CloudFront can access it"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How OAC Works",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. S3 bucket: **Block Public Access = ON** (fully private)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. CloudFront distribution: OAC configured as origin access"
+                },
+                {
+                  "type": "text",
+                  "text": "3. S3 bucket policy: Only allows the CloudFront **service principal**"
+                },
+                {
+                  "type": "text",
+                  "text": "4. CloudFront signs every request to S3 using **SigV4**"
+                },
+                {
+                  "type": "text",
+                  "text": "5. S3 verifies the signature \u2192 only CloudFront gets in"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Bucket Policy (Not Public \u2014 Scoped to One Distribution)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"AllowCloudFrontOACOnly\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Service\": \"cloudfront.amazonaws.com\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"s3:GetObject\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:s3:::mybucket/*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"AWS:SourceArn\": \"arn:aws:cloudfront::123456789012:distribution/EDFDVBD6EXAMPLE\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Key points:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "`Principal: {\"Service\": \"cloudfront.amazonaws.com\"}` \u2014 only CloudFront service",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`AWS:SourceArn` condition \u2014 only THIS specific distribution (confused deputy prevention)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Bucket stays fully private \u2014 Block Public Access remains ON",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "OAC vs OAI (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "OAI (legacy)",
+                    "OAC (current)"
+                  ],
+                  "rows": [
+                    [
+                      "**Status**",
+                      "\u26a0\ufe0f Deprecated",
+                      "\u2705 Recommended"
+                    ],
+                    [
+                      "**Signing**",
+                      "Custom CloudFront signing",
+                      "SigV4 (standard AWS)"
+                    ],
+                    [
+                      "**SSE-KMS support**",
+                      "\u274c No",
+                      "\u2705 Yes"
+                    ],
+                    [
+                      "**S3 regions**",
+                      "All",
+                      "All (including new opt-in regions)"
+                    ],
+                    [
+                      "**HTTP methods**",
+                      "GET only",
+                      "GET, PUT, POST, DELETE"
+                    ],
+                    [
+                      "**Confused deputy prevention**",
+                      "\u274c No SourceArn condition",
+                      "\u2705 SourceArn condition"
+                    ],
+                    [
+                      "**Principal type**",
+                      "Special CloudFront identity",
+                      "CloudFront service principal"
+                    ],
+                    [
+                      "**Bucket policy**",
+                      "References OAI ID",
+                      "References service + SourceArn"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam rule:** If OAI and OAC are both options \u2192 **OAC is always the better answer**.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "OAC + SSE-KMS (Task 5.2)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "OAI cannot work with SSE-KMS encrypted S3 objects. OAC can."
+                },
+                {
+                  "type": "text",
+                  "text": "For OAC + SSE-KMS, the KMS key policy must allow CloudFront:"
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"AllowCloudFrontDecrypt\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Service\": \"cloudfront.amazonaws.com\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"kms:Decrypt\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"AWS:SourceArn\": \"arn:aws:cloudfront::123456789012:distribution/EDFDVBD6EXAMPLE\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Two policies needed for OAC + SSE-KMS:**"
+                },
+                {
+                  "type": "text",
+                  "text": "1. S3 bucket policy \u2192 allows CloudFront `s3:GetObject`"
+                },
+                {
+                  "type": "text",
+                  "text": "2. KMS key policy \u2192 allows CloudFront `kms:Decrypt`"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "OAC vs OAI",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**\"S3 origin with KMS encryption\"** \u2192 OAC (OAI can't do KMS)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Upload to S3 via CloudFront\"** \u2192 OAC (OAI is GET only)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Restrict S3 to CloudFront only\"** \u2192 OAC (both work, but OAC is recommended)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Prevent confused deputy\"** \u2192 OAC (SourceArn condition)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Bucket Policy Is Still Needed",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "OAC doesn't eliminate the bucket policy \u2014 it changes what the policy says",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Without OAC: bucket policy grants public access (`Principal: \"*\"`)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "With OAC: bucket policy grants CloudFront service principal only",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "The bucket policy is now a **security control**, not a public access grant",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Block Public Access Stays ON",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "OAC works WITH Block Public Access enabled",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "The bucket policy allowing CloudFront service principal is NOT considered \"public\"",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "AWS treats service principal access differently from `Principal: \"*\"`",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "CloudFront + S3: Common Misconfigurations",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Missing SourceArn condition** \u2192 any CloudFront distribution can access your bucket"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Using OAI with SSE-KMS** \u2192 403 errors (OAI can't decrypt KMS)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **S3 website endpoint as origin** \u2192 OAC doesn't work (use REST endpoint)"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Missing KMS key policy** \u2192 403 errors even with correct bucket policy"
+                }
+              ]
+            },
+            {
+              "title": "K8s Mapping",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**OAC \u2248 Istio AuthorizationPolicy** \u2014 only the ingress gateway (CloudFront) can reach the backend (S3)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Bucket policy \u2248 NetworkPolicy** \u2014 pod only accepts traffic from the gateway",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Block Public Access \u2248 default-deny ingress** \u2014 nothing gets in unless explicitly allowed",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-cloudtrail.md",
+      "title": "AWS CloudTrail",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Audit & Compliance",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Canonical source** of user activity and API usage logs across AWS",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Records who did what, where, and when",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Enables governance, compliance, operational auditing, risk auditing",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Logs delivered to S3, CloudWatch Logs, EventBridge",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "CloudTrail Lake (Task 1.2 \u2014 Exam-Critical)",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "**Know this cold.** The exam tests Lake vs S3+Athena as a decision point.",
+                  "is_insight": false,
+                  "is_warning": true
+                },
+                {
+                  "type": "text",
+                  "text": "**Problem Lake solves:** CloudTrail \u2192 S3 \u2192 Athena works but at scale you manage"
+                },
+                {
+                  "type": "text",
+                  "text": "partitioning, schemas, S3 lifecycle, and queries hit raw JSON with ~15 min delay."
+                },
+                {
+                  "type": "text",
+                  "text": "**What Lake is:** A fully managed, near real-time query engine for CloudTrail events."
+                },
+                {
+                  "type": "text",
+                  "text": "No S3 buckets, no Athena tables, no partitioning \u2014 just SQL."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "CloudTrail \u2192 S3 + Athena (DIY)          CloudTrail \u2192 Lake (managed)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 ~15 min delivery delay               \u251c\u2500\u2500 Near real-time ingestion"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 You manage S3, partitions, schemas   \u251c\u2500\u2500 Fully managed \u2014 zero plumbing"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Athena per-scan cost                 \u251c\u2500\u2500 SQL built in + dashboards"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 No dashboards                        \u251c\u2500\u2500 Pre-built + custom dashboards"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Cross-account = complex              \u251c\u2500\u2500 Cross-account in one data store"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Unlimited retention (S3 lifecycle)   \u2514\u2500\u2500 7yr or 1yr extendable retention"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "#### Lake vs S3+Athena Decision Table"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "S3 + Athena",
+                    "CloudTrail Lake"
+                  ],
+                  "rows": [
+                    [
+                      "**Latency**",
+                      "~15 min",
+                      "Near real-time"
+                    ],
+                    [
+                      "**Management**",
+                      "You manage everything",
+                      "Fully managed"
+                    ],
+                    [
+                      "**Cost**",
+                      "Lower",
+                      "Higher (ingestion + storage + query GB)"
+                    ],
+                    [
+                      "**Retention**",
+                      "Unlimited (S3 lifecycle)",
+                      "7 years or 1 year extendable"
+                    ],
+                    [
+                      "**Event selectors**",
+                      "Basic or advanced",
+                      "**Advanced only**"
+                    ],
+                    [
+                      "**Cross-account**",
+                      "Multiple buckets or replication",
+                      "Single event data store"
+                    ],
+                    [
+                      "**Import old logs**",
+                      "N/A",
+                      "\u2705 Copy S3 logs into Lake"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"cost-effective long-term\"",
+                      "\"fast investigation\" / \"near real-time\" / \"dashboards\""
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "#### Lake Data Sources (Not Just CloudTrail)"
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail events (management + data)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "AWS Config configuration items",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Audit Manager evidence",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Non-AWS sources** (custom integrations)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "#### Lake Pricing"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Ingestion**: Per GB ingested",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Storage**: Per GB-month",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Queries**: Per GB scanned",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Two options**: 7-year retention (higher ingestion, lower query) or 1-year extendable (lower ingestion, higher query)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "#### Lake Exam Gotchas"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Advanced event selectors REQUIRED** \u2014 Lake doesn't support basic selectors",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Switching basic \u2192 advanced is one-way** \u2014 can't go back",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Can import S3 logs** \u2014 unify historical + new data in one place",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Only newly recorded Config CIs** \u2014 not historical before enablement",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SQL + natural language** \u2014 Lake supports both (NL generates SQL for you)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Event Types",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Management events**: Control plane operations (CreateBucket, TerminateInstance)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Data events**: Data plane operations (GetObject, PutObject, Lambda invocations)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Insights events**: Unusual API activity detected by ML",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Network activity events**: VPC Flow Logs integration",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Event Enrichment",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Resource tags**: Include AWS resource tags in events",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IAM global condition keys**: Include evaluated condition keys (e.g., aws:SourceAccount)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Principal tags**: Include tags from IAM principal making request",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Best-effort basis**: Tags updated with eventual consistency",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Multi-Account & Multi-Region",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Organization trails**: Capture events from all accounts in organization",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Multi-region trails**: Capture events from all regions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Single S3 bucket**: Consolidate logs from multiple accounts/regions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cross-region aggregation**: Use EventBridge or Security Hub",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "Trail Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**5 trails per region** (can request increase)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**One free trail** per account (management events only)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Organization trail**: Captures all accounts in organization",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Event Data Store (CloudTrail Lake)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Retention**: 7 years (default) or 1 year extendable",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Query concurrency**: Multiple concurrent queries supported",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Data sources**: CloudTrail events, AWS Config CIs, Audit Manager evidence, non-AWS sources",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Log Delivery",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**15 minutes typical latency** for log delivery to S3",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Near real-time** for CloudTrail Lake",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**90-day retention** in CloudTrail console (free)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Longer retention**: Store in S3 or CloudTrail Lake",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "API Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**LookupEvents**: 50 requests per second",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Other APIs**: Standard AWS API limits apply",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "CloudTrail vs CloudWatch vs VPC Flow Logs",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**CloudTrail**: API activity (who did what)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudWatch**: Metrics, logs, alarms (performance, application logs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**VPC Flow Logs**: Network traffic (IP, port, protocol)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Event History vs Trails",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Event History**: 90 days, free, management events only, per-region",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Trails**: Configurable retention, S3 storage, all event types, multi-region",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Data Events",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Not enabled by default** (high volume, additional cost)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 data events**: GetObject, PutObject, DeleteObject",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Lambda data events**: Invoke",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**DynamoDB data events**: GetItem, PutItem, DeleteItem",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Can filter by resource** (specific buckets, functions, tables)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Log File Integrity Validation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**SHA-256 hashing** for log files",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Digital signing** with SHA-256 with RSA",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Digest files**: Hourly, contain hashes of log files",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Validate with AWS CLI**: `aws cloudtrail validate-logs`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Computationally infeasible** to modify without detection",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Organization Trails",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Created in management account**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Applies to all accounts** in organization (existing and new)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Member accounts cannot modify** organization trail",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Logs delivered to single S3 bucket** in management account",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "CloudTrail Lake vs S3 Logs",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**CloudTrail Lake**: SQL queries, dashboards, near real-time, higher cost",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 logs**: Long-term storage, lower cost, requires Athena for queries",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Import capability**: Copy S3 logs to CloudTrail Lake for unified querying",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Insights Events",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**ML-based anomaly detection**: Unusual API call rate or error rate",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Baseline period**: 7 days to establish normal behavior",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Additional cost**: Charged per 100,000 events analyzed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Use cases**: Detect compromised credentials, resource provisioning spikes",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Event Selectors \u2014 Basic vs Advanced (Task 1.2)",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "**Exam signal:** Any question mentioning \"prefix,\" \"subset of functions,\" or \"most flexibly\" with data events \u2192 **advanced event selectors**.",
+                  "is_insight": false,
+                  "is_warning": true
+                },
+                {
+                  "type": "text",
+                  "text": "#### Comparison"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Capability",
+                    "Basic",
+                    "Advanced"
+                  ],
+                  "rows": [
+                    [
+                      "Toggle management events on/off",
+                      "\u2705",
+                      "\u2705"
+                    ],
+                    [
+                      "Toggle data events on/off per service",
+                      "\u2705",
+                      "\u2705"
+                    ],
+                    [
+                      "Filter by **exact** resource ARN",
+                      "\u2705",
+                      "\u2705"
+                    ],
+                    [
+                      "Filter by ARN **prefix** (`StartsWith`)",
+                      "\u274c",
+                      "\u2705"
+                    ],
+                    [
+                      "Exclude by ARN prefix (`NotStartsWith`)",
+                      "\u274c",
+                      "\u2705"
+                    ],
+                    [
+                      "Filter by `eventName` (e.g., Invoke only)",
+                      "\u274c",
+                      "\u2705"
+                    ],
+                    [
+                      "Filter by `readOnly` (true/false)",
+                      "\u2705 (read/write toggle)",
+                      "\u2705 (field selector)"
+                    ],
+                    [
+                      "Combine multiple field conditions",
+                      "\u274c",
+                      "\u2705"
+                    ],
+                    [
+                      "Max selectors per trail",
+                      "5",
+                      "500 conditions"
+                    ],
+                    [
+                      "Required for CloudTrail Lake",
+                      "\u2014",
+                      "\u2705 (Lake only supports advanced)"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "#### When to Use Which"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Basic:** Simple \"log all S3 data events\" or \"log one specific bucket\"",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Advanced:** Prefix-based filtering, event name filtering, cost optimization on high-volume workloads, CloudTrail Lake",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "#### Advanced Event Selector Fields"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Field",
+                    "Operators",
+                    "Example"
+                  ],
+                  "rows": [
+                    [
+                      "`eventCategory`",
+                      "`Equals`",
+                      "`Data`, `Management`"
+                    ],
+                    [
+                      "`resources.type`",
+                      "`Equals`",
+                      "`AWS::S3::Object`, `AWS::Lambda::Function`, `AWS::DynamoDB::Table`"
+                    ],
+                    [
+                      "`resources.ARN`",
+                      "`Equals`, `StartsWith`, `NotEquals`, `NotStartsWith`",
+                      "`arn:aws:lambda:...:function:UpdProdCount`"
+                    ],
+                    [
+                      "`eventName`",
+                      "`Equals`, `StartsWith`",
+                      "`GetObject`, `Invoke`"
+                    ],
+                    [
+                      "`readOnly`",
+                      "`Equals`",
+                      "`true`, `false`"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "#### Example: Log Only Invoke Events for Lambda Functions with a Name Prefix"
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Name\": \"LambdaPrefixFilter\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"FieldSelectors\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{ \"Field\": \"eventCategory\", \"Equals\": [\"Data\"] },"
+                },
+                {
+                  "type": "text",
+                  "text": "{ \"Field\": \"resources.type\", \"Equals\": [\"AWS::Lambda::Function\"] },"
+                },
+                {
+                  "type": "text",
+                  "text": "{ \"Field\": \"resources.ARN\", \"StartsWith\": [\"arn:aws:lambda:us-east-1:123456789012:function:UpdProdCount\"] },"
+                },
+                {
+                  "type": "text",
+                  "text": "{ \"Field\": \"eventName\", \"Equals\": [\"Invoke\"] }"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "#### Example: Log S3 Data Events for All Buckets Except a High-Volume One"
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Name\": \"S3ExcludeHighVolume\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"FieldSelectors\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{ \"Field\": \"eventCategory\", \"Equals\": [\"Data\"] },"
+                },
+                {
+                  "type": "text",
+                  "text": "{ \"Field\": \"resources.type\", \"Equals\": [\"AWS::S3::Object\"] },"
+                },
+                {
+                  "type": "text",
+                  "text": "{ \"Field\": \"resources.ARN\", \"NotStartsWith\": [\"arn:aws:s3:::high-volume-logs-bucket/\"] }"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "#### Exam Gotchas \u2014 Event Selectors"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Basic selectors force all-or-nothing** per resource type \u2014 you can't say \"only Invoke, not GetFunction\"",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Advanced selectors are required for CloudTrail Lake** event data stores",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**You cannot mix basic and advanced** on the same trail \u2014 it's one or the other",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Switching from basic to advanced is one-way** \u2014 you can't go back to basic",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Read/write filtering**: Basic uses a toggle; advanced uses `readOnly` field selector (same result, different syntax)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "CloudTrail Lake Pricing",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Ingestion**: Per GB ingested",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Storage**: Per GB-month stored",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Queries**: Per GB scanned",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Two pricing options**: 7-year retention or 1-year extendable",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Config Integration",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**CloudTrail Lake can ingest Config CIs**: Historical configuration items",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Use case**: Correlate who changed what with resource configuration changes",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Limitation**: Only newly recorded CIs (not historical before enablement)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for IAM Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Enable CloudTrail in all regions** - use multi-region trail"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Enable log file validation** - detect tampering"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Encrypt logs with KMS** - use customer managed key"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Restrict S3 bucket access** - only CloudTrail and authorized users"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Enable MFA Delete** on S3 bucket for log files"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Use S3 Object Lock** for compliance (WORM)"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Monitor with CloudWatch alarms** - alert on critical API calls"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Aggregate logs** from all accounts to central security account"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Enable Insights events** for anomaly detection"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Use EventBridge** for real-time response to security events"
+                }
+              ]
+            },
+            {
+              "title": "Example: Prevent CloudTrail Disablement",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"cloudtrail:StopLogging\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"cloudtrail:DeleteTrail\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"cloudtrail:UpdateTrail\""
+                },
+                {
+                  "type": "text",
+                  "text": "],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Example: Restrict CloudTrail S3 Bucket Access",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Service\": \"cloudtrail.amazonaws.com\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"s3:PutObject\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:s3:::my-cloudtrail-bucket/*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"s3:x-amz-acl\": \"bucket-owner-full-control\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:SourceArn\": \"arn:aws:cloudtrail:region:account:trail/trail-name\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Example: Alert on Root Account Usage",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "CloudWatch Logs filter: { $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS }"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-cognito.md",
+      "title": "Amazon Cognito",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "User Authentication",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**First-factor authenticators**: Username/password, email OTP, SMS OTP, WebAuthn passkeys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**MFA options**: Email OTP, SMS OTP, TOTP authenticators",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Custom authentication flows**: Use Lambda for third-party or bespoke authenticators",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Compromised credentials checking**: Automatic detection on sign-up, sign-in, password change",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "User Pools (User Management)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Tenant-based user directory for web/mobile apps",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Secure storage of user profile attributes",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Custom schema support for app-specific attributes",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Email and phone number verification before access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Password policies: length, complexity, history requirements",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Identity Pools (Federated Access)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Authenticate via external IdP, get temporary AWS credentials",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Access AWS resources (S3, DynamoDB) with role-based permissions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Supports: Amazon, Facebook, Twitter, Apple, Google, OIDC, SAML, Cognito user pools",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Unauthenticated (guest) access with limited IAM role",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Access Control",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**IAM roles**: Define permissions for authenticated and unauthenticated users",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Group-based IAM roles**: Assign roles based on Cognito user pool groups",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Fine-grained access**: Use Cognito ID in IAM policies (e.g., S3 bucket per-user folders)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Token-based**: OAuth 2.0 and OIDC tokens for API authorization",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Data Synchronization",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Cognito Sync: Key/value store linked to Cognito identity",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Data synced across user's devices",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No limit on number of identities",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Each identity has separate data store",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "User Pools",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "No explicit user limit mentioned - scales to millions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Custom attributes: Use OpenID Connect standard attributes or customize",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Aliasing: Users can sign in with email OR phone number",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Identity Pools",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "No limit on identities in identity pool",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No limit on sync store size",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Each identity has separate data store",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Unauthenticated identities: Each GetId call creates new identity (cache response!)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Pricing Model",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Monthly Active Users (MAUs)**: Charged per MAU, not per operation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "MAU = user with identity operation in calendar month",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Subsequent sessions in same month: no additional charge",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Free tier**: First 10,000 MAUs (new SKU) or 50,000 MAUs (legacy accounts)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SMS charges**: Separate pricing for phone verification and MFA",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "User Pools vs Identity Pools",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**User Pools**: User directory, authentication, sign-up/sign-in",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Identity Pools**: Credential broker, temporary AWS credentials, federated access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Identity Pools don't store user profiles** - only vend credentials",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can use both together: User pool authenticates, identity pool provides AWS access",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Authentication Flow",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. App authenticates with IdP using provider's SDK"
+                },
+                {
+                  "type": "text",
+                  "text": "2. IdP returns OIDC token or SAML assertion"
+                },
+                {
+                  "type": "text",
+                  "text": "3. App passes token to Cognito identity pool"
+                },
+                {
+                  "type": "text",
+                  "text": "4. Identity pool returns Cognito ID + temporary AWS credentials"
+                }
+              ]
+            },
+            {
+              "title": "Unauthenticated Access",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Separate IAM role for guest users",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Limited permissions for unauthenticated access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Removes friction of login screen",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Still uses temporary, limited-privilege credentials",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Device Management",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Remember devices for users",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Suppress MFA for remembered devices (adaptive authentication)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Separate identities on shared devices (e.g., family iPad)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "User Migration",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Just-in-time (JIT)**: Lambda trigger migrates users on first sign-in (no password reset)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Bulk migration**: Upload CSV file, users verify on first sign-in",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Retain existing passwords with JIT migration",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Custom Workflows (Lambda Triggers)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Pre-registration**: Fraud detection, custom validation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Post-confirmation**: Welcome email, analytics",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Pre-authentication**: Additional checks before auth",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**During authentication**: Custom challenge/response",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Post-authentication**: Logging, analytics",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Custom messages**: Email/SMS verification, MFA messages",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Cognito vs IAM Identity Center",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Cognito**: Customer-facing apps (B2C, B2B)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IAM Identity Center**: Workforce identities (employees)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cognito **NOT supported** as identity source for IAM Identity Center",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Token Handling",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Cognito doesn't receive/store IdP credentials",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cognito doesn't receive confidential info (email, friends list) from IdP",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Uses one-way hash of IdP token for user identification",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Identity Counting",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Authenticated identities**: One identity per user (GetId called once)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Unauthenticated identities**: New identity per GetId call (cache response!)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Mobile SDK caches automatically",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for IAM Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Use separate IAM roles** for authenticated vs unauthenticated users"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Least privilege for guest access** - minimal permissions"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Condition keys**: `cognito-identity.amazonaws.com:sub` (Cognito ID)"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Per-user resource access**: Use `${cognito-identity.amazonaws.com:sub}` in policies"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Group-based roles**: Assign IAM roles based on Cognito user pool groups"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Token validation**: Always validate JWT tokens in backend"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Secure token storage**: Never store tokens in localStorage (use httpOnly cookies)"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Refresh tokens**: Implement proper token refresh logic"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Monitor with CloudTrail**: Track Cognito API calls"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Enable advanced security**: Compromised credentials detection, adaptive authentication"
+                }
+              ]
+            },
+            {
+              "title": "Example: S3 Per-User Folder Access",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": [\"s3:GetObject\", \"s3:PutObject\"],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:s3:::mybucket/${cognito-identity.amazonaws.com:sub}/*\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-d6-governance-gaps.md",
+      "title": "D6 Governance Gaps \u2014 StackSets, Service Catalog, Audit Manager, Artifact",
+      "sections": [
+        {
+          "title": "1. CloudFormation StackSets (Task 6.2)",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Deploy the same CloudFormation template across multiple accounts and regions in one operation.**"
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Admin Account (management or delegated admin):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 StackSet: \"security-baseline\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Template: GuardDuty enablement + Config rules + CloudTrail"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Target: All accounts in \"Production\" OU"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Regions: us-east-1, eu-west-1, ap-southeast-1"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc automatically creates stack instances"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 Account A\u2502  \u2502 Account B\u2502  \u2502 Account C\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 3 regions\u2502  \u2502 3 regions\u2502  \u2502 3 regions\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Two Permission Models",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Model",
+                    "How",
+                    "When"
+                  ],
+                  "rows": [
+                    [
+                      "**Self-managed**",
+                      "You create IAM roles in each account manually",
+                      "Legacy, standalone accounts"
+                    ],
+                    [
+                      "**Service-managed**",
+                      "StackSets uses Organizations \u2014 auto-deploys to new accounts",
+                      "\u2705 Exam preference"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Signals",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Deploy security baseline to all accounts\"",
+                      "StackSets"
+                    ],
+                    [
+                      "\"IaC across multiple accounts and regions\"",
+                      "StackSets"
+                    ],
+                    [
+                      "\"New account joins org \u2192 auto-gets Config/GuardDuty\"",
+                      "StackSets (service-managed, auto-deploy enabled)"
+                    ],
+                    [
+                      "\"Deploy ONE template to 200 accounts\"",
+                      "StackSets"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Key Limits",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Stack instances per StackSet",
+                      "2,000"
+                    ],
+                    [
+                      "Concurrent operations per region",
+                      "1"
+                    ],
+                    [
+                      "Max concurrent accounts",
+                      "Configurable (default 1, increase for speed)"
+                    ],
+                    [
+                      "Failure tolerance",
+                      "Configurable (e.g., \"stop if 5 accounts fail\")"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Service-managed = Organizations integration**",
+                      "Auto-deploys to new accounts in target OUs"
+                    ],
+                    [
+                      "**Drift detection**",
+                      "StackSets can detect if someone modified resources manually"
+                    ],
+                    [
+                      "**Deletion**",
+                      "Deleting StackSet deletes all stack instances across all accounts"
+                    ],
+                    [
+                      "**Region ordering**",
+                      "Deploys to regions sequentially by default (can parallelize)"
+                    ],
+                    [
+                      "**Not real-time**",
+                      "Deployment takes minutes \u2014 not instant like SCPs"
+                    ],
+                    [
+                      "**vs Firewall Manager**",
+                      "FM deploys security RULES. StackSets deploys any RESOURCE."
+                    ],
+                    [
+                      "**vs Control Tower**",
+                      "Control Tower uses StackSets internally for its baseline"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "StackSets vs Firewall Manager vs Control Tower",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "StackSets",
+                    "Firewall Manager",
+                    "Control Tower"
+                  ],
+                  "rows": [
+                    [
+                      "**Deploys**",
+                      "Any CloudFormation resource",
+                      "WAF/Shield/SG/NF/DNS FW rules only",
+                      "Landing zone + guardrails"
+                    ],
+                    [
+                      "**Scope**",
+                      "Any resource you can template",
+                      "Security rules only",
+                      "Account onboarding + governance"
+                    ],
+                    [
+                      "**Auto-remediate**",
+                      "\u274c (just deploys)",
+                      "\u2705 (re-applies if removed)",
+                      "\u2705 (drift detection)"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"deploy resources\" / \"IaC\"",
+                      "\"enforce security rules\"",
+                      "\"landing zone\" / \"guardrails\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "2. AWS Service Catalog (Task 6.2)",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Pre-approved, self-service product catalog \u2014 users launch standardized resources without needing broad IAM permissions.**"
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Admin creates:"
+                },
+                {
+                  "type": "text",
+                  "text": "Portfolio: \"Approved Security Products\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Product: \"Compliant S3 Bucket\" (CF template with encryption + logging)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Product: \"Hardened EC2\" (CF template with IMDSv2 + SSM agent)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Product: \"Approved VPC\" (CF template with flow logs + endpoints)"
+                },
+                {
+                  "type": "text",
+                  "text": "Developer experience:"
+                },
+                {
+                  "type": "text",
+                  "text": "\"I need an S3 bucket\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Opens Service Catalog \u2192 picks \"Compliant S3 Bucket\" \u2192 Launch"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Gets a bucket with encryption, logging, tags \u2014 all pre-configured"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Developer never needs s3:CreateBucket permission directly"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Key Concepts",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Concept",
+                    "What It Is"
+                  ],
+                  "rows": [
+                    [
+                      "**Portfolio**",
+                      "Collection of products, shared with accounts/OUs"
+                    ],
+                    [
+                      "**Product**",
+                      "CloudFormation template packaged for self-service"
+                    ],
+                    [
+                      "**Constraint**",
+                      "Rules on how products can be launched (e.g., allowed instance types)"
+                    ],
+                    [
+                      "**Launch role**",
+                      "IAM role that Service Catalog assumes to create resources \u2014 user doesn't need resource permissions"
+                    ],
+                    [
+                      "**TagOption**",
+                      "Enforce tags on all provisioned resources"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Signals",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Self-service with guardrails\"",
+                      "Service Catalog"
+                    ],
+                    [
+                      "\"Developers deploy without broad IAM\"",
+                      "Service Catalog (launch role)"
+                    ],
+                    [
+                      "\"Standardized, pre-approved resources\"",
+                      "Service Catalog"
+                    ],
+                    [
+                      "\"Enforce compliance at deployment time\"",
+                      "Service Catalog constraints"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Launch role**",
+                      "User doesn't need resource permissions \u2014 Service Catalog assumes a role with those permissions"
+                    ],
+                    [
+                      "**Share via Organizations**",
+                      "Portfolios can be shared across accounts via Organizations"
+                    ],
+                    [
+                      "**Not a firewall**",
+                      "Doesn't block non-catalog deployments (use SCPs for that)"
+                    ],
+                    [
+                      "**vs StackSets**",
+                      "StackSets = admin pushes. Service Catalog = user pulls (self-service)."
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "3. AWS Audit Manager (Task 6.3)",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Continuously collect evidence for compliance audits \u2014 maps AWS activity to compliance frameworks automatically.**"
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "1. Choose a framework:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 SOC 2"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 PCI DSS"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 HIPAA"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 GDPR"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 CIS Benchmarks"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Custom framework"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Audit Manager automatically collects evidence:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Config rule evaluations \u2192 \"Is encryption enabled?\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 CloudTrail logs \u2192 \"Who accessed what?\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Security Hub findings \u2192 \"Are controls passing?\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Manual evidence \u2192 upload screenshots, attestations"
+                },
+                {
+                  "type": "text",
+                  "text": "3. Generate assessment report \u2192 hand to auditor"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Key Concepts",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Concept",
+                    "What It Is"
+                  ],
+                  "rows": [
+                    [
+                      "**Framework**",
+                      "Compliance standard (SOC 2, PCI, HIPAA, custom)"
+                    ],
+                    [
+                      "**Control**",
+                      "Specific requirement within a framework"
+                    ],
+                    [
+                      "**Assessment**",
+                      "Active evaluation against a framework"
+                    ],
+                    [
+                      "**Evidence**",
+                      "Proof that a control is met (auto-collected or manual)"
+                    ],
+                    [
+                      "**Delegation**",
+                      "Assign control owners to collect manual evidence"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Evidence Types (Auto-Collected)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Source",
+                    "What It Proves"
+                  ],
+                  "rows": [
+                    [
+                      "**AWS Config**",
+                      "Resource compliance (encryption on, logging on)"
+                    ],
+                    [
+                      "**CloudTrail**",
+                      "Activity audit (who did what)"
+                    ],
+                    [
+                      "**Security Hub**",
+                      "Security posture (controls passing/failing)"
+                    ],
+                    [
+                      "**Manual upload**",
+                      "Screenshots, policy documents, attestations"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Signals",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Prepare for SOC 2 / PCI audit\"",
+                      "Audit Manager"
+                    ],
+                    [
+                      "\"Collect compliance evidence automatically\"",
+                      "Audit Manager"
+                    ],
+                    [
+                      "\"Map AWS controls to compliance frameworks\"",
+                      "Audit Manager"
+                    ],
+                    [
+                      "\"Generate audit-ready reports\"",
+                      "Audit Manager"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Not a scanner**",
+                      "Doesn't find vulnerabilities (that's Inspector) or threats (that's GuardDuty)"
+                    ],
+                    [
+                      "**Not Security Hub**",
+                      "Security Hub = real-time compliance dashboard. Audit Manager = evidence collection for auditors."
+                    ],
+                    [
+                      "**Delegated admin**",
+                      "\u2705 Supported \u2014 run from security account"
+                    ],
+                    [
+                      "**Custom frameworks**",
+                      "Can create your own if standard ones don't fit"
+                    ],
+                    [
+                      "**Evidence retention**",
+                      "Stored in your S3 bucket"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "4. AWS Artifact (Task 6.3)",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Download AWS compliance reports and agreements (SOC, PCI, ISO, BAA) \u2014 proves AWS's side of shared responsibility.**"
+                }
+              ]
+            },
+            {
+              "title": "What It Provides",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Artifact = \"AWS's compliance paperwork\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Reports (read-only):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 SOC 1, SOC 2, SOC 3 reports"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 PCI DSS Attestation of Compliance"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 ISO 27001, 27017, 27018 certificates"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 FedRAMP authorization"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 Penetration test reports"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Agreements (accept/manage):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 BAA (Business Associate Agreement) for HIPAA"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 GDPR DPA (Data Processing Agreement)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Other regulatory agreements"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Exam Signals",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Download AWS SOC 2 report\"",
+                      "Artifact"
+                    ],
+                    [
+                      "\"Prove AWS is PCI compliant\"",
+                      "Artifact"
+                    ],
+                    [
+                      "\"Sign BAA for HIPAA\"",
+                      "Artifact (agreements)"
+                    ],
+                    [
+                      "\"AWS's compliance certifications\"",
+                      "Artifact"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Artifact vs Audit Manager",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "Artifact",
+                    "Audit Manager"
+                  ],
+                  "rows": [
+                    [
+                      "**Whose compliance?**",
+                      "AWS's (their infrastructure)",
+                      "Yours (your workloads)"
+                    ],
+                    [
+                      "**What it provides**",
+                      "AWS certifications/reports",
+                      "Evidence from your account"
+                    ],
+                    [
+                      "**Who uses it**",
+                      "You show auditor \"AWS is compliant\"",
+                      "You show auditor \"WE are compliant\""
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"AWS's SOC report\"",
+                      "\"Collect evidence for our audit\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "5. Config Conformance Packs (Task 6.3)",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Bundle of Config rules + remediation actions deployed as a single unit \u2014 org-wide via delegated admin.**"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "This is a feature of **AWS Config** \u2014 not a separate service. Think of it as \"Config rules in bulk.\"",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            },
+            {
+              "title": "Hierarchy",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "AWS Config"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Individual Config rules (one rule at a time, one account)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Conformance packs (bundle of rules + remediation as ONE unit)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 Account-level conformance pack (one account)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 Organizational conformance pack (all accounts from delegated admin)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Aggregators (view compliance across accounts \u2014 read-only)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "AWS Pre-Built Packs (just pick and deploy)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "`Operational-Best-Practices-for-PCI-DSS`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`Operational-Best-Practices-for-HIPAA`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`Operational-Best-Practices-for-CIS`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`Operational-Best-Practices-for-NIST-800-53`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Or build your own custom pack with Lambda-backed rules",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Conformance Pack: \"PCI-DSS-Operational-Best-Practices\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Rule: s3-bucket-server-side-encryption-enabled"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Rule: restricted-ssh"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Rule: cloud-trail-enabled"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Rule: rds-storage-encrypted"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 ... 30+ rules in one pack"
+                },
+                {
+                  "type": "text",
+                  "text": "Deploy org-wide:"
+                },
+                {
+                  "type": "text",
+                  "text": "Delegated admin \u2192 deploy conformance pack \u2192 all 200 accounts get all rules"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Exam Signals",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Deploy bundle of compliance rules org-wide\"",
+                      "Conformance pack"
+                    ],
+                    [
+                      "\"PCI/HIPAA compliance rules as a package\"",
+                      "Conformance pack"
+                    ],
+                    [
+                      "\"Config rules + remediation in one deployment\"",
+                      "Conformance pack"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "vs Security Hub Standards",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "Conformance Packs",
+                    "Security Hub Standards"
+                  ],
+                  "rows": [
+                    [
+                      "**Engine**",
+                      "Config rules directly",
+                      "Config rules (wrapped by Security Hub)"
+                    ],
+                    [
+                      "**Dashboard**",
+                      "Config console",
+                      "Security Hub console (better UX)"
+                    ],
+                    [
+                      "**Custom rules**",
+                      "\u2705 Include custom Lambda rules",
+                      "\u274c Only AWS-managed controls"
+                    ],
+                    [
+                      "**Remediation**",
+                      "\u2705 Built into the pack",
+                      "\u274c Separate (EventBridge + Lambda)"
+                    ],
+                    [
+                      "**Exam preference**",
+                      "\"Custom compliance\" / \"remediation included\"",
+                      "\"Least overhead\" / \"dashboard\" / \"aggregate\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6. Native Org-Wide Deployment (Delegated Admin + Auto-Enable)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "These services have **built-in** org-wide management. Do NOT use StackSets for them."
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Delegated Admin?",
+                    "Auto-Enable New Accounts?",
+                    "Use StackSets?"
+                  ],
+                  "rows": [
+                    [
+                      "**GuardDuty**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Security Hub**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Inspector**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Macie**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Detective**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Config**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Access Analyzer**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Firewall Manager**",
+                      "\u2705",
+                      "\u2705 (policies auto-apply)",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Security Lake**",
+                      "\u2705",
+                      "\u2705",
+                      "\u274c No \u2014 use native"
+                    ],
+                    [
+                      "**Audit Manager**",
+                      "\u2705",
+                      "\u274c (manual per-account)",
+                      "Maybe"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "When DO you use StackSets?",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "For things that **don't have native org-wide deployment**:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "IAM roles (baseline roles in every account)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail trails (org trail is an alternative)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "VPCs, subnets, endpoints",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Custom Lambda functions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Any CloudFormation resource without native org support",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Exam Decision",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Deploy [security service] across all accounts, auto for new\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Does the service have delegated admin + auto-enable?"
+                },
+                {
+                  "type": "text",
+                  "text": "YES \u2192 use native org management (not StackSets)"
+                },
+                {
+                  "type": "text",
+                  "text": "NO  \u2192 use StackSets"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** Q437 asked \"GuardDuty + Config + CloudTrail\" \u2014 the answer was StackSets because it's deploying MULTIPLE things including CloudTrail (which doesn't have simple auto-enable for custom trails). If the question asks about ONE service that has native support \u2192 use native.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**StackSets = push IaC to many accounts.** Service Catalog = users pull pre-approved resources.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Audit Manager = YOUR compliance evidence.** Artifact = AWS's compliance reports.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Conformance pack = bundle of Config rules deployed as one unit.** Security Hub standard = same rules but with dashboard + aggregation.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Self-service with guardrails\" = Service Catalog.** Launch role means user doesn't need broad IAM.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**If the service has delegated admin + auto-enable \u2192 use native, not StackSets.** GuardDuty, Inspector, Security Hub, Macie, Detective, Config, Access Analyzer all have it.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-data-masking.md",
+      "title": "Data Masking \u2014 CloudWatch Logs & SNS Data Protection",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Detect and mask sensitive data in CloudWatch Logs and SNS messages in real-time \u2014 no code changes.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Problem It Solves",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT data protection policies:"
+                },
+                {
+                  "type": "text",
+                  "text": "App logs: \"User john@acme.com paid with card 4111-1111-1111-1111\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 PII sits in CloudWatch Logs forever"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Anyone with logs:GetLogEvents sees raw PII"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Compliance violation (PCI DSS, GDPR, HIPAA)"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH CloudWatch Logs data protection:"
+                },
+                {
+                  "type": "text",
+                  "text": "App logs: \"User j***@***.com paid with card ****-****-****-1111\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 PII masked automatically at ingestion"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 No application code changes"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Unmasked access requires separate IAM permission"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Two Services (Don't Confuse)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "What It Protects",
+                    "Where"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudWatch Logs data protection**",
+                      "Log events in log groups",
+                      "CloudWatch Logs"
+                    ],
+                    [
+                      "**SNS message data protection**",
+                      "Messages published to topics",
+                      "SNS topics"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "Both use the same concept: managed data identifiers + policy \u2192 detect + mask/audit."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "CloudWatch Logs Data Protection (Primary Exam Target)",
+          "subsections": [
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "App \u2192 PutLogEvents \u2192 CloudWatch Logs"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "Data Protection Policy"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Scan log events for sensitive data"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Match against data identifiers (SSN, credit card, etc.)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Actions:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Audit: send finding to another log group / S3 / Firehose"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Deidentify (mask): replace with ****"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Both (typical)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "Stored log event: masked"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Card: ****-****-****-1111\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Policy Structure",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Name\": \"DataProtectionPolicy\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Description\": \"Mask PII in application logs\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2021-06-01\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"AuditStatement\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"DataIdentifier\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:dataprotection::aws:data-identifier/CreditCardNumber\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:dataprotection::aws:data-identifier/EmailAddress\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:dataprotection::aws:data-identifier/SocialSecurityNumber-US\""
+                },
+                {
+                  "type": "text",
+                  "text": "],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Operation\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Audit\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"FindingsDestination\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"CloudWatchLogs\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"LogGroup\": \"/aws/data-protection/audit\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"S3\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Bucket\": \"my-audit-bucket\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DeidentifyStatement\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"DataIdentifier\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:dataprotection::aws:data-identifier/CreditCardNumber\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:dataprotection::aws:data-identifier/EmailAddress\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:dataprotection::aws:data-identifier/SocialSecurityNumber-US\""
+                },
+                {
+                  "type": "text",
+                  "text": "],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Operation\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Deidentify\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"MaskConfig\": {}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Managed Data Identifiers (Know These Exist, Not the Full List)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Category",
+                    "Examples"
+                  ],
+                  "rows": [
+                    [
+                      "**Financial**",
+                      "Credit card numbers, bank account numbers"
+                    ],
+                    [
+                      "**Personal**",
+                      "SSN, passport numbers, driver's license"
+                    ],
+                    [
+                      "**Contact**",
+                      "Email addresses, phone numbers, physical addresses"
+                    ],
+                    [
+                      "**Health**",
+                      "Health insurance IDs (US)"
+                    ],
+                    [
+                      "**Credentials**",
+                      "AWS secret keys, API keys"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "You don't need to memorize all identifiers. Know that AWS provides **managed identifiers** and you reference them by ARN in the policy.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Unmasking (Exam-Critical)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Default: everyone sees masked data (****)"
+                },
+                {
+                  "type": "text",
+                  "text": "To see UNMASKED data, caller needs BOTH:"
+                },
+                {
+                  "type": "text",
+                  "text": "1. logs:GetLogEvents (normal read permission)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. logs:Unmask (special permission \u2014 grant sparingly)"
+                },
+                {
+                  "type": "text",
+                  "text": "Without logs:Unmask \u2192 you see: \"Card: ****-****-****-1111\""
+                },
+                {
+                  "type": "text",
+                  "text": "With logs:Unmask    \u2192 you see: \"Card: 4111-1111-1111-1111\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**IAM policy to deny unmasking:**"
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DenyUnmask\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"logs:Unmask\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Audit Destinations",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Destination",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudWatch Logs** (another log group)",
+                      "Real-time alerting on PII detection"
+                    ],
+                    [
+                      "**S3**",
+                      "Long-term audit trail"
+                    ],
+                    [
+                      "**Kinesis Data Firehose**",
+                      "Stream to SIEM (Splunk, Datadog)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "SNS Message Data Protection",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Same concept, different service:"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Publisher \u2192 SNS Topic (with data protection policy)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Inbound policy: mask BEFORE storing/delivering"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Outbound policy: mask per-subscriber (different subscribers see different masking)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Key Difference from CloudWatch Logs",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "CloudWatch Logs",
+                    "SNS"
+                  ],
+                  "rows": [
+                    [
+                      "**When masking happens**",
+                      "At ingestion (PutLogEvents)",
+                      "At publish (inbound) or delivery (outbound)"
+                    ],
+                    [
+                      "**Per-subscriber control**",
+                      "\u274c Same masking for all readers",
+                      "\u2705 Different masking per subscription"
+                    ],
+                    [
+                      "**Unmask permission**",
+                      "`logs:Unmask`",
+                      "N/A \u2014 use outbound policy per subscriber"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Data identifiers per policy",
+                      "30"
+                    ],
+                    [
+                      "Log groups with data protection per account per region",
+                      "500"
+                    ],
+                    [
+                      "Audit destinations per policy",
+                      "3 (one of each type)"
+                    ],
+                    [
+                      "Latency impact",
+                      "Minimal (milliseconds)"
+                    ],
+                    [
+                      "Cost",
+                      "No additional charge for data protection (normal CloudWatch Logs pricing)"
+                    ],
+                    [
+                      "SNS data protection",
+                      "Additional charge per message scanned"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**No code changes**",
+                      "Policy applied to log group \u2014 app doesn't change"
+                    ],
+                    [
+                      "**Masking is at ingestion**",
+                      "Once masked, original data is gone from the log event (unless you have `logs:Unmask`)"
+                    ],
+                    [
+                      "**`logs:Unmask` is the control**",
+                      "This is how you restrict who sees raw PII \u2014 deny this action"
+                    ],
+                    [
+                      "**Not Macie**",
+                      "Macie = S3 data discovery. Data protection = real-time masking in logs/messages"
+                    ],
+                    [
+                      "**Not GuardDuty**",
+                      "GuardDuty detects threats. Data protection masks PII. Different problems."
+                    ],
+                    [
+                      "**Audit \u2260 masking**",
+                      "Audit sends a finding (what was detected). Deidentify masks the data. Use both."
+                    ],
+                    [
+                      "**Custom identifiers**",
+                      "Can create custom data identifiers with regex (like Macie custom identifiers)"
+                    ],
+                    [
+                      "**Account-level policy**",
+                      "Can set a default data protection policy for ALL log groups in the account"
+                    ],
+                    [
+                      "**Org-wide**",
+                      "Deploy via CloudFormation StackSets or Organizations for consistency"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Table",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Question Says",
+                    "Answer",
+                    "NOT This"
+                  ],
+                  "rows": [
+                    [
+                      "\"Mask PII in application logs\"",
+                      "**CloudWatch Logs data protection**",
+                      "\u274c Macie (S3 only)"
+                    ],
+                    [
+                      "\"Find PII in S3 buckets\"",
+                      "**Macie**",
+                      "\u274c CloudWatch data protection (logs only)"
+                    ],
+                    [
+                      "\"Mask credit cards before SNS delivery\"",
+                      "**SNS message data protection**",
+                      "\u274c Lambda transform"
+                    ],
+                    [
+                      "\"Detect sensitive data in CloudWatch Logs\"",
+                      "**CloudWatch Logs data protection (Audit)**",
+                      "\u274c Macie"
+                    ],
+                    [
+                      "\"Prevent analysts from seeing raw PII in logs\"",
+                      "**Deny `logs:Unmask`**",
+                      "\u274c Separate log groups"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "CloudWatch Logs data protection  \u2248  Fluentd/Vector filter that redacts PII before shipping"
+                },
+                {
+                  "type": "text",
+                  "text": "SNS message data protection      \u2248  Envoy filter masking sensitive headers per-route"
+                },
+                {
+                  "type": "text",
+                  "text": "logs:Unmask permission           \u2248  RBAC allowing specific users to see unredacted logs"
+                },
+                {
+                  "type": "text",
+                  "text": "Managed data identifiers         \u2248  Pre-built regex library (like detect-secrets)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**\"Mask PII in logs\" = CloudWatch Logs data protection policy.** No code changes, real-time, managed identifiers.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Find PII in S3\" = Macie. \"Mask PII in logs\" = CloudWatch Logs data protection.** Different services, different targets.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**`logs:Unmask` is the IAM permission that controls who sees raw PII.** Deny it broadly, grant it to security team only.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SNS message data protection = same concept for messages.** Can mask differently per subscriber (outbound policy).",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-declarative-policies.md",
+      "title": "Declarative Policies (New in C03)",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Org-wide policies that enforce a desired resource STATE \u2014 no API can put the resource into a non-compliant state, regardless of path.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How They Differ from SCPs",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "SCP",
+                    "Declarative Policy"
+                  ],
+                  "rows": [
+                    [
+                      "**Mechanism**",
+                      "Deny specific API calls",
+                      "Enforce resource attribute state"
+                    ],
+                    [
+                      "**Bypass risk**",
+                      "Alternative API paths may exist",
+                      "None \u2014 state is enforced at the service level"
+                    ],
+                    [
+                      "**Scope**",
+                      "API actions + conditions",
+                      "Resource attributes"
+                    ],
+                    [
+                      "**Grants access?**",
+                      "Never",
+                      "Never"
+                    ],
+                    [
+                      "**Example**",
+                      "Deny `RunInstances` unless `MetadataHttpTokens=required`",
+                      "IMDSv2 is the ONLY option \u2014 `ModifyInstanceMetadataOptions` can't change it"
+                    ],
+                    [
+                      "**Where it lives**",
+                      "AWS Organizations",
+                      "AWS Organizations"
+                    ],
+                    [
+                      "**Max per target**",
+                      "5",
+                      "5"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Supported Services (Very Limited)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "What It Enforces"
+                  ],
+                  "rows": [
+                    [
+                      "**EC2**",
+                      "Block public AMI sharing, enforce serial console settings, enforce IMDSv2 as default, block public IP auto-assign"
+                    ],
+                    [
+                      "**VPC**",
+                      "Block internet access (no IGW creation)"
+                    ],
+                    [
+                      "**EBS**",
+                      "Enforce encryption by default"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "That's it. No S3, no KMS, no IAM, no Lambda. Extremely narrow scope.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "When to Use (Exam Signal)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Ensure X can NEVER be non-compliant regardless of which API is used\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Declarative policy"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Block a specific API call unless condition met\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 SCP"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Detect non-compliance and fix after\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Config + remediation"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Difference: SCP Bypass Risk",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "SCP approach to enforce IMDSv2:"
+                },
+                {
+                  "type": "text",
+                  "text": "Deny RunInstances unless MetadataHttpTokens=required"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Works! But what about ModifyInstanceMetadataOptions?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Must also deny that. And any future API that touches IMDS."
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Whack-a-mole with new APIs."
+                },
+                {
+                  "type": "text",
+                  "text": "Declarative policy approach:"
+                },
+                {
+                  "type": "text",
+                  "text": "\"IMDSv2 is the only option in this org\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Service-level enforcement. No API can change it."
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Future APIs automatically respect it."
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Zero maintenance."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Not a replacement for SCPs**",
+                      "Different scope \u2014 SCPs cover all services, declarative covers EC2/VPC/EBS only"
+                    ],
+                    [
+                      "**Management account exempt**",
+                      "Same as SCPs and RCPs"
+                    ],
+                    [
+                      "**Inheritance**",
+                      "Root \u2192 OU \u2192 account (same as SCPs)"
+                    ],
+                    [
+                      "**No conditions**",
+                      "Unlike SCPs, you can't add conditions \u2014 it's binary (on/off)"
+                    ],
+                    [
+                      "**Account-level override**",
+                      "Cannot be overridden by member accounts"
+                    ],
+                    [
+                      "**Complements SCPs**",
+                      "Use both: SCP for API-level control, declarative for state-level guarantee"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Declarative policy = \"this state is impossible to violate.\"** SCP = \"this API call is blocked.\" Different layers.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Only EC2/VPC/EBS.** If the question mentions S3, KMS, IAM \u2192 not declarative policies.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Regardless of which API\" = declarative. \"Block this specific API\" = SCP.**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-detect-vs-prevent.md",
+      "title": "Detect vs Prevent \u2014 The Verb Tells You the Service",
+      "sections": [
+        {
+          "title": "The Rule",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\"DETECT\" / \"identify\" / \"alert\" / \"monitor\"  \u2192 DETECTION service (passive)"
+                },
+                {
+                  "type": "text",
+                  "text": "\"PREVENT\" / \"block\" / \"restrict\" / \"enforce\"  \u2192 CONTROL/POLICY (active)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Matrix",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Scenario Verb",
+                    "Answer Category",
+                    "Specific Service"
+                  ],
+                  "rows": [
+                    [
+                      "\"Detect external decryption\"",
+                      "Detection",
+                      "**GuardDuty** (S3 Protection)"
+                    ],
+                    [
+                      "\"Prevent external decryption\"",
+                      "Control",
+                      "**KMS key policy** (PrincipalOrgID condition)"
+                    ],
+                    [
+                      "\"Detect C2 communication\"",
+                      "Detection",
+                      "**GuardDuty**"
+                    ],
+                    [
+                      "\"Block C2 domains\"",
+                      "Control",
+                      "**DNS Firewall**"
+                    ],
+                    [
+                      "\"Detect public S3 buckets\"",
+                      "Detection",
+                      "**Security Hub** / Config"
+                    ],
+                    [
+                      "\"Prevent public S3 buckets\"",
+                      "Control",
+                      "**S3 Block Public Access** / SCP"
+                    ],
+                    [
+                      "\"Detect compromised credentials\"",
+                      "Detection",
+                      "**GuardDuty**"
+                    ],
+                    [
+                      "\"Revoke compromised credentials\"",
+                      "Control",
+                      "**Inline Deny + TokenIssueTime**"
+                    ],
+                    [
+                      "\"Detect overly permissive policies\"",
+                      "Detection",
+                      "**IAM Access Analyzer**"
+                    ],
+                    [
+                      "\"Prevent overly permissive policies\"",
+                      "Control",
+                      "**Permission boundary** / SCP"
+                    ],
+                    [
+                      "\"Detect malware on EBS\"",
+                      "Detection",
+                      "**GuardDuty Malware Protection**"
+                    ],
+                    [
+                      "\"Block malware in traffic\"",
+                      "Control",
+                      "**Network Firewall** (Suricata IPS)"
+                    ],
+                    [
+                      "\"Detect DNS exfiltration\"",
+                      "Detection",
+                      "**GuardDuty** (DNS logs)"
+                    ],
+                    [
+                      "\"Block DNS exfiltration\"",
+                      "Control",
+                      "**DNS Firewall**"
+                    ],
+                    [
+                      "\"Detect non-compliant resources\"",
+                      "Detection",
+                      "**Config** / Security Hub"
+                    ],
+                    [
+                      "\"Enforce compliance\"",
+                      "Control",
+                      "**SCP** / Config auto-remediation"
+                    ],
+                    [
+                      "\"Detect external S3 access\"",
+                      "Detection",
+                      "**GuardDuty S3 Protection**"
+                    ],
+                    [
+                      "\"Block external S3 access\"",
+                      "Control",
+                      "**RCP** (PrincipalOrgID)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Traps",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **\"Detect\" + \"least overhead\"** \u2192 GuardDuty or Security Hub (managed, no infra)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **\"Prevent\" + \"org-wide\"** \u2192 SCP (principals) or RCP (resources)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **\"Detect AND respond\"** \u2192 GuardDuty + EventBridge + Lambda/Step Functions"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **CloudTrail is neither** \u2014 it's the LOG SOURCE. It doesn't detect or prevent. Other services read CloudTrail to detect."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**The verb tells you the service.** \"Detect\" = GuardDuty/Security Hub/Config. \"Prevent\" = policy/firewall.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudTrail + condition key = prevention.** GuardDuty = detection. Don't mix them.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Detect external decryption\" = GuardDuty. \"Prevent external decryption\" = key policy.**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-fis-resilience-hub.md",
+      "title": "AWS Fault Injection Service & Resilience Hub",
+      "sections": [
+        {
+          "title": "AWS Fault Injection Service (FIS)",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Controlled chaos engineering \u2014 inject failures into AWS resources to test your IR plans and resilience.**"
+                }
+              ]
+            },
+            {
+              "title": "What It Does",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "FIS = \"Break things on purpose to see if your response works\""
+                },
+                {
+                  "type": "text",
+                  "text": "Examples:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Stop EC2 instances \u2192 does your auto-scaling recover?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Throttle API calls \u2192 does your app degrade gracefully?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Disrupt network \u2192 does failover trigger?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Inject CPU stress \u2192 does your alarm fire?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Terminate EKS pods \u2192 does your IR runbook kick in?"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Experiment Components",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Component",
+                    "What It Is"
+                  ],
+                  "rows": [
+                    [
+                      "**Experiment template**",
+                      "Blueprint defining what to break and how"
+                    ],
+                    [
+                      "**Actions**",
+                      "The faults to inject (stop instance, throttle API, network disruption)"
+                    ],
+                    [
+                      "**Targets**",
+                      "Which resources to affect (by tag, ARN, or filter)"
+                    ],
+                    [
+                      "**Stop conditions**",
+                      "CloudWatch alarms that auto-stop the experiment if things go too wrong"
+                    ],
+                    [
+                      "**IAM role**",
+                      "FIS assumes a role with permissions to break your stuff"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Supported Targets",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "EC2 instances (stop, terminate, reboot)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "ECS tasks (stop)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "EKS pods (terminate, network disruption)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "RDS (failover, reboot)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Network (disrupt connectivity, packet loss, latency)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Systems Manager (CPU stress, memory stress, disk stress)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "API throttling (simulate service limits)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Not a security scanner**",
+                      "FIS tests resilience, not vulnerabilities"
+                    ],
+                    [
+                      "**Stop conditions are critical**",
+                      "Always set CloudWatch alarm as safety net"
+                    ],
+                    [
+                      "**IAM scoped**",
+                      "FIS can only break what its role allows \u2014 least privilege applies"
+                    ],
+                    [
+                      "**Tags for targeting**",
+                      "Use tags to limit blast radius (e.g., only \"env=staging\")"
+                    ],
+                    [
+                      "**Integrates with EventBridge**",
+                      "Experiment state changes trigger events"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"test IR plan\" / \"simulate failure\" / \"chaos engineering\" \u2192 FIS"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "AWS Resilience Hub",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Assess and validate your application's resilience posture against defined RTO/RPO targets.**"
+                }
+              ]
+            },
+            {
+              "title": "What It Does",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Resilience Hub = \"Are you READY for failures before they happen?\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Define your app (import from CloudFormation, Terraform, or manual)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Set resilience targets (RTO: 4hr, RPO: 1hr)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Run assessment \u2192 Hub checks if architecture meets targets"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Get recommendations \u2192 \"Add Multi-AZ to this RDS\" / \"Add cross-region backup\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Track compliance over time"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Key Concepts",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Concept",
+                    "What It Means"
+                  ],
+                  "rows": [
+                    [
+                      "**RTO**",
+                      "Recovery Time Objective \u2014 how fast you must recover"
+                    ],
+                    [
+                      "**RPO**",
+                      "Recovery Point Objective \u2014 how much data loss is acceptable"
+                    ],
+                    [
+                      "**Resilience policy**",
+                      "Your defined RTO/RPO targets per disruption type"
+                    ],
+                    [
+                      "**Assessment**",
+                      "Automated check of architecture vs. targets"
+                    ],
+                    [
+                      "**Recommendations**",
+                      "Specific actions to close resilience gaps"
+                    ],
+                    [
+                      "**Resilience score**",
+                      "0-100 score per application"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Disruption Types Assessed",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "AZ disruption (single AZ failure)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Region disruption (entire region failure)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Infrastructure disruption (hardware failure)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Application disruption (software failure)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Not a testing tool**",
+                      "Resilience Hub *assesses* \u2014 FIS *tests*. Different verbs."
+                    ],
+                    [
+                      "**Imports architecture**",
+                      "Reads CloudFormation/Terraform to understand your app"
+                    ],
+                    [
+                      "**Continuous**",
+                      "Can run assessments on schedule, track drift"
+                    ],
+                    [
+                      "**Integrates with FIS**",
+                      "Can generate FIS experiment templates from its findings"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"validate resilience\" / \"assess RTO/RPO\" / \"resilience posture\" \u2192 Resilience Hub"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "FIS vs Resilience Hub \u2014 Don't Confuse",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "FIS",
+                    "Resilience Hub"
+                  ],
+                  "rows": [
+                    [
+                      "**Verb**",
+                      "Test / inject / simulate",
+                      "Assess / validate / recommend"
+                    ],
+                    [
+                      "**What it does**",
+                      "Breaks things in controlled way",
+                      "Checks if architecture is resilient"
+                    ],
+                    [
+                      "**When**",
+                      "During testing (active)",
+                      "Before/after (passive analysis)"
+                    ],
+                    [
+                      "**Output**",
+                      "\"Did your system survive?\"",
+                      "\"Would your system survive?\""
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"test IR plan\" / \"chaos engineering\"",
+                      "\"validate resilience\" / \"assess RTO\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**FIS = break things on purpose to test response.** \"Test IR plan\" / \"simulate failure\" \u2192 FIS.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Resilience Hub = assess architecture against RTO/RPO targets.** \"Validate resilience posture\" \u2192 Resilience Hub.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**FIS tests. Resilience Hub assesses.** Different verbs, different services.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-genai-owasp.md",
+      "title": "GenAI Security \u2014 Bedrock Guardrails & OWASP LLM Top 10",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Amazon Bedrock Guardrails = content filtering + access controls for LLM applications. Prevents prompt injection, data leakage, and harmful outputs.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "What the Exam Tests",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "You DON'T need to memorize the full OWASP LLM Top 10 list."
+                },
+                {
+                  "type": "text",
+                  "text": "You DO need to know:"
+                },
+                {
+                  "type": "text",
+                  "text": "1. Amazon Bedrock Guardrails is the AWS answer for GenAI security"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Prompt injection = attacker manipulates LLM via crafted input"
+                },
+                {
+                  "type": "text",
+                  "text": "3. Model access controls = who can invoke which foundation model"
+                },
+                {
+                  "type": "text",
+                  "text": "4. Content filters = block harmful/sensitive content in inputs AND outputs"
+                },
+                {
+                  "type": "text",
+                  "text": "5. \"Protect AI application\" / \"prevent prompt injection\" \u2192 Bedrock Guardrails"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Amazon Bedrock Guardrails",
+          "subsections": [
+            {
+              "title": "What It Does",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "User Input \u2192 Guardrails (INPUT filter) \u2192 Foundation Model \u2192 Guardrails (OUTPUT filter) \u2192 Response"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Block prompt injection                       \u251c\u2500\u2500 Block harmful content"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Block denied topics                          \u251c\u2500\u2500 Block PII in responses"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Block PII in prompts                         \u251c\u2500\u2500 Enforce word filters"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Apply content filters                        \u2514\u2500\u2500 Apply grounding checks"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Guardrail Components",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Component",
+                    "What It Does",
+                    "Example"
+                  ],
+                  "rows": [
+                    [
+                      "**Content filters**",
+                      "Block harmful categories (hate, violence, sexual, insults)",
+                      "Block responses with violence score > medium"
+                    ],
+                    [
+                      "**Denied topics**",
+                      "Block specific subjects entirely",
+                      "\"Never discuss competitor products\""
+                    ],
+                    [
+                      "**Word filters**",
+                      "Block specific words/phrases",
+                      "Block profanity, internal project names"
+                    ],
+                    [
+                      "**Sensitive information filters**",
+                      "Detect/mask PII in input/output",
+                      "Mask SSNs, credit cards in responses"
+                    ],
+                    [
+                      "**Contextual grounding**",
+                      "Check if response is grounded in source",
+                      "Reduce hallucinations"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Access Controls for Models",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Control",
+                    "Mechanism"
+                  ],
+                  "rows": [
+                    [
+                      "**Who can invoke models**",
+                      "IAM policies on `bedrock:InvokeModel`"
+                    ],
+                    [
+                      "**Which models are available**",
+                      "Model access management in Bedrock console"
+                    ],
+                    [
+                      "**Cross-account model sharing**",
+                      "Resource-based policies on custom models"
+                    ],
+                    [
+                      "**VPC access**",
+                      "VPC endpoints for Bedrock (no internet needed)"
+                    ],
+                    [
+                      "**Logging**",
+                      "CloudTrail logs all Bedrock API calls"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "OWASP LLM Top 10 \u2014 AWS Mapping (Exam-Relevant Subset)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "OWASP Risk",
+                    "AWS Mitigation"
+                  ],
+                  "rows": [
+                    [
+                      "**LLM01: Prompt Injection**",
+                      "Bedrock Guardrails input filters + denied topics"
+                    ],
+                    [
+                      "**LLM02: Insecure Output Handling**",
+                      "Bedrock Guardrails output filters + content filters"
+                    ],
+                    [
+                      "**LLM06: Sensitive Information Disclosure**",
+                      "Bedrock Guardrails PII filters + CloudWatch Logs data protection"
+                    ],
+                    [
+                      "**LLM08: Excessive Agency**",
+                      "IAM least privilege on Bedrock agent actions"
+                    ],
+                    [
+                      "**LLM09: Overreliance**",
+                      "Contextual grounding checks"
+                    ],
+                    [
+                      "**LLM10: Model Theft**",
+                      "IAM policies, VPC endpoints, model access controls"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "The exam won't ask \"what is LLM03?\" \u2014 it asks \"how do you protect against X in AWS?\"",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Guardrails per account per region",
+                      "100"
+                    ],
+                    [
+                      "Denied topics per guardrail",
+                      "30"
+                    ],
+                    [
+                      "Word filters per guardrail",
+                      "10,000 words"
+                    ],
+                    [
+                      "Content filter categories",
+                      "4 (hate, insults, sexual, violence) + custom"
+                    ],
+                    [
+                      "Latency impact",
+                      "Milliseconds (evaluated inline)"
+                    ],
+                    [
+                      "Cost",
+                      "Per-policy evaluation (charged per 1,000 text units)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Guardrails work on input AND output**",
+                      "Filters apply in both directions"
+                    ],
+                    [
+                      "**Not just Bedrock models**",
+                      "Can apply guardrails to self-hosted models via Bedrock API"
+                    ],
+                    [
+                      "**IAM controls model access**",
+                      "`bedrock:InvokeModel` + resource ARN for specific models"
+                    ],
+                    [
+                      "**CloudTrail logs everything**",
+                      "Model invocations, guardrail evaluations, all auditable"
+                    ],
+                    [
+                      "**VPC endpoints available**",
+                      "Private access to Bedrock without internet"
+                    ],
+                    [
+                      "**Not WAF**",
+                      "WAF protects HTTP APIs. Guardrails protect LLM content. Different layers."
+                    ],
+                    [
+                      "**Not Inspector**",
+                      "Inspector scans code for CVEs. Guardrails filter LLM I/O. Different problems."
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Table",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Question Says",
+                    "Answer",
+                    "NOT This"
+                  ],
+                  "rows": [
+                    [
+                      "\"Prevent prompt injection in AI app\"",
+                      "**Bedrock Guardrails**",
+                      "\u274c WAF (HTTP layer, not content-aware)"
+                    ],
+                    [
+                      "\"Block PII in LLM responses\"",
+                      "**Bedrock Guardrails** (sensitive info filter)",
+                      "\u274c Macie (S3 only)"
+                    ],
+                    [
+                      "\"Control who can invoke foundation models\"",
+                      "**IAM policy** on `bedrock:InvokeModel`",
+                      "\u274c Guardrails (content, not access)"
+                    ],
+                    [
+                      "\"Audit LLM usage\"",
+                      "**CloudTrail**",
+                      "\u274c GuardDuty"
+                    ],
+                    [
+                      "\"Scan Lambda code for vulnerabilities\"",
+                      "**Inspector**",
+                      "\u274c Bedrock Guardrails"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Bedrock Guardrails  \u2248  OPA/Gatekeeper admission webhook for LLM requests"
+                },
+                {
+                  "type": "text",
+                  "text": "Content filters     \u2248  Envoy external authorization filter"
+                },
+                {
+                  "type": "text",
+                  "text": "Denied topics       \u2248  NetworkPolicy blocking specific egress"
+                },
+                {
+                  "type": "text",
+                  "text": "Model access        \u2248  RBAC on custom resources (who can use which model)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**\"Protect AI application\" / \"prevent prompt injection\" = Bedrock Guardrails.** Filters input AND output.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Guardrails \u2260 WAF.** WAF = HTTP request filtering. Guardrails = LLM content filtering. Different layers.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Model access = IAM.** `bedrock:InvokeModel` with resource ARN controls who invokes which model.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**All Bedrock activity logged in CloudTrail.** Model invocations, guardrail triggers, everything auditable.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-guardduty.md",
+      "title": "Amazon GuardDuty",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Intelligent Threat Detection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Continuous monitoring** of AWS accounts, workloads, and data",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ML-based anomaly detection** and threat intelligence",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No agents required** for foundational monitoring (CloudTrail, VPC Flow Logs, DNS logs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Fully managed** - no infrastructure to deploy or maintain",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Detection Categories",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Reconnaissance**: Unusual API activity, port scanning, failed login attempts"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Instance compromise**: Crypto mining, malware, C2 communication, data exfiltration"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Account compromise**: API calls from unusual geolocation/anonymizing proxy, credential exfiltration"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Bucket compromise**: Suspicious S3 access patterns, unauthorized access from malicious IPs"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Malware**: Trojans, worms, crypto miners, rootkits, bots"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Container compromise**: Malicious behavior in EKS/ECS workloads"
+                }
+              ]
+            },
+            {
+              "title": "Protection Plans",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Foundational**: CloudTrail, VPC Flow Logs, DNS logs (always enabled)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 Protection**: CloudTrail S3 data events (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**EKS Protection**: EKS audit logs (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Runtime Monitoring**: EC2, EKS, ECS runtime activity via security agent (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Malware Protection**: EBS volumes, S3 objects, AWS Backup (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**RDS Protection**: Aurora login events (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Lambda Protection**: VPC Flow Logs for Lambda functions (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Extended Threat Detection (AI/ML)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Attack sequence detection**: Correlates multiple findings into single high-priority alert",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Natural language summaries**: AI-generated threat descriptions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Prescriptive remediation**: Step-by-step response recommendations",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**MITRE ATT&CK mapping**: Tactic and technique identification",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No additional cost** - included with GuardDuty",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "Account Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Regional service** - must enable in each region",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Multi-account support**: Delegated administrator for organization",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Member accounts**: Unlimited (via AWS Organizations)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Finding Retention",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**90 days** in GuardDuty console",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Export to S3** for longer retention via EventBridge",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Security Hub integration**: Cross-region aggregation",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Runtime Monitoring",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**ONLY GuardDuty feature that requires an agent** \u2014 everything else is agentless",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**EKS Audit Log Monitoring** = agentless (reads K8s API server audit logs via internal feed)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**EKS Runtime Monitoring** = needs GuardDuty security agent (DaemonSet on nodes)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**What Runtime detects that Audit Log cannot:** process-level activity \u2014 crypto miners, reverse shells, suspicious file access, container escape",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No agent deployed = no runtime findings** (audit log findings still work)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Automatic agent deployment**: GuardDuty manages agent lifecycle (recommended)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Manual deployment**: Customer manages agent updates",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**VPC endpoints**: Created automatically in VPCs with monitored workloads",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Resource overhead**: Minimal CPU/memory impact",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Also covers**: EC2 instances, ECS/Fargate tasks (all via agent)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "\ud83e\udde0 Cheat-Sheet One-Liners (EKS)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "EKS Audit Log = agentless (who did what in K8s API). Runtime = agent (what's running inside pods).",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No agent deployed \u2192 zero runtime findings. Audit log findings still appear.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Crypto miner running in pod, no GuardDuty finding\" \u2192 missing Runtime Monitoring agent.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Malware Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**EBS scanning**: Once per 24 hours per instance",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 scanning**: Newly uploaded objects only",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Snapshot retention**: 24 hours (up to 7 days if scan fails)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Supported file systems**: ext2, ext3, ext4, xfs, ntfs",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Pricing",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Pay-as-you-go**: Based on volume of data analyzed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**30-day free trial**: All features (except S3 Malware Protection)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 Malware Protection**: 12-month free tier (1,000 requests, 1GB/month)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No charge for VPC Flow Logs** from instances with Runtime Monitoring agent",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "GuardDuty vs Macie vs Inspector",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**GuardDuty**: Threat detection (malicious activity, compromised resources)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Macie**: Sensitive data discovery in S3 (PII, credentials)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Inspector**: Vulnerability scanning (EC2, Lambda, container images)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Foundational vs Protection Plans",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Foundational**: Always enabled, no opt-out (CloudTrail, VPC Flow Logs, DNS)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Protection plans**: Optional, can enable/disable individually",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Extended Threat Detection**: Requires multiple protection plans for comprehensive coverage",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "S3 Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**No need to enable S3 data events in CloudTrail** - GuardDuty has direct access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Monitors all buckets** by default",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No additional CloudTrail costs**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Separate 30-day free trial**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "EKS Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**No need to enable EKS audit logs** - GuardDuty has direct access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Monitors control plane activity** (EKS audit logs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Runtime Monitoring**: Monitors pod/container runtime activity (requires agent)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Both needed** for comprehensive EKS threat detection",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Runtime Monitoring",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**NOT enabled by default** (unlike other protection plans)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Requires agent deployment**: Automatic or manual",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Supports**: EKS on EC2, ECS on EC2/Fargate, standalone EC2",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**VPC endpoints created**: For agent communication",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No charge for VPC Flow Logs** from instances with agent",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Malware Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**EBS volumes**: Scans replica, not original volume",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Once per 24 hours** per instance (even if multiple findings)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Snapshot retention**: Optional, disabled by default",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 objects**: Scans on upload, not existing objects",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Quarantine**: Automatic move to isolated bucket (configurable)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**AWS Backup**: Incremental scanning (only net-new data)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "RDS Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Aurora only**: MySQL and PostgreSQL compatible",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Login activity monitoring**: Detects suspicious login attempts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No performance impact** on databases",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ML-based**: Profiles normal behavior, detects anomalies",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Lambda Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**VPC Flow Logs**: Monitors network activity from Lambda functions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No performance impact** on Lambda executions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Detects**: Crypto mining, C2 communication",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Extended Threat Detection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Automatic**: Enabled for all GuardDuty customers",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No additional cost**: Included with GuardDuty",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Requires S3 Protection**: For data exfiltration detection in attack sequences",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Correlates findings**: Across multiple AWS services and resources",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Threat Intelligence",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**AWS threat intelligence**: Included",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Third-party feeds**: Proofpoint, CrowdStrike (included)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Custom threat lists**: Upload your own IP/domain lists",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Trusted IP lists**: Whitelist known safe IPs",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Finding Severity",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Low (0.1-3.9)**: Suspicious activity, may be false positive",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Medium (4.0-6.9)**: Suspicious activity, investigate",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**High (7.0-8.9)**: Likely malicious, respond immediately",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Critical (9.0-10.0)**: Confirmed malicious, urgent response required",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Multi-Account Management",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Delegated administrator**: Centralized management for organization",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Auto-enable**: New accounts automatically protected",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Findings aggregation**: All findings visible in administrator account",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**EventBridge**: Events aggregated to administrator account",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Integration with Security Hub",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Automatic**: GuardDuty findings sent to Security Hub",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cross-region aggregation**: Use Security Hub for centralized view",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ASFF format**: AWS Security Finding Format",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for IAM Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Enable GuardDuty in all regions** - threats can originate anywhere"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Use delegated administrator** for multi-account organizations"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Enable all protection plans** for comprehensive coverage"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Auto-enable for new accounts** via Organizations"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Export findings to S3** for long-term retention (>90 days)"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Integrate with EventBridge** for automated response"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Use Security Hub** for cross-region aggregation"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Enable Runtime Monitoring** for EC2, EKS, ECS"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Configure Malware Protection** for S3 buckets with user uploads"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Monitor with CloudWatch** - track finding counts and severity"
+                }
+              ]
+            },
+            {
+              "title": "Example: Automated Response to High-Severity Findings",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"source\": [\"aws.guardduty\"],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"detail-type\": [\"GuardDuty Finding\"],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"detail\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"severity\": [7, 8, 9, 10]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Trigger Lambda to: isolate instance, revoke credentials, notify security team"
+                }
+              ]
+            },
+            {
+              "title": "Example: Prevent GuardDuty Disablement",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"guardduty:DeleteDetector\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"guardduty:DisassociateFromMasterAccount\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"guardduty:StopMonitoringMembers\""
+                },
+                {
+                  "type": "text",
+                  "text": "],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-hybrid-connectivity.md",
+      "title": "Hybrid & Remote Connectivity",
+      "sections": [
+        {
+          "title": "Decision Table (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Signal",
+                    "Answer",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "\"on-prem to AWS, quick/backup/encrypted over internet\"",
+                      "**Site-to-Site VPN**",
+                      "IPsec tunnel over public internet, minutes to set up"
+                    ],
+                    [
+                      "\"dedicated, high-throughput, private, consistent latency\"",
+                      "**Direct Connect**",
+                      "Physical fiber, no internet involved, 1/10/100 Gbps"
+                    ],
+                    [
+                      "\"many VPCs + on-prem all interconnected\"",
+                      "**Transit Gateway**",
+                      "Hub-and-spoke, avoids N\u00d7N peering mesh"
+                    ],
+                    [
+                      "\"employees access entire VPC from laptops\"",
+                      "**Client VPN**",
+                      "OpenVPN-based, full network access, per-user"
+                    ],
+                    [
+                      "\"access specific internal apps, no full network access, zero-trust\"",
+                      "**Verified Access**",
+                      "Per-app access, evaluates identity + device posture, no VPN client needed"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Distinction: Client VPN vs Verified Access",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Client VPN:"
+                },
+                {
+                  "type": "text",
+                  "text": "Employee laptop \u2500\u2500IPsec tunnel\u2500\u2500\u25ba entire VPC network"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Full network-level access (like being on the LAN)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Needs VPN client installed"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Traditional approach"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Exam signal: \"full network access\" / \"remote workforce VPN\""
+                },
+                {
+                  "type": "text",
+                  "text": "Verified Access:"
+                },
+                {
+                  "type": "text",
+                  "text": "Employee browser \u2500\u2500HTTPS\u2500\u2500\u25ba specific internal app only"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Per-application access (not network-level)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 No VPN client needed (browser-based)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Evaluates: identity (IdP) + device posture (MDM)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Zero-trust model"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Exam signal: \"zero-trust\" / \"specific apps\" / \"without VPN\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Encryption on Direct Connect (Exam Trap)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Direct Connect ALONE = NOT encrypted (private, but plaintext on the fiber)"
+                },
+                {
+                  "type": "text",
+                  "text": "To encrypt Direct Connect traffic:"
+                },
+                {
+                  "type": "text",
+                  "text": "Option 1: MACsec (Layer 2)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Dedicated connections ONLY (not hosted)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Line-rate encryption, zero overhead"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Point-to-point (DX location \u2194 AWS)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Exam signal: \"Layer 2 encryption\" / \"dedicated DX\""
+                },
+                {
+                  "type": "text",
+                  "text": "Option 2: Site-to-Site VPN over DX (Layer 3)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Works on dedicated OR hosted connections"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 IPsec tunnel rides over the DX link"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Some overhead (encryption/decryption)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Exam signal: \"encrypt DX\" + \"hosted connection\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**DX alone \u2260 encrypted**",
+                      "Private \u2260 encrypted. Must add MACsec or VPN."
+                    ],
+                    [
+                      "**MACsec = dedicated only**",
+                      "Hosted connections can't use MACsec \u2014 use VPN over DX instead"
+                    ],
+                    [
+                      "**Transit Gateway = hub**",
+                      "Connects VPCs + VPNs + DX in one place. Shared via RAM."
+                    ],
+                    [
+                      "**Client VPN \u2260 Verified Access**",
+                      "VPN = full network tunnel. VA = per-app, zero-trust, no client."
+                    ],
+                    [
+                      "**Verified Access = no VPN client**",
+                      "Browser-based, evaluates identity + device posture per request"
+                    ],
+                    [
+                      "**Site-to-Site VPN = backup for DX**",
+                      "Common pattern: DX primary + VPN failover"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**MACsec = Layer 2 encryption on dedicated Direct Connect only.** Hosted connection \u2192 Site-to-Site VPN over DX (IPsec).",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Client VPN = full network tunnel. Verified Access = per-app zero-trust, no client.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Direct Connect alone is NOT encrypted.** Private \u2260 encrypted.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-iam-identity-center.md",
+      "title": "IAM Identity Center (formerly AWS SSO)",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Centralized Workforce Access",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Recommended front door** into AWS for workforce users",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Single sign-on to multiple AWS accounts and applications",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Centralized identity management across AWS organization",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Eliminates need for separate credentials per account",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Identity Source Options",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**IAM Identity Center identity store**: Built-in user directory",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Microsoft Active Directory**: Via AWS Directory Service (AD Connector or Managed AD)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**External IdP**: Okta, Microsoft Entra ID (Azure AD), OneLogin, PingFederate",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SAML 2.0 providers**: Any SAML 2.0 compliant IdP",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Only ONE identity source** can be connected at a time",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Authentication Methods",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**MFA support**: FIDO2 security keys (YubiKey), biometric (Touch ID, facial recognition), TOTP apps",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**RADIUS MFA**: For Active Directory users",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**WebAuthn specification**: For passwordless authentication",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Social/federated login**: Not supported (use Cognito for customer-facing apps)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Permission Management",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Permission sets**: Collections of permissions based on AWS managed policies or custom",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**AWS managed policies for job functions**: Pre-built for common roles",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ABAC support**: Use attributes from identity store or SAML assertions as tags",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Automatic IAM role creation**: Identity Center creates roles in accounts automatically",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No modification of existing IAM**: Doesn't touch existing IAM users/roles/policies",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Access Control",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Account-level**: Assign users/groups to AWS accounts with permission sets",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Application-level**: SSO to SAML 2.0 applications",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**OU-based filtering**: Select accounts by organizational unit",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Trusted identity propagation**: Maintain user identity across AWS analytics services",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "Identity Source",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**One instance per account per region** (hard limit)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Only **one identity source** active at a time (can change, but not multiple simultaneously)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "SCIM synchronization supported: Okta, Entra ID, OneLogin, PingFederate",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Session & Credentials",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**CLI credentials valid for 60 minutes** (can refresh as needed)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Temporary credentials for all access (no long-term credentials)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Session tags can be passed from IdP via SAML assertions",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Integration",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**IAM Identity Center-integrated applications**: No additional federation setup needed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Pre-integrated SAML apps**: Common business applications pre-configured",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Custom SAML 2.0 apps**: Use custom application wizard",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No support for non-SAML apps** (OIDC for applications not supported via SSO)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "Identity Center vs IAM Users",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Identity Center**: Workforce identities, temporary credentials, centralized management",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IAM Users**: Long-term credentials, not recommended for workforce",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Identity Center **doesn't create IAM users/groups** - uses its own identity store",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Existing IAM users/roles continue to work after enabling Identity Center",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Identity Center vs Cognito",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Identity Center**: Workforce identities (employees, contractors)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cognito**: Customer-facing application identities (app users)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cognito is **NOT a supported identity source** for Identity Center",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Active Directory Integration",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**AD Connector**: Proxy to on-premises AD (no caching)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**AWS Managed Microsoft AD**: Can establish trust with on-premises AD",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Trust relationship**: Enables hybrid identity scenarios",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "AD users authenticate against on-premises AD, not AWS",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Permission Sets",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Applied as IAM roles in target accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can attach multiple permission sets to same user",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "User chooses which permission set to assume in access portal",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Changes to permission sets propagate automatically to all assigned accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "SCIM Provisioning",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Automatic sync**: Okta, Entra ID, OneLogin, PingFederate",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Manual provisioning**: For other IdPs via console",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Users must be provisioned before assigning permissions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Group membership synced automatically with SCIM",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Encryption & Data Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**AWS KMS integration**: Encrypt data at rest",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Customer-managed KMS keys**: Optional for full control",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**TLS 1.2/1.3**: Data encrypted in transit",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Data signing**: Protects against tampering",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Multi-Account Management",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**AWS Organizations integration**: Required for multi-account access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**All features must be enabled** in Organizations",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Delegated administrator**: Can be configured for centralized management",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Findings aggregated to administrator account",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Trusted Identity Propagation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Use case**: BI applications querying AWS analytics services (Redshift, QuickSight)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Mechanism**: OAuth 2.0 Authorization Framework",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Benefit**: Single sign-on across multiple analytics applications",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Granular access**: User and group-level permissions in data sources",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for IAM Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Use Identity Center for workforce access** - not IAM users"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Leverage AWS managed policies** for job functions initially"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Refine with custom permission sets** for least privilege"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Use ABAC** for scalable, tag-based access control"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Enable MFA** for all users (FIDO2 preferred)"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Monitor with CloudTrail** - all SSO activity logged"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Session tags** for fine-grained, context-aware access"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Condition keys**: `identitystore:UserId`, `identitystore:GroupId`"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Require Identity Center** for AWS CLI/SDK access (disable long-term credentials)"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Automate with APIs** - use CloudFormation for permission set management"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-iam.md",
+      "title": "AWS IAM (Identity and Access Management)",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Authentication & Authorization",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "IAM provides authentication and authorization for AWS services",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Access is **denied by default** - only explicitly granted permissions are allowed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use IAM roles for temporary credentials (security best practice)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Avoid IAM users with long-term credentials; prefer federated access via identity providers",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Least Privilege Implementation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Grant only permissions required to perform a task",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Start with AWS managed policies, then refine with customer managed policies",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use IAM Access Analyzer to identify overly permissive policies",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Apply permission boundaries to set maximum permissions for entities",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Policy Types",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Identity-based policies**: Attached to users, groups, or roles",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Resource-based policies**: Attached to resources (S3, KMS, Lambda) for cross-account access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Service Control Policies (SCPs)**: Organization-level guardrails (don't grant permissions, only restrict)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Permission boundaries**: Define maximum permissions an entity can have",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Access Control Models",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**RBAC (Role-Based)**: Assign permissions based on job functions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ABAC (Attribute-Based)**: Use tags on resources, roles, and sessions for fine-grained control",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Scales better in growing environments",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Automatically grants access to new resources with matching tags",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Credential Management",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Rotate credentials regularly using IAM access last used information",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use temporary delegation for AWS Partners to request limited-time access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Review password and access key last used information to identify unused credentials",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**No explicit limits mentioned in FAQ** - IAM is designed to scale",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use IAM Access Analyzer to continuously monitor and audit access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "All IAM activity logged in CloudTrail for compliance",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "Policy Evaluation Logic",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "![IAM Policy Evaluation with Boundaries](../diagrams/iam-policy-evaluation-boundaries.png)"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Explicit Deny always wins** over Allow statements",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "SCPs affect all IAM users, roles, AND the root user of member accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "SCPs don't grant permissions - they set boundaries on what can be allowed",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "IAM vs Organizations",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "IAM policies grant access to specific principals",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "SCPs restrict maximum available permissions across accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Both are evaluated together: Effective permission = IAM policy \u2229 SCP",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Common Mistakes",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Don't use long-term IAM user credentials** - use roles with temporary credentials",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "IAM Access Analyzer findings show: external access, internal access, and unused access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Custom policy checks (paid feature) validate policies against security standards before deployment",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Testing & Validation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Use IAM policy simulator to test policies (includes SCP effects)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "IAM Access Analyzer uses automated reasoning (provable security) for policy validation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "100+ policy checks available to guide secure policy authoring",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Monitoring & Auditing",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail logs all IAM API calls",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "IAM Access Analyzer provides centralized dashboard for access findings",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Last accessed information helps identify unused permissions for refinement",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for JSON Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Always start with explicit Deny for sensitive actions**"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Use Condition blocks** for context-based access (IP, MFA, time, tags)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Leverage `aws:PrincipalOrgID`** for cross-account access within your organization"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Use `aws:SourceAccount` and `aws:SourceArn`** to prevent confused deputy"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Tag-based conditions** (`aws:RequestTag`, `aws:ResourceTag`) for ABAC"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Never use** `\"Principal\": \"*\"` or `\"Action\": \"*\"` in production"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-identity-center.md",
+      "title": "IAM Identity Center (formerly AWS SSO)",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Centralized SSO for employees across multiple AWS accounts. Temporary credentials, no IAM users needed.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Identity Center vs Cognito vs IAM Users",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "IAM Identity Center",
+                    "Cognito",
+                    "IAM Users"
+                  ],
+                  "rows": [
+                    [
+                      "**Who**",
+                      "Employees (workforce)",
+                      "App users (customers)",
+                      "Legacy \u2014 avoid"
+                    ],
+                    [
+                      "**Credentials**",
+                      "Temporary (permission sets \u2192 roles)",
+                      "JWT tokens + optional temp creds",
+                      "Long-term access keys"
+                    ],
+                    [
+                      "**Multi-account**",
+                      "\u2705 Built-in",
+                      "\u274c Not designed for this",
+                      "\u274c Per-account"
+                    ],
+                    [
+                      "**SSO**",
+                      "\u2705 Console + CLI + apps",
+                      "\u274c Not for AWS console",
+                      "\u274c No"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"workforce\" / \"employees\" / \"SSO\"",
+                      "\"customer-facing\" / \"mobile\" / \"sign-up\"",
+                      "\"migrate away from\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Identity Sources (Only ONE at a time)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Source",
+                    "When to Use"
+                  ],
+                  "rows": [
+                    [
+                      "**Built-in directory**",
+                      "Small orgs, no existing IdP"
+                    ],
+                    [
+                      "**Microsoft Active Directory**",
+                      "On-prem AD via Managed AD or AD Connector"
+                    ],
+                    [
+                      "**External IdP (SAML 2.0)**",
+                      "Okta, Entra ID, OneLogin, PingFederate"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Only ONE identity source active at a time.** Can switch, but not multiple simultaneously.",
+                  "is_insight": false,
+                  "is_warning": true
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Cognito is NOT a supported identity source** for Identity Center.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How Permission Sets Work",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Admin creates Permission Set (e.g., \"ReadOnlyAccess\")"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Assigns it to User/Group + Account(s)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Identity Center auto-creates an IAM role in each target account"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 User signs in \u2192 picks account + permission set \u2192 assumes the role"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Gets temporary credentials (no long-term keys)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Permission sets can contain:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "AWS managed policies (e.g., `ViewOnlyAccess`)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Customer managed policies",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Inline policy",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Permission boundary",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Identity Center instances per org",
+                      "1"
+                    ],
+                    [
+                      "Permission sets per account",
+                      "50"
+                    ],
+                    [
+                      "Permission sets total",
+                      "2,000"
+                    ],
+                    [
+                      "Session duration",
+                      "1\u201312 hours (default 1hr)"
+                    ],
+                    [
+                      "Identity source",
+                      "Only 1 at a time"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**One instance per org**",
+                      "Can't have multiple Identity Center instances"
+                    ],
+                    [
+                      "**Cognito NOT supported as source**",
+                      "Different service, different audience"
+                    ],
+                    [
+                      "**Permission sets = IAM roles**",
+                      "Identity Center creates/manages the roles for you"
+                    ],
+                    [
+                      "**Requires Organizations**",
+                      "Must have AWS Organizations with all features enabled"
+                    ],
+                    [
+                      "**Delegated admin supported**",
+                      "Don't run in management account \u2014 delegate to security account"
+                    ],
+                    [
+                      "**SCIM provisioning**",
+                      "Auto-sync users/groups from Okta, Entra ID, OneLogin"
+                    ],
+                    [
+                      "**MFA support**",
+                      "FIDO2, TOTP, built-in \u2014 enforce for all users"
+                    ],
+                    [
+                      "**No IAM users created**",
+                      "Identity Center has its own identity store \u2014 separate from IAM"
+                    ],
+                    [
+                      "**CLI access**",
+                      "`aws configure sso` \u2014 temporary credentials, no access keys stored"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Integration with ABAC",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Identity Center supports **session tags** from your IdP:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "IdP sends attributes in SAML assertion",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Identity Center maps them to session tags",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "ABAC policies evaluate against `aws:PrincipalTag/Key`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam signal:** \"Federated workforce users need tag-based access\" \u2192 Identity Center + ABAC"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "IAM Identity Center  \u2248  Dex/OIDC federation for kubectl access"
+                },
+                {
+                  "type": "text",
+                  "text": "Permission sets      \u2248  ClusterRoles bound per namespace/cluster"
+                },
+                {
+                  "type": "text",
+                  "text": "SSO portal           \u2248  Kubernetes dashboard with OIDC login"
+                },
+                {
+                  "type": "text",
+                  "text": "SCIM provisioning    \u2248  Syncing LDAP groups to K8s RBAC bindings"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Identity Center = workforce SSO. Cognito = customer apps.** Never mix them.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Permission set = IAM role auto-created in target accounts.** No manual role management.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Only ONE identity source at a time.** Built-in OR AD OR external IdP \u2014 pick one.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-kms-permissions-by-service.md",
+      "title": "KMS Permissions By Service \u2014 Quick Reference",
+      "sections": [
+        {
+          "title": "Complete Matrix",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Write/Upload",
+                    "Read/Download",
+                    "Special",
+                    "CreateGrant?"
+                  ],
+                  "rows": [
+                    [
+                      "**S3 (single put)**",
+                      "GenerateDataKey",
+                      "Decrypt",
+                      "\u2014",
+                      "\u274c"
+                    ],
+                    [
+                      "**S3 (multipart)**",
+                      "GenerateDataKey",
+                      "Decrypt",
+                      "Decrypt at reassembly",
+                      "\u274c"
+                    ],
+                    [
+                      "**S3 CRR source**",
+                      "\u2014",
+                      "Decrypt",
+                      "\u2014",
+                      "\u274c"
+                    ],
+                    [
+                      "**S3 CRR dest**",
+                      "GenerateDataKey",
+                      "\u2014",
+                      "NOT Encrypt",
+                      "\u274c"
+                    ],
+                    [
+                      "**EBS (new volume)**",
+                      "GenerateDataKeyWithoutPlaintext",
+                      "\u2014",
+                      "\u2014",
+                      "\u2705 Always"
+                    ],
+                    [
+                      "**EBS (start existing)**",
+                      "\u2014",
+                      "Decrypt",
+                      "\u2014",
+                      "\u2705 Always"
+                    ],
+                    [
+                      "**DynamoDB**",
+                      "GenerateDataKey (via grant)",
+                      "Decrypt (via grant)",
+                      "DescribeKey",
+                      "\u2705 Always"
+                    ],
+                    [
+                      "**Kinesis producer**",
+                      "GenerateDataKey",
+                      "\u2014",
+                      "\u2014",
+                      "\u274c"
+                    ],
+                    [
+                      "**Kinesis consumer**",
+                      "\u2014",
+                      "Decrypt",
+                      "DescribeKey",
+                      "\u274c"
+                    ],
+                    [
+                      "**Secrets Manager write**",
+                      "GenerateDataKey",
+                      "\u2014",
+                      "\u2014",
+                      "\u274c"
+                    ],
+                    [
+                      "**Secrets Manager read**",
+                      "\u2014",
+                      "Decrypt",
+                      "\u2014",
+                      "\u274c"
+                    ],
+                    [
+                      "**Lambda env vars**",
+                      "Encrypt (only exception!)",
+                      "Decrypt",
+                      "<4KB direct",
+                      "\u274c"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Rules",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **S3 NEVER uses kms:Encrypt** \u2014 always GenerateDataKey (envelope encryption)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **CreateGrant = services with backends** \u2014 EBS, DynamoDB, RDS, Redshift (delegate to backend)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **DescribeKey = Kinesis consumer + DynamoDB** \u2014 verify key access before operations"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Multipart adds kms:Decrypt** \u2014 reassembly decrypts individual parts"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **kms:Encrypt = only Lambda env vars** \u2014 <4KB direct encryption, the ONLY exception"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Why CreateGrant?",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Services that DELEGATE to a backend (EC2\u2192EBS, DDB\u2192storage engine):"
+                },
+                {
+                  "type": "text",
+                  "text": "Your role \u2192 kms:CreateGrant \u2192 backend receives a Grant"
+                },
+                {
+                  "type": "text",
+                  "text": "Backend uses Grant to Decrypt/GenerateDataKey internally"
+                },
+                {
+                  "type": "text",
+                  "text": "Services where YOUR CALL is evaluated directly (S3, Kinesis, SM):"
+                },
+                {
+                  "type": "text",
+                  "text": "Your role \u2192 kms:Decrypt/GenerateDataKey \u2192 done"
+                },
+                {
+                  "type": "text",
+                  "text": "No delegation, no grant needed"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "CRR Specifics",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Source: `kms:Decrypt` (read encrypted source)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Destination: `kms:GenerateDataKey` (create fresh DEK, NOT kms:Encrypt)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Encryption context at destination = **destination bucket ARN** (rewritten, not preserved)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Key policy on destination CMK must grant replication role explicitly (cross-account)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-kms.md",
+      "title": "AWS KMS (Key Management Service)",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Encryption Architecture",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**FIPS 140-3 Security Level 3** validated HSMs in all regions (except China: OSCCA certified)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Keys **never leave HSMs in plaintext** - only used in volatile memory",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Multi-party access control for HSM firmware updates",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Two-tier architecture: API endpoints (TLS) \u2192 HSMs",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Key Types & Operations",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Symmetric keys**: 256-bit AES-GCM for encryption/decryption",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Asymmetric keys**: RSA (2048/3072/4096), ECC (NIST P-256/384/521, SECG P-256k1)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**HMAC keys**: For message authentication codes",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Signing algorithms**: RSASSA_PSS, RSASSA_PKCS1, ECDSA",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Encryption algorithms**: RSAES_OAEP_SHA_1/256 (RSA only)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Key agreement**: ECDH (elliptic curve keys)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Key Management Options",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **AWS KMS HSMs** (default): Highest performance, lowest latency, SLA included"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **CloudHSM custom key store**: Single-tenant HSM, independent lifecycle management"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **External key store (XKS)**: Keys stored outside AWS under your control"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Imported keys**: Bring your own key material"
+                }
+              ]
+            },
+            {
+              "title": "Envelope Encryption",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "**Diagram:** [envelope-encryption-flow.png](../diagrams/envelope-encryption-flow.png)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "KMS generates data keys encrypted under your KMS key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Data encrypted locally with plaintext data key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Only encrypted data key stored with encrypted data",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Reduces network load - only small data key transmitted to KMS",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Access Control",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "IAM policies control who can manage/use keys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Key policies define permissions for specific keys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Resource-based policies for cross-account access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail logs all key usage for audit",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "Key Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**100,000 KMS keys per account per region** (enabled + disabled count toward limit)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "AWS managed keys don't count toward limit",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Request limit increase via AWS Support Center",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No limit on data keys derived from a KMS key",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Operation Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**4 KB maximum** for direct encrypt/decrypt operations",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Different rate limits for different key types and algorithms",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Custom key store (CloudHSM) has lower performance than default KMS",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "XKS operations: 500ms timeout (includes one retry at 250ms)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Rotation & Lifecycle",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Automatic rotation**: Configurable 90-2560 days (default: 365 days)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**On-demand rotation**: Lifetime limit of 10 per key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**NOT supported for**: Asymmetric keys, HMAC keys, CloudHSM custom key store keys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Deletion waiting period**: 7-30 days (default: 30 days)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "Key Type Restrictions",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Asymmetric keys cannot be used for both signing AND encryption** - must choose at creation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Elliptic curve keys: **signing only** (no encryption)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "RSA keys: Can be used for signing OR encryption (not both)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No automatic rotation** for asymmetric or HMAC keys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "#### Key Type \u2192 Allowed Operations Matrix"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Key Type",
+                    "Encrypt/Decrypt",
+                    "Sign/Verify",
+                    "HMAC",
+                    "Notes"
+                  ],
+                  "rows": [
+                    [
+                      "**Symmetric (AES-256)**",
+                      "\u2705",
+                      "\u274c",
+                      "\u274c",
+                      "Envelope encryption, S3/EBS/RDS"
+                    ],
+                    [
+                      "**RSA (SIGN_VERIFY)**",
+                      "\u274c",
+                      "\u2705",
+                      "\u274c",
+                      "JWTs, code signing"
+                    ],
+                    [
+                      "**RSA (ENCRYPT_DECRYPT)**",
+                      "\u2705",
+                      "\u274c",
+                      "\u274c",
+                      "Wrap external keys, encrypt small data"
+                    ],
+                    [
+                      "**ECC (SIGN_VERIFY)**",
+                      "\u274c",
+                      "\u2705",
+                      "\u274c",
+                      "Signing ONLY \u2014 never encrypts"
+                    ],
+                    [
+                      "**HMAC**",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705",
+                      "GenerateMac / VerifyMac only"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Rule:** One key = one purpose. You cannot change key usage after creation.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**RSA trap:** RSA CAN do signing OR encryption \u2014 but you must choose ONE at creation. A single RSA key cannot do both. ECC is even more restrictive: signing only, never encryption.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Custom Key Store (CloudHSM)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Requires **minimum 2 HSMs** in CloudHSM cluster",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cannot import key material** into custom key store",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No automatic rotation** - must rotate manually",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Lower performance than default KMS key store",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "You control availability and durability",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Symmetric encryption only** when accessed through KMS \u2014 no asymmetric, no signing, no HMAC",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudHSM **directly** (bypassing KMS) supports everything: symmetric, asymmetric, signing, HMAC via PKCS#11/JCE/CNG",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "#### CloudHSM Direct vs Custom Key Store vs XKS"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "CloudHSM Direct",
+                    "Custom Key Store (CloudHSM via KMS)",
+                    "XKS (External via KMS)"
+                  ],
+                  "rows": [
+                    [
+                      "**Symmetric**",
+                      "\u2705",
+                      "\u2705",
+                      "\u2705"
+                    ],
+                    [
+                      "**Asymmetric**",
+                      "\u2705",
+                      "\u274c",
+                      "\u274c"
+                    ],
+                    [
+                      "**Signing**",
+                      "\u2705",
+                      "\u274c",
+                      "\u274c"
+                    ],
+                    [
+                      "**HMAC**",
+                      "\u2705",
+                      "\u274c",
+                      "\u274c"
+                    ],
+                    [
+                      "**Interface**",
+                      "PKCS#11, JCE, CNG",
+                      "KMS API",
+                      "KMS API"
+                    ],
+                    [
+                      "**Key material lives**",
+                      "Your CloudHSM (in AWS)",
+                      "Your CloudHSM (in AWS)",
+                      "Your HSM (outside AWS)"
+                    ],
+                    [
+                      "**AWS service integration**",
+                      "\u274c Manual",
+                      "\u2705 Native (S3, EBS, RDS)",
+                      "\u2705 Native (S3, EBS, RDS)"
+                    ],
+                    [
+                      "**KMS features (policies, grants, CloudTrail)**",
+                      "\u274c",
+                      "\u2705",
+                      "\u2705"
+                    ],
+                    [
+                      "**Performance**",
+                      "High",
+                      "Lower than default KMS",
+                      "Worst (500ms timeout)"
+                    ],
+                    [
+                      "**Availability SLA**",
+                      "You manage",
+                      "You manage",
+                      "You manage, no AWS SLA"
+                    ],
+                    [
+                      "**Use case**",
+                      "Full control, PKCS#11, signing",
+                      "Single-tenant + KMS integration",
+                      "\"Keys never in AWS\" regulation"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** \"Need asymmetric keys on single-tenant HSM\" \u2192 CloudHSM **directly**, not through KMS custom key store.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** Custom key store and XKS both = symmetric only through KMS. The limitation is KMS, not the HSM.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "#### Quick Visual \u2014 Three CloudHSM-Related Options"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                  THREE CloudHSM-RELATED OPTIONS                      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 CloudHSM DIRECT     \u2502 Custom Key Store      \u2502 XKS (External)         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u2502 (CloudHSM via KMS)    \u2502 (Your HSM via KMS)     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 Key lives: YOUR     \u2502 Key lives: YOUR       \u2502 Key lives: YOUR HSM    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 CloudHSM (in AWS)   \u2502 CloudHSM (in AWS)     \u2502 OUTSIDE AWS            \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 Interface: PKCS#11  \u2502 Interface: KMS API    \u2502 Interface: KMS API     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 JCE, CNG           \u2502                      \u2502                        \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 Ops: ALL            \u2502 Ops: SYMMETRIC ONLY   \u2502 Ops: SYMMETRIC ONLY    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 (sym, asym, sign,  \u2502 (encrypt/decrypt/     \u2502 (encrypt/decrypt/      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  HMAC, wrap)        \u2502  GenerateDataKey)     \u2502  GenerateDataKey)      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 KMS features?  \u274c   \u2502 KMS features?  \u2705     \u2502 KMS features?  \u2705      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 (no policies,       \u2502 (key policies, grants,\u2502 (key policies, grants, \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  no grants,         \u2502  CloudTrail, native   \u2502  CloudTrail, native    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  no CloudTrail)     \u2502  S3/EBS/RDS integr.)  \u2502  S3/EBS/RDS integr.)   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 Tenant: SINGLE      \u2502 Tenant: SINGLE        \u2502 Tenant: SINGLE         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 Min HSMs: 1 (prod=2)\u2502 Min HSMs: 2 (required)\u2502 N/A (your infra)       \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "External Key Store (XKS)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Double encryption**: First by KMS internal key, then by your external key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**You are responsible** for availability, durability, and performance",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No SLA** for XKS operations (excluded from KMS SLA)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "500ms timeout per request (including retry)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Symmetric encryption only**: Encrypt, Decrypt, ReEncrypt, GenerateDataKey \u2014 no asymmetric, no signing, no HMAC",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Key Material Import (Task 5.3.3 \u2014 New in C03)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Can import symmetric, asymmetric, and HMAC keys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Must be wrapped with KMS-provided public key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**You maintain durability** - AWS doesn't back up imported keys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can set expiration time for imported key material",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can delete imported material on-demand (key ID remains for re-import)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "#### Imported vs AWS-Generated \u2014 Side by Side"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "AWS-Generated (default)",
+                    "Imported"
+                  ],
+                  "rows": [
+                    [
+                      "**Durability**",
+                      "AWS manages (highly durable)",
+                      "**YOU manage** \u2014 keep a copy or it's gone"
+                    ],
+                    [
+                      "**Automatic rotation**",
+                      "\u2705 Yes (90\u20132560 days)",
+                      "\u274c No"
+                    ],
+                    [
+                      "**On-demand rotation**",
+                      "\u2705 Yes (max 10/key)",
+                      "\u274c No"
+                    ],
+                    [
+                      "**Manual rotation**",
+                      "Not needed",
+                      "\u2705 Only option (see below)"
+                    ],
+                    [
+                      "**Expiration**",
+                      "Never expires",
+                      "Optional \u2014 you set expiry date"
+                    ],
+                    [
+                      "**Delete material only**",
+                      "\u274c Must delete whole key (7-30 day wait)",
+                      "\u2705 Can delete material, keep key ID for re-import"
+                    ],
+                    [
+                      "**Re-import**",
+                      "N/A",
+                      "\u2705 Same material into same key ID"
+                    ],
+                    [
+                      "**Multi-region**",
+                      "\u2705 Supported",
+                      "\u274c Single region only"
+                    ],
+                    [
+                      "**Key origin**",
+                      "`AWS_KMS`",
+                      "`EXTERNAL`"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "#### How to Manually Rotate Imported Key Material"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Diagram:** [imported-key-rotation.png](../diagrams/imported-key-rotation.png)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Diagram:** [kms-decrypt-key-routing.png](../diagrams/kms-decrypt-key-routing.png) \u2014 shows how Decrypt auto-routes via key ID in ciphertext (no alias needed)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 1: Create a NEW KMS key (origin = EXTERNAL)"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 2: Import your new key material into it"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 3: Update your key ALIAS to point to the new key"
+                },
+                {
+                  "type": "text",
+                  "text": "Step 4: Old key still exists \u2014 decrypts old ciphertext"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Key Alias    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  alias/mykey  \u2502\u2500\u2500\u2500\u2500 points to \u2500\u2500\u2500\u2500\u25ba NEW key (key-id-2)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                      + new imported material"
+                },
+                {
+                  "type": "text",
+                  "text": "Old key (key-id-1) still exists"
+                },
+                {
+                  "type": "text",
+                  "text": "+ old imported material"
+                },
+                {
+                  "type": "text",
+                  "text": "+ decrypts old ciphertext"
+                },
+                {
+                  "type": "text",
+                  "text": "(don't delete until all data re-encrypted or expired)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam scenario:** \"Company must generate key material on-premises for compliance.",
+                  "is_insight": false,
+                  "is_warning": true
+                },
+                {
+                  "type": "blockquote",
+                  "text": "How do they rotate?\" \u2192 Create new KMS key, import new material, update alias.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "There is NO automatic option for imported keys.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Rotation Support Matrix (Exam-Critical)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Key Type",
+                    "Auto Rotation",
+                    "On-Demand",
+                    "Manual (alias swap)"
+                  ],
+                  "rows": [
+                    [
+                      "**Symmetric (AWS-generated)**",
+                      "\u2705 90\u20132560 days",
+                      "\u2705 Max 10",
+                      "\u2705"
+                    ],
+                    [
+                      "**Symmetric (imported)**",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705 Only option"
+                    ],
+                    [
+                      "**Symmetric (CloudHSM store)**",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705 Only option"
+                    ],
+                    [
+                      "**Symmetric (XKS)**",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705 Only option"
+                    ],
+                    [
+                      "**Asymmetric (any origin)**",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705 Only option"
+                    ],
+                    [
+                      "**HMAC (any origin)**",
+                      "\u274c",
+                      "\u274c",
+                      "\u2705 Only option"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Rule:** Automatic rotation ONLY works for symmetric keys with AWS-generated material.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "Everything else = manual rotation via alias swap.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Multi-Region Keys",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Single-region keys stay in creation region",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Multi-region keys can be replicated within same AWS partition",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Each replica is independent but shares key material",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Same key ID** across regions (prefix `mrk-`) \u2014 only the ARN differs (region part)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Encrypt in one region, decrypt in another **locally** \u2014 no cross-region KMS call needed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Imported key material cannot be multi-region** \u2014 single region only",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use case: DynamoDB Global Tables, S3 cross-region replication with SSE-KMS",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "AWS managed keys (`aws/dynamodb`, `aws/s3`) are single-region \u2014 cannot replicate",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Key Deletion Protection (Exam-Critical)",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "**Diagram:** [kms-key-lifecycle.mmd](../diagrams/kms-key-lifecycle.mmd)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Layer",
+                    "Mechanism",
+                    "How"
+                  ],
+                  "rows": [
+                    [
+                      "**Preventive**",
+                      "SCP/IAM Deny `kms:ScheduleKeyDeletion`",
+                      "Only break-glass admin can delete"
+                    ],
+                    [
+                      "**Detective**",
+                      "CloudTrail + EventBridge + Lambda",
+                      "Auto-cancel + alert in near real-time"
+                    ],
+                    [
+                      "**Reactive**",
+                      "`CancelKeyDeletion` during waiting period",
+                      "Key returns to Disabled state"
+                    ]
+                  ]
+                },
+                {
+                  "type": "bullet",
+                  "text": "Waiting period: **7 days (min) \u2014 30 days (max, default)**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "During `PendingDeletion`: key cannot encrypt/decrypt (helps find dependencies)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`CancelKeyDeletion` \u2192 key moves to `Disabled` (must re-enable manually)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Once waiting period expires: key material destroyed **permanently**, data unrecoverable",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Encryption Context",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Additional authenticated data (AAD) for AES-GCM",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Not secret, but must match for decryption",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Logged in CloudTrail for audit",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use for access control in key policies",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "KMS vs CloudHSM vs Private CA",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**KMS**: Managed service, encryption/signing, no certificates",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudHSM**: Single-tenant HSM, full control, PKCS#11/JCE/CNG",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Private CA**: PKI infrastructure, X.509 certificates, TLS termination",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "KMS Grants \u2014 Dynamic Cross-Account Access (Task 5.2)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "**Diagram:** [kms-grants-cross-account.png](../diagrams/kms-grants-cross-account.png)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "KMS has THREE access control mechanisms. Grants are unique to KMS \u2014 no other AWS service has them."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "1. KEY POLICY    \u2014 resource-based policy on the key (required, static, 32KB limit)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. IAM POLICY    \u2014 identity-based on the caller (same-account only, if key policy allows)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. KMS GRANT     \u2014 programmatic, dynamic, cross-account, no size limit"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "When to Use Grants",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "SCENARIO: SaaS platform, 500 customers, each in their own AWS account"
+                },
+                {
+                  "type": "text",
+                  "text": "With Key Policy only:"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": {\"AWS\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:iam::111111111111:role/CustomerA\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:iam::222222222222:role/CustomerB\","
+                },
+                {
+                  "type": "text",
+                  "text": "... 498 more ..."
+                },
+                {
+                  "type": "text",
+                  "text": "]}"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Hit 32KB limit around customer ~200"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Every onboard/offboard = manual policy edit"
+                },
+                {
+                  "type": "text",
+                  "text": "With Grants:"
+                },
+                {
+                  "type": "text",
+                  "text": "Key policy (set ONCE, never changes):"
+                },
+                {
+                  "type": "text",
+                  "text": "Allow OnboardingService to kms:CreateGrant"
+                },
+                {
+                  "type": "text",
+                  "text": "Onboarding automation:"
+                },
+                {
+                  "type": "text",
+                  "text": "aws kms create-grant \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--key-id arn:aws:kms:us-east-1:999999999999:key/abc-123 \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--grantee-principal arn:aws:iam::111111111111:role/CustomerA \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--operations Decrypt"
+                },
+                {
+                  "type": "text",
+                  "text": "New customer = one API call. No policy edit."
+                },
+                {
+                  "type": "text",
+                  "text": "Customer leaves = kms:RevokeGrant. Done."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Grant vs Key Policy vs IAM Policy",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Question",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Permanent access for your own team\"",
+                      "Key policy or IAM policy"
+                    ],
+                    [
+                      "\"Cross-account, dynamic, scales to many customers\"",
+                      "**KMS Grant**"
+                    ],
+                    [
+                      "\"Without modifying the key policy\"",
+                      "**KMS Grant**"
+                    ],
+                    [
+                      "\"Temporary access for an AWS service\" (EBS, RDS)",
+                      "**KMS Grant** (services use grants internally)"
+                    ],
+                    [
+                      "\"Revoke one customer without affecting others\"",
+                      "**KMS Grant**"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Grant Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Eventually consistent**",
+                      "May take up to 5 min. Use **grant token** for immediate use."
+                    ],
+                    [
+                      "**AWS services use grants internally**",
+                      "EBS, RDS, Lambda create grants on your key. Visible in CloudTrail."
+                    ],
+                    [
+                      "**EC2 + encrypted EBS**",
+                      "Start existing = `kms:CreateGrant` + `kms:Decrypt`. Create new = `kms:CreateGrant` + `kms:GenerateDataKey(WithoutPlaintext)`. Always needs CreateGrant."
+                    ],
+                    [
+                      "**RetireGrant vs RevokeGrant**",
+                      "Grantee can retire own grant. Only key admin can revoke."
+                    ],
+                    [
+                      "**RCPs exempt `kms:RetireGrant`**",
+                      "Even if RCP restricts KMS, RetireGrant still works."
+                    ],
+                    [
+                      "**Grants don't appear in key policy**",
+                      "Use `aws kms list-grants` to see them."
+                    ],
+                    [
+                      "**Grant token**",
+                      "Returned by CreateGrant. Pass to subsequent API calls for immediate use before eventual consistency kicks in."
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Why NOT AWS RAM for KMS Cross-Account Access?",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "AWS RAM (Resource Access Manager):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Purpose: SHARE resources across accounts"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Supported: Transit Gateways, Subnets, Route 53 Rules,"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              License Manager, Aurora DB clusters, etc."
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 NOT supported: KMS keys \u2190 RAM doesn't support KMS"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Even if it did: RAM shares the resource itself,"
+                },
+                {
+                  "type": "text",
+                  "text": "not fine-grained operations (Decrypt only, not Encrypt)"
+                },
+                {
+                  "type": "text",
+                  "text": "KMS Grants:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Purpose: Grant specific KMS OPERATIONS to specific principals"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Fine-grained: Decrypt only, Encrypt only, GenerateDataKey only"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Per-principal: Each customer gets exactly the operations they need"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Revocable: Remove one customer without touching others"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "RAM",
+                    "KMS Grants"
+                  ],
+                  "rows": [
+                    [
+                      "**Supports KMS?**",
+                      "\u274c No",
+                      "\u2705 Yes"
+                    ],
+                    [
+                      "**Granularity**",
+                      "Share entire resource",
+                      "Specific operations (Decrypt, Encrypt, etc.)"
+                    ],
+                    [
+                      "**Revoke one customer**",
+                      "Remove from share",
+                      "RevokeGrant for that principal"
+                    ],
+                    [
+                      "**Scale**",
+                      "Good for infra sharing",
+                      "Good for data access"
+                    ],
+                    [
+                      "**Use case**",
+                      "\"Share my Transit Gateway\"",
+                      "\"Let Customer A decrypt with my key\""
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** If a question says \"share KMS key access across accounts\" and RAM is an option \u2192 **RAM is wrong**. KMS Grants or key policy are the only ways.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for IAM Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Use separate keys** for different data classifications"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Enable automatic rotation** for symmetric encryption keys"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Use grants** for temporary, programmatic access"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Condition keys**: `kms:EncryptionContext`, `kms:ViaService`"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Deny direct key access** - require service integration via `kms:ViaService`"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Monitor with CloudTrail** - all key usage is logged"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Use key policies + IAM policies** together for defense in depth"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-network-firewall.md",
+      "title": "AWS Network Firewall",
+      "sections": [
+        {
+          "title": "What It Does (One-Liner)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Deep packet inspection for VPC traffic \u2014 IDS/IPS, stateful rules, domain filtering.**"
+                },
+                {
+                  "type": "text",
+                  "text": "Think of it as a managed firewall appliance sitting inline in your subnet."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Network Firewall \u2248 Calico Enterprise with deep packet inspection"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248 Istio + Envoy with L7 filtering"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248 A dedicated firewall pod inspecting all egress traffic"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "When to Use (vs Other Services)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Question Says",
+                    "Answer",
+                    "NOT This"
+                  ],
+                  "rows": [
+                    [
+                      "\"Inspect traffic content\" / \"IDS/IPS\"",
+                      "**Network Firewall**",
+                      "\u274c DNS Firewall (DNS only)"
+                    ],
+                    [
+                      "\"Block traffic matching Suricata signatures\"",
+                      "**Network Firewall**",
+                      "\u274c WAF (HTTP only)"
+                    ],
+                    [
+                      "\"Filter by domain name in network traffic\"",
+                      "**Network Firewall** (stateful domain rules)",
+                      "\u274c DNS Firewall (DNS resolution only)"
+                    ],
+                    [
+                      "\"Restrict DNS resolution to specific domains\"",
+                      "\u274c DNS Firewall",
+                      "NOT Network Firewall"
+                    ],
+                    [
+                      "\"Block SQL injection in HTTP requests\"",
+                      "\u274c WAF",
+                      "NOT Network Firewall"
+                    ],
+                    [
+                      "\"Allow/deny by IP and port only\"",
+                      "\u274c Security Groups / NACLs",
+                      "NOT Network Firewall (overkill)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How It Works",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT Network Firewall:"
+                },
+                {
+                  "type": "text",
+                  "text": "Private Subnet \u2192 NAT Gateway \u2192 Internet"
+                },
+                {
+                  "type": "text",
+                  "text": "(no inspection \u2014 anything can leave)"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH Network Firewall:"
+                },
+                {
+                  "type": "text",
+                  "text": "Private Subnet \u2192 Firewall Subnet \u2192 NAT Gateway \u2192 Internet"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2191"
+                },
+                {
+                  "type": "text",
+                  "text": "Network Firewall endpoint"
+                },
+                {
+                  "type": "text",
+                  "text": "inspects ALL traffic inline"
+                },
+                {
+                  "type": "text",
+                  "text": "before it leaves your VPC"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Architecture (Exam-Critical)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  VPC                                             \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 Private      \u2502   \u2502 Firewall Subnet      \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 Subnet       \u2502\u2500\u2500\u25ba\u2502 (Network Firewall    \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 (workloads)  \u2502   \u2502  endpoint per AZ)    \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                \u2502                 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u25bc\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u2502 Public Subnet        \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u2502 (NAT Gateway / IGW)  \u2502\u2500\u2500\u2500\u2500\u25ba  Internet"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                     \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "Traffic flow: Workload \u2192 Firewall \u2192 NAT \u2192 Internet"
+                },
+                {
+                  "type": "text",
+                  "text": "Route tables direct traffic through the firewall subnet"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Rule Types",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Rule Type",
+                    "What It Does",
+                    "Example"
+                  ],
+                  "rows": [
+                    [
+                      "**Stateless**",
+                      "Fast, no connection tracking, evaluated first",
+                      "Allow/deny by IP, port, protocol (like NACLs)"
+                    ],
+                    [
+                      "**Stateful**",
+                      "Connection tracking, deep inspection",
+                      "Domain filtering, Suricata IDS/IPS rules, TLS inspection"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "**Stateful rule groups:**"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Group Type",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**Domain list**",
+                      "Allow/deny traffic to specific domains (e.g., block `*.evil.com`)"
+                    ],
+                    [
+                      "**Suricata-compatible IPS**",
+                      "Import Suricata rules for threat detection signatures"
+                    ],
+                    [
+                      "**5-tuple**",
+                      "Source/dest IP, source/dest port, protocol \u2014 with connection tracking"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Processing Order",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Traffic arrives"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2193"
+                },
+                {
+                  "type": "text",
+                  "text": "1. Stateless rules (evaluated first, fast)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Pass \u2192 skip stateful, go to destination"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Drop \u2192 blocked"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Forward \u2192 send to stateful engine"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2193"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Stateful rules (deep inspection)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Alert \u2192 log but allow"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Drop \u2192 blocked"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Pass \u2192 allowed"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Firewall endpoints per AZ",
+                      "1 per firewall per AZ"
+                    ],
+                    [
+                      "Rule groups per firewall policy",
+                      "20 stateless + 20 stateful"
+                    ],
+                    [
+                      "Rules per stateless group",
+                      "100 (capacity units)"
+                    ],
+                    [
+                      "Rules per stateful group",
+                      "30,000 Suricata rules"
+                    ],
+                    [
+                      "Throughput",
+                      "Scales automatically (no fixed limit)"
+                    ],
+                    [
+                      "TLS inspection",
+                      "\u2705 Supported (decrypt, inspect, re-encrypt)"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Pricing (Exam Gotcha)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Endpoint charge**: ~$0.395/hour per AZ (~$288/month per AZ)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Data processing**: ~$0.065/GB",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Expensive compared to DNS Firewall** \u2014 only use when you need deep inspection",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Deploy in **each AZ** where you have workloads (one endpoint per AZ)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Deploy per AZ**",
+                      "One firewall endpoint per AZ \u2014 if you have 3 AZs, you need 3 endpoints"
+                    ],
+                    [
+                      "**Needs its own subnet**",
+                      "Firewall endpoints go in a dedicated \"firewall subnet\" \u2014 not the workload subnet"
+                    ],
+                    [
+                      "**Route tables are critical**",
+                      "Traffic must be routed THROUGH the firewall subnet \u2014 misconfigured routes = bypassed firewall"
+                    ],
+                    [
+                      "**Stateless evaluated first**",
+                      "If stateless says \"pass,\" traffic skips stateful entirely"
+                    ],
+                    [
+                      "**Domain filtering works differently than DNS Firewall**",
+                      "Network Firewall inspects the actual traffic (SNI in TLS). DNS Firewall filters DNS queries. Both can filter by domain, but at different layers."
+                    ],
+                    [
+                      "**TLS inspection**",
+                      "Can decrypt TLS traffic for deep inspection \u2014 requires certificate in ACM"
+                    ],
+                    [
+                      "**Suricata rules**",
+                      "Import community or commercial Suricata rule sets for IDS/IPS"
+                    ],
+                    [
+                      "**Logging**",
+                      "Sends to CloudWatch Logs, S3, or Kinesis Firehose \u2014 same as DNS Firewall"
+                    ],
+                    [
+                      "**Managed rule groups**",
+                      "AWS provides managed threat intelligence rules (like WAF managed rules)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Network Firewall vs DNS Firewall vs WAF vs Security Groups vs NACLs",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "Network Firewall",
+                    "DNS Firewall",
+                    "WAF",
+                    "Security Groups",
+                    "NACLs"
+                  ],
+                  "rows": [
+                    [
+                      "**Layer**",
+                      "3-7",
+                      "DNS only",
+                      "7 (HTTP)",
+                      "3-4",
+                      "3-4"
+                    ],
+                    [
+                      "**Filters by**",
+                      "IP, port, domain, content, signatures",
+                      "Domain name",
+                      "HTTP headers, body, SQLi, XSS",
+                      "IP, port",
+                      "IP, port"
+                    ],
+                    [
+                      "**Stateful?**",
+                      "Both stateless + stateful",
+                      "N/A",
+                      "N/A",
+                      "\u2705 Stateful",
+                      "\u274c Stateless"
+                    ],
+                    [
+                      "**Scope**",
+                      "Subnet (inline)",
+                      "VPC",
+                      "CloudFront/ALB/APIGW",
+                      "ENI",
+                      "Subnet"
+                    ],
+                    [
+                      "**IDS/IPS?**",
+                      "\u2705 Yes (Suricata)",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c",
+                      "\u274c"
+                    ],
+                    [
+                      "**Cost**",
+                      "\ud83d\udcb0\ud83d\udcb0\ud83d\udcb0 High",
+                      "\ud83d\udcb0 Low",
+                      "\ud83d\udcb0\ud83d\udcb0 Medium",
+                      "\ud83c\udd93 Free",
+                      "\ud83c\udd93 Free"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"inspect traffic\"",
+                      "\"restrict DNS\"",
+                      "\"block SQLi/XSS\"",
+                      "\"allow port 443\"",
+                      "\"ephemeral ports\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Use dedicated firewall subnets** \u2014 never mix with workloads"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Deploy in all AZs** where you have workloads"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Start with alert mode** \u2014 monitor before blocking"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Use managed rule groups** for threat intelligence"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Combine with DNS Firewall** \u2014 DNS Firewall for domain resolution, Network Firewall for traffic inspection"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Log everything** \u2014 CloudWatch Logs for real-time, S3 for archive"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-nitro-encryption.md",
+      "title": "Nitro Inter-Instance Encryption",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Automatic, hardware-level encryption of traffic between EC2 instances \u2014 zero config, zero app changes.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Problem It Solves",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT Nitro encryption:"
+                },
+                {
+                  "type": "text",
+                  "text": "EC2 (AZ-a) \u2500\u2500\u2500\u2500 plaintext traffic \u2500\u2500\u2500\u2500\u25ba EC2 (AZ-b)"
+                },
+                {
+                  "type": "text",
+                  "text": "EKS node   \u2500\u2500\u2500\u2500 plaintext pod traffic \u2500\u2500\u25ba EKS node"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Traffic visible to anyone on the physical network"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Requires app-level TLS (mTLS, Istio, etc.) to encrypt"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH Nitro encryption:"
+                },
+                {
+                  "type": "text",
+                  "text": "EC2 (AZ-a) \u2550\u2550\u2550\u2550 encrypted at hardware \u2550\u2550\u25ba EC2 (AZ-b)"
+                },
+                {
+                  "type": "text",
+                  "text": "EKS node   \u2550\u2550\u2550\u2550 encrypted at hardware \u2550\u2550\u25ba EKS node"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Automatic, no app changes, no performance impact"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Nitro card handles encryption/decryption in hardware"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How It Works",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510                    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  EC2 Instance A  \u2502                    \u2502  EC2 Instance B  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  (Nitro-based)   \u2502                    \u2502  (Nitro-based)   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                  \u2502                    \u2502                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  App sends       \u2502                    \u2502  App receives    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  plaintext       \u2502                    \u2502  plaintext       \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502          \u2502                    \u2502       \u25b2          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u25bc          \u2502                    \u2502       \u2502          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502                    \u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 Nitro Card \u2502  \u2502                    \u2502  \u2502 Nitro Card \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 encrypts   \u2502\u2500\u2500\u253c\u2500\u2500 encrypted \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2502 decrypts   \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502   on the wire      \u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "Key points:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Encryption happens BELOW the OS \u2014 app never sees it"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 No certificates, no key management, no config"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Only works between Nitro-based instance types"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Covers ALL traffic between instances (any port, any protocol)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "What It Covers",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Traffic Type",
+                    "Encrypted?",
+                    "Notes"
+                  ],
+                  "rows": [
+                    [
+                      "EC2 \u2192 EC2 (same VPC)",
+                      "\u2705",
+                      "Both must be Nitro-based"
+                    ],
+                    [
+                      "EC2 \u2192 EC2 (cross-AZ)",
+                      "\u2705",
+                      "Same region"
+                    ],
+                    [
+                      "EKS node \u2192 EKS node",
+                      "\u2705",
+                      "Pod-to-pod across nodes"
+                    ],
+                    [
+                      "EMR node \u2192 EMR node",
+                      "\u2705",
+                      "Spark shuffle traffic"
+                    ],
+                    [
+                      "SageMaker training nodes",
+                      "\u2705",
+                      "Distributed training"
+                    ],
+                    [
+                      "EC2 \u2192 RDS",
+                      "\u274c",
+                      "RDS is managed \u2014 use TLS"
+                    ],
+                    [
+                      "EC2 \u2192 S3",
+                      "\u274c",
+                      "Use HTTPS (TLS)"
+                    ],
+                    [
+                      "EC2 \u2192 non-Nitro EC2",
+                      "\u274c",
+                      "Both sides must be Nitro"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Nitro-Based Instance Types (Know the Pattern)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Nitro-based (supports inter-instance encryption):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 C5, C5n, C6g, C6i, C7g, C7i"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 M5, M5n, M6g, M6i, M7g, M7i"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 R5, R5n, R6g, R6i, R7g, R7i"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 T3, T3a, T4g"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 P4, P5 (GPU)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Graviton (all generations)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Basically: anything 5th gen or newer"
+                },
+                {
+                  "type": "text",
+                  "text": "NOT Nitro (no inter-instance encryption):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 T2, M4, C4, R4"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Anything 4th gen or older"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Previous-generation instances"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam rule:** You don't need to memorize instance types. Just know: \"modern instances (5th gen+) = Nitro = automatic encryption.\"",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Performance impact",
+                      "None (hardware-accelerated)"
+                    ],
+                    [
+                      "Configuration needed",
+                      "None (automatic)"
+                    ],
+                    [
+                      "Key management",
+                      "None (AWS handles internally)"
+                    ],
+                    [
+                      "Supported protocols",
+                      "ALL (TCP, UDP, ICMP \u2014 everything)"
+                    ],
+                    [
+                      "Cross-region",
+                      "\u274c Same region only"
+                    ],
+                    [
+                      "Cross-VPC (peering/TGW)",
+                      "\u2705 Yes, if both sides are Nitro"
+                    ],
+                    [
+                      "Cost",
+                      "Free (included with Nitro instances)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Zero config**",
+                      "No setup, no opt-in, no certificates \u2014 just use Nitro instances"
+                    ],
+                    [
+                      "**Both sides must be Nitro**",
+                      "If one side is non-Nitro, traffic is NOT encrypted"
+                    ],
+                    [
+                      "**Doesn't replace TLS**",
+                      "For traffic to managed services (RDS, S3, ElastiCache), still use TLS"
+                    ],
+                    [
+                      "**Not visible to the OS**",
+                      "`tcpdump` on the instance sees plaintext \u2014 encryption is below the OS"
+                    ],
+                    [
+                      "**Complements app-level TLS**",
+                      "Defense in depth \u2014 Nitro encrypts the wire, TLS encrypts the session"
+                    ],
+                    [
+                      "**EKS inter-node**",
+                      "Pod traffic between nodes is encrypted if nodes are Nitro"
+                    ],
+                    [
+                      "**No CloudTrail logging**",
+                      "Hardware-level \u2014 no API calls, no audit trail of encryption itself"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Nitro vs Other Encryption-in-Transit Options",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Method",
+                    "Scope",
+                    "Config",
+                    "Performance",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**Nitro**",
+                      "Instance-to-instance",
+                      "Zero",
+                      "Zero impact",
+                      "Default for all inter-instance traffic"
+                    ],
+                    [
+                      "**TLS (app-level)**",
+                      "App-to-app",
+                      "Certificates needed",
+                      "Small overhead",
+                      "Managed services, cross-service"
+                    ],
+                    [
+                      "**IPsec (VPN)**",
+                      "Network-to-network",
+                      "Tunnel config",
+                      "Moderate overhead",
+                      "Hybrid/on-prem connectivity"
+                    ],
+                    [
+                      "**MACsec**",
+                      "DX connection",
+                      "Dedicated DX only",
+                      "Zero impact",
+                      "Layer 2 on Direct Connect"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Nitro encryption  \u2248  WireGuard/Calico encryption between nodes"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248  Istio mTLS but at the hypervisor level"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248  \"Encrypt everything\" without sidecar overhead"
+                },
+                {
+                  "type": "text",
+                  "text": "Key difference: Istio mTLS requires sidecars + cert management."
+                },
+                {
+                  "type": "text",
+                  "text": "Nitro encryption requires NOTHING \u2014 it's the network fabric itself."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**\"Encrypt between instances, no app changes\" = Nitro inter-instance encryption.** Automatic, hardware-level, zero config.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Both sides must be Nitro-based (5th gen+).** Non-Nitro instance on either end = no encryption.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Doesn't replace TLS to managed services.** EC2\u2192RDS still needs TLS. Nitro only covers instance-to-instance.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Covers EC2-to-EC2, EKS inter-node, EMR, SageMaker.** Any Nitro-to-Nitro traffic in same region.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-organizations.md",
+      "title": "AWS Organizations",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Centralized Governance",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Programmatically create and manage AWS accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Organize accounts into hierarchical Organizational Units (OUs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Apply policies centrally across multiple accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Consolidated billing with single payer account (management account)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Policy Types",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Service Control Policies (SCPs)**: Control maximum IAM permissions"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Affect IAM users, roles, AND root user",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Don't grant permissions - only restrict",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Empty SCP = explicit DENY all",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Resource Control Policies (RCPs)**: Control maximum resource permissions"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Declarative policies**: Enforce baseline configurations, prevent non-compliant actions"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Backup policies**: Centrally manage backup plans"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Tag policies**: Standardize resource tags"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Chatbot policies**: Control chat app access"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **AI services opt-out policies**: Control AI service data collection"
+                }
+              ]
+            },
+            {
+              "title": "Account Structure",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Management account**: Creates organization, ultimate control, payer account",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cannot change which account is management account",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Member accounts**: Can belong to only ONE organization at a time",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Administrative root**: Top-most container, starting point for hierarchy",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**OUs**: Logical grouping of accounts, can nest up to **5 levels deep**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Cross-Account Access",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "IAM roles with trust policies enable secure cross-account access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No credential sharing required",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Centralized identity management via IAM Identity Center",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "Organizational Structure",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**5 levels deep** for OU nesting (including root and accounts)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Account can be member of **only ONE OU** at a time",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "OU can be member of **only ONE parent OU** at a time",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Number of accounts varies - request increase via AWS Support",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Policy Evaluation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "SCPs evaluated with IAM policies: Effective permission = IAM \u2229 SCP",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Policies attached at root apply to ALL accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Policies attached to OU apply to OU and nested OUs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Policies attached to account apply only to that account",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Account Management",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Accounts created via Organizations can be transferred to new organization",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "To make account standalone: must provide contact info, payment method, support plan",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cannot change management account after creation",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "SCP Behavior",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Explicit Deny always wins** - cannot be overridden",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "SCPs affect **root user** of member accounts (unlike IAM policies)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Empty SCP = DENY all (not allow all)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Management account is **NOT affected** by SCPs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Principals in member account cannot remove/change SCPs",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Policy Inheritance",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Policies inherit down the hierarchy (root \u2192 OU \u2192 nested OU \u2192 account)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Effective permissions = intersection of all applicable policies",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "More restrictive as you go down the hierarchy",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "IAM Policy Simulator",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Can test SCP effects on IAM principals",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Available in member accounts with proper Organizations permissions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Shows if SCP is affecting access",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Organizations vs Control Tower",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Organizations**: Foundation for multi-account management",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Control Tower**: Built on Organizations, adds automated setup and guardrails",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Control Tower uses SCPs and RCPs for preventive controls",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Control Tower provides prescriptive guidance and flexible controls",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Declarative Policies vs SCPs",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Declarative policies**: Simpler, maintain configuration automatically",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SCPs**: More complex, require manual updates for new APIs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Declarative policies provide customizable error messages",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Both can be used together for defense in depth",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Account Creation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "New accounts automatically get IAM role with full admin permissions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Management account can assume this role for access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Accounts inherit policies from parent OU immediately",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cannot create account in multiple OUs simultaneously",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Service Integration",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Many AWS services integrate with Organizations",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Enables centralized management across accounts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Examples: GuardDuty, Security Hub, CloudTrail, Config",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Global vs Regional",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Organizations entities are **globally accessible** (except China)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No need to specify region for organization management",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Separate organization required for China regions",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for SCPs",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Start with FullAWSAccess** SCP, then add Deny statements"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Test in non-production** OU first"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Use Deny statements** for critical security controls:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Prevent disabling CloudTrail",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Prevent leaving organization",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Prevent deleting VPC Flow Logs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Require MFA for sensitive operations",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Condition keys**: `aws:RequestedRegion`, `aws:PrincipalOrgID`, `aws:PrincipalOrgPaths`"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Document SCP purpose** in description field"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Version control** SCPs in git"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Monitor with CloudTrail** - track SCP changes"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-permission-boundaries.md",
+      "title": "Permission Boundaries",
+      "sections": [
+        {
+          "title": "The Problem Boundaries Solve",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Developers need `iam:CreateRole` to build Lambda functions, ECS tasks, etc."
+                },
+                {
+                  "type": "text",
+                  "text": "But `iam:CreateRole` + `iam:AttachRolePolicy` = privilege escalation."
+                },
+                {
+                  "type": "text",
+                  "text": "They can create a role with `AdministratorAccess` and assume it."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT boundaries:"
+                },
+                {
+                  "type": "text",
+                  "text": "Developer (has ec2:*, s3:*, iam:CreateRole)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Creates role with AdministratorAccess"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Assumes it"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Now has full admin \u2190 ESCALATION"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH boundaries:"
+                },
+                {
+                  "type": "text",
+                  "text": "Developer (has ec2:*, s3:*, iam:CreateRole)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Must attach DevBoundary to any role they create"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 DevBoundary caps at s3:* + ec2:* only"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Even if they attach AdministratorAccess, effective = boundary \u2229 identity = s3 + ec2"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 No escalation possible"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How It Works",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Effective permissions = Identity Policy \u2229 Permission Boundary"
+                },
+                {
+                  "type": "text",
+                  "text": "Identity policy: Allow s3:*, ec2:*, kms:*"
+                },
+                {
+                  "type": "text",
+                  "text": "Boundary:        Allow s3:*, ec2:*"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500"
+                },
+                {
+                  "type": "text",
+                  "text": "Effective:       s3:*, ec2:*  (kms removed by boundary)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Boundary is a **ceiling** (Gate 3) \u2014 never grants, only restricts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "It's a regular IAM policy JSON \u2014 just used differently",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Attached to ONE user or role",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Delegation Pattern (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Three deny statements that make self-service IAM safe:"
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"ForceBoundaryOnCreateRole\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"iam:CreateRole\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"iam:PermissionsBoundary\": \"arn:aws:iam::123456789012:policy/DevBoundary\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DenyRemoveBoundary\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"iam:DeleteRolePermissionsBoundary\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DenySwapBoundary\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"iam:PutRolePermissionsBoundary\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"iam:PermissionsBoundary\": \"arn:aws:iam::123456789012:policy/DevBoundary\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**What each statement prevents:**"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Statement",
+                    "Prevents"
+                  ],
+                  "rows": [
+                    [
+                      "ForceBoundaryOnCreateRole",
+                      "Creating roles without the boundary"
+                    ],
+                    [
+                      "DenyRemoveBoundary",
+                      "Removing the boundary after creation"
+                    ],
+                    [
+                      "DenySwapBoundary",
+                      "Swapping to a more permissive boundary"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Boundary vs SCP vs RCP",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "Permission Boundary",
+                    "SCP",
+                    "RCP"
+                  ],
+                  "rows": [
+                    [
+                      "**Scope**",
+                      "One user/role",
+                      "All principals in account/OU",
+                      "All resources in account/OU"
+                    ],
+                    [
+                      "**Set by**",
+                      "Account admin",
+                      "Org admin",
+                      "Org admin"
+                    ],
+                    [
+                      "**Use case**",
+                      "Delegation without escalation",
+                      "Org-wide principal guardrails",
+                      "Org-wide data perimeter"
+                    ],
+                    [
+                      "**Where created**",
+                      "IAM (`iam:PutRolePermissionsBoundary`)",
+                      "Organizations",
+                      "Organizations"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "CLI",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```bash"
+                },
+                {
+                  "type": "text",
+                  "text": "aws iam create-policy \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--policy-name DevBoundary \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--policy-document file://boundary.json"
+                },
+                {
+                  "type": "text",
+                  "text": "aws iam put-role-permissions-boundary \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--role-name DevRole \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--permissions-boundary \"arn:aws:iam::123456789012:policy/DevBoundary\""
+                },
+                {
+                  "type": "text",
+                  "text": "aws iam get-role --role-name DevRole \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--query 'Role.PermissionsBoundary.PermissionsBoundaryArn'"
+                },
+                {
+                  "type": "text",
+                  "text": "aws iam delete-role-permissions-boundary --role-name DevRole"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Boundaries per role/user",
+                      "1 (only one boundary at a time)"
+                    ],
+                    [
+                      "Boundary policy size",
+                      "Same as IAM policy (6,144 chars inline / 6,144 managed)"
+                    ],
+                    [
+                      "Can attach to groups?",
+                      "\u274c No \u2014 users and roles only"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Only 1 boundary per entity**",
+                      "Can't stack multiple boundaries \u2014 use one comprehensive policy"
+                    ],
+                    [
+                      "**Doesn't apply to resource-based policies**",
+                      "If S3 bucket policy grants access directly, boundary on the caller doesn't block it (same-account)"
+                    ],
+                    [
+                      "**Cross-account: boundary IS evaluated**",
+                      "When assuming a role cross-account, the role's boundary applies"
+                    ],
+                    [
+                      "**Boundary doesn't grant anything**",
+                      "Even with `Allow *` in boundary, you still need an identity policy to grant access"
+                    ],
+                    [
+                      "**SCP + Boundary + Identity = triple intersection**",
+                      "All three must allow for access to work"
+                    ],
+                    [
+                      "**Can't attach to groups**",
+                      "Only IAM users and roles \u2014 not groups"
+                    ],
+                    [
+                      "**`iam:PermissionsBoundary` condition key**",
+                      "Use in policies to force boundary attachment"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Permission Boundary  \u2248  ResourceQuota on a namespace"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248  LimitRange for pods"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248  \"You can deploy anything, but max 4 CPU, 8GB RAM\""
+                },
+                {
+                  "type": "text",
+                  "text": "Delegation pattern   \u2248  Admission webhook requiring ResourceQuota on namespace creation"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248  \"You can create namespaces, but each must have a quota\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Boundary = ceiling on ONE role.** Identity policy \u2229 boundary = effective. Boundary never grants.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Delegation pattern:** Deny CreateRole without boundary + Deny remove/swap boundary = safe self-service IAM.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Exam signal:** \"developers create their own roles\" / \"prevent privilege escalation\" \u2192 Permission Boundary.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-ram-vs-rcp.md",
+      "title": "RAM vs RCP \u2014 Sharing vs Restricting",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "RAM = \"Let Account B use my Transit Gateway\"     \u2192 SHARES access"
+                },
+                {
+                  "type": "text",
+                  "text": "RCP = \"Block everyone outside my org from my S3\"  \u2192 RESTRICTS access"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Side-by-Side",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "RAM",
+                    "RCP"
+                  ],
+                  "rows": [
+                    [
+                      "**Purpose**",
+                      "Share resources across accounts",
+                      "Restrict access to resources"
+                    ],
+                    [
+                      "**Grants access?**",
+                      "\u2705 Yes",
+                      "\u274c Never \u2014 only restricts"
+                    ],
+                    [
+                      "**Service types**",
+                      "Infrastructure (networking, compute)",
+                      "Data (storage, encryption, secrets)"
+                    ],
+                    [
+                      "**Where it lives**",
+                      "Per-account resource shares",
+                      "AWS Organizations policy"
+                    ],
+                    [
+                      "**Who sets it**",
+                      "Resource owner",
+                      "Org admin"
+                    ],
+                    [
+                      "**Scope**",
+                      "Specific resources \u2192 specific accounts",
+                      "Org-wide ceiling on all callers"
+                    ],
+                    [
+                      "**How it works**",
+                      "API/CLI creates a resource share",
+                      "JSON Deny policy attached to root/OU/account"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Services They Support (Almost Zero Overlap)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "RAM (infrastructure sharing):          RCP (data protection):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Transit Gateways                   \u251c\u2500\u2500 S3"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Subnets                            \u251c\u2500\u2500 KMS"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Route 53 Resolver rules            \u251c\u2500\u2500 STS"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 DNS Firewall rule groups           \u251c\u2500\u2500 SQS"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 License Manager                    \u251c\u2500\u2500 Secrets Manager"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Aurora DB clusters                 \u251c\u2500\u2500 DynamoDB"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 CodeBuild projects                 \u251c\u2500\u2500 ECR"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 EC2 Image Builder                  \u251c\u2500\u2500 CloudWatch Logs"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 etc.                               \u2514\u2500\u2500 Cognito"
+                },
+                {
+                  "type": "text",
+                  "text": "OVERLAP: none"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "RAM Examples (CLI \u2014 RAM uses API calls, not JSON policies)",
+          "subsections": [
+            {
+              "title": "Example 1: Share a Transit Gateway with Another Account",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```bash"
+                },
+                {
+                  "type": "text",
+                  "text": "aws ram create-resource-share \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--name \"shared-transit-gateway\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--resource-arns \"arn:aws:ec2:us-east-1:111111111111:transit-gateway/tgw-abc123\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--principals \"222222222222\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Account B then accepts the share:"
+                },
+                {
+                  "type": "text",
+                  "text": "```bash"
+                },
+                {
+                  "type": "text",
+                  "text": "aws ram accept-resource-share-invitation \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--resource-share-invitation-arn \"arn:aws:ram:us-east-1:111111111111:resource-share-invitation/12345\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Example 2: Share DNS Firewall Rule Group Across Org",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```bash"
+                },
+                {
+                  "type": "text",
+                  "text": "aws ram create-resource-share \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--name \"org-dns-firewall-rules\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--resource-arns \"arn:aws:route53resolver:us-east-1:111111111111:firewall-rule-group/rslvr-frg-abc123\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--principals \"arn:aws:organizations::111111111111:organization/o-abc123\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--permission-arns \"arn:aws:ram::aws:permission/AmazonRoute53ResolverFirewallRuleGroupAssociation\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Example 3: Share Subnet (Shared VPC Pattern)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```bash"
+                },
+                {
+                  "type": "text",
+                  "text": "aws ram create-resource-share \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--name \"shared-vpc-subnets\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--resource-arns \\"
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:ec2:us-east-1:111111111111:subnet/subnet-aaa\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:ec2:us-east-1:111111111111:subnet/subnet-bbb\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--principals \"arn:aws:organizations::111111111111:ou/o-abc123/ou-xyz789\""
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "RCP Examples (JSON \u2014 attached in AWS Organizations)",
+          "subsections": [
+            {
+              "title": "Example 1: Block External S3 Access",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DenyExternalS3Access\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"s3:*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEqualsIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalOrgID\": \"o-abc123\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"BoolIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalIsAWSService\": \"false\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Example 2: Block External KMS Usage",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DenyExternalKMSUsage\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:Decrypt\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:Encrypt\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:GenerateDataKey\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:ReEncryptFrom\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:ReEncryptTo\""
+                },
+                {
+                  "type": "text",
+                  "text": "],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEqualsIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalOrgID\": \"o-abc123\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"BoolIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalIsAWSService\": \"false\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How They Work Together (Exam Scenario)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Share a Transit Gateway with dev accounts AND"
+                },
+                {
+                  "type": "text",
+                  "text": "ensure no S3 bucket can be accessed outside the org\""
+                },
+                {
+                  "type": "text",
+                  "text": "Step 1: RAM \u2014 share Transit Gateway with dev OU"
+                },
+                {
+                  "type": "text",
+                  "text": "aws ram create-resource-share \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--name \"dev-tgw\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--resource-arns \"arn:aws:ec2:...:transit-gateway/tgw-abc\" \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--principals \"arn:aws:organizations::...:ou/.../ou-dev\""
+                },
+                {
+                  "type": "text",
+                  "text": "Step 2: RCP \u2014 block external S3 access org-wide"
+                },
+                {
+                  "type": "text",
+                  "text": "Attach Deny policy to org root:"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Deny s3:* if PrincipalOrgID \u2260 my-org AND PrincipalIsAWSService = false\""
+                },
+                {
+                  "type": "text",
+                  "text": "RAM opens access to infrastructure."
+                },
+                {
+                  "type": "text",
+                  "text": "RCP closes access to data."
+                },
+                {
+                  "type": "text",
+                  "text": "They complement each other."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**RAM doesn't support KMS**",
+                      "Use KMS Grants for cross-account key access"
+                    ],
+                    [
+                      "**RAM doesn't support S3**",
+                      "Use bucket policies for cross-account S3 access"
+                    ],
+                    [
+                      "**RCP doesn't support EC2, Lambda, RDS**",
+                      "Use SCPs or resource policies instead"
+                    ],
+                    [
+                      "**RAM can be restricted by SCPs**",
+                      "SCP can deny `ram:CreateResourceShare` with external principals"
+                    ],
+                    [
+                      "**RAM within org = auto-accept**",
+                      "No invitation needed if sharing within same org"
+                    ],
+                    [
+                      "**RAM outside org = invitation**",
+                      "Recipient must accept the resource share invitation"
+                    ],
+                    [
+                      "**RCP affects external callers**",
+                      "RAM shares don't bypass RCPs \u2014 if RCP denies, access is denied"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**RAM opens, RCP closes.** RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**RAM doesn't support KMS.** Use KMS Grants for per-operation, per-principal, revocable cross-account key access.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SCP can't stop external callers.** Only RCP blocks outsiders \u2014 it's evaluated on the resource regardless of who's calling.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SLRs are exempt from RCPs.** Service-linked roles bypass RCPs entirely. AWS service principals bypass via `PrincipalIsAWSService` condition. Different mechanisms \u2014 don't confuse them.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-rcp.md",
+      "title": "Resource Control Policies (RCPs)",
+      "sections": [
+        {
+          "title": "What Problem Do RCPs Solve?",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "SCPs are **principal-centric** \u2014 they restrict what IAM users/roles *inside* your org can do."
+                },
+                {
+                  "type": "text",
+                  "text": "RCPs are **resource-centric** \u2014 they restrict what *anyone* (internal or external) can do *to resources* in your org."
+                },
+                {
+                  "type": "text",
+                  "text": "**The gap SCPs leave open:** If a developer attaches a permissive resource-based policy (e.g., S3 bucket policy granting `Principal: \"*\"`), an external principal calling from *their own account* bypasses your SCPs entirely. SCPs only govern your principals, not theirs."
+                },
+                {
+                  "type": "text",
+                  "text": "RCPs close this gap by enforcing a permissions ceiling on the **resource itself**, regardless of who the caller is."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How RCPs Fit in Policy Evaluation",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```mermaid"
+                },
+                {
+                  "type": "text",
+                  "text": "flowchart TD"
+                },
+                {
+                  "type": "text",
+                  "text": "REQ[\"API Request\"] --> DENY{\"Explicit Deny<br/>in ANY policy?\"}"
+                },
+                {
+                  "type": "text",
+                  "text": "DENY -->|Yes| DENIED[\"\u274c DENIED\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "DENY -->|No| SCP{\"SCP allows?<br/>(principal side)\"}"
+                },
+                {
+                  "type": "text",
+                  "text": "SCP -->|No| DENIED"
+                },
+                {
+                  "type": "text",
+                  "text": "SCP -->|Yes| RCP{\"RCP allows?<br/>(resource side)\"}"
+                },
+                {
+                  "type": "text",
+                  "text": "RCP -->|No| DENIED"
+                },
+                {
+                  "type": "text",
+                  "text": "RCP -->|Yes| PB{\"Permission<br/>Boundary allows?\"}"
+                },
+                {
+                  "type": "text",
+                  "text": "PB -->|No| DENIED"
+                },
+                {
+                  "type": "text",
+                  "text": "PB -->|Yes| IDP{\"Identity-based OR<br/>Resource-based policy<br/>grants Allow?\"}"
+                },
+                {
+                  "type": "text",
+                  "text": "IDP -->|No| DENIED"
+                },
+                {
+                  "type": "text",
+                  "text": "IDP -->|Yes| ALLOWED[\"\u2705 ALLOWED\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "style DENIED fill:#ff4444,color:#fff"
+                },
+                {
+                  "type": "text",
+                  "text": "style ALLOWED fill:#44bb44,color:#fff"
+                },
+                {
+                  "type": "text",
+                  "text": "style RCP fill:#ff9900,color:#fff,stroke:#ff9900"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Effective permissions = SCP \u2229 RCP \u2229 (Identity policy \u222a Resource policy) \u2229 Permission Boundary**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "SCP vs RCP \u2014 Side-by-Side",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "SCP",
+                    "RCP"
+                  ],
+                  "rows": [
+                    [
+                      "**Controls**",
+                      "Principals (IAM users/roles)",
+                      "Resources (S3, KMS, STS, SQS, etc.)"
+                    ],
+                    [
+                      "**Affects root user?**",
+                      "\u2705 Yes (member accounts)",
+                      "\u2705 Yes (member account resources)"
+                    ],
+                    [
+                      "**Affects management account?**",
+                      "\u274c No",
+                      "\u274c No (resources in mgmt account exempt)"
+                    ],
+                    [
+                      "**Affects external principals?**",
+                      "\u274c No \u2014 only your org's principals",
+                      "\u2705 Yes \u2014 evaluated on resource regardless of caller"
+                    ],
+                    [
+                      "**Affects service-linked roles?**",
+                      "\u2705 Yes",
+                      "\u274c No \u2014 SLRs are exempt"
+                    ],
+                    [
+                      "**Affects AWS managed KMS keys?**",
+                      "\u2705 Yes",
+                      "\u274c No \u2014 only customer managed keys"
+                    ],
+                    [
+                      "**Max size**",
+                      "5,120 characters",
+                      "5,120 characters"
+                    ],
+                    [
+                      "**Max per target**",
+                      "5",
+                      "5"
+                    ],
+                    [
+                      "**Max per org**",
+                      "1,000",
+                      "1,000"
+                    ],
+                    [
+                      "**Default policy**",
+                      "`FullAWSAccess`",
+                      "`RCPFullAWSAccess`"
+                    ],
+                    [
+                      "**Grants permissions?**",
+                      "\u274c Never",
+                      "\u274c Never"
+                    ],
+                    [
+                      "**Primary use case**",
+                      "Restrict what your people can do",
+                      "Restrict who can touch your data (data perimeter)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "RAM vs RCP \u2014 Don't Confuse Them",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "These solve completely different problems despite both involving cross-account resource access."
+                },
+                {
+                  "type": "text",
+                  "text": "```mermaid"
+                },
+                {
+                  "type": "text",
+                  "text": "flowchart TB"
+                },
+                {
+                  "type": "text",
+                  "text": "subgraph RAM[\"AWS RAM \u2014 Resource Access Manager\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "direction TB"
+                },
+                {
+                  "type": "text",
+                  "text": "R1[\"\ud83e\udd1d SHARING mechanism\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "R2[\"'I want Account B to use<br/>my Transit Gateway'\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "R3[\"Supports: TGW, Subnets,<br/>Route 53 Rules, License Manager,<br/>Aurora DB clusters, etc.\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "R1 --- R2 --- R3"
+                },
+                {
+                  "type": "text",
+                  "text": "end"
+                },
+                {
+                  "type": "text",
+                  "text": "subgraph RCP[\"RCP \u2014 Resource Control Policy\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "direction TB"
+                },
+                {
+                  "type": "text",
+                  "text": "C1[\"\ud83d\udee1\ufe0f GUARDRAIL mechanism\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "C2[\"'Nobody outside my org<br/>can touch my S3 buckets'\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "C3[\"Supports: S3, KMS, STS,<br/>SQS, Secrets Manager,<br/>DynamoDB, ECR, etc.\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "C1 --- C2 --- C3"
+                },
+                {
+                  "type": "text",
+                  "text": "end"
+                },
+                {
+                  "type": "text",
+                  "text": "style RAM fill:#3366cc,color:#fff"
+                },
+                {
+                  "type": "text",
+                  "text": "style RCP fill:#ff9900,color:#fff"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "RAM",
+                    "RCP"
+                  ],
+                  "rows": [
+                    [
+                      "**Purpose**",
+                      "Share resources across accounts",
+                      "Restrict access to resources"
+                    ],
+                    [
+                      "**Grants access?**",
+                      "\u2705 Yes \u2014 creates cross-account permissions",
+                      "\u274c Never \u2014 only restricts"
+                    ],
+                    [
+                      "**Scope**",
+                      "Specific resources \u2192 specific accounts",
+                      "Org-wide ceiling on all callers"
+                    ],
+                    [
+                      "**Where it lives**",
+                      "Per-account resource shares",
+                      "AWS Organizations policy"
+                    ],
+                    [
+                      "**Supported services**",
+                      "TGW, subnets, Route 53 rules, Aurora, License Manager, etc.",
+                      "S3, KMS, STS, SQS, Secrets Manager, etc."
+                    ],
+                    [
+                      "**Service overlap?**",
+                      "Almost none \u2014 different service lists",
+                      "Almost none"
+                    ],
+                    [
+                      "**Blueprint ref**",
+                      "Task 6.2 (cross-account resource sharing)",
+                      "Task 6.1 (org policy management)"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam scenario:** \"Share a Transit Gateway with a dev account AND ensure no S3 bucket can be accessed outside the org.\" \u2192 **RAM** for TGW sharing, **RCP** for S3 data perimeter. They complement each other, not alternatives.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Gotcha:** RAM *can* be restricted by SCPs (SCP-deny `ram:CreateResourceShare` with external principals), but that's an SCP controlling RAM, not an RCP.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Supported Services (Exam-Critical \u2014 Limited List!)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "RCPs only apply to a **subset** of AWS services. Key ones for the exam:"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Why It Matters"
+                  ],
+                  "rows": [
+                    [
+                      "**Amazon S3**",
+                      "Data perimeter \u2014 prevent external bucket access"
+                    ],
+                    [
+                      "**AWS STS**",
+                      "Prevent external role assumption into your accounts"
+                    ],
+                    [
+                      "**AWS KMS**",
+                      "Prevent external decryption of your keys"
+                    ],
+                    [
+                      "**Amazon SQS**",
+                      "Prevent external queue access"
+                    ],
+                    [
+                      "**AWS Secrets Manager**",
+                      "Prevent external secret retrieval"
+                    ],
+                    [
+                      "**Amazon Cognito**",
+                      "Protect identity pools"
+                    ],
+                    [
+                      "**CloudWatch Logs**",
+                      "Protect log groups"
+                    ],
+                    [
+                      "**Amazon DynamoDB**",
+                      "Protect table access"
+                    ],
+                    [
+                      "**Amazon ECR**",
+                      "Protect container image pulls"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "**Not supported (yet):** EC2, RDS, Lambda, IAM, SNS, EBS, EFS, and many others."
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** If a question asks about restricting external access to a service NOT on this list, RCPs won't help \u2014 you need resource-based policies or SCPs.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**5,120 characters** max per RCP (same as SCP)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**5 RCPs** max attached per target (root, OU, or account)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**1,000 RCPs** max stored per organization",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Requires **all features** enabled in Organizations (not consolidated billing only)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No cost** \u2014 free to enable and use",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "What RCPs Do NOT Restrict",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Management account resources** \u2014 completely exempt"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Service-linked roles (SLRs)** \u2014 exempt (AWS services need them to function)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **AWS managed KMS keys** (`aws/s3`, `aws/ebs`, etc.) \u2014 exempt"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **`kms:RetireGrant`** \u2014 specifically exempt"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Delegated admin accounts are NOT exempt** \u2014 RCPs apply to them (unlike management account)"
+                }
+              ]
+            },
+            {
+              "title": "SLR vs AWS Service Principal \u2014 Two Different Bypass Mechanisms",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "Service-Linked Role",
+                    "AWS Service Principal"
+                  ],
+                  "rows": [
+                    [
+                      "**Example**",
+                      "`AWSServiceRoleForElasticLoadBalancing`",
+                      "`cloudtrail.amazonaws.com`"
+                    ],
+                    [
+                      "**Who it is**",
+                      "A role in YOUR account that AWS manages",
+                      "AWS itself calling your resource"
+                    ],
+                    [
+                      "**How it bypasses RCP**",
+                      "Structural exemption \u2014 RCP skips it entirely",
+                      "Condition-based \u2014 `PrincipalIsAWSService: false` doesn't match"
+                    ],
+                    [
+                      "**Has an ARN in your account?**",
+                      "\u2705 Yes (`arn:aws:iam::123:role/aws-service-role/...`)",
+                      "\u274c No \u2014 it's a service principal"
+                    ],
+                    [
+                      "**SCP applies?**",
+                      "\u2705 Yes",
+                      "N/A (not in your account)"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "The exam exploits this confusion. Both involve \"AWS services\" but they're different principals with different bypass paths.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            },
+            {
+              "title": "RCPs Don't Prevent Saving Permissive Policies",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "A developer CAN still save a bucket policy with `Principal: \"*\"`. The RCP doesn't block the `PutBucketPolicy` call. It blocks the *subsequent access* by external principals at evaluation time."
+                }
+              ]
+            },
+            {
+              "title": "Default RCP: `RCPFullAWSAccess`",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Auto-attached to root, every OU, every account when RCPs are enabled",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Allows all principals, all actions, all resources",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Do NOT detach** without a replacement \u2014 empty RCP = deny all (same behavior as SCPs)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "RCPs Use Deny Statements",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "The default `RCPFullAWSAccess` is the only Allow",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "You add **Deny** statements to restrict \u2014 same pattern as SCPs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "All conditions must evaluate to `true` for the Deny to apply",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Cross-Account Access Pattern",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Same-org cross-account:** RCP checks the *resource account's* RCP chain, not the caller's",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**External cross-account:** RCP on resource account blocks external principals unless conditions allow",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Inheritance",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "RCPs inherit down: root \u2192 OU \u2192 nested OU \u2192 account",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Resource must satisfy **every** RCP in its ancestor chain",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "More restrictive as you go deeper (same as SCPs)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Data Perimeter \u2014 The Core RCP Use Case",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```mermaid"
+                },
+                {
+                  "type": "text",
+                  "text": "flowchart LR"
+                },
+                {
+                  "type": "text",
+                  "text": "subgraph YOUR_ORG[\"Your Organization (o-abc123)\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "subgraph ACCT_A[\"Account A\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "S3[\"S3 Bucket<br/>+ RCP enforced\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "KMS_KEY[\"KMS Key<br/>+ RCP enforced\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "end"
+                },
+                {
+                  "type": "text",
+                  "text": "subgraph ACCT_B[\"Account B\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "ROLE_INT[\"IAM Role<br/>(internal)\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "end"
+                },
+                {
+                  "type": "text",
+                  "text": "end"
+                },
+                {
+                  "type": "text",
+                  "text": "subgraph EXTERNAL[\"External Account (attacker/partner)\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "ROLE_EXT[\"IAM Role<br/>(external)\"]"
+                },
+                {
+                  "type": "text",
+                  "text": "end"
+                },
+                {
+                  "type": "text",
+                  "text": "ROLE_INT -->|\"\u2705 Allowed<br/>PrincipalOrgID matches\"| S3"
+                },
+                {
+                  "type": "text",
+                  "text": "ROLE_EXT -->|\"\u274c Denied by RCP<br/>PrincipalOrgID mismatch\"| S3"
+                },
+                {
+                  "type": "text",
+                  "text": "ROLE_EXT -->|\"\u274c Denied by RCP\"| KMS_KEY"
+                },
+                {
+                  "type": "text",
+                  "text": "style S3 fill:#ff9900,color:#fff"
+                },
+                {
+                  "type": "text",
+                  "text": "style KMS_KEY fill:#ff9900,color:#fff"
+                },
+                {
+                  "type": "text",
+                  "text": "style ROLE_EXT fill:#ff4444,color:#fff"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Example RCPs (Exam-Style)",
+          "subsections": [
+            {
+              "title": "Example 1: Restrict S3 Access to Org Principals Only",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"EnforceS3OrgIdentitiesOnly\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"s3:*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEqualsIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalOrgID\": \"o-abc123def4\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"BoolIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalIsAWSService\": \"false\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Why two conditions (both must be true to deny):**"
+                },
+                {
+                  "type": "text",
+                  "text": "1. `StringNotEqualsIfExists` \u2014 caller is NOT in our org"
+                },
+                {
+                  "type": "text",
+                  "text": "2. `BoolIfExists` \u2014 caller is NOT an AWS service (CloudTrail, Config, etc. need access)"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "Without the `aws:PrincipalIsAWSService` exception, you'd block AWS services like CloudTrail writing to your S3 bucket.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            },
+            {
+              "title": "Example 2: Restrict KMS Key Usage to Org Only",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"EnforceKMSOrgIdentitiesOnly\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:Decrypt\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:Encrypt\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:ReEncryptFrom\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:ReEncryptTo\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:GenerateDataKey\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:GenerateDataKeyWithoutPlaintext\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:DescribeKey\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"kms:CreateGrant\""
+                },
+                {
+                  "type": "text",
+                  "text": "],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEqualsIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalOrgID\": \"o-abc123def4\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"BoolIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalIsAWSService\": \"false\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Key point:** This only affects **customer managed keys**. AWS managed keys (`aws/s3`, `aws/ebs`) are exempt from RCPs."
+                }
+              ]
+            },
+            {
+              "title": "Example 3: Prevent External STS Role Assumption",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"EnforceSTSOrgIdentitiesOnly\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"sts:AssumeRole\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEqualsIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalOrgID\": \"o-abc123def4\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"BoolIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:PrincipalIsAWSService\": \"false\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Use case:** Even if a trust policy on a role allows an external account, this RCP blocks the assumption."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "RCP Condition Key Patterns",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Condition Key",
+                    "Purpose"
+                  ],
+                  "rows": [
+                    [
+                      "`aws:PrincipalOrgID`",
+                      "Restrict to callers in your org"
+                    ],
+                    [
+                      "`aws:PrincipalIsAWSService`",
+                      "Exempt AWS service principals (CloudTrail, Config, etc.)"
+                    ],
+                    [
+                      "`aws:PrincipalAccount`",
+                      "Restrict to specific account(s)"
+                    ],
+                    [
+                      "`aws:SourceOrgID`",
+                      "Restrict by source org (for service-to-service calls)"
+                    ],
+                    [
+                      "`aws:PrincipalOrgPaths`",
+                      "Restrict to specific OUs within your org"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam tip:** `IfExists` variants are critical. If the condition key is absent from the request context, `StringNotEqualsIfExists` evaluates to `true` (no-op), avoiding accidental denials for requests that don't carry org context.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "RCP Syntax Rules",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**`Principal` must always be `\"*\"`** \u2014 use Conditions to scope, not Principal",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Only `Deny` and `Allow` effects** \u2014 but in practice you only write `Deny` (the default `RCPFullAWSAccess` handles Allow)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**`Resource` is typically `\"*\"`** \u2014 scoped by the service actions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No `NotPrincipal`** \u2014 not supported in RCPs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Standard IAM policy JSON otherwise (Version, Statement, Sid, Effect, Action, Resource, Condition)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Testing RCPs",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Start with a single test account** \u2014 never attach to root first"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Check CloudTrail** for `Access Denied` errors after attachment"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Use IAM Access Analyzer** external access findings to understand current exposure before writing RCPs"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Move up gradually:** test account \u2192 test OU \u2192 broader OUs \u2192 root"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Integration with Control Tower",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Control Tower supports **RCP-based controls** alongside SCP-based controls",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Drift detection: alerts if RCPs are modified outside Control Tower",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Deploy via Control Tower for consistent governance at scale",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Use RCPs + SCPs together** \u2014 defense in depth (principal side + resource side)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Always exempt AWS service principals** \u2014 `aws:PrincipalIsAWSService` condition"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Start with S3, KMS, STS** \u2014 highest-impact data perimeter services"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Test in non-production** before org-wide rollout"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Monitor with CloudTrail** \u2014 track RCP-related denials"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Use `IfExists` condition operators** \u2014 avoid breaking requests without org context"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Don't detach `RCPFullAWSAccess`** without understanding the impact"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Version control RCPs in git** \u2014 same as SCPs"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-route53-resolver.md",
+      "title": "Route 53 Resolver \u2014 DNS Firewall & Resolver Logs",
+      "sections": [
+        {
+          "title": "Where DNS Firewall Lives (Don't Confuse the Names)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Route 53 (the overall service)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Route 53 Hosted Zones     \u2190 DNS records (A, CNAME, etc.)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Route 53 Health Checks    \u2190 endpoint monitoring"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Route 53 Resolver         \u2190 VPC DNS resolution"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Resolver Endpoints    \u2190 inbound/outbound DNS forwarding"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Resolver Query Logs   \u2190 log every DNS query"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Resolver DNS Firewall \u2190 filter/block DNS queries"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Full name: **Amazon Route 53 Resolver DNS Firewall**. Exam and docs shorten it to \"DNS Firewall.\""
+                }
+              ]
+            },
+            {
+              "title": "Three AWS \"Firewalls\" \u2014 Don't Confuse Them",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Name",
+                    "What It Filters",
+                    "Layer",
+                    "Scope",
+                    "Exam Signal"
+                  ],
+                  "rows": [
+                    [
+                      "**Route 53 Resolver DNS Firewall**",
+                      "DNS queries (domain names)",
+                      "DNS only",
+                      "VPC-level",
+                      "\"restrict domain resolution\""
+                    ],
+                    [
+                      "**AWS Network Firewall**",
+                      "Network traffic (IP, port, protocol, DPI)",
+                      "Layer 3-7",
+                      "Subnet-level",
+                      "\"inspect traffic / IDS/IPS\""
+                    ],
+                    [
+                      "**AWS WAF**",
+                      "HTTP/HTTPS requests (headers, body, SQLi, XSS)",
+                      "Layer 7 (HTTP)",
+                      "CloudFront, ALB, API GW",
+                      "\"block SQL injection / rate limit\""
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "These are three completely different services at different layers. The exam uses them as distractors.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Route 53 Resolver DNS Firewall (Task 3.3)",
+          "subsections": [
+            {
+              "title": "What Problem It Solves",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Resources in your VPC can resolve ANY domain by default. DNS Firewall lets you"
+                },
+                {
+                  "type": "text",
+                  "text": "control which domains can be resolved \u2014 blocking data exfiltration via DNS,"
+                },
+                {
+                  "type": "text",
+                  "text": "restricting outbound access, and enforcing allow-lists."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT DNS Firewall:"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2500\u2500DNS\u2500\u2500\u25ba Route 53 Resolver \u2500\u2500\u25ba api.partner.com     \u2705 resolves"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2500\u2500DNS\u2500\u2500\u25ba Route 53 Resolver \u2500\u2500\u25ba evil.com             \u2705 also resolves"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2500\u2500DNS\u2500\u2500\u25ba Route 53 Resolver \u2500\u2500\u25ba data-exfil.attacker.com  \u2705 resolves too"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH DNS Firewall:"
+                },
+                {
+                  "type": "text",
+                  "text": "Rule Group:"
+                },
+                {
+                  "type": "text",
+                  "text": "Rule 1: ALLOW  api.partner.com"
+                },
+                {
+                  "type": "text",
+                  "text": "Rule 2: BLOCK  * (everything else)"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2500\u2500DNS\u2500\u2500\u25ba DNS Firewall \u2500\u2500\u25ba api.partner.com           \u2705 ALLOWED"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2500\u2500DNS\u2500\u2500\u25ba DNS Firewall \u2500\u2500\u25ba evil.com                  \u274c BLOCKED"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda \u2500\u2500DNS\u2500\u2500\u25ba DNS Firewall \u2500\u2500\u25ba data-exfil.attacker.com   \u274c BLOCKED"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. Create a **rule group** with domain lists + actions (ALLOW, BLOCK, ALERT)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Associate** the rule group with your VPC"
+                },
+                {
+                  "type": "text",
+                  "text": "3. All DNS queries from the VPC pass through the firewall rules"
+                },
+                {
+                  "type": "text",
+                  "text": "4. Rules evaluated in priority order (lowest number = highest priority)"
+                }
+              ]
+            },
+            {
+              "title": "Rule Actions",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Action",
+                    "What Happens",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**ALLOW**",
+                      "DNS query resolves normally",
+                      "Approved domains"
+                    ],
+                    [
+                      "**BLOCK**",
+                      "DNS query blocked, returns NXDOMAIN or custom response",
+                      "Everything else"
+                    ],
+                    [
+                      "**ALERT**",
+                      "DNS query resolves BUT logs a finding",
+                      "Monitor before blocking"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Domain Lists",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**AWS Managed Domain Lists** (free, updated by AWS):",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Malware domains",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Botnet C2 domains",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Newly observed domains (suspicious)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Custom Domain Lists**: Your own allow/deny lists",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Example: Restrict Lambda to One Partner Domain",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Rule Group (priority order):"
+                },
+                {
+                  "type": "text",
+                  "text": "Priority 1: ALLOW  api.partner.com        \u2190 only this"
+                },
+                {
+                  "type": "text",
+                  "text": "Priority 2: ALLOW  secretsmanager.us-east-1.amazonaws.com  \u2190 AWS services"
+                },
+                {
+                  "type": "text",
+                  "text": "Priority 3: ALLOW  kms.us-east-1.amazonaws.com             \u2190 AWS services"
+                },
+                {
+                  "type": "text",
+                  "text": "Priority 4: BLOCK  *                      \u2190 deny everything else"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "Don't forget to allow AWS service domains if your Lambda uses",
+                  "is_insight": false,
+                  "is_warning": true
+                },
+                {
+                  "type": "blockquote",
+                  "text": "Secrets Manager, KMS, S3, etc. via VPC endpoints \u2014 those need DNS too.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "DNS Firewall vs Network Firewall vs Security Groups",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "DNS Firewall",
+                    "Network Firewall",
+                    "Security Groups"
+                  ],
+                  "rows": [
+                    [
+                      "**Filters by**",
+                      "Domain name",
+                      "IP, port, protocol, domain (stateful rules)",
+                      "IP, port, protocol"
+                    ],
+                    [
+                      "**Layer**",
+                      "DNS (Layer 7 \u2014 domain only)",
+                      "Network (Layer 3-7)",
+                      "Network (Layer 3-4)"
+                    ],
+                    [
+                      "**Scope**",
+                      "VPC-level",
+                      "Subnet-level (inline)",
+                      "ENI-level"
+                    ],
+                    [
+                      "**Cost**",
+                      "Low",
+                      "High (per GB processed)",
+                      "Free"
+                    ],
+                    [
+                      "**Use case**",
+                      "\"Block DNS lookups to bad domains\"",
+                      "\"Deep packet inspection, IDS/IPS\"",
+                      "\"Allow port 443 from this CIDR\""
+                    ],
+                    [
+                      "**Overhead**",
+                      "Minimal \u2014 managed rules",
+                      "Medium \u2014 deploy endpoints per AZ",
+                      "Minimal"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam signal:** \"limit domain lookup\" or \"restrict DNS resolution\" \u2192 **DNS Firewall**.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "\"Inspect traffic content\" or \"IDS/IPS\" \u2192 **Network Firewall**.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "\"Allow/deny by IP and port\" \u2192 **Security Groups / NACLs**.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**VPC-level** \u2014 associate rule group with VPC, applies to all resources",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Works with Resolver outbound endpoints** \u2014 filters queries before forwarding",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Priority matters** \u2014 rules evaluated lowest number first, first match wins",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Fail-open vs fail-closed** \u2014 configurable: if DNS Firewall fails, allow or block all queries?",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cannot filter by source IP within VPC** \u2014 all resources in the VPC get the same rules",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cross-account via RAM** \u2014 share rule groups across accounts using AWS RAM",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "K8s Mapping",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**DNS Firewall \u2248 CoreDNS policy plugin** or **Istio ServiceEntry** \u2014 restrict which external domains pods can resolve",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**BLOCK action \u2248 Kubernetes NetworkPolicy egress DNS restriction**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**ALERT action \u2248 Falco DNS monitoring** \u2014 observe before enforcing",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Route 53 Resolver Query Logs (Task 1.2)",
+          "subsections": [
+            {
+              "title": "What They Capture",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Every DNS query made by resources in your VPC \u2014 what domain was looked up,"
+                },
+                {
+                  "type": "text",
+                  "text": "by which resource, and what was the response."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Resolver Query Log entry:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Timestamp"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Source IP (which resource made the query)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Query name (e.g., api.partner.com)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Query type (A, AAAA, CNAME, MX, etc.)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Response code (NOERROR, NXDOMAIN, SERVFAIL)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 VPC ID"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Resolver endpoint ID (if using outbound/inbound endpoints)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 DNS Firewall rule action (ALLOW, BLOCK, ALERT \u2014 if firewall enabled)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Log Destinations",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Destination",
+                    "Use Case",
+                    "Latency"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudWatch Logs**",
+                      "Real-time monitoring, metric filters, alarms",
+                      "Near real-time"
+                    ],
+                    [
+                      "**S3**",
+                      "Long-term archive, Athena queries",
+                      "Minutes"
+                    ],
+                    [
+                      "**Kinesis Data Firehose**",
+                      "Stream to third-party SIEM (Splunk, Datadog)",
+                      "Near real-time"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Security Use Cases",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Detect DNS exfiltration** \u2014 unusually long subdomain queries (e.g., `encoded-data.evil.com`)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Detect C2 communication** \u2014 queries to known malicious domains"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Audit outbound access** \u2014 which resources are resolving which domains"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Troubleshoot DNS Firewall** \u2014 see which queries were blocked/allowed"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Feed into GuardDuty** \u2014 GuardDuty uses DNS logs as a foundational data source"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Compliance** \u2014 prove that only approved domains are being resolved"
+                }
+              ]
+            },
+            {
+              "title": "Resolver Logs vs VPC Flow Logs vs CloudTrail",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Log Type",
+                    "What It Captures",
+                    "DNS Info?"
+                  ],
+                  "rows": [
+                    [
+                      "**Resolver Query Logs**",
+                      "DNS queries (domain, response, source)",
+                      "\u2705 Full domain name"
+                    ],
+                    [
+                      "**VPC Flow Logs**",
+                      "Network traffic (IP, port, bytes, accept/reject)",
+                      "\u274c No domain \u2014 only IP:port"
+                    ],
+                    [
+                      "**CloudTrail**",
+                      "AWS API calls (who did what)",
+                      "\u274c No DNS queries"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam signal:** \"Which resource is querying which domain?\" \u2192 **Resolver Query Logs**.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "\"What IP traffic was accepted/rejected?\" \u2192 **VPC Flow Logs**.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "\"Who called which AWS API?\" \u2192 **CloudTrail**.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Key Limits/Quotas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Log configs per region",
+                      "10"
+                    ],
+                    [
+                      "VPCs per log config",
+                      "Unlimited"
+                    ],
+                    [
+                      "Log destinations",
+                      "CloudWatch Logs, S3, Kinesis Data Firehose"
+                    ],
+                    [
+                      "Cross-account sharing",
+                      "\u2705 Via RAM (share log config with other accounts)"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Not enabled by default** \u2014 must create a query log config and associate with VPC",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Per-VPC association** \u2014 each VPC must be explicitly associated",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**GuardDuty reads DNS logs independently** \u2014 you don't need to enable Resolver logs for GuardDuty to work",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**DNS Firewall actions appear in logs** \u2014 if DNS Firewall is enabled, logs show ALLOW/BLOCK/ALERT per query",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cross-account via RAM** \u2014 share log configs across accounts in your org",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**OCSF format** \u2014 Resolver logs can be ingested into Security Lake in OCSF format (new in C03, Task 3.1.4)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Integration with Other Services",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "How It Uses Resolver Logs"
+                  ],
+                  "rows": [
+                    [
+                      "**GuardDuty**",
+                      "Reads DNS logs directly (foundational source) \u2014 detects C2, crypto mining domains"
+                    ],
+                    [
+                      "**Security Lake**",
+                      "Ingests in OCSF format for centralized analysis"
+                    ],
+                    [
+                      "**CloudWatch Logs**",
+                      "Real-time metric filters + alarms on suspicious domains"
+                    ],
+                    [
+                      "**Athena**",
+                      "SQL queries on S3-stored logs for investigation"
+                    ],
+                    [
+                      "**Detective**",
+                      "Correlates DNS activity during incident investigation"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Example: Alert on Queries to Non-Approved Domains",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "CloudWatch Logs Metric Filter:"
+                },
+                {
+                  "type": "text",
+                  "text": "Filter pattern: { $.queryName != \"api.partner.com\" && $.queryName != \"*.amazonaws.com\" }"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 CloudWatch Alarm \u2192 SNS \u2192 Security Team"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Best Practices",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Enable Resolver Query Logs** in all VPCs \u2014 DNS is a blind spot without them"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Send to CloudWatch Logs** for real-time alerting + S3 for long-term archive"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Combine with DNS Firewall** \u2014 firewall blocks, logs prove it"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Feed into Security Lake** for OCSF-normalized cross-service analysis"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Monitor for DNS tunneling** \u2014 unusually long subdomain queries or high query volume to single domain"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-s3-access-points-and-grants.md",
+      "title": "S3 Access Points & S3 Access Grants",
+      "sections": [
+        {
+          "title": "The Problem Both Solve",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "A single S3 bucket policy becomes unmanageable when many teams, apps, or users need different access patterns on the same bucket."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "ONE bucket, TEN teams, each needs different prefix access:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Bucket policy grows to 50+ statements"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Hits 20KB policy size limit"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 One typo = data breach or broken access"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Auditing \"who can access what\" = nightmare"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Access Points** and **Access Grants** solve this differently:"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "Access Points",
+                    "Access Grants"
+                  ],
+                  "rows": [
+                    [
+                      "**Approach**",
+                      "Split one policy into many named endpoints",
+                      "Map identities to prefixes declaratively"
+                    ],
+                    [
+                      "**Mental model**",
+                      "\"Multiple front doors to the same house, each with its own lock\"",
+                      "\"A guest list that says who can enter which rooms\""
+                    ],
+                    [
+                      "**Who it's for**",
+                      "Applications, services, cross-account",
+                      "Corporate users (Identity Center) or IAM principals"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "S3 Access Points",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Named network endpoints with their own access policy \u2014 each scoped to a prefix, VPC, or account.**"
+                }
+              ]
+            },
+            {
+              "title": "Mental Model",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Traditional:"
+                },
+                {
+                  "type": "text",
+                  "text": "Everyone \u2192 one bucket policy \u2192 bucket"
+                },
+                {
+                  "type": "text",
+                  "text": "(one giant policy, one entry point)"
+                },
+                {
+                  "type": "text",
+                  "text": "With Access Points:"
+                },
+                {
+                  "type": "text",
+                  "text": "Team Analytics \u2192 ap-analytics (own policy, prefix=/analytics/) \u2192 bucket"
+                },
+                {
+                  "type": "text",
+                  "text": "Team ML        \u2192 ap-ml-data  (own policy, prefix=/ml/)        \u2192 bucket"
+                },
+                {
+                  "type": "text",
+                  "text": "Team Logs      \u2192 ap-logs     (own policy, VPC-only)           \u2192 bucket"
+                },
+                {
+                  "type": "text",
+                  "text": "Each access point = separate hostname + separate policy"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  S3 Bucket: \"company-data-lake\"                              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Bucket policy: delegates to access points                   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 ap-analytics    \u2502  \u2502 ap-ml-data      \u2502  \u2502 ap-logs    \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502                 \u2502  \u2502                 \u2502  \u2502            \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 Policy:         \u2502  \u2502 Policy:         \u2502  \u2502 Policy:    \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 Allow Team A    \u2502  \u2502 Allow Team B    \u2502  \u2502 Allow VPC  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 prefix=/analytics\u2502  \u2502 prefix=/ml/     \u2502  \u2502 only       \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502                 \u2502  \u2502                 \u2502  \u2502            \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 DNS:            \u2502  \u2502 DNS:            \u2502  \u2502 DNS:       \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 ap-analytics-   \u2502  \u2502 ap-ml-data-     \u2502  \u2502 ap-logs-   \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 123456789012    \u2502  \u2502 123456789012    \u2502  \u2502 123456789  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 .s3-accesspoint \u2502  \u2502 .s3-accesspoint \u2502  \u2502 .s3-access \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502 .us-east-1...   \u2502  \u2502 .us-east-1...   \u2502  \u2502 point...   \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Key Properties",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Property",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Unique DNS name**",
+                      "`https://{name}-{account-id}.s3-accesspoint.{region}.amazonaws.com`"
+                    ],
+                    [
+                      "**Own access policy**",
+                      "JSON policy, independent of bucket policy"
+                    ],
+                    [
+                      "**VPC restriction**",
+                      "Can lock to a specific VPC (internet access blocked)"
+                    ],
+                    [
+                      "**Block Public Access**",
+                      "Each access point has its own BPA settings"
+                    ],
+                    [
+                      "**Cross-account**",
+                      "\u2705 Can grant access to other accounts"
+                    ],
+                    [
+                      "**ARN format**",
+                      "`arn:aws:s3:{region}:{account}:accesspoint/{name}`"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Policy Evaluation (Exam-Critical)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Request arrives at access point:"
+                },
+                {
+                  "type": "text",
+                  "text": "1. Access point policy evaluated"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Bucket policy evaluated"
+                },
+                {
+                  "type": "text",
+                  "text": "3. BOTH must allow (intersection)"
+                },
+                {
+                  "type": "text",
+                  "text": "Access point policy CANNOT grant more than bucket policy allows."
+                },
+                {
+                  "type": "text",
+                  "text": "Think of it as: bucket policy = ceiling, access point policy = room-level control."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Bucket policy that delegates to access points:**"
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DelegateToAccessPoints\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"s3:*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:s3:::company-data-lake\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"arn:aws:s3:::company-data-lake/*\""
+                },
+                {
+                  "type": "text",
+                  "text": "],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"s3:DataAccessPointAccount\": \"123456789012\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "This says: \"I trust any access point in my account to make access decisions.\"",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "VPC-Only Access Points",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Access point created with:"
+                },
+                {
+                  "type": "text",
+                  "text": "NetworkOrigin: VPC"
+                },
+                {
+                  "type": "text",
+                  "text": "VpcConfiguration:"
+                },
+                {
+                  "type": "text",
+                  "text": "VpcId: vpc-abc123"
+                },
+                {
+                  "type": "text",
+                  "text": "Result:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2705 Requests from vpc-abc123 \u2192 allowed (if policy permits)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u274c Requests from internet \u2192 blocked (regardless of policy)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u274c Requests from other VPCs \u2192 blocked"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam signal:** \"Restrict S3 access to private network only\" \u2192 VPC-only access point."
+                }
+              ]
+            },
+            {
+              "title": "Limits",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Access points per region per account",
+                      "10,000"
+                    ],
+                    [
+                      "Access point policy max size",
+                      "20 KB"
+                    ],
+                    [
+                      "Access point name",
+                      "3-50 characters, lowercase, no underscores"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "S3 Access Grants",
+          "subsections": [
+            {
+              "title": "One-Liner",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Declarative mapping of identities (Identity Center users/groups or IAM) to S3 prefixes with a permission level \u2014 no JSON policies to write.**"
+                }
+              ]
+            },
+            {
+              "title": "Mental Model",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Traditional IAM approach:"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Write a policy that allows role X to GetObject on prefix /analytics/*\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 You write JSON, attach to role, manage lifecycle"
+                },
+                {
+                  "type": "text",
+                  "text": "Access Grants approach:"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Analytics group gets READ on /analytics/\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 One grant definition. Done. No JSON policy."
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 User calls GetDataAccess API \u2192 gets temporary scoped credentials"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  S3 Access Grants Instance (one per account per region)           \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  Location 1: s3://company-bucket/analytics/*                 \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  Location 2: s3://company-bucket/ml-data/*                   \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  Location 3: s3://company-bucket/finance/*                   \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  Grant 1: Identity Center group \"Analytics\" \u2192 Location 1    \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502           Permission: READ                                   \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502                                                              \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  Grant 2: Identity Center group \"ML Team\" \u2192 Location 2      \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502           Permission: READWRITE                              \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502                                                              \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  Grant 3: IAM role \"FinanceApp\" \u2192 Location 3                \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502           Permission: READ                                   \u2502 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  User flow:                                                       \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  1. User authenticates (Identity Center or IAM)                   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  2. App calls s3:GetDataAccess API                                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  3. Access Grants returns temporary S3 credentials                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  4. Credentials scoped to ONLY the granted prefix + permission    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  5. User accesses S3 with those credentials                       \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Permission Levels (Only Three)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Level",
+                    "S3 Actions Granted"
+                  ],
+                  "rows": [
+                    [
+                      "**READ**",
+                      "`GetObject`, `GetObjectAttributes`, `ListBucket` (scoped to prefix)"
+                    ],
+                    [
+                      "**WRITE**",
+                      "`PutObject`, `DeleteObject`, `AbortMultipartUpload`"
+                    ],
+                    [
+                      "**READWRITE**",
+                      "All of the above"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "No custom actions \u2014 just pick one of three levels. Simplicity is the point.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Identity Sources",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Source",
+                    "How It Works"
+                  ],
+                  "rows": [
+                    [
+                      "**IAM Identity Center**",
+                      "Map groups/users from corporate directory (Okta, Entra ID, etc.)"
+                    ],
+                    [
+                      "**IAM principals**",
+                      "Map IAM roles or users directly"
+                    ],
+                    [
+                      "**Directory (via Identity Center)**",
+                      "Corporate AD groups synced via SCIM"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Key Properties",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Property",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Credential mechanism**",
+                      "`s3:GetDataAccess` API returns temporary credentials"
+                    ],
+                    [
+                      "**Credential duration**",
+                      "15 min to 12 hours (configurable)"
+                    ],
+                    [
+                      "**Prefix scoping**",
+                      "Built into the grant (no policy conditions needed)"
+                    ],
+                    [
+                      "**Audit**",
+                      "CloudTrail logs every `GetDataAccess` call"
+                    ],
+                    [
+                      "**Cross-account**",
+                      "\u2705 Can grant to principals in other accounts"
+                    ],
+                    [
+                      "**VPC restriction**",
+                      "\u274c Not VPC-scoped (use Access Points for that)"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Limits",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Access Grants instances per account per region",
+                      "1"
+                    ],
+                    [
+                      "Grants per instance",
+                      "100,000"
+                    ],
+                    [
+                      "Locations per instance",
+                      "1,000"
+                    ],
+                    [
+                      "Credential duration",
+                      "15 min \u2013 12 hours"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Access Points vs Access Grants \u2014 Decision Table",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Question Says",
+                    "Answer",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "\"Simplify bucket policy for multiple teams\"",
+                      "**Access Points**",
+                      "Split one policy into many"
+                    ],
+                    [
+                      "\"Restrict S3 access to specific VPC\"",
+                      "**Access Points** (VPC-only)",
+                      "Network-level restriction"
+                    ],
+                    [
+                      "\"Map corporate directory groups to S3 prefixes\"",
+                      "**Access Grants**",
+                      "Identity Center integration"
+                    ],
+                    [
+                      "\"Grant S3 access based on Identity Center groups without writing policies\"",
+                      "**Access Grants**",
+                      "Declarative, no JSON"
+                    ],
+                    [
+                      "\"Cross-account S3 access with dedicated endpoint\"",
+                      "**Access Points**",
+                      "Named endpoint per consumer"
+                    ],
+                    [
+                      "\"Temporary scoped credentials for S3 prefix\"",
+                      "**Access Grants**",
+                      "`GetDataAccess` vends creds"
+                    ],
+                    [
+                      "\"Application needs its own S3 endpoint with own policy\"",
+                      "**Access Points**",
+                      "Per-app entry point"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How They Relate to Other S3 Access Mechanisms",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  S3 ACCESS CONTROL \u2014 ALL MECHANISMS                              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  POLICY-BASED (you write JSON):                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u251c\u2500\u2500 Bucket policy (one per bucket, 20KB limit)                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u251c\u2500\u2500 IAM policy (on the caller's role/user)                      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500 Access Point policy (one per access point)                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  DECLARATIVE (no JSON):                                          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500 Access Grants (identity \u2192 prefix \u2192 permission level)        \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  TEMPORARY ACCESS (time-limited):                                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u251c\u2500\u2500 Presigned URLs (one object, one operation, expiry)          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500 Access Grants credentials (prefix-scoped, via API)          \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  NETWORK-LEVEL:                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u251c\u2500\u2500 VPC-only Access Points (restrict to one VPC)                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u251c\u2500\u2500 VPC Gateway Endpoint + endpoint policy                      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500 S3 Block Public Access (account/bucket level)               \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  LEGACY (don't use):                                             \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500 ACLs (disabled by default since April 2023)                 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Access Point policy + bucket policy = intersection**",
+                      "AP policy can't exceed what bucket policy allows"
+                    ],
+                    [
+                      "**VPC-only AP = no internet**",
+                      "Once set to VPC, can't access from outside that VPC"
+                    ],
+                    [
+                      "**Access Grants \u2260 KMS Grants**",
+                      "Completely different services. S3 Access Grants = S3 prefix access. KMS Grants = KMS key operations."
+                    ],
+                    [
+                      "**Access Grants needs Identity Center OR IAM**",
+                      "Must have one identity source configured"
+                    ],
+                    [
+                      "**`GetDataAccess` is the API**",
+                      "This is how apps request temporary credentials from Access Grants"
+                    ],
+                    [
+                      "**One Access Grants instance per account per region**",
+                      "Unlike access points (10,000 per region)"
+                    ],
+                    [
+                      "**Access Grants don't replace bucket policies**",
+                      "Bucket policy still evaluated \u2014 grants work alongside"
+                    ],
+                    [
+                      "**Access Points support S3 Object Lambda**",
+                      "Can transform data on read (e.g., redact PII)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Access Points = multiple front doors with separate locks.** Each has own policy, own hostname, optional VPC restriction.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Access Grants = guest list mapping identities to rooms.** No JSON policies \u2014 just identity + prefix + permission level.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"VPC-only S3 access\" = Access Point with NetworkOrigin:VPC.** Not Access Grants (no VPC scoping).",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Map Identity Center groups to S3 prefixes\" = Access Grants.** Vends temporary credentials via `GetDataAccess`.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Access Grants \u2260 KMS Grants.** Different services, different problems. Don't confuse them.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-s3.md",
+      "title": "Amazon S3 (Simple Storage Service)",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Access Control",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Bucket policies**: Resource-based policies for cross-account access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IAM policies**: Identity-based access control",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Access Control Lists (ACLs)**: Legacy, use bucket policies instead",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 Block Public Access**: Account and bucket-level protection against public exposure",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Pre-signed URLs**: Temporary access to objects without AWS credentials",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Encryption",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Server-Side Encryption (SSE)**:",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SSE-S3**: AWS managed keys (AES-256)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SSE-KMS**: Customer managed keys in KMS (audit trail, rotation)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SSE-C**: Customer-provided keys (you manage keys)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Client-Side Encryption**: Encrypt before upload using AWS Encryption SDK",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Encryption in transit**: TLS/HTTPS for all API calls",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Default encryption**: Can be enforced at bucket level",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Logging & Monitoring",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**S3 Server Access Logs**: Detailed records of requests",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudTrail S3 data events**: API-level logging (GetObject, PutObject, DeleteObject)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 Object Lock**: WORM (Write Once Read Many) for compliance",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 Versioning**: Protect against accidental deletion",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 Inventory**: Audit and report on replication and encryption status",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "GuardDuty S3 Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Monitors CloudTrail S3 data events for threats",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Detects: credential misuse, unusual API activity, access from malicious IPs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No need to enable S3 data event logging in CloudTrail",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Automatically monitors all buckets",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "Bucket Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**100 buckets per account** (soft limit, can request increase)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Bucket names must be globally unique",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Bucket names must be DNS-compliant",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Object Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**5 TB maximum object size**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**5 GB maximum** for single PUT operation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use multipart upload for objects > 100 MB",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**10,000 parts maximum** per multipart upload",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Request Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**3,500 PUT/COPY/POST/DELETE requests per second per prefix**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**5,500 GET/HEAD requests per second per prefix**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No limit on number of prefixes",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Storage Classes",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "S3 Standard, S3 Intelligent-Tiering, S3 Standard-IA, S3 One Zone-IA",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "S3 Glacier Instant Retrieval, S3 Glacier Flexible Retrieval, S3 Glacier Deep Archive",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Minimum storage duration charges apply to IA and Glacier classes",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "Bucket Policy vs IAM Policy",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Bucket policy**: Attached to bucket, can grant cross-account access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IAM policy**: Attached to principal, cannot grant cross-account access alone",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Effective permissions**: Intersection of bucket policy + IAM policy + SCPs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Explicit Deny always wins**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "S3 Block Public Access",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Four settings**: Block public ACLs, Ignore public ACLs, Block public bucket policies, Restrict public buckets",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Account-level**: Applies to all buckets in account",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Bucket-level**: Applies to specific bucket",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Overrides bucket policies and ACLs** - cannot be bypassed",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Encryption Enforcement",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Bucket policy condition**: `s3:x-amz-server-side-encryption`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Deny unencrypted uploads**: Use condition to require SSE",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**KMS key requirement**: `s3:x-amz-server-side-encryption-aws-kms-key-id`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Default encryption**: Doesn't prevent unencrypted uploads (use bucket policy)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "S3 Object Lock (Task 5.2 \u2014 Exam-Critical)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Mode",
+                    "Who Can Delete?",
+                    "Expiration?",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**Governance**",
+                      "Users with `s3:BypassGovernanceRetention`",
+                      "Fixed period",
+                      "Testing, soft compliance"
+                    ],
+                    [
+                      "**Compliance**",
+                      "Nobody \u2014 not even root",
+                      "Fixed period",
+                      "Regulatory (SEC, HIPAA)"
+                    ],
+                    [
+                      "**Legal Hold**",
+                      "Nobody (until removed)",
+                      "None \u2014 indefinite",
+                      "Litigation, evidence preservation"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "**Key rules:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Requires versioning** \u2014 cannot enable Object Lock without it",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Compliance mode + Legal Hold are independent** \u2014 don't mix them for \"fixed period\" scenarios",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Compliance mode = \"immutable for X years, auto-deletable after\" \u2190 exam answer",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Legal Hold = \"preserve indefinitely, no expiry\" \u2190 exam answer",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Governance mode = \"soft lock, admin can override\" \u2190 rarely the exam answer",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam traps:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"5 years immutable, root can't delete\" \u2192 **Compliance mode** (not Legal Hold \u2014 Legal Hold has no expiry)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Preserve until lawsuit ends\" \u2192 **Legal Hold** (no fixed period)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Immutable but admin can override in emergency\" \u2192 **Governance mode**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "S3 Encryption Decision Tree (Exam-Critical)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal in question",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Least overhead\" or \"default encryption\"",
+                      "SSE-S3"
+                    ],
+                    [
+                      "\"Audit decryption\" or \"control who decrypts\" or \"cross-account\"",
+                      "SSE-KMS (CMK)"
+                    ],
+                    [
+                      "\"Keys must never be stored in AWS\"",
+                      "SSE-C"
+                    ],
+                    [
+                      "\"Encrypt before upload, AWS never sees plaintext\"",
+                      "Client-side encryption"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "#### SSE-S3 vs SSE-KMS vs SSE-C"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "SSE-S3",
+                    "SSE-KMS",
+                    "SSE-C"
+                  ],
+                  "rows": [
+                    [
+                      "**Who manages key**",
+                      "AWS (invisible to you)",
+                      "You (via KMS)",
+                      "You (entirely outside AWS)"
+                    ],
+                    [
+                      "**CloudTrail audit of decrypt**",
+                      "\u274c",
+                      "\u2705",
+                      "\u274c"
+                    ],
+                    [
+                      "**Control who can decrypt**",
+                      "\u274c (same as GetObject)",
+                      "\u2705 (separate kms:Decrypt permission)",
+                      "\u274c (whoever has the key)"
+                    ],
+                    [
+                      "**Cross-account access**",
+                      "\u2705 (just S3 permissions)",
+                      "\u2705 (S3 + KMS permissions)",
+                      "\u2705 (share the key yourself)"
+                    ],
+                    [
+                      "**Key rotation**",
+                      "AWS handles",
+                      "Automatic (CMK) or manual",
+                      "You rotate manually"
+                    ],
+                    [
+                      "**Risk if key lost**",
+                      "N/A",
+                      "Can disable/delete key \u2192 data unreadable",
+                      "Data gone permanently"
+                    ],
+                    [
+                      "**HTTPS required**",
+                      "No (recommended)",
+                      "No (recommended)",
+                      "**Yes (mandatory)**"
+                    ],
+                    [
+                      "**Permissions to read**",
+                      "`s3:GetObject`",
+                      "`s3:GetObject` + `kms:Decrypt`",
+                      "`s3:GetObject` + you provide key"
+                    ],
+                    [
+                      "**Permissions to write**",
+                      "`s3:PutObject`",
+                      "`s3:PutObject` + `kms:GenerateDataKey`",
+                      "`s3:PutObject` + you provide key"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "s3:prefix Condition Key",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Only valid for `s3:ListBucket`** (bucket-level action) \u2014 does NOT work with object-level actions like GetObject, PutObject, DeleteObject",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "For object-level path restriction, use a variable in the `Resource` ARN instead (e.g., `arn:aws:s3:::bucket/${aws:PrincipalTag/Department}/*`)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "VPC Endpoints",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Gateway endpoint**: Free, for S3 and DynamoDB",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Interface endpoint**: Charged, uses PrivateLink",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Endpoint policy**: Controls access through endpoint",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Doesn't replace bucket policy** - both are evaluated",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Cross-Region Replication (CRR)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Requires versioning** on source and destination",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IAM role** for S3 to assume",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Doesn't replicate**: Existing objects (unless S3 Batch Replication), delete markers (optional), objects encrypted with SSE-C",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Replication Time Control (RTC)**: 15-minute SLA",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "S3 Access Points",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Unique hostname** per access point",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Dedicated access policy** per access point",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**VPC-restricted**: Can restrict to specific VPC",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Simplifies bucket policy management** for shared buckets",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Presigned URLs",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Inherit permissions** of IAM principal that created them",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Expiration time**: Set by creator (max 7 days for SigV4)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cannot be revoked** - rotate IAM credentials to invalidate",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Use SigV4**: SigV2 is deprecated",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for Bucket Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Enable S3 Block Public Access** by default"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Use bucket policies for cross-account access**, not ACLs"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Require encryption in transit**: `aws:SecureTransport` condition"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Require encryption at rest**: `s3:x-amz-server-side-encryption` condition"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Restrict by VPC/VPC endpoint**: `aws:SourceVpc`, `aws:SourceVpce`"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Restrict by IP**: `aws:SourceIp` condition (use with caution)"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Use MFA Delete** for versioned buckets with sensitive data"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Least privilege**: Grant minimum permissions needed"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Condition keys**: `s3:prefix`, `s3:delimiter`, `s3:max-keys` for ListBucket"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Prevent confused deputy**: `aws:SourceAccount`, `aws:SourceArn`"
+                }
+              ]
+            },
+            {
+              "title": "Example: Enforce SSE-KMS with Specific Key",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"s3:PutObject\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:s3:::mybucket/*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringNotEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"s3:x-amz-server-side-encryption\": \"aws:kms\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"s3:x-amz-server-side-encryption-aws-kms-key-id\": \"arn:aws:kms:region:account:key/key-id\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-secrets-manager.md",
+      "title": "AWS Secrets Manager",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Secret Storage & Retrieval",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Store database credentials, API keys, OAuth tokens, SSH keys",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Any text blob up to **64 KB** (JSON document format)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Programmatic retrieval via API (no hardcoded secrets)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Replaces plaintext secrets in application code",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Encryption",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Encryption at rest**: AWS KMS (AES-256 envelope encryption)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Customer managed KMS keys**: Optional for full control",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Encryption in transit**: TLS for all API calls",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No plaintext caching**: Secrets decrypted in memory, not written to disk",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Access Control",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**IAM policies**: Control who can retrieve/manage secrets",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Resource-based policies**: Attach policies directly to secrets for cross-account access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**VPC endpoints**: Private access without internet gateway",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Condition keys**: `secretsmanager:SecretId`, `secretsmanager:VersionStage`",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Rotation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Automatic rotation**: Scheduled rotation for supported databases",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Managed rotation**: No Lambda function required (AWS handles it)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Custom rotation**: Lambda function for unsupported secrets (Oracle on EC2, OAuth tokens)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Zero-downtime rotation**: Creates clone user with same privileges, different password",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Rotation doesn't re-authenticate open connections**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Monitoring & Auditing",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**CloudTrail integration**: All API calls logged",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudWatch Events**: Notifications on rotation, deletion",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudWatch metrics**: Track secret usage",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**AWS Config rules**: Monitor rotation compliance",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "Secret Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**64 KB maximum** secret size",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**500,000 secrets per region** (soft limit, can request increase)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**20 versions per secret** (soft limit)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Rotation Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Rotation frequency**: Minimum 1 hour between rotations",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Rotation window**: 24 hours to complete rotation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Supported databases**: RDS (MySQL, PostgreSQL, Aurora), DocumentDB, Redshift",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "API Limits",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**GetSecretValue**: 5,000 requests per second (soft limit)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Other APIs**: Lower limits, can request increase",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Batch operations**: Use caching to reduce API calls",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Pricing",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**$0.40 per secret per month**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**$0.05 per 10,000 API calls**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**30-day free trial** for new secrets",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Rotation**: No additional charge (Lambda execution costs apply)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "Rotation Behavior",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Open connections NOT re-authenticated** during rotation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Applications must handle connection refresh",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use connection pooling with short TTL",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Test rotation in non-production first",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Secrets Manager vs Parameter Store",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Secrets Manager**: Automatic rotation, cross-region replication, higher cost",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Parameter Store**: No automatic rotation, cheaper, integrated with Systems Manager",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Use Secrets Manager for**: Database credentials, API keys requiring rotation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Use Parameter Store for**: Configuration data, non-sensitive parameters",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Deletion Protection",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Minimum 7-day recovery window** (max 30 days)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cannot delete immediately",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Secret marked for deletion, can be restored during window",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "After window, secret permanently deleted",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Version Staging",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**AWSCURRENT**: Current version in use",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**AWSPENDING**: New version being created during rotation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**AWSPREVIOUS**: Previous version (for rollback)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Applications should always retrieve AWSCURRENT",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Cross-Region Replication",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Primary secret**: Source of truth",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Replica secrets**: Read-only copies in other regions",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Automatic sync**: Changes to primary replicated to replicas",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Rotation**: Only on primary, replicas updated automatically",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "VPC Endpoints",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Interface endpoint**: Uses PrivateLink (charged)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Endpoint policy**: Controls access through endpoint",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Private DNS**: Enabled by default",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Security group**: Must allow HTTPS (port 443)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "KMS Integration",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Default KMS key**: `aws/secretsmanager` (AWS managed)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Customer managed key**: Full control, rotation, audit",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Key policy**: Must allow Secrets Manager to use key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cross-account**: Requires key policy + IAM policy",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Managed Rotation",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Supported services**: RDS, DocumentDB, Redshift, and third-party SaaS partners",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No Lambda required**: Secrets Manager handles rotation logic",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Custom rotation**: Requires Lambda function for unsupported secrets",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices for IAM Policies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Least privilege**: Grant only GetSecretValue for applications"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Separate secrets** for different environments (dev, staging, prod)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Use resource-based policies** for cross-account access"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Condition keys**: Restrict by VPC, IP, or tag"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Enable rotation** for all database credentials"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Use VPC endpoints** for private access"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Monitor with CloudTrail**: Track who accessed which secrets"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Tag secrets**: For cost allocation and access control"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Use versioning**: Don't delete old versions immediately"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Cache secrets**: Reduce API calls and costs"
+                }
+              ]
+            },
+            {
+              "title": "Example: Restrict Secret Access by VPC",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"secretsmanager:GetSecretValue\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:secretsmanager:region:account:secret:MySecret-*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:SourceVpc\": \"vpc-12345678\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Example: Prevent Secret Deletion",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"secretsmanager:DeleteSecret\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:secretsmanager:region:account:secret:prod/*\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-security-lake.md",
+      "title": "Amazon Security Lake",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Centralized security data lake \u2014 normalizes ALL log sources into OCSF format in YOUR S3 bucket.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Problem It Solves",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT Security Lake:"
+                },
+                {
+                  "type": "text",
+                  "text": "CloudTrail logs \u2192 S3 (JSON format A)"
+                },
+                {
+                  "type": "text",
+                  "text": "VPC Flow Logs  \u2192 S3 (format B) or CloudWatch Logs"
+                },
+                {
+                  "type": "text",
+                  "text": "GuardDuty      \u2192 Security Hub (ASFF format)"
+                },
+                {
+                  "type": "text",
+                  "text": "WAF logs       \u2192 S3/CloudWatch/Firehose (format C)"
+                },
+                {
+                  "type": "text",
+                  "text": "Route 53 DNS   \u2192 CloudWatch Logs (format D)"
+                },
+                {
+                  "type": "text",
+                  "text": "Third-party    \u2192 their own format"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 6 different formats, 6 different locations"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Cross-source queries = painful ETL"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Each SIEM integration = custom parser"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH Security Lake:"
+                },
+                {
+                  "type": "text",
+                  "text": "ALL sources \u2192 Security Lake \u2192 ONE S3 bucket \u2192 OCSF format"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Single schema for everything"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Any OCSF-compatible tool queries all sources"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Subscriber model for SIEM/analytics access"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How It Works",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                    SOURCES (auto-collected)                       \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  CloudTrail    VPC Flow    Route 53    Security Hub    GuardDuty \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  (mgmt+data)   Logs        DNS Logs    findings       findings  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  S3 data       Lambda       WAF         EKS audit     Firewall  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  events        data events  logs        logs          Manager   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502 normalized to OCSF"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                    SECURITY LAKE                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  YOUR S3 Bucket (Lake-managed, Apache Iceberg tables)    \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u251c\u2500\u2500 Region: us-east-1/                                  \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502   \u251c\u2500\u2500 cloud_trail/                                    \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502   \u251c\u2500\u2500 vpc_flow/                                       \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502   \u251c\u2500\u2500 route53/                                        \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502   \u251c\u2500\u2500 security_hub/                                   \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502   \u2514\u2500\u2500 custom_source/                                  \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2514\u2500\u2500 Partitioned by: region, account, time              \u2502    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Format: OCSF (Open Cybersecurity Schema Framework)              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Storage: Apache Parquet on Apache Iceberg tables                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Partitioning: Automatic (region, account, time)                 \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                    SUBSCRIBERS (consumers)                        \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Athena         OpenSearch       Splunk        Datadog           \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  (SQL queries)  (dashboards)     (SIEM)        (monitoring)      \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                                                                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Detective      Custom Lambda    QRadar        Any OCSF tool     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "OCSF \u2014 The Schema (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Open Cybersecurity Schema Framework** \u2014 vendor-neutral schema for security events."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "You DON'T need to know schema fields for the exam."
+                },
+                {
+                  "type": "text",
+                  "text": "You DO need to know:"
+                },
+                {
+                  "type": "text",
+                  "text": "1. OCSF = Security Lake's native format"
+                },
+                {
+                  "type": "text",
+                  "text": "2. It normalizes ALL sources into ONE schema"
+                },
+                {
+                  "type": "text",
+                  "text": "3. Any OCSF-compatible tool can query without custom parsers"
+                },
+                {
+                  "type": "text",
+                  "text": "4. WAF logs, CloudTrail, VPC Flow Logs, third-party \u2192 all become OCSF"
+                },
+                {
+                  "type": "text",
+                  "text": "5. \"Common schema\" / \"normalize logs\" / \"unified format\" \u2192 OCSF / Security Lake"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Security Lake vs CloudTrail Lake vs CloudWatch Logs Insights",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "Security Lake",
+                    "CloudTrail Lake",
+                    "CloudWatch Logs Insights"
+                  ],
+                  "rows": [
+                    [
+                      "**Data sources**",
+                      "ALL (CloudTrail + VPC Flow + DNS + WAF + GuardDuty + third-party)",
+                      "CloudTrail events + Config CIs",
+                      "CloudWatch Log Groups"
+                    ],
+                    [
+                      "**Format**",
+                      "OCSF (normalized)",
+                      "CloudTrail native",
+                      "Raw log lines"
+                    ],
+                    [
+                      "**Storage**",
+                      "YOUR S3 bucket (Iceberg/Parquet)",
+                      "Managed (no S3)",
+                      "CloudWatch store"
+                    ],
+                    [
+                      "**Query language**",
+                      "Athena SQL (or subscriber tools)",
+                      "SQL (built-in)",
+                      "CloudWatch Insights syntax"
+                    ],
+                    [
+                      "**Cross-account**",
+                      "\u2705 Org-wide delegated admin",
+                      "\u2705 Single event data store",
+                      "\u274c Per-account log groups"
+                    ],
+                    [
+                      "**Latency**",
+                      "Minutes (batch)",
+                      "Near real-time",
+                      "Near real-time"
+                    ],
+                    [
+                      "**Retention**",
+                      "You control (S3 lifecycle)",
+                      "7yr or 1yr extendable",
+                      "Configurable per group"
+                    ],
+                    [
+                      "**Cost model**",
+                      "S3 storage + Athena queries",
+                      "Ingestion + storage + query GB",
+                      "Ingestion + storage + query GB"
+                    ],
+                    [
+                      "**Exam signal**",
+                      "\"normalize all logs\" / \"common schema\" / \"OCSF\"",
+                      "\"fast API investigation\" / \"SQL on CloudTrail\"",
+                      "\"query app logs\" / \"VPC Flow Logs\""
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Supported Sources",
+          "subsections": [
+            {
+              "title": "AWS Native (auto-collected, zero config)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Source",
+                    "What It Provides"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudTrail**",
+                      "Management events + data events"
+                    ],
+                    [
+                      "**VPC Flow Logs**",
+                      "Network traffic metadata"
+                    ],
+                    [
+                      "**Route 53 Resolver**",
+                      "DNS query logs"
+                    ],
+                    [
+                      "**Security Hub**",
+                      "Aggregated findings (ASFF \u2192 OCSF)"
+                    ],
+                    [
+                      "**GuardDuty**",
+                      "Threat findings"
+                    ],
+                    [
+                      "**AWS WAF**",
+                      "Web request logs"
+                    ],
+                    [
+                      "**EKS Audit Logs**",
+                      "Kubernetes API activity"
+                    ],
+                    [
+                      "**Lambda Data Events**",
+                      "Function invocations"
+                    ],
+                    [
+                      "**S3 Data Events**",
+                      "Object-level access"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Custom Sources",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Any third-party tool that outputs OCSF",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Custom Lambda that transforms your logs to OCSF",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Partner integrations (CrowdStrike, Palo Alto, etc.)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Subscriber Model",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "SUBSCRIBER = any tool that READS from Security Lake"
+                },
+                {
+                  "type": "text",
+                  "text": "Two access methods:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 S3 access: subscriber reads Parquet files directly from your bucket"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 SQS notification: Security Lake notifies subscriber when new data arrives"
+                },
+                {
+                  "type": "text",
+                  "text": "Subscriber types:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Query access: Athena, OpenSearch (pull model)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Data access: Splunk, Datadog, QRadar (push via SQS notification)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Regions",
+                      "Available in most commercial regions"
+                    ],
+                    [
+                      "Sources per region",
+                      "All supported AWS sources + custom"
+                    ],
+                    [
+                      "Subscribers per lake",
+                      "Multiple (no hard limit published)"
+                    ],
+                    [
+                      "Retention",
+                      "You control via S3 Lifecycle"
+                    ],
+                    [
+                      "Rollup regions",
+                      "Aggregate data from multiple regions into one"
+                    ],
+                    [
+                      "Delegated admin",
+                      "\u2705 Supported (org-wide)"
+                    ],
+                    [
+                      "Cost",
+                      "S3 storage + data transfer + Athena queries (no Security Lake fee)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**YOUR S3 bucket**",
+                      "Security Lake stores data in S3 buckets it creates in YOUR account \u2014 you own the data"
+                    ],
+                    [
+                      "**OCSF format**",
+                      "Everything normalized \u2014 no custom parsers needed for subscribers"
+                    ],
+                    [
+                      "**Not real-time**",
+                      "Batch ingestion (minutes), not streaming. For real-time \u2192 CloudWatch Logs or CloudTrail Lake"
+                    ],
+                    [
+                      "**Doesn't replace Security Hub**",
+                      "Security Hub aggregates findings for dashboards. Security Lake stores raw logs for analysis. Different jobs."
+                    ],
+                    [
+                      "**Doesn't replace CloudTrail**",
+                      "CloudTrail is the SOURCE. Security Lake is the DESTINATION that normalizes it."
+                    ],
+                    [
+                      "**Apache Iceberg**",
+                      "Table format \u2014 enables efficient queries on partitioned Parquet files"
+                    ],
+                    [
+                      "**Cross-region rollup**",
+                      "Can aggregate data from all regions into one \"rollup region\" for centralized queries"
+                    ],
+                    [
+                      "**Delegated admin**",
+                      "Don't run in management account \u2014 delegate to security tooling account"
+                    ],
+                    [
+                      "**No CloudTrail Lake overlap**",
+                      "CloudTrail Lake = fast SQL on API calls only. Security Lake = all logs normalized."
+                    ],
+                    [
+                      "**Third-party ingestion**",
+                      "Partners can write OCSF data directly into your lake"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Integration with Other Services",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Relationship"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudTrail**",
+                      "Source \u2192 Security Lake ingests CloudTrail events"
+                    ],
+                    [
+                      "**GuardDuty**",
+                      "Source \u2192 findings normalized to OCSF"
+                    ],
+                    [
+                      "**Security Hub**",
+                      "Source \u2192 findings normalized to OCSF"
+                    ],
+                    [
+                      "**VPC Flow Logs**",
+                      "Source \u2192 network data normalized"
+                    ],
+                    [
+                      "**Athena**",
+                      "Consumer \u2192 SQL queries on Security Lake data"
+                    ],
+                    [
+                      "**OpenSearch**",
+                      "Consumer \u2192 dashboards and search"
+                    ],
+                    [
+                      "**Detective**",
+                      "Can correlate with Security Lake data"
+                    ],
+                    [
+                      "**Organizations**",
+                      "Org-wide deployment via delegated admin"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Security Lake  \u2248  Loki/Elasticsearch with a unified schema"
+                },
+                {
+                  "type": "text",
+                  "text": "OCSF           \u2248  OpenTelemetry semantic conventions for security"
+                },
+                {
+                  "type": "text",
+                  "text": "Subscribers    \u2248  Grafana/Kibana dashboards reading from the store"
+                },
+                {
+                  "type": "text",
+                  "text": "Custom sources \u2248  Fluentd/Vector shipping logs in a standard format"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Security Lake = YOUR S3 bucket + OCSF format + ALL log sources normalized.** Not managed storage \u2014 you own the bucket.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Normalize all logs into one schema\" = Security Lake / OCSF.** \"Fast SQL on API calls\" = CloudTrail Lake. Different tools.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Security Lake is NOT real-time.** Batch ingestion (minutes). For real-time investigation \u2192 CloudTrail Lake or CloudWatch Logs Insights.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Three \"lakes\":** CloudTrail Lake (API calls, SQL, managed store) vs Security Lake (all logs, OCSF, your S3) vs CloudWatch Logs Insights (app logs, custom syntax, CloudWatch store).",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-security-services-comparison.md",
+      "title": "Security Services \u2014 When to Use Which",
+      "sections": [
+        {
+          "title": "The Big Picture",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                    Security Hub (AGGREGATOR)                     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502         Collects findings from all services below                \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502         Runs compliance checks (standards/controls)              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502         Org-wide via delegated admin                             \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  GuardDuty   \u2502    Macie     \u2502  Inspector   \u2502   Config           \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  (threats)   \u2502  (sensitive  \u2502  (vulns)     \u2502   (compliance)     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              \u2502   data)      \u2502              \u2502                    \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              \u2502             \u2502               \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "Threat intel   S3 scanning   CVE scanning    Resource config"
+                },
+                {
+                  "type": "text",
+                  "text": "ML anomalies   PII/PHI       EC2/Lambda/     Rule evaluation"
+                },
+                {
+                  "type": "text",
+                  "text": "Runtime        Credit cards  containers      Drift detection"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Service Comparison Matrix",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Question the Exam Asks",
+                    "Answer",
+                    "NOT This"
+                  ],
+                  "rows": [
+                    [
+                      "\"Detect **public S3 buckets**\"",
+                      "**Security Hub** (S3 controls) or **Config** (managed rule)",
+                      "\u274c Macie (finds data, not access), \u274c GuardDuty (finds threats, not misconfig)"
+                    ],
+                    [
+                      "\"Find **sensitive data** (PII, credentials) in S3\"",
+                      "**Macie**",
+                      "\u274c GuardDuty, \u274c Inspector, \u274c Security Hub"
+                    ],
+                    [
+                      "\"Detect **compromised EC2** (crypto mining, C2 traffic)\"",
+                      "**GuardDuty**",
+                      "\u274c Inspector (finds vulns, not active threats), \u274c Config"
+                    ],
+                    [
+                      "\"Detect **compromised IAM credentials**\"",
+                      "**GuardDuty**",
+                      "\u274c IAM Access Analyzer (finds overly permissive, not compromised)"
+                    ],
+                    [
+                      "\"Scan EC2 for **software vulnerabilities** (CVEs)\"",
+                      "**Inspector**",
+                      "\u274c GuardDuty (threats, not vulns), \u274c Macie"
+                    ],
+                    [
+                      "\"Scan **Lambda functions** for vulnerabilities\"",
+                      "**Inspector**",
+                      "\u274c GuardDuty Lambda Protection (network threats only)"
+                    ],
+                    [
+                      "\"Scan **container images** for vulnerabilities\"",
+                      "**Inspector** (or ECR native scanning)",
+                      "\u274c GuardDuty"
+                    ],
+                    [
+                      "\"Detect **unusual API activity** (anomalies)\"",
+                      "**GuardDuty** (or CloudTrail Insights)",
+                      "\u274c Config, \u274c Inspector"
+                    ],
+                    [
+                      "\"Check if resources are **compliant** with standards\"",
+                      "**Security Hub** (standards) or **Config** (rules)",
+                      "\u274c GuardDuty, \u274c Inspector"
+                    ],
+                    [
+                      "\"**Investigate** a finding (root cause analysis)\"",
+                      "**Detective**",
+                      "\u274c GuardDuty (detects, doesn't investigate)"
+                    ],
+                    [
+                      "\"**Aggregate findings** across accounts/regions\"",
+                      "**Security Hub**",
+                      "\u274c GuardDuty (regional, feeds into Security Hub)"
+                    ],
+                    [
+                      "\"Detect **malware** on EBS/S3\"",
+                      "**GuardDuty** Malware Protection",
+                      "\u274c Inspector, \u274c Macie"
+                    ],
+                    [
+                      "\"Monitor **resource configuration changes**\"",
+                      "**Config**",
+                      "\u274c CloudTrail (logs API calls, not config state)"
+                    ],
+                    [
+                      "\"Detect **S3 data exfiltration** in progress\"",
+                      "**GuardDuty** S3 Protection",
+                      "\u274c Macie (discovery, not real-time threat)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Deep Dive: Each Service",
+          "subsections": [
+            {
+              "title": "GuardDuty \u2014 Threat Detection (Task 1.1)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**What it does:** Continuously monitors for malicious activity and unauthorized behavior."
+                },
+                {
+                  "type": "text",
+                  "text": "**Data sources (no agents for foundational):**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail management events (always)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "VPC Flow Logs (always)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "DNS logs (always)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "S3 data events (optional protection plan)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "EKS audit logs (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Runtime activity \u2014 EC2, EKS, ECS (optional, needs agent)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "RDS login events \u2014 Aurora only (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Lambda network activity (optional)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Detects:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Compromised instances (crypto mining, C2, data exfil)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Compromised credentials (unusual geo, anonymizing proxy)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Compromised S3 buckets (access from malicious IPs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Malware (EBS, S3, AWS Backup scanning)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Container threats (EKS/ECS runtime)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT detect misconfigurations",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT detect vulnerabilities",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT find sensitive data",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Org-wide:** Delegated admin, auto-enable new accounts"
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam gotchas:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Foundational sources (CloudTrail, VPC Flow Logs, DNS) are always enabled \u2014 no opt-out",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "S3 Protection doesn't require enabling CloudTrail data events \u2014 direct feed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Runtime Monitoring requires agent deployment (not automatic)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "EBS Malware scan: once per 24 hours per instance",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Finding severity: Low (0.1-3.9), Medium (4.0-6.9), High (7.0-8.9), Critical (9.0-10.0)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Extended Threat Detection: correlates findings into attack sequences (no extra cost)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Macie \u2014 Sensitive Data Discovery (Task 1.1)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**What it does:** Discovers and protects sensitive data stored in S3."
+                },
+                {
+                  "type": "text",
+                  "text": "**Detects:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 PII (names, addresses, SSNs, passport numbers)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 PHI (health records, insurance IDs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Financial data (credit card numbers, bank accounts)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Credentials (AWS keys, private keys in S3)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Custom data identifiers (regex patterns you define)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT detect threats or attacks",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT scan EC2, Lambda, or databases",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT detect public access (that's Security Hub/Config)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**How it works:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Scans S3 objects using ML + pattern matching",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Scheduled or one-time discovery jobs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Automated sensitive data discovery (samples all buckets)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Org-wide:** Delegated admin, manage member accounts centrally"
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam gotchas:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**S3 only** \u2014 doesn't scan EBS, EFS, RDS, DynamoDB",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Automated discovery samples objects (not full scan) \u2014 use jobs for comprehensive",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Findings go to Security Hub automatically",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can create custom data identifiers with regex + keywords",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Suppression rules to reduce noise (not delete findings)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Inspector \u2014 Vulnerability Scanning (Task 3.2)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**What it does:** Scans compute workloads for software vulnerabilities and unintended network exposure."
+                },
+                {
+                  "type": "text",
+                  "text": "**Scans:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 EC2 instances (OS + application CVEs via SSM agent)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Lambda functions (code + dependency vulnerabilities)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Container images in ECR (OS + language package CVEs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT scan S3",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT detect active threats (that's GuardDuty)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT find sensitive data (that's Macie)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**How it works:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Agentless for ECR** \u2014 scans on push",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SSM Agent for EC2** \u2014 continuous scanning",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Automatic for Lambda** \u2014 scans on deploy",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Findings include CVE ID, severity (CVSS), affected package, fix version",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Org-wide:** Delegated admin, auto-enable"
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam gotchas:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Requires SSM Agent on EC2 (same agent as Session Manager)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Network reachability findings: detects open ports accessible from internet",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Inspector \u2260 Inspector Classic (v1 is deprecated, exam uses v2)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Lambda scanning: code vulnerabilities + dependency vulnerabilities",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Findings go to Security Hub automatically",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Security Hub \u2014 Aggregation + Compliance (Task 1.1)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**What it does:** Central dashboard for security findings + automated compliance checks."
+                },
+                {
+                  "type": "text",
+                  "text": "**Two functions:**"
+                },
+                {
+                  "type": "text",
+                  "text": "1. **Aggregates findings** from GuardDuty, Macie, Inspector, Config, Firewall Manager, IAM Access Analyzer, third-party tools"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Runs compliance checks** via security standards (uses Config rules under the hood)"
+                },
+                {
+                  "type": "text",
+                  "text": "**Built-in standards:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "AWS Foundational Security Best Practices (FSBP)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "CIS AWS Foundations Benchmark",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "PCI DSS",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "NIST 800-53",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**S3-specific controls (why it answers the \"public bucket\" question):**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "`[S3.1]` S3 Block Public Access should be enabled",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`[S3.2]` S3 buckets should prohibit public read access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`[S3.3]` S3 buckets should prohibit public write access",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`[S3.8]` S3 Block Public Access should be enabled at bucket level",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Org-wide:** Delegated admin, cross-region aggregation, auto-enable"
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam gotchas:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Requires AWS Config** to be enabled (compliance checks use Config rules)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Findings in ASFF format (AWS Security Finding Format)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can send findings to EventBridge for automated response",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cross-region aggregation: designate one region as aggregation region",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Custom actions: trigger EventBridge from specific findings",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Detective \u2014 Investigation (Task 2.2)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**What it does:** Analyzes and visualizes data to investigate security findings. Used AFTER detection."
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Root cause analysis of GuardDuty findings",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Visualize resource behavior over time",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Correlate across CloudTrail, VPC Flow Logs, GuardDuty, EKS",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT detect anything \u2014 only investigates",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Not a monitoring tool",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam signal:** \"investigate,\" \"root cause,\" \"determine scope\" \u2192 Detective"
+                }
+              ]
+            },
+            {
+              "title": "Config \u2014 Configuration Compliance (Task 1.1, 6.1)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**What it does:** Records resource configuration changes and evaluates compliance against rules."
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Tracks configuration history (who changed what, when)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Managed rules (e.g., `s3-bucket-public-read-prohibited`)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Custom rules (Lambda-backed)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Conformance packs (bundle of rules)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Organization-wide rules",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT detect threats",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c Does NOT scan for vulnerabilities",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**Exam signal:** \"compliance,\" \"configuration drift,\" \"detect non-compliant resources\" \u2192 Config"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Flowchart",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Is something ACTIVELY MALICIOUS happening?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500 Yes \u2192 GuardDuty"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500 No"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500 Is there SENSITIVE DATA in S3?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500 Yes \u2192 Macie"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500 Are there SOFTWARE VULNERABILITIES?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500 Yes \u2192 Inspector"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500 Is a RESOURCE MISCONFIGURED?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500 Yes \u2192 Config or Security Hub"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500 Need to INVESTIGATE a finding?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500 Yes \u2192 Detective"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500 Need to AGGREGATE across accounts?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500 Yes \u2192 Security Hub"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Common Exam Traps",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **\"Detect public S3 bucket\"** \u2014 Security Hub or Config, NOT Macie (Macie finds data, not access)"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **\"Find PII in S3\"** \u2014 Macie, NOT GuardDuty (GuardDuty detects threats to S3, not data content)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **\"EC2 running crypto miner\"** \u2014 GuardDuty, NOT Inspector (Inspector finds vulns, not active threats)"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **\"Scan Lambda for vulnerabilities\"** \u2014 Inspector, NOT GuardDuty Lambda Protection (GuardDuty monitors Lambda network traffic)"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **\"Investigate a GuardDuty finding\"** \u2014 Detective, NOT GuardDuty itself"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **\"Aggregate findings org-wide\"** \u2014 Security Hub, NOT GuardDuty (GuardDuty is regional, feeds into Security Hub)"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **\"Detect S3 exfiltration in progress\"** \u2014 GuardDuty S3 Protection, NOT Macie (Macie is discovery, not real-time)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-session-manager.md",
+      "title": "AWS Systems Manager Session Manager",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Secure Administrative Access (No SSH/RDP)",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**No inbound ports required** \u2014 agent makes outbound HTTPS (443) to SSM endpoint",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No bastion hosts** \u2014 eliminates jump-box infrastructure and attack surface",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No SSH keys to manage** \u2014 authentication via IAM, not key pairs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No public IP required** \u2014 works via VPC endpoints (PrivateLink)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Centralized access control** \u2014 IAM policies govern who can start sessions on which instances",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "How It Works",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. SSM Agent (pre-installed on Amazon Linux 2/2023, Windows AMIs) opens **outbound** HTTPS connection to SSM endpoint"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Admin calls `ssm:StartSession` API (console, CLI, or SDK)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. SSM service brokers a WebSocket channel between admin and agent"
+                },
+                {
+                  "type": "text",
+                  "text": "4. All traffic encrypted with TLS 1.2+ in transit, optional KMS encryption for session data"
+                }
+              ]
+            },
+            {
+              "title": "K8s Equivalent",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Session Manager \u2248 `kubectl exec`** with audit logging",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IAM policy on `ssm:StartSession`** \u2248 K8s RBAC on `pods/exec`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Session logging** \u2248 K8s audit log + terminal recording",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Three Logging Layers (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Log Destination",
+                    "What It Captures",
+                    "Latency",
+                    "Enabled By Default?"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudTrail**",
+                      "`StartSession`, `TerminateSession`, `ResumeSession` API calls (who, when, which instance)",
+                      "~15 min",
+                      "\u2705 Yes (management events)"
+                    ],
+                    [
+                      "**S3**",
+                      "Full session transcript (keystrokes, command output)",
+                      "After session ends",
+                      "\u274c Must configure"
+                    ],
+                    [
+                      "**CloudWatch Logs**",
+                      "Same session transcript",
+                      "**Near real-time streaming**",
+                      "\u274c Must configure"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "What Each Layer Answers",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**\"Who connected to the instance?\"** \u2192 CloudTrail",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"What commands did they run?\"** \u2192 S3 or CloudWatch Logs",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Alert me if someone runs a dangerous command right now\"** \u2192 CloudWatch Logs (real-time) + metric filter + alarm",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Logging Configuration",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Configured in **Session Manager preferences** (not CloudTrail settings)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Per-account, per-region setting",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can enforce via SSM Session Document (`AWS-StartInteractiveCommand`, `AWS-StartNonInteractiveCommand`)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Encryption",
+          "subsections": [
+            {
+              "title": "In Transit",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "TLS 1.2+ between agent and SSM endpoint (always)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Optional **KMS encryption** for the session data channel itself (additional layer)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Session Logs at Rest",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**S3**: Encrypt with SSE-S3, SSE-KMS, or SSE-C",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudWatch Logs**: Encrypt with KMS customer managed key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Exam preference**: Customer managed KMS key for both (audit trail + rotation)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Concurrent sessions per instance",
+                      "**2** (default, can increase)"
+                    ],
+                    [
+                      "Concurrent sessions per account per region",
+                      "**500**"
+                    ],
+                    [
+                      "Session idle timeout",
+                      "**20 minutes** (configurable, max 60 min)"
+                    ],
+                    [
+                      "Session max duration",
+                      "**No hard limit** (idle timeout applies)"
+                    ],
+                    [
+                      "Session log max size (S3)",
+                      "**No limit**"
+                    ],
+                    [
+                      "Supported OS",
+                      "Linux, macOS, Windows"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "IAM Access Control",
+          "subsections": [
+            {
+              "title": "Who Can Start Sessions",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"AllowSessionManagerForTaggedInstances\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"ssm:StartSession\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:ec2:us-east-1:123456789012:instance/*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"ssm:resourceTag/Environment\": \"production\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"AllowSessionManagerPlugin\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"ssm:TerminateSession\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:ssm:*:*:session/${aws:username}-*\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Enforce Logging (Block Sessions Without Logging)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"DenySessionWithoutLogging\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"ssm:StartSession\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"arn:aws:ssm:*:*:document/SSM-SessionManagerRunShell\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"BoolIfExists\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"ssm:SessionDocumentAccessCheck\": \"true\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "Use a custom Session Document that mandates S3/CloudWatch logging, then restrict users to that document only.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            },
+            {
+              "title": "Instance Role (Minimum Permissions)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "The EC2 instance needs an instance profile with:"
+                },
+                {
+                  "type": "bullet",
+                  "text": "`ssm:UpdateInstanceInformation` \u2014 heartbeat to SSM",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`ssmmessages:CreateControlChannel` \u2014 session channel",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`ssmmessages:CreateDataChannel` \u2014 session data",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`s3:PutObject` \u2014 if logging to S3",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`logs:CreateLogStream`, `logs:PutLogEvents` \u2014 if logging to CloudWatch",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`kms:GenerateDataKey` \u2014 if encrypting session data with KMS",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** If Session Manager connects but logs are missing, check the **instance role** \u2014 it needs S3/CloudWatch/KMS permissions, not just SSM permissions.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "VPC Endpoints (Private Access)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "For instances in **private subnets** (no internet gateway, no NAT):"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Endpoint",
+                    "Service",
+                    "Type"
+                  ],
+                  "rows": [
+                    [
+                      "`com.amazonaws.region.ssm`",
+                      "SSM API",
+                      "Interface (PrivateLink)"
+                    ],
+                    [
+                      "`com.amazonaws.region.ssmmessages`",
+                      "Session data channel",
+                      "Interface (PrivateLink)"
+                    ],
+                    [
+                      "`com.amazonaws.region.ec2messages`",
+                      "SSM Agent messages",
+                      "Interface (PrivateLink)"
+                    ],
+                    [
+                      "`com.amazonaws.region.s3`",
+                      "Session log delivery",
+                      "Gateway (free)"
+                    ],
+                    [
+                      "`com.amazonaws.region.logs`",
+                      "CloudWatch Logs delivery",
+                      "Interface (PrivateLink)"
+                    ],
+                    [
+                      "`com.amazonaws.region.kms`",
+                      "KMS encryption",
+                      "Interface (PrivateLink)"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** You need **three** SSM-related endpoints (`ssm`, `ssmmessages`, `ec2messages`) for Session Manager to work in a private subnet. Missing any one = connection failure.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "Session Manager vs SSH/RDP",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Session Manager: No inbound ports, IAM auth, full audit trail, no key management",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "SSH: Requires port 22, key pairs, bastion hosts, no native session recording",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Exam always prefers Session Manager** for \"most secure administrative access\"",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "CloudTrail Is Not Enough",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail logs **that** a session happened (API call)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail does NOT log **what happened inside** the session",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "If question asks \"audit commands run during session\" \u2192 S3 or CloudWatch Logs",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Logging Must Be Explicitly Configured",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "S3 and CloudWatch logging are **off by default**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Configure in Session Manager preferences or via Session Document",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Can enforce with IAM policy (deny sessions without approved Session Document)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Missing Logs Troubleshooting (Task 1.3)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Instance role missing permissions** \u2014 needs `s3:PutObject` or `logs:PutLogEvents`"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **VPC endpoint missing** \u2014 private subnet instance can't reach S3/CloudWatch"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **KMS key policy** \u2014 if encrypting logs, instance role needs `kms:GenerateDataKey`"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Session Document not configured** \u2014 preferences not set for logging destination"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **S3 bucket policy** \u2014 must allow the instance role to write"
+                }
+              ]
+            },
+            {
+              "title": "Session Manager vs EC2 Instance Connect",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Session Manager**: Shell access, full session logging, works on Linux + Windows",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**EC2 Instance Connect**: Pushes temporary SSH key, requires port 22 open, Linux only",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Exam preference**: Session Manager (no ports, better logging)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Run Command vs Session Manager",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Run Command**: Execute commands remotely, output to S3/CloudWatch, no interactive shell",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Session Manager**: Interactive shell session, real-time terminal",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Both use SSM Agent, both need similar IAM/VPC endpoint setup",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Integration with Other Services",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Integration"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudTrail**",
+                      "Logs StartSession/TerminateSession API calls"
+                    ],
+                    [
+                      "**CloudWatch Logs**",
+                      "Real-time session transcript streaming"
+                    ],
+                    [
+                      "**S3**",
+                      "Session transcript archive"
+                    ],
+                    [
+                      "**KMS**",
+                      "Encrypt session data channel + logs at rest"
+                    ],
+                    [
+                      "**EventBridge**",
+                      "Trigger on session start/stop events"
+                    ],
+                    [
+                      "**IAM**",
+                      "Control who can start sessions on which instances"
+                    ],
+                    [
+                      "**VPC Endpoints**",
+                      "Private subnet access without internet"
+                    ],
+                    [
+                      "**AWS Config**",
+                      "Rule: `ec2-instance-managed-by-systems-manager`"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Use Session Manager over SSH/RDP** \u2014 always, for all admin access"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Enable both S3 and CloudWatch logging** \u2014 archive + real-time"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Encrypt with KMS** \u2014 customer managed key for session data and logs"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Enforce logging via IAM** \u2014 deny sessions without approved Session Document"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Use VPC endpoints** \u2014 no internet exposure for management traffic"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Tag-based access** \u2014 restrict sessions to specific environments via `ssm:resourceTag`"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Set idle timeout** \u2014 20 min default, reduce for sensitive environments"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Monitor with EventBridge** \u2014 alert on session starts to production instances"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Audit with Config** \u2014 ensure all instances are SSM-managed"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Restrict TerminateSession** \u2014 users should only terminate their own sessions"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-signer.md",
+      "title": "AWS Signer \u2014 Code Signing Service",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Cryptographically sign code artifacts (Lambda, containers, IoT firmware) to guarantee integrity and provenance at deployment time.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Problem It Solves",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WITHOUT code signing:"
+                },
+                {
+                  "type": "text",
+                  "text": "Developer \u2192 builds Lambda zip \u2192 uploads to S3 \u2192 deploys"
+                },
+                {
+                  "type": "text",
+                  "text": "Attacker  \u2192 modifies zip in S3 \u2192 Lambda runs tampered code"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 No way to detect the modification"
+                },
+                {
+                  "type": "text",
+                  "text": "WITH AWS Signer:"
+                },
+                {
+                  "type": "text",
+                  "text": "CI pipeline \u2192 builds Lambda zip \u2192 signs with Signer \u2192 uploads to S3"
+                },
+                {
+                  "type": "text",
+                  "text": "Lambda deployment \u2192 verifies signature \u2192 only deploys if valid"
+                },
+                {
+                  "type": "text",
+                  "text": "Attacker modifies zip \u2192 signature invalid \u2192 deployment BLOCKED"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "What It Signs",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Artifact Type",
+                    "Integration",
+                    "Verification Point"
+                  ],
+                  "rows": [
+                    [
+                      "**Lambda deployment packages**",
+                      "Lambda Code Signing Configuration",
+                      "At deploy time (CreateFunction / UpdateFunctionCode)"
+                    ],
+                    [
+                      "**Container images**",
+                      "ECR + Notation (AWS Signer plugin)",
+                      "At pull time (EKS admission controller)"
+                    ],
+                    [
+                      "**IoT OTA updates**",
+                      "AWS IoT Jobs",
+                      "At device firmware update"
+                    ],
+                    [
+                      "**AWS Lambda layers**",
+                      "Same as Lambda packages",
+                      "At deploy time"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How It Works (Lambda \u2014 Primary Exam Target)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510     \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510     \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  CI Pipeline \u2502\u2500\u2500\u2500\u2500\u25ba\u2502  AWS Signer   \u2502\u2500\u2500\u2500\u2500\u25ba\u2502  Signed artifact \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  (build zip) \u2502     \u2502  (signs with  \u2502     \u2502  (S3 bucket)     \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              \u2502     \u2502   your profile)\u2502     \u2502                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518     \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518     \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Lambda Function \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  (Code Signing   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   Configuration) \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502                  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  Checks signature\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  before deploy   \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "If signature invalid or missing \u2192 deployment REJECTED (or WARN)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Key Components",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Component",
+                    "What It Is"
+                  ],
+                  "rows": [
+                    [
+                      "**Signing profile**",
+                      "Defines the signing configuration (algorithm, validity period)"
+                    ],
+                    [
+                      "**Signing job**",
+                      "One-time operation that signs an artifact"
+                    ],
+                    [
+                      "**Code Signing Configuration (CSC)**",
+                      "Lambda resource that enforces signature validation"
+                    ],
+                    [
+                      "**Revocation**",
+                      "Invalidate a signing profile or specific signature"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Lambda Code Signing Configuration",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "CSC defines:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Allowed signing profiles (who can sign)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Untrusted artifact policy:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 ENFORCE \u2192 block deployment if unsigned/invalid"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 WARN \u2192 allow but log warning in CloudTrail"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Attached to Lambda function(s)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Container Image Signing (EKS)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "CI pipeline \u2192 build image \u2192 push to ECR \u2192 sign with Signer (Notation plugin)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "EKS cluster \u2192 admission controller (Kyverno/OPA) \u2192 verify signature \u2192 allow/deny pod"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Uses **Notation** format (CNCF standard, like cosign)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "AWS Signer acts as the signing authority",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Verification via admission webhooks in EKS (not built into EKS natively)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Signing profiles per account per region",
+                      "100"
+                    ],
+                    [
+                      "Signature validity",
+                      "Configurable (default 135 months for Lambda)"
+                    ],
+                    [
+                      "Supported platforms",
+                      "Lambda, Container (Notation), IoT"
+                    ],
+                    [
+                      "Signing algorithms",
+                      "ECDSA (P-256, P-384)"
+                    ],
+                    [
+                      "Cost",
+                      "Free (no charge for signing operations)"
+                    ],
+                    [
+                      "Revocation",
+                      "Per-profile or per-job"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Revocation \u2014 Decision Table (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Action",
+                    "What Happens",
+                    "Scope",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**Revoke signing job**",
+                      "ONE specific signature marked invalid",
+                      "Only that artifact",
+                      "\"This specific Lambda zip is suspect\""
+                    ],
+                    [
+                      "**Revoke signing profile**",
+                      "ALL signatures from that profile invalid",
+                      "Everything signed with it",
+                      "\"Entire signing authority compromised\""
+                    ],
+                    [
+                      "**Delete CSC**",
+                      "No signature verification on the function",
+                      "Enforcement removed",
+                      "\u274c Never \u2014 removes security entirely"
+                    ],
+                    [
+                      "**Remove IAM access**",
+                      "Person can't sign NEW artifacts",
+                      "Future only",
+                      "\"Developer left \u2014 prevent new signing\""
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "When to Use Which",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\"One bad artifact, keep everything else working\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Revoke the signing JOB (surgical)"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Signing authority compromised, can't trust anything from it\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Revoke the signing PROFILE (nuclear \u2014 re-sign everything)"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Developer left, no suspicion\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Remove IAM access (future prevention only)"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Developer left + suspect malicious code signed\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Remove IAM access (future) + Revoke specific job (past)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "CSC Explained",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "CSC = enforcement point on the Lambda function"
+                },
+                {
+                  "type": "text",
+                  "text": "Defines:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Which signing profiles are trusted (allowed publishers)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 What happens if invalid:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 ENFORCE \u2192 block deployment"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 WARN \u2192 allow but log to CloudTrail"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Attached to Lambda function(s)"
+                },
+                {
+                  "type": "text",
+                  "text": "DELETE CSC = remove all verification = anyone deploys anything"
+                },
+                {
+                  "type": "text",
+                  "text": "= NEVER the right answer"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "How Revocation Works at Deploy Time",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Developer deploys Lambda:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 CSC checks signature"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Looks up signing job status"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 If ACTIVE \u2192 \u2705 deploy allowed"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 If REVOKED \u2192 \u274c deployment blocked"
+                },
+                {
+                  "type": "text",
+                  "text": "The code still exists. The signature still exists."
+                },
+                {
+                  "type": "text",
+                  "text": "But its TRUST STATUS is \"revoked\" \u2192 CSC rejects it."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Doesn't scan code**",
+                      "Signer signs, doesn't analyze. Inspector scans for CVEs. Different jobs."
+                    ],
+                    [
+                      "**Lambda CSC = enforcement point**",
+                      "Without CSC attached to the function, signing is meaningless"
+                    ],
+                    [
+                      "**ENFORCE vs WARN**",
+                      "ENFORCE blocks unsigned deploys. WARN just logs. Exam prefers ENFORCE."
+                    ],
+                    [
+                      "**Revocation**",
+                      "Can revoke a signing profile (all signatures from it become invalid) or revoke specific signatures"
+                    ],
+                    [
+                      "**CloudTrail logs**",
+                      "All signing operations and validation failures logged"
+                    ],
+                    [
+                      "**Free**",
+                      "No cost for AWS Signer itself"
+                    ],
+                    [
+                      "**Not ACM**",
+                      "ACM = TLS certificates. Signer = code artifact signatures. Different things."
+                    ],
+                    [
+                      "**Not KMS directly**",
+                      "Signer manages its own signing keys (backed by KMS internally), you don't manage the key"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Decision Table",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal",
+                    "Answer",
+                    "NOT This"
+                  ],
+                  "rows": [
+                    [
+                      "\"Ensure Lambda code hasn't been tampered\"",
+                      "**AWS Signer + CSC**",
+                      "\u274c Inspector (finds CVEs, not tampering)"
+                    ],
+                    [
+                      "\"Only deploy signed container images\"",
+                      "**AWS Signer + admission controller**",
+                      "\u274c ECR scanning (CVEs, not provenance)"
+                    ],
+                    [
+                      "\"Verify code integrity before deployment\"",
+                      "**AWS Signer**",
+                      "\u274c CodeGuru (code quality, not integrity)"
+                    ],
+                    [
+                      "\"Scan Lambda for vulnerabilities\"",
+                      "**Inspector**",
+                      "\u274c Signer (integrity, not vulns)"
+                    ],
+                    [
+                      "\"TLS certificate for HTTPS\"",
+                      "**ACM**",
+                      "\u274c Signer (code signing, not TLS)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Integration with Other Services",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Relationship"
+                  ],
+                  "rows": [
+                    [
+                      "**Lambda**",
+                      "CSC enforces signature validation at deploy"
+                    ],
+                    [
+                      "**ECR**",
+                      "Stores signed container images (Notation format)"
+                    ],
+                    [
+                      "**S3**",
+                      "Stores signed Lambda packages"
+                    ],
+                    [
+                      "**CloudTrail**",
+                      "Logs all signing/validation events"
+                    ],
+                    [
+                      "**IAM**",
+                      "Controls who can create signing profiles and sign"
+                    ],
+                    [
+                      "**Inspector**",
+                      "Complementary \u2014 Inspector finds CVEs, Signer ensures integrity"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "AWS Signer          \u2248  cosign / Sigstore / Notary v2"
+                },
+                {
+                  "type": "text",
+                  "text": "Signing profile     \u2248  cosign key pair"
+                },
+                {
+                  "type": "text",
+                  "text": "CSC on Lambda       \u2248  Kyverno ClusterPolicy verifyImages"
+                },
+                {
+                  "type": "text",
+                  "text": "ENFORCE policy      \u2248  Kyverno policy in \"enforce\" mode"
+                },
+                {
+                  "type": "text",
+                  "text": "WARN policy         \u2248  Kyverno policy in \"audit\" mode"
+                },
+                {
+                  "type": "text",
+                  "text": "Revocation          \u2248  cosign key rotation + old signatures invalid"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Example: Lambda Code Signing Flow",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```bash"
+                },
+                {
+                  "type": "text",
+                  "text": "aws signer put-signing-profile \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--profile-name ProdLambdaSigning \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--platform-id AWSLambda-SHA384-ECDSA"
+                },
+                {
+                  "type": "text",
+                  "text": "aws signer start-signing-job \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--source 's3={bucketName=my-bucket,key=function.zip,version=abc123}' \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--destination 's3={bucketName=my-bucket,prefix=signed/}' \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--profile-name ProdLambdaSigning"
+                },
+                {
+                  "type": "text",
+                  "text": "aws lambda create-code-signing-config \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--allowed-publishers 'SigningProfileVersionArns=arn:aws:signer:us-east-1:123456789012:/signing-profiles/ProdLambdaSigning/abc123' \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--code-signing-policies 'UntrustedArtifactOnDeployment=Enforce'"
+                },
+                {
+                  "type": "text",
+                  "text": "aws lambda put-function-code-signing-config \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--function-name my-function \\"
+                },
+                {
+                  "type": "text",
+                  "text": "--code-signing-config-arn arn:aws:lambda:us-east-1:123456789012:code-signing-config:csc-abc123"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Signer = integrity (hasn't been tampered). Inspector = vulnerabilities (has known CVEs).** Different problems.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Lambda Code Signing Configuration = enforcement point.** Without CSC attached, signing is useless.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Ensure only signed code deploys\" = AWS Signer + CSC (ENFORCE).** Not Inspector, not CodeGuru, not KMS directly.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-sts.md",
+      "title": "AWS Security Token Service (STS)",
+      "sections": [
+        {
+          "title": "Security Use Cases",
+          "subsections": [
+            {
+              "title": "Temporary Credentials",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "All STS credentials are **short-lived** \u2014 no rotation needed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Consist of: `AccessKeyId`, `SecretAccessKey`, `SessionToken`, `Expiration`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Used by IAM roles, federation, cross-account access, and Identity Center",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Always prefer STS over long-term IAM user credentials**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "AssumeRole Variants",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "API",
+                    "Who Uses It",
+                    "Identity Source",
+                    "Token Input"
+                  ],
+                  "rows": [
+                    [
+                      "`AssumeRole`",
+                      "IAM users/roles, cross-account",
+                      "IAM",
+                      "None (caller already authenticated)"
+                    ],
+                    [
+                      "`AssumeRoleWithSAML`",
+                      "Enterprise federation",
+                      "SAML 2.0 IdP (Okta, ADFS, Entra ID)",
+                      "SAML assertion"
+                    ],
+                    [
+                      "`AssumeRoleWithWebIdentity`",
+                      "Mobile/web apps",
+                      "OIDC provider (Google, Facebook, Amazon)",
+                      "OIDC token"
+                    ],
+                    [
+                      "`GetFederationToken`",
+                      "IAM users (legacy)",
+                      "IAM user",
+                      "None"
+                    ],
+                    [
+                      "`GetSessionToken`",
+                      "IAM users needing MFA",
+                      "IAM user",
+                      "MFA token code"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Session Duration Limits",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "API",
+                    "Default",
+                    "Min",
+                    "Max"
+                  ],
+                  "rows": [
+                    [
+                      "`AssumeRole`",
+                      "1 hour",
+                      "15 min",
+                      "12 hours (role setting)"
+                    ],
+                    [
+                      "`AssumeRoleWithSAML`",
+                      "1 hour",
+                      "15 min",
+                      "12 hours"
+                    ],
+                    [
+                      "`AssumeRoleWithWebIdentity`",
+                      "1 hour",
+                      "15 min",
+                      "12 hours"
+                    ],
+                    [
+                      "`GetFederationToken`",
+                      "12 hours",
+                      "15 min",
+                      "36 hours"
+                    ],
+                    [
+                      "`GetSessionToken`",
+                      "12 hours",
+                      "15 min",
+                      "36 hours"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** `MaxSessionDuration` is set on the **role** (1\u201312 hours), but the caller requests `DurationSeconds` in the API call. The actual duration = min(requested, role max).",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            },
+            {
+              "title": "Cross-Account Access Pattern",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. Account A creates role with trust policy allowing Account B's principal"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Account B's principal calls `sts:AssumeRole` with the role ARN"
+                },
+                {
+                  "type": "text",
+                  "text": "3. STS returns temporary credentials scoped to the role's permissions"
+                },
+                {
+                  "type": "text",
+                  "text": "4. No credential sharing \u2014 each account manages its own policies"
+                }
+              ]
+            },
+            {
+              "title": "Session Policies",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Optional JSON policy passed as parameter in `AssumeRole` call",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Filters down** the role's permissions for that session only",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cannot escalate beyond the role's identity policies",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use case: vend narrower credentials to downstream services",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Effective permissions = role policy \u2229 session policy \u2229 boundary \u2229 SCP",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Resource-based policy bypass:** If a resource policy (e.g., bucket policy) names the session ARN directly, the session policy ceiling does NOT apply \u2014 access is granted regardless of session policy restrictions",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "API Throttling",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "`AssumeRole`: **No published default** \u2014 scales with account usage",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`GetCallerIdentity`: Very high limit (useful for debugging, cheap to call)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`GetSessionToken`: Standard limits apply",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Token Size",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Packed policy size limit**: 2,048 characters (for session policies)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**AssumeRole response**: Credentials + `AssumedRoleUser` (ARN + `AssumedRoleId`)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Regional Endpoints",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "STS has a **global endpoint** (`sts.amazonaws.com`) \u2014 maps to `us-east-1`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Regional endpoints recommended** (`sts.eu-west-1.amazonaws.com`) \u2014 lower latency, better availability",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Activate regional endpoints** in IAM console (some disabled by default)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail logs STS calls in the **region of the endpoint used**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** If regional STS endpoints are not activated and the global endpoint goes down, AssumeRole fails everywhere. Always activate regional endpoints.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "Confused Deputy Prevention",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Problem:** Service A assumes a role in your account on behalf of any customer, not just you",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Solution:** Use `aws:SourceArn` and `aws:SourceAccount` conditions in the trust policy",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Also use:** `aws:PrincipalOrgID` for org-scoped trust",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"AllowServiceWithConfusedDeputyProtection\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Service\": \"guardduty.amazonaws.com\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"sts:AssumeRole\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:SourceAccount\": \"123456789012\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"ArnLike\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:SourceArn\": \"arn:aws:guardduty:us-east-1:123456789012:detector/*\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Trust Policy \u2260 Permissions",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Trust policy controls **who can assume** the role",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Identity policy controls **what the role can do**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Both must be correct \u2014 trust without permissions = usable but powerless role",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Role Chaining",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Role A assumes Role B, which assumes Role C",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Session duration resets to 1 hour max** when chaining (cannot use role's `MaxSessionDuration`)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Session policies and source identity propagate through the chain",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "CloudTrail shows each hop separately",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "`GetCallerIdentity`",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Cannot be denied** by any policy (IAM, SCP, boundary, session)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Always returns: Account, ARN, UserId",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use for debugging \"who am I?\" in scripts",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "No permissions required to call it",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Source Identity",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Set during initial `AssumeRole` call via `SourceIdentity` parameter",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Persists through role chaining** \u2014 cannot be changed",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Logged in CloudTrail for audit trail back to original human",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Use `sts:SourceIdentity` condition key to enforce",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "`ExternalId` for Third-Party Access",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Random string shared between you and the third party",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Prevents confused deputy when granting cross-account access to vendors",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Not a secret** \u2014 it's a transaction identifier, not authentication",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Set in trust policy condition: `sts:ExternalId`",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"AllowThirdPartyWithExternalId\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Allow\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Principal\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"AWS\": \"arn:aws:iam::111122223333:root\""
+                },
+                {
+                  "type": "text",
+                  "text": "},"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"sts:AssumeRole\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"StringEquals\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"sts:ExternalId\": \"unique-id-assigned-by-vendor-12345\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Revoking Sessions",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Cannot revoke individual STS tokens** \u2014 no invalidation API",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Revoke all sessions:** Add inline deny policy with `aws:TokenIssueTime` condition",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Denies all sessions issued before a specific timestamp",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "New sessions (after the timestamp) work normally",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "```json"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Version\": \"2012-10-17\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Statement\": ["
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"Sid\": \"RevokeAllOlderSessions\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Effect\": \"Deny\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Action\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Resource\": \"*\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"Condition\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"DateLessThan\": {"
+                },
+                {
+                  "type": "text",
+                  "text": "\"aws:TokenIssueTime\": \"2025-01-15T12:00:00Z\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "]"
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam gotcha:** This is the ONLY way to revoke active STS sessions. Deleting the role or removing policies doesn't invalidate already-issued tokens until they expire.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            },
+            {
+              "title": "`AssumeRoleWithWebIdentity` vs Cognito Identity Pools",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Direct `AssumeRoleWithWebIdentity`:** App calls STS directly with OIDC token",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cognito Identity Pools:** Cognito brokers the exchange (recommended)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Cognito adds: unauthenticated access, identity merging, attribute-based role mapping",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Exam preference:** Use Cognito Identity Pools over direct STS for mobile/web apps",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "S3 Presigned URLs",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Generated using STS temporary credentials (or IAM user credentials)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Inherit the permissions of the signer** at time of use (not creation)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "If the role's session expires, presigned URL stops working",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Max expiry: 7 days (SigV4), but limited by credential lifetime",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cannot be revoked** \u2014 rotate the signing credentials to invalidate",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "STS Condition Keys (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Condition Key",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "`sts:ExternalId`",
+                      "Third-party confused deputy prevention"
+                    ],
+                    [
+                      "`sts:SourceIdentity`",
+                      "Track original human through role chains"
+                    ],
+                    [
+                      "`sts:RoleSessionName`",
+                      "Enforce naming convention for sessions"
+                    ],
+                    [
+                      "`sts:TransitiveTagKeys`",
+                      "Control which tags persist through chaining"
+                    ],
+                    [
+                      "`aws:TokenIssueTime`",
+                      "Revoke sessions issued before a timestamp"
+                    ],
+                    [
+                      "`aws:MultiFactorAuthPresent`",
+                      "Require MFA for AssumeRole"
+                    ],
+                    [
+                      "`aws:MultiFactorAuthAge`",
+                      "Require recent MFA (max seconds since auth)"
+                    ],
+                    [
+                      "`aws:PrincipalOrgID`",
+                      "Restrict trust to your organization"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Best Practices",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "1. **Use regional STS endpoints** \u2014 activate in all regions you operate in"
+                },
+                {
+                  "type": "text",
+                  "text": "2. **Set `MaxSessionDuration`** to minimum needed (don't leave at 12 hours)"
+                },
+                {
+                  "type": "text",
+                  "text": "3. **Always add confused deputy conditions** in trust policies for AWS services"
+                },
+                {
+                  "type": "text",
+                  "text": "4. **Use `ExternalId`** for all third-party cross-account roles"
+                },
+                {
+                  "type": "text",
+                  "text": "5. **Enable `SourceIdentity`** for audit trail through role chains"
+                },
+                {
+                  "type": "text",
+                  "text": "6. **Prefer Cognito Identity Pools** over direct `AssumeRoleWithWebIdentity`"
+                },
+                {
+                  "type": "text",
+                  "text": "7. **Monitor with CloudTrail** \u2014 all STS API calls are logged"
+                },
+                {
+                  "type": "text",
+                  "text": "8. **Use session policies** to scope down credentials for downstream consumers"
+                },
+                {
+                  "type": "text",
+                  "text": "9. **Require MFA** for sensitive AssumeRole operations via `aws:MultiFactorAuthPresent`"
+                },
+                {
+                  "type": "text",
+                  "text": "10. **Know the revocation pattern** \u2014 `aws:TokenIssueTime` deny is the only way"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-verified-permissions.md",
+      "title": "Amazon Verified Permissions",
+      "sections": [
+        {
+          "title": "One-Liner",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Application-level authorization engine \u2014 \"Can user X do action Y on resource Z?\" at runtime.**"
+                },
+                {
+                  "type": "text",
+                  "text": "Not for AWS API access (that's IAM). For YOUR app's permission logic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "IAM vs Verified Permissions",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "IAM:                                    Verified Permissions:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 \"Can this role call s3:GetObject?\"  \u251c\u2500\u2500 \"Can user Alice edit document-123?\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 AWS API level                       \u251c\u2500\u2500 Application level"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 JSON policies                       \u251c\u2500\u2500 Cedar policies"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Evaluated by AWS                    \u251c\u2500\u2500 Evaluated by your app calling the API"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Controls infrastructure access      \u2514\u2500\u2500 Controls business logic access"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "IAM",
+                    "Verified Permissions"
+                  ],
+                  "rows": [
+                    [
+                      "**Scope**",
+                      "AWS API actions",
+                      "Your app's actions"
+                    ],
+                    [
+                      "**Language**",
+                      "IAM JSON",
+                      "Cedar"
+                    ],
+                    [
+                      "**Principals**",
+                      "IAM users/roles",
+                      "Your app's users (from Cognito, etc.)"
+                    ],
+                    [
+                      "**Resources**",
+                      "AWS resources (buckets, keys)",
+                      "Your app's resources (documents, orders)"
+                    ],
+                    [
+                      "**Evaluation**",
+                      "Automatic on every AWS API call",
+                      "Your app calls `IsAuthorized` API"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "How It Works",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "1. Define a SCHEMA (your app's entity types)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Users, Documents, Folders, Teams"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Write CEDAR POLICIES"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 \"Admins can do anything in their tenant\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 \"Viewers can only read documents in their team\""
+                },
+                {
+                  "type": "text",
+                  "text": "3. Create a POLICY STORE (container for policies)"
+                },
+                {
+                  "type": "text",
+                  "text": "4. App calls IsAuthorized at runtime:"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Principal: \"User::alice\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Action: \"Action::editDocument\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Resource: \"Document::doc-123\""
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Context: { tenant: \"acme\", ip: \"10.0.1.5\" }"
+                },
+                {
+                  "type": "text",
+                  "text": "5. Verified Permissions returns: ALLOW or DENY"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cedar Policy Examples",
+          "subsections": [
+            {
+              "title": "Allow admins full access in their tenant",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```cedar"
+                },
+                {
+                  "type": "text",
+                  "text": "permit ("
+                },
+                {
+                  "type": "text",
+                  "text": "principal in Role::\"admin\","
+                },
+                {
+                  "type": "text",
+                  "text": "action,"
+                },
+                {
+                  "type": "text",
+                  "text": "resource"
+                },
+                {
+                  "type": "text",
+                  "text": ") when {"
+                },
+                {
+                  "type": "text",
+                  "text": "principal.tenant == resource.tenant"
+                },
+                {
+                  "type": "text",
+                  "text": "};"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Allow viewers to read only",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```cedar"
+                },
+                {
+                  "type": "text",
+                  "text": "permit ("
+                },
+                {
+                  "type": "text",
+                  "text": "principal in Role::\"viewer\","
+                },
+                {
+                  "type": "text",
+                  "text": "action == Action::\"viewDocument\","
+                },
+                {
+                  "type": "text",
+                  "text": "resource"
+                },
+                {
+                  "type": "text",
+                  "text": ") when {"
+                },
+                {
+                  "type": "text",
+                  "text": "principal.tenant == resource.tenant"
+                },
+                {
+                  "type": "text",
+                  "text": "};"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Deny access from outside allowed IPs",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```cedar"
+                },
+                {
+                  "type": "text",
+                  "text": "forbid ("
+                },
+                {
+                  "type": "text",
+                  "text": "principal,"
+                },
+                {
+                  "type": "text",
+                  "text": "action,"
+                },
+                {
+                  "type": "text",
+                  "text": "resource"
+                },
+                {
+                  "type": "text",
+                  "text": ") unless {"
+                },
+                {
+                  "type": "text",
+                  "text": "context.ip.inRange(ip(\"10.0.0.0/16\"))"
+                },
+                {
+                  "type": "text",
+                  "text": "};"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Integration with Cognito",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Cognito User Pool (authentication)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 User signs in \u2192 gets ID token with claims (groups, tenant, email)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 App extracts claims"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 App calls Verified Permissions with claims as principal/context"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Verified Permissions evaluates Cedar policies"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Returns Allow/Deny"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 App enforces the decision"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Cognito authenticates (who are you?). Verified Permissions authorizes (what can you do?).**"
+                }
+              ]
+            },
+            {
+              "title": "How Claims Map to Cedar (Exam-Critical)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "1. User signs into Cognito User Pool"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2192 Gets ID token with claims:"
+                },
+                {
+                  "type": "text",
+                  "text": "{"
+                },
+                {
+                  "type": "text",
+                  "text": "\"sub\": \"user-123\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"cognito:groups\": [\"admin\"],"
+                },
+                {
+                  "type": "text",
+                  "text": "\"custom:tenant\": \"acme\","
+                },
+                {
+                  "type": "text",
+                  "text": "\"email\": \"alice@acme.com\""
+                },
+                {
+                  "type": "text",
+                  "text": "}"
+                },
+                {
+                  "type": "text",
+                  "text": "2. Your app calls VP with token directly:"
+                },
+                {
+                  "type": "text",
+                  "text": "IsAuthorizedWithToken("
+                },
+                {
+                  "type": "text",
+                  "text": "identityToken: \"<raw Cognito ID token>\","
+                },
+                {
+                  "type": "text",
+                  "text": "action: Action::\"editDocument\","
+                },
+                {
+                  "type": "text",
+                  "text": "resource: Document::\"doc-456\""
+                },
+                {
+                  "type": "text",
+                  "text": ")"
+                },
+                {
+                  "type": "text",
+                  "text": "3. VP automatically extracts:"
+                },
+                {
+                  "type": "text",
+                  "text": "principal  \u2190 from \"sub\" claim"
+                },
+                {
+                  "type": "text",
+                  "text": "groups     \u2190 from \"cognito:groups\""
+                },
+                {
+                  "type": "text",
+                  "text": "attributes \u2190 from custom claims"
+                },
+                {
+                  "type": "text",
+                  "text": "4. Cedar policy evaluates against extracted claims:"
+                },
+                {
+                  "type": "text",
+                  "text": "permit ("
+                },
+                {
+                  "type": "text",
+                  "text": "principal in Group::\"admin\","
+                },
+                {
+                  "type": "text",
+                  "text": "action == Action::\"editDocument\","
+                },
+                {
+                  "type": "text",
+                  "text": "resource"
+                },
+                {
+                  "type": "text",
+                  "text": ") when {"
+                },
+                {
+                  "type": "text",
+                  "text": "principal.tenant == resource.tenant"
+                },
+                {
+                  "type": "text",
+                  "text": "};"
+                },
+                {
+                  "type": "text",
+                  "text": "5. VP returns: ALLOW or DENY"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "**Two ways to call VP:**"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Method",
+                    "How",
+                    "When"
+                  ],
+                  "rows": [
+                    [
+                      "`IsAuthorized`",
+                      "Your app parses token, maps claims manually",
+                      "Full control over mapping"
+                    ],
+                    [
+                      "`IsAuthorizedWithToken`",
+                      "Pass raw Cognito token, VP extracts claims",
+                      "Less code, direct integration"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Limits/Quotas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Policy stores per region",
+                      "10"
+                    ],
+                    [
+                      "Policies per store",
+                      "10,000"
+                    ],
+                    [
+                      "Schema size",
+                      "160 KB"
+                    ],
+                    [
+                      "IsAuthorized requests",
+                      "1,000 TPS per store"
+                    ],
+                    [
+                      "BatchIsAuthorized",
+                      "30 requests per batch"
+                    ],
+                    [
+                      "Cedar policy size",
+                      "10 KB per policy"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**Not a replacement for IAM**",
+                      "Complements IAM \u2014 IAM for AWS, VP for your app"
+                    ],
+                    [
+                      "**Cedar \u2260 IAM JSON**",
+                      "Different language, different evaluation engine"
+                    ],
+                    [
+                      "**Cognito integration**",
+                      "Primary identity source \u2014 maps user pool groups to Cedar principals"
+                    ],
+                    [
+                      "**No agents/sidecars**",
+                      "Pure API call \u2014 your app calls `IsAuthorized`"
+                    ],
+                    [
+                      "**Audit via CloudTrail**",
+                      "All authorization decisions logged"
+                    ],
+                    [
+                      "**Schema is optional but recommended**",
+                      "Validates policies against your entity model"
+                    ],
+                    [
+                      "**Default deny**",
+                      "Like IAM \u2014 no matching permit = denied"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "When to Use (Exam Decision)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Scenario",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Control who can call AWS APIs\"",
+                      "**IAM**"
+                    ],
+                    [
+                      "\"Fine-grained app permissions per user per document\"",
+                      "**Verified Permissions**"
+                    ],
+                    [
+                      "\"Multi-tenant SaaS authorization\"",
+                      "**Verified Permissions**"
+                    ],
+                    [
+                      "\"Role-based access within your application\"",
+                      "**Verified Permissions**"
+                    ],
+                    [
+                      "\"Restrict which AWS services an account can use\"",
+                      "**SCP**"
+                    ],
+                    [
+                      "\"Dynamic access based on resource tags\"",
+                      "**ABAC (IAM)**"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "K8s Mapping",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Verified Permissions  \u2248  OPA (Open Policy Agent) for app-level decisions"
+                },
+                {
+                  "type": "text",
+                  "text": "Cedar policies        \u2248  Rego rules"
+                },
+                {
+                  "type": "text",
+                  "text": "Policy store          \u2248  OPA bundle / policy repository"
+                },
+                {
+                  "type": "text",
+                  "text": "IsAuthorized API      \u2248  OPA REST API query (/v1/data)"
+                },
+                {
+                  "type": "text",
+                  "text": "Schema                \u2248  OPA input schema validation"
+                },
+                {
+                  "type": "text",
+                  "text": "Cognito + VP          \u2248  Dex/OIDC + OPA sidecar"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**IAM = AWS API access. Verified Permissions = your app's access.** Different layers, complement each other.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Cedar = policy language. IsAuthorized = runtime API call.** Your app asks, VP answers.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Exam signal:** \"fine-grained application permissions\" / \"multi-tenant\" / \"per-document access\" \u2192 Verified Permissions.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-waf-shield.md",
+      "title": "AWS WAF + Shield",
+      "sections": [
+        {
+          "title": "AWS WAF \u2014 Web Application Firewall",
+          "subsections": [
+            {
+              "title": "What It Does (One-Liner)",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "**Filters HTTP/HTTPS requests at Layer 7 \u2014 blocks SQLi, XSS, rate limiting, geo-blocking.**"
+                }
+              ]
+            },
+            {
+              "title": "K8s Mapping",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "WAF \u2248 ModSecurity on NGINX Ingress Controller"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248 Istio AuthorizationPolicy with custom rules"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2248 OWASP CRS (Core Rule Set) for your ingress"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Where WAF Attaches (Exam-Critical)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Resource",
+                    "Use Case"
+                  ],
+                  "rows": [
+                    [
+                      "**CloudFront**",
+                      "Protect static sites, APIs behind CDN"
+                    ],
+                    [
+                      "**ALB**",
+                      "Protect web apps behind load balancer"
+                    ],
+                    [
+                      "**API Gateway**",
+                      "Protect REST/HTTP APIs"
+                    ],
+                    [
+                      "**AppSync**",
+                      "Protect GraphQL APIs"
+                    ],
+                    [
+                      "**Cognito User Pool**",
+                      "Protect authentication endpoints"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "WAF does NOT attach to NLB, EC2 directly, or S3 directly.",
+                  "is_insight": false,
+                  "is_warning": true
+                }
+              ]
+            },
+            {
+              "title": "Rule Types",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Rule Type",
+                    "What It Does",
+                    "Example"
+                  ],
+                  "rows": [
+                    [
+                      "**Rate-based**",
+                      "Block IPs exceeding request threshold",
+                      "Block IP after 2,000 requests in 5 min"
+                    ],
+                    [
+                      "**Regular**",
+                      "Match request attributes",
+                      "Block if User-Agent contains \"BadBot\""
+                    ],
+                    [
+                      "**Managed rule groups**",
+                      "Pre-built by AWS or Marketplace",
+                      "AWS managed: SQLi, XSS, known bad inputs, IP reputation"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Managed Rule Groups (Know These)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Group",
+                    "What It Blocks"
+                  ],
+                  "rows": [
+                    [
+                      "**AWSManagedRulesCommonRuleSet**",
+                      "OWASP Top 10 (SQLi, XSS, LFI, RFI)"
+                    ],
+                    [
+                      "**AWSManagedRulesSQLiRuleSet**",
+                      "SQL injection patterns"
+                    ],
+                    [
+                      "**AWSManagedRulesKnownBadInputsRuleSet**",
+                      "Log4j, known exploits"
+                    ],
+                    [
+                      "**AWSManagedRulesAmazonIpReputationList**",
+                      "Known malicious IPs"
+                    ],
+                    [
+                      "**AWSManagedRulesBotControlRuleSet**",
+                      "Bot detection and management"
+                    ],
+                    [
+                      "**Third-party (Marketplace)**",
+                      "F5, Fortinet, Imperva rules"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Rule Actions",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Action",
+                    "What Happens"
+                  ],
+                  "rows": [
+                    [
+                      "**Allow**",
+                      "Request passes through"
+                    ],
+                    [
+                      "**Block**",
+                      "Request rejected (403)"
+                    ],
+                    [
+                      "**Count**",
+                      "Request passes but counted (monitoring mode)"
+                    ],
+                    [
+                      "**CAPTCHA**",
+                      "Challenge the client"
+                    ],
+                    [
+                      "**Challenge**",
+                      "Silent browser challenge (JS)"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Key Limits/Quotas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Web ACLs per region",
+                      "100"
+                    ],
+                    [
+                      "Rules per Web ACL",
+                      "1,500 WCU (Web ACL Capacity Units)"
+                    ],
+                    [
+                      "Rate-based rule threshold",
+                      "100\u201320,000,000 requests per 5 min"
+                    ],
+                    [
+                      "IP sets",
+                      "10,000 IPs per set"
+                    ],
+                    [
+                      "Regex patterns",
+                      "10 per regex set"
+                    ],
+                    [
+                      "Request body inspection",
+                      "First 8 KB (default), up to 64 KB (paid)"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**WAF is regional**",
+                      "Except when attached to CloudFront (global)"
+                    ],
+                    [
+                      "**Rate-based rules**",
+                      "Minimum threshold is 100 requests per 5 min"
+                    ],
+                    [
+                      "**Body inspection limit**",
+                      "Only first 8 KB by default \u2014 large payloads can bypass"
+                    ],
+                    [
+                      "**Count mode first**",
+                      "Always deploy in Count mode, then switch to Block"
+                    ],
+                    [
+                      "**Logging**",
+                      "CloudWatch Logs, S3, or Kinesis Firehose"
+                    ],
+                    [
+                      "**WAF + CloudFront**",
+                      "WAF must be in us-east-1 when attached to CloudFront"
+                    ],
+                    [
+                      "**OCSF format**",
+                      "WAF logs can be ingested into Security Lake (new in C03)"
+                    ],
+                    [
+                      "**Third-party rules**",
+                      "Can import Marketplace rules (Task 3.1.4 \u2014 new in C03)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "AWS Shield \u2014 DDoS Protection",
+          "subsections": [
+            {
+              "title": "Two Tiers",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Shield Standard (free, automatic):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Enabled on ALL AWS accounts by default"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Protects against Layer 3/4 DDoS (SYN floods, UDP reflection)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 No configuration needed"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 No visibility into attacks"
+                },
+                {
+                  "type": "text",
+                  "text": "Shield Advanced ($3,000/month + data transfer):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Layer 3/4/7 DDoS protection"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 DDoS cost protection (credits for scaling costs during attack)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 24/7 DDoS Response Team (DRT) access"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 WAF included at no extra cost"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Real-time attack visibility and metrics"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Health-based detection (Route 53 health checks)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Automatic application-layer mitigation"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 1-year commitment required"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            },
+            {
+              "title": "Shield Advanced \u2014 What It Protects",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Resource",
+                    "Layer"
+                  ],
+                  "rows": [
+                    [
+                      "CloudFront",
+                      "3/4/7"
+                    ],
+                    [
+                      "ALB",
+                      "3/4/7"
+                    ],
+                    [
+                      "NLB",
+                      "3/4"
+                    ],
+                    [
+                      "Elastic IP",
+                      "3/4"
+                    ],
+                    [
+                      "Global Accelerator",
+                      "3/4"
+                    ],
+                    [
+                      "Route 53 Hosted Zone",
+                      "3/4"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Key Limits/Quotas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Limit",
+                    "Value"
+                  ],
+                  "rows": [
+                    [
+                      "Cost",
+                      "$3,000/month + data transfer fees"
+                    ],
+                    [
+                      "Commitment",
+                      "1-year subscription"
+                    ],
+                    [
+                      "DDoS cost protection",
+                      "Credits for CloudFront, ALB, Route 53, EIP scaling"
+                    ],
+                    [
+                      "DRT response time",
+                      "Minutes (proactive engagement)"
+                    ],
+                    [
+                      "Resources per account",
+                      "1,000 protected resources"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Exam Gotchas",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**$3,000/month**",
+                      "If question mentions cost-sensitive \u2192 Shield Standard (free)"
+                    ],
+                    [
+                      "**DDoS cost protection**",
+                      "Shield Advanced credits you for auto-scaling costs during attack"
+                    ],
+                    [
+                      "**DRT access**",
+                      "Only with Advanced \u2014 they can manage your WAF rules during attack"
+                    ],
+                    [
+                      "**Proactive engagement**",
+                      "Shield Advanced contacts YOU when it detects an attack"
+                    ],
+                    [
+                      "**Health-based detection**",
+                      "Uses Route 53 health checks to detect application-layer attacks faster"
+                    ],
+                    [
+                      "**WAF included**",
+                      "Shield Advanced includes WAF at no extra cost"
+                    ],
+                    [
+                      "**1-year commitment**",
+                      "Cannot cancel early"
+                    ],
+                    [
+                      "**Shield Standard is always on**",
+                      "You already have it \u2014 no setup needed"
+                    ],
+                    [
+                      "**Firewall Manager integration**",
+                      "Deploy Shield Advanced across org via Firewall Manager"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Tree: Which Edge/Network Service?",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "What are you protecting against?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 DDoS attack?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u251c\u2500\u2500 Basic protection (free) \u2192 Shield Standard (already on)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 Advanced + cost protection + DRT \u2192 Shield Advanced ($3K/month)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 SQL injection / XSS / OWASP Top 10?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 WAF (attached to CloudFront, ALB, or API Gateway)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Rate limiting / bot control?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 WAF rate-based rules"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Geo-blocking (block specific countries)?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 WAF geo-match rules OR CloudFront geo-restriction"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Deep packet inspection / IDS/IPS?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 Network Firewall"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Restrict DNS resolution?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502   \u2514\u2500\u2500 DNS Firewall"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Allow/deny by IP and port?"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Security Groups (stateful) / NACLs (stateless)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "WAF + Shield + CloudFront Together (Common Exam Pattern)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Internet \u2192 CloudFront \u2192 WAF \u2192 ALB \u2192 EC2"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              \u251c\u2500\u2500 SQLi/XSS blocked"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              \u251c\u2500\u2500 Rate limiting"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502              \u2514\u2500\u2500 Geo-blocking"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Shield Advanced"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 DDoS protection (L3/4/7)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Cost protection"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 DRT on standby"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
               ]
             }
           ]
