@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 978 |
-| **✅ Correct** | 761 (78%) |
-| **⚠️ Partial** | 31 (3%) |
-| **❌ Wrong** | 183 (19%) |
+| **Total Questions** | 988 |
+| **✅ Correct** | 769 (78%) |
+| **⚠️ Partial** | 32 (3%) |
+| **❌ Wrong** | 184 (19%) |
 | **Sessions** | 96 |
-| **Re-tests Passed** | 446 of 539 |
+| **Re-tests Passed** | 454 of 549 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 179 | 8 | 54 | 241 | 74% | 🟡 |
-| D2: Incident Response | 34 | 2 | 12 | 48 | 71% | 🟡 |
-| D3: Infrastructure Security | 91 | 5 | 18 | 114 | 80% | 🟢 |
-| D4: Identity & Access Management | 199 | 8 | 37 | 244 | 82% | 🟢 |
-| D5: Data Protection | 146 | 6 | 36 | 188 | 78% | 🟡 |
+| D1: Detection | 181 | 8 | 54 | 243 | 74% | 🟡 |
+| D2: Incident Response | 35 | 2 | 12 | 49 | 71% | 🟡 |
+| D3: Infrastructure Security | 92 | 5 | 19 | 116 | 79% | 🟡 |
+| D4: Identity & Access Management | 200 | 9 | 37 | 246 | 81% | 🟢 |
+| D5: Data Protection | 149 | 6 | 36 | 191 | 78% | 🟡 |
 | D6: Governance | 112 | 2 | 26 | 140 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -189,6 +189,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 155 | CloudTrail Lake (data vs mgmt + no backfill) | Q951 | D1 | 1 |
 | 🟡 156 | KMS endpoint + SG (direct calls only) | Q965 | D5 | 1 |
 | 🟡 157 | API Gateway mTLS = custom domain + S3 truststore | Q967 | D3 | 1 |
+| 🟡 158 | API Gateway TOKEN vs REQUEST authorizer | Q988 | D3 | 1 |
+| 🟡 159 | S3 wraps KMS errors (error surface vs root cause) | Q989 | D4 | 1 |
 
 ---
 
@@ -291,7 +293,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 93 | 2026-06-16 | Q933–Q942 | 5 | 1 | 4 | D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation) | [Jump](#session-93--2026-06-16) |
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
-| 96 | 2026-06-16 | Q962–Q981 | 17 | 1 | 2 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
+| 96 | 2026-06-16 | Q962–Q991 | 25 | 2 | 3 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
 
 ---
 
@@ -2206,3 +2208,13 @@ After adding a session:
 | 979 | D5 | RSA KMS key for encryption AND signing — why not? | B: One key = one purpose at creation (sign OR encrypt) | ✅ | KMS locks key usage at creation. RSA can do either but must choose one. | Q812, Q824 | KMS one key = one purpose |
 | 980 | D5 | Asymmetric sign, partners verify offline air-gapped — how? | B: Export public key, verify locally OpenSSL | ✅ | Sign=private (KMS). Verify=public (exportable, offline). | Q812, Q824, Q834 | Sign=private, verify=public (offline) |
 | 981 | D1/D3 | DGA domains (unpredictable), block VPC-wide — approach? | C: DNS Firewall allow-list (block all except known-good) | ✅ | DGA = can't enumerate. Flip to allow-list. DNS layer since attacker needs DNS. | Q690, Q756 | DGA = allow-list DNS Firewall |
+| 982 | D4/D5 | 5-layer: key policy grants B + SCP ViaService + session=GetObject + RCP same-org — SSE-KMS cross-account read? | C: Succeeds — all gates pass | ✅ | Server-side KMS, ViaService satisfied, session doesn't gate, RCP same-org passes. | Q591, Q531 | Full 5-layer cross-account evaluation |
+| 983 | D1/D4 | RCP blocks external, 500 denied GetObjects 3 days, AA + GD enabled — which fires? | B: Only Access Analyzer | ✅ | AA = static (fires on policy). GD = needs successful access. Blocked = no GD finding. | Q534, Q594 | Access Analyzer static + GuardDuty ≠ failed attempts |
+| 984 | D5/D6 | Config auto-remediation S3 logging AccessDenied, has PutBucketLogging+PutObject — missing? | A: s3:GetBucketAcl | ✅ | S3 server access logging uses ACLs (legacy). Needs GetBucketAcl for validation. | Q864, Q868, Q903 | S3 server access logging = ACLs |
+| 985 | D3/D1 | Detect threat IP + block org-wide + auto-update — which THREE? | B: GuardDuty + NF via RAM+FM + EventBridge→Lambda | ✅ | GD detects. NF blocks IPs. EventBridge+Lambda auto-updates NF rules from findings. | Q532, Q543 | Detection + response architecture |
+| 986 | D2 | InsideAWS credential exfil, both instances production — containment? | B: Deny-all SG on attacker's instance | ✅ | InsideAWS = SG isolation. TokenIssueTime would break both. | Q761, Q785 | InsideAWS = SG isolation |
+| 987 | D5 | 50GB multipart SSE-KMS fails at CompleteMultipartUpload, has GenerateDataKey — missing? | B: kms:Decrypt | ✅ | Multipart reassembly decrypts each part's data key. Single-part only needs GenerateDataKey. | Q744, Q765 | S3 multipart + KMS (reassembly = Decrypt) |
+| 988 | D3 | TOKEN authorizer modified to check X-Signature + IP — why fails? | C: Timeout | ❌ | B: TOKEN receives ONLY the token string. Can't access other headers or IP. Need REQUEST type. | Q967 | API Gateway TOKEN vs REQUEST authorizer |
+| 989 | D4/D5 | Cross-account KMS, B removed from key policy, Lambda calls GetObject — error type? | A: KMS.AccessDeniedException | ⚠️ | B: S3 wraps KMS failure as S3 AccessDenied — caller called S3, not KMS directly. | Q541, Q974 | S3 wraps KMS errors (error surface vs root cause) |
+| 990 | D5/D6 | EBS encryption by default alone — why insufficient for org-wide prevention? | B: Per-account+region, new accounts miss it, users can override | ✅ | Full prevention = EBS default + SCP together. | Q902 | EBS encryption by default + SCP = full prevention |
+| 991 | D1 | CW metric filter on StopLogging doesn't fire, EventBridge does — why? | B: StopLogging kills own CW Logs delivery | ✅ | EventBridge receives from CT management stream directly, bypasses CW Logs. | Q860, Q866 | StopLogging kills own CW Logs delivery |
