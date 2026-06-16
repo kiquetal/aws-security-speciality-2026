@@ -94,6 +94,38 @@
 - "Preserve until lawsuit ends" → **Legal Hold** (no fixed period)
 - "Immutable but admin can override in emergency" → **Governance mode**
 
+### Glacier Vault Lock vs S3 Object Lock (Exam-Critical — You missed Q800, Q822, Q828)
+
+| Dimension | S3 Object Lock (Compliance) | Glacier Vault Lock |
+|---|---|---|
+| **Scope** | Per-OBJECT retention | Per-VAULT policy |
+| **Granularity** | Each object has its own retention period | One policy covers entire vault |
+| **Expiration** | ✅ Fixed period, auto-expires | ❌ PERMANENT — never expires once confirmed |
+| **Confirmation** | Immediate (no test window) | 24-hour test window → then irreversible |
+| **Who can override** | Nobody (Compliance mode) | Nobody — even AWS Support cannot modify |
+| **Deletion after expiry** | ✅ Auto-deletable after retention | ❌ No expiry — archives stay forever unless deleted individually |
+| **Root can modify policy** | ❌ Can't delete objects | ❌ Can't modify vault lock policy |
+| **Use case** | "5yr retention per object, auto-delete after" | "Policy permanently irreversible once confirmed" |
+
+**Decision tree:**
+```
+"Fixed retention period per OBJECT, auto-expires after X years"
+  → S3 Object Lock Compliance mode
+
+"Policy PERMANENTLY IRREVERSIBLE, 24hr test window, then locked forever"
+  → Glacier Vault Lock
+
+"Preserve indefinitely, no fixed period, remove when litigation ends"
+  → S3 Object Lock Legal Hold
+```
+
+**Exam signals:**
+- "24-hour confirm" / "initiate then complete" / "once confirmed, even AWS can't modify" → **Glacier Vault Lock**
+- "3/5/7 year retention, auto-delete after" / "per-object immutability" → **Object Lock Compliance**
+- "Indefinite hold until removed" / "lawsuit" → **Object Lock Legal Hold**
+
+---
+
 ### S3 Encryption Decision Tree (Exam-Critical)
 
 | Signal in question | Answer |
