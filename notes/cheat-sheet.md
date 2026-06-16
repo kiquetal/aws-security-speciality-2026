@@ -232,7 +232,8 @@
 ---
 
 ## D2: Incident Response (14%)
-- IR sequence: Isolate (swap SG to deny-all) → Snapshot (EBS forensic copy) → Tag → Investigate → Remediate. NEVER terminate first.
+- IR sequence: Acquire (metadata + EBS snapshot + no-reboot AMI for memory) → Isolate (swap SG to deny-all) → Investigate (Detective, forensics account) → Report (SNS, S3). NEVER terminate first.
+- 🧠 **ACQUIRE before ISOLATE.** Isolation (deny-all SG) can block SSM needed for memory capture. Volatile memory must be captured FIRST. AWS docs: "capture memory before isolation or shutdown."
 - 🧠 **"Validate findings" = first step before full IR (Task 2.2.3, new in C03).** Assess scope, check false positives, confirm severity. Exam keyword is "validate" or "triage", not "evaluate".
 - Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.
 - Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
