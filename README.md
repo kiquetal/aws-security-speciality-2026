@@ -191,3 +191,10 @@ All policies in this repo follow exam best practices:
 4. Check [`notes/question-tracker.md`](notes/question-tracker.md) for weak areas to re-test
 5. Review `notes/flashcards-*.md` for active recall on recurring errors
 6. Follow the weekly rhythm above
+
+## Local Study Portal & Live Sync
+
+You can run a local study portal to visualize your progress:
+1. Start the portal with `./run_server.sh`.
+2. Open `http://localhost:8188` in your browser.
+3. Click the **Sync Study Logs** button on the sidebar to instantly synchronize and update statistics (such as the total number of questions or domain breakdown) directly from your markdown logs!
