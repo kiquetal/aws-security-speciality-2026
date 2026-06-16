@@ -100,6 +100,7 @@
 - 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.
 - 🧠 **CRR + SSE-KMS: source = kms:Decrypt. Destination = kms:GenerateDataKey (not kms:Encrypt).** Same rule as all S3 uploads — S3 never uses kms:Encrypt.
 - 🧠 **CRR rewrites encryption context to destination bucket ARN.** Key policy conditions on dest key must reference dest bucket, not source.
+- 🧠 **CRR preserves source custom encryption context alongside S3 system context.** If dest key policy uses strict conditions, custom context from source causes mismatch.
 - 🧠 **DynamoDB + customer-managed KMS = needs `kms:CreateGrant` + `kms:DescribeKey`.** DynamoDB delegates via grants internally (like EBS). Never uses kms:Encrypt.
 
 ### Secrets Manager

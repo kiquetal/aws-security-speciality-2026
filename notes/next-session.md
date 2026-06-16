@@ -5,9 +5,9 @@
 
 ---
 
-## Current Week: 1 (Jun 16-22)
+## Current Week: 2 (Jun 23-29)
 
-**Focus:** Novel topics — ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules, S3 Batch Operations, CloudTrail Lake SQL
+**Focus:** NEVER-SEEN BLITZ 1 — API Gateway security (authorizers, resource policies, mutual TLS), CloudFront Field-Level Encryption, Inspector SBOM export, Macie custom data identifiers, S3 Access Grants
 
 **Generate:** 10 questions, killer difficulty, novel scenarios only
 
@@ -52,8 +52,8 @@
 
 | Week | Dates | Focus | Never-Seen Topics Included | Status |
 |------|-------|-------|----------------------------|--------|
-| 1 | Jun 16-22 | ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules, S3 Batch Operations | — (recent gaps from Sessions 86-90) | ⬜ Current |
-| 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CloudFront Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | #1, #3, #4, #10 | ⬜ |
+| 1 | Jun 16-22 | ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules, S3 Batch Operations | — (recent gaps from Sessions 86-90) | ✅ 90% (Session 92) |
+| 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CloudFront Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | #1, #3, #4, #10 | ⬜ Current |
 | 3 | Jun 30 - Jul 6 | D1 weak areas + **NEVER-SEEN:** CloudFormation Guard, SSM State Manager | #6, #7 | ⬜ |
 | 4 | Jul 7-13 | **NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced | #2, #5, #14 | ⬜ |
 | 5 | Jul 14-20 | Cross-domain killer + **NEVER-SEEN:** Data Lifecycle Manager, DataSync, Well-Architected Tool, EMR inter-node | #8, #9, #15, #18 | ⬜ |
