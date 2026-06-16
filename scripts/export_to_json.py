@@ -392,11 +392,43 @@ def parse_all_faqs():
         table_headers = []
         table_rows = []
         
+        in_codeblock = False
+        code_lines = []
+        
         for line in lines:
             line_stripped = line.strip()
             
             # Skip H1 header line
             if line_stripped.startswith("# "):
+                continue
+                
+            # Code block toggle
+            if line_stripped.startswith("```"):
+                if in_codeblock:
+                    in_codeblock = False
+                    if current_subsection:
+                        current_subsection["items"].append({
+                            "type": "code",
+                            "text": "\n".join(code_lines)
+                        })
+                    code_lines = []
+                else:
+                    # Close any active table
+                    if in_table and current_subsection:
+                        current_subsection["items"].append({
+                            "type": "table",
+                            "headers": table_headers,
+                            "rows": table_rows
+                        })
+                        in_table = False
+                        table_headers = []
+                        table_rows = []
+                    in_codeblock = True
+                    code_lines = []
+                continue
+                
+            if in_codeblock:
+                code_lines.append(line)
                 continue
                 
             # Parse H2 section headings: ## Section Name
@@ -523,6 +555,13 @@ def parse_all_faqs():
                 "type": "table",
                 "headers": table_headers,
                 "rows": table_rows
+            })
+            
+        # Close any trailing code block
+        if in_codeblock and current_subsection and code_lines:
+            current_subsection["items"].append({
+                "type": "code",
+                "text": "\n".join(code_lines)
             })
             
         # Filter subsections with actual items
