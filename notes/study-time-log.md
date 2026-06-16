@@ -55,4 +55,4 @@
 | 5 | 2026-06-15 | 13:12 | 13:53 | 41 | Sessions 88-90 continued |
 | 6 | 2026-06-15 | 13:53 | 14:35 | 42 | Session 91 (Week 1 killer drill — 90%) |
 | 7 | 2026-06-15 | 19:41 | 20:04 | 23 | Tracker fix + Q918 re-test (✅) |
-| 8 | 2026-06-15 | 23:16 | 23:45 | 29 | Session 92 (Week 1 weekly drill) — took RAV4 to the mechanic again |
+| 8 | 2026-06-15 | 23:16 | 23:45 | 29 | Session 92 (Week 1 weekly drill) |
