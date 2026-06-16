@@ -8,10 +8,10 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1003 |
-| **✅ Correct** | 781 (78%) |
+| **Total Questions** | 1008 |
+| **✅ Correct** | 784 (78%) |
 | **⚠️ Partial** | 33 (3%) |
-| **❌ Wrong** | 186 (19%) |
+| **❌ Wrong** | 188 (19%) |
 | **Sessions** | 96 |
 | **Re-tests Passed** | 466 of 562 |
 
@@ -21,10 +21,10 @@
 |---|---|---|---|---|---|---|
 | D1: Detection | 189 | 9 | 55 | 253 | 75% | 🟡 |
 | D2: Incident Response | 39 | 2 | 13 | 54 | 72% | 🟡 |
-| D3: Infrastructure Security | 92 | 5 | 19 | 116 | 79% | 🟡 |
+| D3: Infrastructure Security | 93 | 5 | 21 | 119 | 78% | 🟡 |
 | D4: Identity & Access Management | 200 | 9 | 37 | 246 | 81% | 🟢 |
-| D5: Data Protection | 149 | 6 | 36 | 191 | 78% | 🟡 |
-| D6: Governance | 112 | 2 | 26 | 140 | 80% | 🟢 |
+| D5: Data Protection | 150 | 6 | 36 | 192 | 78% | 🟡 |
+| D6: Governance | 113 | 2 | 26 | 141 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -193,6 +193,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 159 | S3 wraps KMS errors (error surface vs root cause) | Q989 | D4 | 1 |
 | 🟡 160 | SageMaker notebooks vs Detective (custom vs built-in) | Q996 | D2 | 1 |
 | 🟡 161 | CloudTrail Insights vs GuardDuty (complementary) | Q1004 | D1 | 1 |
+| 🟡 162 | Bedrock IAM guardrail enforcement (condition key) | Q1007 | D3 | 1 |
+| 🟡 163 | Q Business ACL identity mapping failure | Q1010 | D3 | 1 |
 
 ---
 
@@ -295,7 +297,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 93 | 2026-06-16 | Q933–Q942 | 5 | 1 | 4 | D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation) | [Jump](#session-93--2026-06-16) |
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
-| 96 | 2026-06-16 | Q962–Q1006 | 37 | 3 | 5 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
+| 96 | 2026-06-16 | Q962–Q1011 | 40 | 3 | 7 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
 
 ---
 
@@ -2235,3 +2237,8 @@ After adding a session:
 | 1004 | D1 | Insights fires 10x RunInstances spike — what does Insights detect vs GuardDuty? | A: Volume anomaly (Insights) vs C2/unusual creds (GD) | ⚠️ | D: Both A and C true. Insights = volume. GD = behavior + threat intel. Complementary. | — | CloudTrail Insights vs GuardDuty (complementary) |
 | 1005 | D1 | Top 10 source IPs to private subnet last hour, Flow Logs in CW — tool? | B: CW Logs Insights | ✅ | Data already in CW + aggregation = Logs Insights. No extra setup. | Q236, Q306, Q416 | CW Logs Insights for aggregation |
 | 1006 | D1 | Security Lake: CloudTrail+Flow+GD+WAF+Splunk — which THREE true? | A+B+C | ✅ | Your S3 Parquet + OCSF + subscriber model. Not real-time. Doesn't replace GD. | Q334, Q528 | Security Lake (OCSF + your S3 + subscriber) |
+| 1007 | D3 | Bedrock: force guardrail on every InvokeModel, no exceptions — how? | A: Console toggle | ❌ | B: IAM condition `bedrock:GuardrailIdentifier` on InvokeModel permission. No console toggle exists. | — | Bedrock IAM guardrail enforcement (condition key) |
+| 1008 | D3 | Filter PII from self-hosted LLM on EC2, not Bedrock — approach? | B: bedrock:ApplyGuardrail | ✅ | ApplyGuardrail = standalone API. Filter any text without InvokeModel. | — | ApplyGuardrail standalone (non-AWS LLMs) |
+| 1009 | D5 | FSx Lustre linked to SSE-KMS S3, creation fails Access Denied — missing? | A: Key policy must grant fsx.amazonaws.com | ✅ | Same pattern: service principal needs Encrypt+Decrypt+GenerateDataKey+DescribeKey. | — | FSx Lustre + SSE-KMS S3 key policy |
+| 1010 | D3 | Q Business user sees HR doc they shouldn't — cause? | B: ACLs disabled | ❌ | C: ACL identity mapping failed (sync between connector and Identity Center broke). ACLs can't be disabled once enabled. | — | Q Business ACL identity mapping failure |
+| 1011 | D6/D3 | Block specific Bedrock model org-wide, allow others — enforcement? | B: SCP deny InvokeModel on model ARN | ✅ | SCP + model ARN = org-wide block. Simplified access doesn't override IAM/SCP. | — | SCP to block Bedrock model org-wide |
