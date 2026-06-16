@@ -20,7 +20,7 @@ Read section → close eyes → recall 3 rules.
 
 | Week | Date | Focus | Never-Seen Included | Status |
 |------|------|-------|---------------------|--------|
-| 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ⬜ |
+| 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ✅ 86% (S94) |
 | 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | 4 new topics | ⬜ |
 | 3 | Jun 30 - Jul 6 | D1 weak areas + CloudFormation Guard, SSM State Manager | 2 new topics | ⬜ |
 | 4 | Jul 7-13 | **NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced | 3 new topics | ⬜ |
