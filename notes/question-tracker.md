@@ -17,14 +17,14 @@
 
 ## Domain Breakdown
 
-| Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
-|---|---|---|---|---|---|---|
-| D1: Detection | 212 | 10 | 60 | 282 | 75% | 🟡 |
-| D2: Incident Response | 49 | 2 | 13 | 64 | 77% | 🟡 |
-| D3: Infrastructure Security | 139 | 8 | 28 | 175 | 79% | 🟡 |
-| D4: Identity & Access Management | 246 | 10 | 53 | 309 | 80% | 🟢 |
-| D5: Data Protection | 212 | 8 | 50 | 270 | 79% | 🟡 |
-| D6: Governance | 161 | 2 | 42 | 205 | 79% | 🟡 |
+| Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
+|---|---|---|---|---|---|---|---|
+| D1: Detection | 16% | 212 | 10 | 60 | 282 | 75% | 🟡 |
+| D2: Incident Response | 14% | 49 | 2 | 13 | 64 | 77% | 🟡 |
+| D3: Infrastructure Security | 18% | 139 | 8 | 28 | 175 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 246 | 10 | 53 | 309 | 80% | 🟢 |
+| D5: Data Protection | 18% | 212 | 8 | 50 | 270 | 79% | 🟡 |
+| D6: Governance | 14% | 161 | 2 | 42 | 205 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 

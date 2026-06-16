@@ -102,22 +102,33 @@ def build_domain_breakdown(sessions):
             for d in domains:
                 if d and q["result"]:
                     counts[d][q["result"]] += 1
+                    
+    DOMAIN_WEIGHTS = {
+        "D1": "16%",
+        "D2": "14%",
+        "D3": "18%",
+        "D4": "20%",
+        "D5": "18%",
+        "D6": "14%"
+    }
+    
     lines = [
         "## Domain Breakdown",
         "",
-        "| Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |",
-        "|---|---|---|---|---|---|---|",
+        "| Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for key in ["D1", "D2", "D3", "D4", "D5", "D6"]:
         c = counts.get(key, {"correct": 0, "partial": 0, "wrong": 0})
         total = c["correct"] + c["partial"] + c["wrong"]
+        weight = DOMAIN_WEIGHTS[key]
         if total == 0:
-            lines.append(f"| {DOMAIN_NAMES[key]} | 0 | 0 | 0 | 0 | — | — |")
+            lines.append(f"| {DOMAIN_NAMES[key]} | {weight} | 0 | 0 | 0 | 0 | — | — |")
         else:
             pct = c["correct"] / total * 100
             rounded_pct = round(pct)
             flag = "🔴" if rounded_pct < 50 else ("🟡" if rounded_pct < 80 else "🟢")
-            lines.append(f"| {DOMAIN_NAMES[key]} | {c['correct']} | {c['partial']} | {c['wrong']} | {total} | {rounded_pct}% | {flag} |")
+            lines.append(f"| {DOMAIN_NAMES[key]} | {weight} | {c['correct']} | {c['partial']} | {c['wrong']} | {total} | {rounded_pct}% | {flag} |")
     lines.append("")
     lines.append("Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%")
     return "\n".join(lines)
