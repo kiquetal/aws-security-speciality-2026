@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 958 |
-| **✅ Correct** | 744 (78%) |
-| **⚠️ Partial** | 30 (3%) |
-| **❌ Wrong** | 181 (19%) |
-| **Sessions** | 95 |
-| **Re-tests Passed** | 432 of 523 |
+| **Total Questions** | 968 |
+| **✅ Correct** | 752 (78%) |
+| **⚠️ Partial** | 31 (3%) |
+| **❌ Wrong** | 182 (19%) |
+| **Sessions** | 96 |
+| **Re-tests Passed** | 438 of 530 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 172 | 8 | 54 | 234 | 74% | 🟡 |
-| D2: Incident Response | 32 | 2 | 12 | 46 | 70% | 🟡 |
-| D3: Infrastructure Security | 88 | 5 | 17 | 110 | 80% | 🟢 |
+| D1: Detection | 177 | 8 | 54 | 239 | 74% | 🟡 |
+| D2: Incident Response | 33 | 2 | 12 | 47 | 70% | 🟡 |
+| D3: Infrastructure Security | 89 | 5 | 18 | 112 | 79% | 🟡 |
 | D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
-| D5: Data Protection | 141 | 5 | 36 | 182 | 77% | 🟡 |
+| D5: Data Protection | 142 | 6 | 36 | 184 | 77% | 🟡 |
 | D6: Governance | 112 | 2 | 26 | 140 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -187,6 +187,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 153 | ARC zonal shift | Q936 | D2 | 1 |
 | 🟡 154 | Deny * on user vs TokenIssueTime (user vs role) | Q942 | D2 | 1 |
 | 🟡 155 | CloudTrail Lake (data vs mgmt + no backfill) | Q951 | D1 | 1 |
+| 🟡 156 | KMS endpoint + SG (direct calls only) | Q965 | D5 | 1 |
+| 🟡 157 | API Gateway mTLS = custom domain + S3 truststore | Q967 | D3 | 1 |
 
 ---
 
@@ -289,6 +291,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 93 | 2026-06-16 | Q933–Q942 | 5 | 1 | 4 | D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation) | [Jump](#session-93--2026-06-16) |
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
+| 96 | 2026-06-16 | Q962–Q971 | 8 | 1 | 1 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
 
 ---
 
@@ -2173,3 +2176,23 @@ After adding a session:
 | 959 | D2 | Step Functions IR workflow, 4 severity branches — how does it decide which branch? | B: Choice state evaluates severity from EventBridge input | ✅ | EventBridge passes full finding JSON. Choice state branches on $.detail.severity. | — | Step Functions Choice state for IR routing |
 | 960 | D2 | Credential compromise, determine other resources + roles + 72hr timeline + visualizations across 15 accounts? | C: Detective | ✅ | Detective = investigate + visualize + timeline + blast radius. | — | Detective for IR investigation |
 | 961 | D2 | Automated containment <5min, zero human, private subnet, multi-step — architecture? | B: EventBridge → Step Functions (Choice + parallel + VPC endpoints for SSM) | ✅ | Step Functions orchestrates parallel containment. VPC endpoints for private subnet SSM. | — | Automated IR architecture (Step Functions) |
+
+
+
+### Session 96 — 2026-06-16
+
+**Domains:** D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps)
+**Score:** 8 ✅ · 1 ⚠️ · 1 ❌ (80% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 962 | D1 | Detect PutBucketPolicy with Principal:* within 2 min, org trail exists — approach? | C: EventBridge in management account | ✅ | Specific API call + fast + org trail = EventBridge. | Q474, Q570 | EventBridge for API call detection |
+| 963 | D1 | Unusual country + large volumes + 3AM + no code/infra — service? | C: GuardDuty S3 Protection | ✅ | Behavioral anomaly + zero code = GuardDuty S3 Protection. | Q568, Q581 | Detect vs prevent (GuardDuty vs policy) |
+| 964 | D1 | Bucket policy grants external, no access yet, AA + GD enabled — which fires? | C: Only Access Analyzer | ✅ | AA = static policy analysis. GD = needs actual access. | Q518, Q573 | Access Analyzer static + GuardDuty ≠ failed attempts |
+| 965 | D5/D3 | Lambda private subnet, S3 SSE-KMS works, direct GenerateDataKeyWithoutPlaintext times out — fix? (TWO) | A only (missed C) | ⚠️ | A+C: Add KMS Interface endpoint + configure endpoint SG inbound 443. Timeout = both sides of SG. | Q918, Q950 | KMS endpoint + SG (direct calls only) |
+| 966 | D5 | CRR custom encryption context "Engineering", dest key policy requires "Finance" — result? | B: Fails — context preserved, mismatch | ✅ | CRR preserves source encryption context. Dest key policy evaluates it → mismatch → fail. | Q923, Q913 | CRR custom encryption context preserved |
+| 967 | D3 | B2B API, partners authenticate with client certs, private CA PEM in S3 — mTLS config? | B: Upload CA to ACM | ❌ | C: Custom domain + enable mTLS + S3 URI + object version of PEM truststore. mTLS = custom domain + S3 truststore. | — | API Gateway mTLS = custom domain + S3 truststore |
+| 968 | D1 | Macie flag PROJ-[A-Z]{4}-\d{4} only when "Classified" within 50 chars — how? | A: Custom data identifier + regex + keyword + max distance | ✅ | Macie custom data identifier: regex + keywords + maximum match distance. | — | Macie custom data identifiers (regex + keywords + proximity) |
+| 969 | D3 | Patient SSN encrypted at CF edge before origin, WAF can't see raw — approach? | B: RSA public key + FLE profile + FLE config + cache behavior | ✅ | CloudFront FLE: upload RSA public key, map field in profile, attach to behavior. | — | CloudFront Field-Level Encryption |
+| 970 | D2 | Trojan C2Activity, API must stay up + block C2 + preserve evidence — which TWO? | B+C: NF DROP on C2 IP + no-reboot AMI + EBS snapshot | ✅ | NF = surgical block. No-reboot AMI + snapshot = complete forensics. | Q526, Q933 | Surgical containment (NF + forensics) |
+| 971 | D1/D5 | Prevent ScheduleKeyDeletion + detect PutBucketPolicy 90s + alert anomalous downloads — THREE services? | A: SCP + EventBridge + GuardDuty S3 Protection | ✅ | Prevent = SCP. Detect API = EventBridge. Detect behavior = GuardDuty. | Q688, Q701 | Full prevent/detect/alert architecture |
