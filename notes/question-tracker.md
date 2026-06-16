@@ -8,19 +8,19 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 953 |
-| **✅ Correct** | 739 (78%) |
+| **Total Questions** | 958 |
+| **✅ Correct** | 744 (78%) |
 | **⚠️ Partial** | 30 (3%) |
 | **❌ Wrong** | 181 (19%) |
-| **Sessions** | 94 |
-| **Re-tests Passed** | 431 of 522 |
+| **Sessions** | 95 |
+| **Re-tests Passed** | 432 of 523 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
 | D1: Detection | 172 | 8 | 54 | 234 | 74% | 🟡 |
-| D2: Incident Response | 27 | 2 | 12 | 41 | 66% | 🟡 |
+| D2: Incident Response | 32 | 2 | 12 | 46 | 70% | 🟡 |
 | D3: Infrastructure Security | 88 | 5 | 17 | 110 | 80% | 🟢 |
 | D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
 | D5: Data Protection | 141 | 5 | 36 | 182 | 77% | 🟡 |
@@ -288,6 +288,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 92 | 2026-06-15 | Q923–Q932 | 9 | 0 | 1 | Cross-domain (Week 1 weekly drill — CRR custom context, IoT ThingName, Kinesis SGs, Config Lambda timeout, CloudTrail Lake, S3 Batch regional, GWLB GENEVE, DynamoDB CreateGrant, ACM regional, Config org rule) | [Jump](#session-92--2026-06-15) |
 | 93 | 2026-06-16 | Q933–Q942 | 5 | 1 | 4 | D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation) | [Jump](#session-93--2026-06-16) |
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
+| 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
 
 ---
 
@@ -2157,3 +2158,18 @@ After adding a session:
 | 954 | D5/D4 | DynamoDB CMK, Lambda has Decrypt+GenerateDataKey, PutItem Access Denied on KMS — missing? | B: kms:CreateGrant | ✅ | DynamoDB delegates via grants (like EBS). Needs CreateGrant + DescribeKey. | Q899, Q922, Q930 | DynamoDB + CMK = CreateGrant |
 | 955 | D5 | S3 Batch job us-east-1, manifest lists objects in 3 regions — result? | A: Fails — Batch is regional | ✅ | Job + manifest + target must be same region. | Q872, Q919, Q928 | S3 Batch Operations regional |
 | 956 | D1/D3 | 200GB/hr WAF logs, full-text, sub-second, 90d, alerts, dashboards — architecture? | B: Firehose + OpenSearch + UltraWarm | ✅ | Full-text + sub-second + dashboards = OpenSearch. Firehose = managed ingestion. | Q854, Q875 | Kinesis + OpenSearch architecture |
+
+
+
+### Session 95 — 2026-06-16
+
+**Domains:** D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 957 | D2 | Forensics Orchestrator: isolate→SSM memory capture→snapshot, step 2 fails, SSM agent running — cause? | B: deny-all SG blocks SSM outbound | ✅ | Deny-all SG blocks SSM agent outbound HTTPS. Need VPC endpoints or reorder workflow. | Q937 | Forensics Orchestrator (deny-all blocks SSM) |
+| 958 | D2 | Forensics: no cross-contamination + audit trail of evidence access + evidence immutability — architecture? | B: Dedicated forensics account + Object Lock + CloudTrail | ✅ | Separate account = isolation. Object Lock = immutability. CloudTrail = audit trail. | — | Forensics chain of custody architecture |
+| 959 | D2 | Step Functions IR workflow, 4 severity branches — how does it decide which branch? | B: Choice state evaluates severity from EventBridge input | ✅ | EventBridge passes full finding JSON. Choice state branches on $.detail.severity. | — | Step Functions Choice state for IR routing |
+| 960 | D2 | Credential compromise, determine other resources + roles + 72hr timeline + visualizations across 15 accounts? | C: Detective | ✅ | Detective = investigate + visualize + timeline + blast radius. | — | Detective for IR investigation |
+| 961 | D2 | Automated containment <5min, zero human, private subnet, multi-step — architecture? | B: EventBridge → Step Functions (Choice + parallel + VPC endpoints for SSM) | ✅ | Step Functions orchestrates parallel containment. VPC endpoints for private subnet SSM. | — | Automated IR architecture (Step Functions) |
