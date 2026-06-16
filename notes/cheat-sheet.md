@@ -98,6 +98,7 @@
 - 🧠 **"Root in key policy" = enables IAM delegation, NOT a blanket grant.** Each principal still needs explicit kms:Decrypt in their identity policy. Root opens the door for IAM — it doesn't let everyone through.
 - 🧠 **KMS keys are REGIONAL.** Cross-account call to wrong region = Access Denied (key not found). Always verify the endpoint region matches the key's region.
 - 🧠 **Cross-account KMS: key policy MUST name the external account.** Root in key policy enables IAM delegation same-account only. For Account B to use Account A's key, key policy must grant Account B's root or role explicitly.
+- 🧠 **S3 wraps KMS errors as S3 AccessDenied.** Caller called S3, not KMS directly. Error surface = S3, root cause = KMS. Direct `kms:Decrypt` call → KMS.AccessDeniedException.
 - 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.
 - 🧠 **CRR + SSE-KMS: source = kms:Decrypt. Destination = kms:GenerateDataKey (not kms:Encrypt).** Same rule as all S3 uploads — S3 never uses kms:Encrypt.
 - 🧠 **CRR rewrites encryption context to destination bucket ARN.** Key policy conditions on dest key must reference dest bucket, not source.
@@ -155,6 +156,7 @@
 ### API Gateway Security
 - 🧠 **API Gateway mTLS = custom domain name + S3 truststore (PEM file + object version).** Not ACM. Not Lambda authorizer. mTLS only works on custom domains, never on default execute-api endpoint.
 - 🧠 **API Gateway authorizer types:** Cognito Authorizer (JWT tokens) vs Lambda Authorizer TOKEN (header value) vs Lambda Authorizer REQUEST (headers + query + context + IP). Use REQUEST type when you need to validate custom headers or IP addresses.
+- 🧠 **TOKEN type receives ONLY the token string.** Cannot access other headers, query params, or source IP. "Validate IP or custom header" = REQUEST type always.
 - 🧠 **API Gateway Resource Policy:** JSON policy on the API itself — restrict by IP, VPC, account. Evaluated BEFORE authorizers. "Block at API Gateway boundary" = resource policy.
 - 🧠 **Private API = VPC endpoint only.** Resource policy restricts to `vpce-xxx`. Endpoint SG controls which clients can reach the endpoint (inbound 443).
 
