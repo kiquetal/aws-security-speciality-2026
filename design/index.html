@@ -198,6 +198,14 @@
             </button>
         </nav>
         
+        <!-- Live Sync Button -->
+        <div class="px-4 mt-4 mb-2">
+            <button onclick="triggerSync()" id="btn-sync" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-on-surface bg-surface-container-high border border-outline-variant hover:bg-secondary hover:text-on-secondary hover:border-transparent transition-all duration-200 shadow-sm font-semibold text-sm">
+                <span id="sync-icon" class="material-symbols-outlined text-xl">sync</span>
+                <span id="sync-text">Sync Study Logs</span>
+            </button>
+        </div>
+
         <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
             <div class="p-4 bg-surface-container-low border border-outline-variant rounded">
                 <p class="text-xs font-label-sm text-secondary uppercase tracking-wider mb-1">MEMENTO MORI</p>
@@ -1622,6 +1630,63 @@
                 openQuestionModal(q);
             } else {
                 console.error(`Question ${qNumStr} not found.`);
+            }
+        }
+
+        async function triggerSync() {
+            const btn = document.getElementById('btn-sync');
+            const icon = document.getElementById('sync-icon');
+            const text = document.getElementById('sync-text');
+            
+            if (!btn || btn.disabled) return;
+            
+            const origClass = btn.className;
+            const origIcon = icon.innerText;
+            const origText = text.innerText;
+            
+            btn.disabled = true;
+            icon.innerText = 'autorenew';
+            icon.classList.add('animate-spin');
+            text.innerText = 'Syncing study logs...';
+            btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-on-surface bg-surface-container-high border border-outline/30 opacity-75 cursor-not-allowed font-semibold text-sm";
+            
+            try {
+                const response = await fetch('/api/sync', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json().catch(() => ({}));
+                    throw new Error(data.message || `Server error (${response.status})`);
+                }
+                
+                // Show success state
+                icon.classList.remove('animate-spin');
+                icon.innerText = 'check_circle';
+                text.innerText = 'Synced! Refreshing...';
+                btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-white bg-emerald-700 border border-transparent transition-all duration-200 font-semibold text-sm shadow-md";
+                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1200);
+                
+            } catch (err) {
+                console.error("Sync error:", err);
+                
+                icon.classList.remove('animate-spin');
+                icon.innerText = 'error';
+                text.innerText = 'Sync Failed!';
+                btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-white bg-rose-800 border border-transparent transition-all duration-200 font-semibold text-sm shadow-md";
+                
+                alert(`Sync failed: ${err.message}\n\nNote: Live syncing requires starting the portal with "./run_server.sh". Pure static servers or raw file protocol (file:///) cannot execute local scripts.`);
+                
+                setTimeout(() => {
+                    btn.disabled = false;
+                    icon.innerText = origIcon;
+                    text.innerText = origText;
+                    btn.className = origClass;
+                }, 3000);
             }
         }
 
