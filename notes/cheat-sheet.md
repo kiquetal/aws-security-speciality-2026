@@ -151,6 +151,12 @@
 - Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
 
+### API Gateway Security
+- 🧠 **API Gateway mTLS = custom domain name + S3 truststore (PEM file + object version).** Not ACM. Not Lambda authorizer. mTLS only works on custom domains, never on default execute-api endpoint.
+- 🧠 **API Gateway authorizer types:** Cognito Authorizer (JWT tokens) vs Lambda Authorizer TOKEN (header value) vs Lambda Authorizer REQUEST (headers + query + context + IP). Use REQUEST type when you need to validate custom headers or IP addresses.
+- 🧠 **API Gateway Resource Policy:** JSON policy on the API itself — restrict by IP, VPC, account. Evaluated BEFORE authorizers. "Block at API Gateway boundary" = resource policy.
+- 🧠 **Private API = VPC endpoint only.** Resource policy restricts to `vpce-xxx`. Endpoint SG controls which clients can reach the endpoint (inbound 443).
+
 ### Troubleshooting
 - 🧠 **Timeout = network problem (SG, NACL, routing, missing endpoint). Access Denied = permissions problem (IAM, policy, key policy).** The error type tells you where to look.
 - 🧠 **Interface endpoint = TWO SGs must cooperate.** Lambda SG needs outbound 443. Endpoint SG needs inbound 443. Miss either one = timeout.
