@@ -8,19 +8,19 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 988 |
-| **✅ Correct** | 769 (78%) |
+| **Total Questions** | 993 |
+| **✅ Correct** | 773 (78%) |
 | **⚠️ Partial** | 32 (3%) |
-| **❌ Wrong** | 184 (19%) |
+| **❌ Wrong** | 185 (19%) |
 | **Sessions** | 96 |
-| **Re-tests Passed** | 454 of 549 |
+| **Re-tests Passed** | 458 of 553 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
 | D1: Detection | 181 | 8 | 54 | 243 | 74% | 🟡 |
-| D2: Incident Response | 35 | 2 | 12 | 49 | 71% | 🟡 |
+| D2: Incident Response | 39 | 2 | 13 | 54 | 72% | 🟡 |
 | D3: Infrastructure Security | 92 | 5 | 19 | 116 | 79% | 🟡 |
 | D4: Identity & Access Management | 200 | 9 | 37 | 246 | 81% | 🟢 |
 | D5: Data Protection | 149 | 6 | 36 | 191 | 78% | 🟡 |
@@ -191,6 +191,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 157 | API Gateway mTLS = custom domain + S3 truststore | Q967 | D3 | 1 |
 | 🟡 158 | API Gateway TOKEN vs REQUEST authorizer | Q988 | D3 | 1 |
 | 🟡 159 | S3 wraps KMS errors (error surface vs root cause) | Q989 | D4 | 1 |
+| 🟡 160 | SageMaker notebooks vs Detective (custom vs built-in) | Q996 | D2 | 1 |
 
 ---
 
@@ -293,7 +294,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 93 | 2026-06-16 | Q933–Q942 | 5 | 1 | 4 | D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation) | [Jump](#session-93--2026-06-16) |
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
-| 96 | 2026-06-16 | Q962–Q991 | 25 | 2 | 3 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
+| 96 | 2026-06-16 | Q962–Q996 | 29 | 2 | 4 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
 
 ---
 
@@ -2218,3 +2219,8 @@ After adding a session:
 | 989 | D4/D5 | Cross-account KMS, B removed from key policy, Lambda calls GetObject — error type? | A: KMS.AccessDeniedException | ⚠️ | B: S3 wraps KMS failure as S3 AccessDenied — caller called S3, not KMS directly. | Q541, Q974 | S3 wraps KMS errors (error surface vs root cause) |
 | 990 | D5/D6 | EBS encryption by default alone — why insufficient for org-wide prevention? | B: Per-account+region, new accounts miss it, users can override | ✅ | Full prevention = EBS default + SCP together. | Q902 | EBS encryption by default + SCP = full prevention |
 | 991 | D1 | CW metric filter on StopLogging doesn't fire, EventBridge does — why? | B: StopLogging kills own CW Logs delivery | ✅ | EventBridge receives from CT management stream directly, bypasses CW Logs. | Q860, Q866 | StopLogging kills own CW Logs delivery |
+| 992 | D2 | Prove RTO/RPO to auditors without breaking anything — service? | B: Resilience Hub | ✅ | Assess architecture vs targets, generate report. No disruption. | Q935, Q944 | Resilience Hub = assess, FIS = test, ARC = recover |
+| 993 | D2 | Validate failover works in production with safety guardrails (auto-stop at 1% error) — service? | B: FIS with stop conditions | ✅ | FIS = chaos with CloudWatch alarm guardrails. | Q934, Q943 | FIS = test by breaking safely |
+| 994 | D2 | Gray failure, shift traffic from AZ in seconds, LB-level, temporary, no DNS — action? | C: ARC zonal shift | ✅ | Seconds, LB-level, set duration, auto-reverts. | Q936, Q945 | ARC zonal shift |
+| 995 | D2 | Test full IR pipeline (GD→EB→SF) with realistic findings through EventBridge — approach? | C: CreateSampleFindings | ✅ | Generates real-structure findings through normal EventBridge flow. | Q934, Q943 | CreateSampleFindings = test IR pipeline |
+| 996 | D2 | Investigate across 15 accounts + custom viz + reusable templates for junior analysts — tool? | A: Detective | ❌ | C: SageMaker notebooks. Detective = pre-built investigation. SageMaker = custom code + reusable templates + arbitrary queries. | — | SageMaker notebooks vs Detective (custom vs built-in) |
