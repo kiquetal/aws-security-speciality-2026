@@ -262,8 +262,8 @@ const TRACKER_DATA = {
         "Q687"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 3,
       "level": "red"
@@ -305,8 +305,8 @@ const TRACKER_DATA = {
         "Q495"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 3,
       "level": "red"
@@ -38769,6 +38769,423 @@ const TRACKER_DATA = {
                 {
                   "type": "bullet",
                   "text": "**Exam signal:** \"fine-grained application permissions\" / \"multi-tenant\" / \"per-document access\" \u2192 Verified Permissions.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-visual-kms-key-anatomy.md",
+      "title": "KMS Key Anatomy \u2014 Visual Reference",
+      "sections": [
+        {
+          "title": "The Three Layers",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  KEY ALIAS (friendly name \u2014 a pointer, nothing more)            \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  alias/my-app-key                                               \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502                                                         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u2502  points to                                              \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502       \u25bc                                                         \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  KMS KEY (the container \u2014 has an ID, ARN, policies)       \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  key-id: abc-123-def-456                                  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  ARN: arn:aws:kms:us-east-1:123456:key/abc-123-def-456    \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502                                                           \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502  KEY MATERIAL (the actual cryptographic bits)        \u2502  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502  = the secret sauce that encrypts/decrypts          \u2502  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502                                                     \u2502  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502  Origin:                                            \u2502  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502  \u251c\u2500\u2500 AWS_KMS    \u2192 AWS generated it (default)        \u2502  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502  \u251c\u2500\u2500 EXTERNAL   \u2192 YOU imported it                   \u2502  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2502  \u2514\u2500\u2500 AWS_CLOUDHSM \u2192 your CloudHSM generated it     \u2502  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502                                                           \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  + Key policy (who can use/manage)                        \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2502  + Metadata (creation date, state, rotation config)       \u2502  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Alias = Pointer (Can Be Moved)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "alias/my-app-key \u2500\u2500\u2500\u2500\u2500\u2500\u25ba key-id-1 (old key material)"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2502"
+                },
+                {
+                  "type": "text",
+                  "text": "(rotation)  \u2502  just move the pointer"
+                },
+                {
+                  "type": "text",
+                  "text": "\u25bc"
+                },
+                {
+                  "type": "text",
+                  "text": "alias/my-app-key \u2500\u2500\u2500\u2500\u2500\u2500\u25ba key-id-2 (new key material)"
+                },
+                {
+                  "type": "text",
+                  "text": "App always calls: \"encrypt with alias/my-app-key\""
+                },
+                {
+                  "type": "text",
+                  "text": "App never changes. Only the alias target changes."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Imported Key Rotation (Manual \u2014 The Alias Swap)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "BEFORE:"
+                },
+                {
+                  "type": "text",
+                  "text": "alias/prod-key \u2500\u2500\u25ba Key A (key-id-1, origin=EXTERNAL, old material)"
+                },
+                {
+                  "type": "text",
+                  "text": "STEP 1: Create NEW key (origin=EXTERNAL)"
+                },
+                {
+                  "type": "text",
+                  "text": "STEP 2: Import new material into Key B"
+                },
+                {
+                  "type": "text",
+                  "text": "STEP 3: Move alias"
+                },
+                {
+                  "type": "text",
+                  "text": "AFTER:"
+                },
+                {
+                  "type": "text",
+                  "text": "alias/prod-key \u2500\u2500\u25ba Key B (key-id-2, origin=EXTERNAL, new material)"
+                },
+                {
+                  "type": "text",
+                  "text": "Key A still exists \u2192 decrypts old ciphertext (key-id baked into ciphertext)"
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "AWS-Generated Auto-Rotation (Same Key ID)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "Key abc-123 (origin=AWS_KMS):"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Material v1 (2023) \u2190 old ciphertext uses this"
+                },
+                {
+                  "type": "text",
+                  "text": "\u251c\u2500\u2500 Material v2 (2024) \u2190 mid ciphertext uses this"
+                },
+                {
+                  "type": "text",
+                  "text": "\u2514\u2500\u2500 Material v3 (2025) \u2190 new encryptions use this"
+                },
+                {
+                  "type": "text",
+                  "text": "Same key ID, same alias, same ARN."
+                },
+                {
+                  "type": "text",
+                  "text": "KMS auto-routes decrypt to correct version via ciphertext metadata."
+                },
+                {
+                  "type": "text",
+                  "text": "All versions kept FOREVER (until key deleted)."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "MRK (Multi-Region Key)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "```"
+                },
+                {
+                  "type": "text",
+                  "text": "us-east-1:  mrk-abc-123  \u2500\u2500\u25ba key material X  + key policy A"
+                },
+                {
+                  "type": "text",
+                  "text": "eu-west-1:  mrk-abc-123  \u2500\u2500\u25ba key material X  + key policy B (INDEPENDENT!)"
+                },
+                {
+                  "type": "text",
+                  "text": "Same key ID. Same material. Different policies per region."
+                },
+                {
+                  "type": "text",
+                  "text": "Encrypt in us-east-1, decrypt in eu-west-1 locally."
+                },
+                {
+                  "type": "text",
+                  "text": "```"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Why \"Key Material\" Matters on the Exam",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "The exam uses \"key material\" to distinguish WHAT gets replicated or rotated:"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Scenario",
+                    "What moves",
+                    "What stays"
+                  ],
+                  "rows": [
+                    [
+                      "**Auto-rotation**",
+                      "New material added inside same key",
+                      "Key ID, alias, ARN unchanged"
+                    ],
+                    [
+                      "**Imported key rotation**",
+                      "New material in a NEW key, alias moves",
+                      "Old key + old material stay for old ciphertext"
+                    ],
+                    [
+                      "**MRK replication**",
+                      "Key material copied to new region",
+                      "Key policies are INDEPENDENT per region"
+                    ],
+                    [
+                      "**Secrets Manager replication**",
+                      "The SECRET VALUE (password, not key material)",
+                      "Completely different layer"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "The Exam Trap",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "\"DB credentials available in DR region\" \u2014 what replicates?",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u274c MRK (replicates key material \u2014 the encryption key)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\u2705 Secrets Manager replication (replicates the secret value \u2014 the password)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "text",
+                  "text": "**MRK replicates the lock. Secrets Manager replicates what's inside the safe.**"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Key Takeaways",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Alias** = just a pointer you can move (enables rotation without app changes)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Key material** = the actual crypto bits inside the key",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Imported** = you brought the material, you own durability, no auto-rotation",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Auto-rotation** = AWS swaps material inside the SAME key ID (transparent)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**MRK** = same material replicated, but policies are independent per region",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Secrets Manager** = replicates the secret value, not key material (different layer)",
                   "is_insight": false,
                   "is_warning": false
                 }
