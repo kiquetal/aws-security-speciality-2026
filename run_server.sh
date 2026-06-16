@@ -20,16 +20,14 @@ if [ $? -ne 0 ]; then
 fi
 
 # 2. Determine available web servers
-PORT=8080
+PORT=8188
 echo ""
 echo "🌐 Starting local web server on port $PORT..."
 
 if command -v python3 &>/dev/null; then
-    echo "⚡ Using Python 3 HTTP Server..."
-    echo "👉 Portal is live at: http://localhost:$PORT"
-    echo "ℹ️  Press Ctrl+C to stop the server"
+    echo "⚡ Using Python 3 Live Sync Server..."
     echo ""
-    python3 -m http.server $PORT --directory design
+    python3 scripts/server.py
 elif command -v npx &>/dev/null; then
     echo "⚡ Using Node npx http-server..."
     echo "👉 Portal is live at: http://localhost:$PORT"
