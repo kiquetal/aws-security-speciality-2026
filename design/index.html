@@ -1716,7 +1716,7 @@
                     
                     sub.items.forEach(item => {
                         let textToSearch = '';
-                        if (item.type === 'bullet' || item.type === 'text') {
+                        if (item.type === 'bullet' || item.type === 'text' || item.type === 'code') {
                             textToSearch = item.text.toLowerCase();
                         } else if (item.type === 'table') {
                             textToSearch = item.headers.join(' ').toLowerCase() + ' ' + 
@@ -1803,6 +1803,15 @@
                                         </div>
                                     `;
                                 }
+                            } else if (item.type === 'code') {
+                                itemsHTML += `
+                                    <div class="relative group my-3 pl-6">
+                                        <pre class="bg-surface-container-lowest border border-outline-variant/60 rounded-lg p-4 overflow-x-auto custom-scrollbar font-code-md text-xs text-secondary/90 leading-relaxed shadow-inner select-all whitespace-pre">${highlightText(item.text, searchVal)}</pre>
+                                        <div class="absolute top-2 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                            <span class="text-[10px] font-code-md text-on-surface-variant/40 bg-surface-container-high px-1.5 py-0.5 rounded border border-outline-variant/50 uppercase select-none">CODE</span>
+                                        </div>
+                                    </div>
+                                `;
                             } else if (item.type === 'text') {
                                 itemsHTML += `
                                     <p class="text-sm text-on-surface-variant leading-relaxed pl-6 mb-2 font-body-md">${highlightText(item.text, searchVal)}</p>
@@ -1920,7 +1929,7 @@
                 section.subsections.forEach(sub => {
                     sub.items.forEach(item => {
                         let textToSearch = '';
-                        if (item.type === 'bullet' || item.type === 'text' || item.type === 'blockquote') {
+                        if (item.type === 'bullet' || item.type === 'text' || item.type === 'blockquote' || item.type === 'code') {
                             textToSearch = item.text.toLowerCase();
                         } else if (item.type === 'table') {
                             textToSearch = item.headers.join(' ').toLowerCase() + ' ' + 
@@ -2079,7 +2088,7 @@
 
                     sub.items.forEach(item => {
                         let textToSearch = '';
-                        if (item.type === 'bullet' || item.type === 'text' || item.type === 'blockquote') {
+                        if (item.type === 'bullet' || item.type === 'text' || item.type === 'blockquote' || item.type === 'code') {
                             textToSearch = item.text.toLowerCase();
                         } else if (item.type === 'table') {
                             textToSearch = item.headers.join(' ').toLowerCase() + ' ' + 
@@ -2171,6 +2180,15 @@
                                     <div class="flex items-start gap-3 ${quoteBg} p-4 rounded my-3 italic">
                                         <span class="material-symbols-outlined ${quoteIconColor} text-lg shrink-0 mt-0.5">${quoteIcon}</span>
                                         <div class="text-sm text-on-surface leading-relaxed font-body-md">${highlightText(item.text, faqSearchQuery)}</div>
+                                    </div>
+                                `;
+                            } else if (item.type === 'code') {
+                                sectionHTML += `
+                                    <div class="relative group my-3 pl-6">
+                                        <pre class="bg-surface-container-lowest border border-outline-variant/60 rounded-lg p-4 overflow-x-auto custom-scrollbar font-code-md text-xs text-secondary/90 leading-relaxed shadow-inner select-all whitespace-pre">${highlightText(item.text, faqSearchQuery)}</pre>
+                                        <div class="absolute top-2 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                            <span class="text-[10px] font-code-md text-on-surface-variant/40 bg-surface-container-high px-1.5 py-0.5 rounded border border-outline-variant/50 uppercase select-none">CODE</span>
+                                        </div>
                                     </div>
                                 `;
                             } else if (item.type === 'text') {
