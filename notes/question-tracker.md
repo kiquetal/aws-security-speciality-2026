@@ -8,19 +8,19 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 929 |
-| **✅ Correct** | 722 (78%) |
-| **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 177 (19%) |
-| **Sessions** | 92 |
-| **Re-tests Passed** | 416 of 503 |
+| **Total Questions** | 939 |
+| **✅ Correct** | 727 (77%) |
+| **⚠️ Partial** | 28 (3%) |
+| **❌ Wrong** | 181 (19%) |
+| **Sessions** | 93 |
+| **Re-tests Passed** | 419 of 508 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 167 | 7 | 54 | 228 | 73% | 🟡 |
-| D2: Incident Response | 21 | 1 | 8 | 30 | 70% | 🟡 |
+| D1: Detection | 170 | 7 | 54 | 231 | 74% | 🟡 |
+| D2: Incident Response | 23 | 2 | 12 | 37 | 62% | 🟡 |
 | D3: Infrastructure Security | 87 | 5 | 17 | 109 | 80% | 🟢 |
 | D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
 | D5: Data Protection | 137 | 4 | 36 | 177 | 77% | 🟡 |
@@ -36,14 +36,14 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 2 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1 | 5 |
 | 🔴 3 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
 | 🔴 4 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870 | D4 | 4 |
-| 🔴 5 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
-| 🔴 6 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
-| 🔴 7 | KMS key policy root = delegation, not grant | Q264, Q503, Q687 | D4, D5 | 3 |
-| 🔴 8 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
-| 🔴 9 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
-| 🔴 10 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
-| 🔴 11 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
-| 🔴 12 | No-reboot AMI for volatile memory | Q810, Q825, Q830 | D2 | 3 |
+| 🔴 5 | No-reboot AMI for volatile memory | Q810, Q825, Q830, Q933 | D2 | 4 |
+| 🔴 6 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
+| 🔴 7 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
+| 🔴 8 | KMS key policy root = delegation, not grant | Q264, Q503, Q687 | D4, D5 | 3 |
+| 🔴 9 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
+| 🔴 10 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
+| 🔴 11 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
+| 🔴 12 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
 | 🔴 13 | S3 server access logging = ACLs | Q864, Q868, Q903 | D5 | 3 |
 | 🔴 14 | Security services comparison | Q5, Q24 | D1 | 2 |
 | 🔴 15 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
@@ -182,6 +182,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 148 | Reading comprehension (multiple missing perms) | Q911 | D5 | 1 |
 | 🟡 149 | Kinesis + KMS VPC endpoints (timeout = network) | Q918 | D5 | 1 |
 | 🟡 150 | CRR custom encryption context preserved | Q923 | D5 | 1 |
+| 🟡 151 | CreateSampleFindings vs FIS | Q934 | D2 | 1 |
+| 🟡 152 | Resilience Hub = assess, FIS = test, ARC = recover | Q935 | D2 | 1 |
+| 🟡 153 | ARC zonal shift | Q936 | D2 | 1 |
+| 🟡 154 | Deny * on user vs TokenIssueTime (user vs role) | Q942 | D2 | 1 |
 
 ---
 
@@ -281,6 +285,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 90 | 2026-06-15 | Q903–Q912 | 6 | 0 | 4 | Cross-domain (surprise drill — S3 ACLs, GWLB, Roles Anywhere, Private CA, declarative policies, Kinesis, VPC endpoints) | [Jump](#session-90--2026-06-15) |
 | 91 | 2026-06-15 | Q913–Q922 | 9 | 0 | 1 | Cross-domain (Week 1 killer drill — CRR encryption context, StopLogging, credential leak IR, S3 logging, IoT revocation, Kinesis endpoints, S3 Batch, GWLB, Config custom rules, DynamoDB KMS) | [Jump](#session-91--2026-06-15) |
 | 92 | 2026-06-15 | Q923–Q932 | 9 | 0 | 1 | Cross-domain (Week 1 weekly drill — CRR custom context, IoT ThingName, Kinesis SGs, Config Lambda timeout, CloudTrail Lake, S3 Batch regional, GWLB GENEVE, DynamoDB CreateGrant, ACM regional, Config org rule) | [Jump](#session-92--2026-06-15) |
+| 93 | 2026-06-16 | Q933–Q942 | 5 | 1 | 4 | D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation) | [Jump](#session-93--2026-06-16) |
 
 ---
 
@@ -2108,3 +2113,22 @@ After adding a session:
 | 930 | D5/D4 | DynamoDB CMK, Lambda has Decrypt+GenerateDataKey+Encrypt, PutItem Access Denied — minimum additional? | B | ✅ | B: kms:CreateGrant — DynamoDB delegates via grants like EBS. | Q899, Q922 | DynamoDB + CMK = CreateGrant |
 | 931 | D5/D3 | CloudFront + 2 regional ALBs, eu-west-1 ALB cert error — correct architecture? | A | ✅ | A: CF cert in us-east-1 + each ALB needs own regional ACM cert. | — | ACM regional requirements |
 | 932 | D6/D1 | Config org custom rule "Lambda not found" in 180 members, works in admin — cause? | B | ✅ | B: Lambda resource-based policy missing config.amazonaws.com invoke with SourceAccount condition. | Q876, Q908, Q921 | Config org custom rule cross-account invoke |
+
+
+### Session 93 — 2026-06-16
+
+**Domains:** D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation)
+**Score:** 6 ✅ · 1 ⚠️ · 4 ❌ (55% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 933 | D2/D1 | Trojan C2Activity, API must stay up, stop exfil + capture memory + preserve disk — THREE? | A+F+B | ⚠️ | A+B+C: TokenIssueTime + EBS snapshot + no-reboot AMI. F has broken dd /dev/mem. | Q810, Q825, Q830 | No-reboot AMI for volatile memory |
+| 934 | D2 | Test GuardDuty→EventBridge→Step Functions pipeline without real incident — approach? | B: FIS | ❌ | A: CreateSampleFindings API. FIS injects infra failures, not security findings. | — | CreateSampleFindings vs FIS |
+| 935 | D2 | Demonstrate RTO/RPO compliance to auditors, least overhead — service? | A: FIS | ❌ | B: Resilience Hub (assess architecture vs targets, generate report). FIS = test by breaking. | — | Resilience Hub = assess, FIS = test, ARC = recover |
+| 936 | D2 | AZ degraded but health checks pass, stop traffic to AZ, no DNS/ASG changes — fastest? | C: Route 53 | ❌ | B: ARC zonal shift (LB-level, seconds, no DNS). Route 53 = DNS = excluded by question. | — | ARC zonal shift |
+| 937 | D2 | Forensics Orchestrator: isolation succeeds but SSM memory acquisition fails — cause? | A: deny-all SG blocks SSM | ✅ | A: Deny-all SG blocks SSM agent outbound HTTPS. Need VPC endpoints or reorder workflow. | — | Forensics Orchestrator (deny-all blocks SSM) |
+| 938 | D1 | Alert 90s on DeleteRolePolicy + alert on S3 baseline deviation — which TWO? | B+C | ✅ | B: EventBridge (specific API fast) + C: GuardDuty S3 Protection (behavioral anomaly). | Q474, Q568 | EventBridge + GuardDuty S3 Protection |
+| 939 | D1 | RCP blocks external, 500 denied GetObjects, AA + GD enabled — which true? | C: Only AA fires | ✅ | C: AA flags policy (static). GD doesn't fire on blocked attempts. | Q534, Q594 | GuardDuty ≠ failed attempts + AA static |
+| 940 | D2 | Forensic analysis: query CT Lake + Security Lake, custom viz, reusable template — approach? | B: SageMaker notebook | ✅ | B: Interactive analysis, custom viz, save as reusable runbook template. | — | SageMaker notebooks for IR |
+| 941 | D1/D2 | Impact then Trojan findings, block hardcoded C2 IP + preserve + investigate 48hr — THREE? | B+C+D | ✅ | B: NF DROP on IP + C: EBS snapshot + D: Detective timeline. | Q526, Q571 | Network FW + EBS + Detective |
+| 942 | D2 | Keys on GitHub, attacker created 2nd keys + console + EC2, SSO active — single containment? | D: TokenIssueTime | ❌ | C: Inline Deny * on IAM user. TokenIssueTime = temp sessions only. Deny * blocks ALL credential types. | Q862, Q867 | Deny * on user vs TokenIssueTime (user vs role) |

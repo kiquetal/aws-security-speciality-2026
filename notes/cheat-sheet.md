@@ -228,10 +228,13 @@
 - Automated Forensics Orchestrator = Step Functions pipeline that auto-isolates + snapshots EC2 on GuardDuty finding.
 - Test IR plans with **Fault Injection Service** (simulate failures). Validate resilience with **Resilience Hub**.
 - Validate findings BEFORE full IR — assess scope, check false positives, correlate in Security Hub, investigate in Detective.
+- 🧠 **"Assess RTO/RPO for auditors" = Resilience Hub (analyze architecture). "Test IR plan by breaking things" = FIS (inject chaos). "Shift traffic from bad AZ" = ARC zonal shift (recover).** Three verbs: assess → test → recover.
+- 🧠 **`CreateSampleFindings` = test GuardDuty → EventBridge → Step Functions pipeline end-to-end without a real incident.** FIS injects infra failures (AZ/network), NOT security findings.
 - Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.
 - 🧠 **OutsideAWS = TokenIssueTime (creds used externally, instance gets fresh ones). InsideAWS = deny-all SG on attacker's instance (TokenIssueTime would break both instances sharing same role).**
 - 🧠 **OutsideAWS + can't stop instance: TokenIssueTime (stop attacker) + EBS snapshot (forensics) + IMDSv2 hop limit 1 (prevent future SSRF). Deny-all SG kills legitimate traffic — wrong choice if API must stay up.**
 - 🧠 **Credential leak IR (keys on GitHub): Deactivate exposed keys + attach inline Deny-all to user (covers second key/console/sessions).** Contain ALL access paths BEFORE investigating. Detective comes after containment.
+- 🧠 **Compromised ROLE = TokenIssueTime (only temp creds exist). Compromised IAM USER = Deny * on user (keys + console + sessions = persistent creds).** TokenIssueTime only kills STS tokens, not access keys or console passwords.
 - 🧠 **S3 Access Grants scope access by prefix (location). Overlapping prefixes = unintended cross-department access.** This is the #1 operational misconfiguration — not IAM bypass.
 
 ---
