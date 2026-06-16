@@ -100,61 +100,61 @@ const TRACKER_DATA = {
     "D1": {
       "code": "D1",
       "name": "Detection",
-      "correct": 189,
-      "partial": 9,
-      "wrong": 55,
-      "total": 256,
+      "correct": 212,
+      "partial": 10,
+      "wrong": 60,
+      "total": 285,
       "score_pct": 74,
       "status": "Passing"
     },
     "D2": {
       "code": "D2",
       "name": "Incident Response",
-      "correct": 39,
+      "correct": 49,
       "partial": 2,
       "wrong": 13,
-      "total": 54,
-      "score_pct": 72,
-      "status": "Passing"
+      "total": 64,
+      "score_pct": 77,
+      "status": "Solid"
     },
     "D3": {
       "code": "D3",
       "name": "Infrastructure Security",
-      "correct": 93,
-      "partial": 5,
-      "wrong": 21,
-      "total": 119,
-      "score_pct": 78,
+      "correct": 139,
+      "partial": 8,
+      "wrong": 28,
+      "total": 175,
+      "score_pct": 79,
       "status": "Solid"
     },
     "D4": {
       "code": "D4",
       "name": "Identity & Access Management",
-      "correct": 200,
-      "partial": 9,
-      "wrong": 37,
-      "total": 246,
-      "score_pct": 81,
+      "correct": 246,
+      "partial": 10,
+      "wrong": 53,
+      "total": 309,
+      "score_pct": 80,
       "status": "Solid"
     },
     "D5": {
       "code": "D5",
       "name": "Data Protection",
-      "correct": 150,
-      "partial": 6,
-      "wrong": 36,
-      "total": 192,
-      "score_pct": 78,
+      "correct": 212,
+      "partial": 8,
+      "wrong": 50,
+      "total": 270,
+      "score_pct": 79,
       "status": "Solid"
     },
     "D6": {
       "code": "D6",
       "name": "Governance",
-      "correct": 113,
+      "correct": 161,
       "partial": 2,
-      "wrong": 26,
-      "total": 141,
-      "score_pct": 80,
+      "wrong": 42,
+      "total": 205,
+      "score_pct": 79,
       "status": "Solid"
     }
   },
@@ -173,8 +173,8 @@ const TRACKER_DATA = {
         "Q581"
       ],
       "domains": [
-        "D1",
-        "D5"
+        "D5",
+        "D1"
       ],
       "count": 8,
       "level": "red"
@@ -190,7 +190,8 @@ const TRACKER_DATA = {
         "Q688"
       ],
       "domains": [
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 5,
       "level": "red"
@@ -206,6 +207,7 @@ const TRACKER_DATA = {
         "Q974"
       ],
       "domains": [
+        "D5",
         "D4"
       ],
       "count": 5,
@@ -236,6 +238,7 @@ const TRACKER_DATA = {
         "Q933"
       ],
       "domains": [
+        "D1",
         "D2"
       ],
       "count": 4,
@@ -350,7 +353,8 @@ const TRACKER_DATA = {
         "Q903"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D6"
       ],
       "count": 3,
       "level": "red"
@@ -389,6 +393,7 @@ const TRACKER_DATA = {
         "Q256"
       ],
       "domains": [
+        "D5",
         "D4"
       ],
       "count": 2,
@@ -428,7 +433,8 @@ const TRACKER_DATA = {
         "Q413"
       ],
       "domains": [
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -480,8 +486,8 @@ const TRACKER_DATA = {
         "Q1003"
       ],
       "domains": [
-        "D1",
-        "D4"
+        "D4",
+        "D1"
       ],
       "count": 2,
       "level": "yellow"
@@ -507,6 +513,7 @@ const TRACKER_DATA = {
         "Q652"
       ],
       "domains": [
+        "D4",
         "D1"
       ],
       "count": 2,
@@ -520,7 +527,10 @@ const TRACKER_DATA = {
         "Q594"
       ],
       "domains": [
-        "D1"
+        "D5",
+        "D4",
+        "D1",
+        "D6"
       ],
       "count": 2,
       "level": "yellow"
@@ -533,7 +543,9 @@ const TRACKER_DATA = {
         "Q679"
       ],
       "domains": [
-        "D4"
+        "D5",
+        "D4",
+        "D6"
       ],
       "count": 2,
       "level": "yellow"
@@ -546,7 +558,8 @@ const TRACKER_DATA = {
         "Q698"
       ],
       "domains": [
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 2,
       "level": "yellow"
@@ -585,6 +598,7 @@ const TRACKER_DATA = {
         "Q826"
       ],
       "domains": [
+        "D5",
         "D1"
       ],
       "count": 2,
@@ -624,7 +638,8 @@ const TRACKER_DATA = {
         "Q950"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D3"
       ],
       "count": 2,
       "level": "yellow"
@@ -1224,7 +1239,8 @@ const TRACKER_DATA = {
         "Q336"
       ],
       "domains": [
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1236,7 +1252,8 @@ const TRACKER_DATA = {
         "Q339"
       ],
       "domains": [
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1248,7 +1265,8 @@ const TRACKER_DATA = {
         "Q341"
       ],
       "domains": [
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1284,7 +1302,8 @@ const TRACKER_DATA = {
         "Q395"
       ],
       "domains": [
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1296,7 +1315,8 @@ const TRACKER_DATA = {
         "Q398"
       ],
       "domains": [
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1332,7 +1352,8 @@ const TRACKER_DATA = {
         "Q423"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1464,7 +1485,8 @@ const TRACKER_DATA = {
         "Q515"
       ],
       "domains": [
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1476,7 +1498,8 @@ const TRACKER_DATA = {
         "Q523"
       ],
       "domains": [
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1488,7 +1511,8 @@ const TRACKER_DATA = {
         "Q526"
       ],
       "domains": [
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
@@ -1500,7 +1524,9 @@ const TRACKER_DATA = {
         "Q532"
       ],
       "domains": [
-        "D1"
+        "D3",
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1512,7 +1538,9 @@ const TRACKER_DATA = {
         "Q535"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1524,6 +1552,8 @@ const TRACKER_DATA = {
         "Q545"
       ],
       "domains": [
+        "D5",
+        "D4",
         "D1"
       ],
       "count": 1,
@@ -1560,7 +1590,8 @@ const TRACKER_DATA = {
         "Q685"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1572,7 +1603,8 @@ const TRACKER_DATA = {
         "Q690"
       ],
       "domains": [
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
@@ -1584,6 +1616,7 @@ const TRACKER_DATA = {
         "Q706"
       ],
       "domains": [
+        "D4",
         "D1"
       ],
       "count": 1,
@@ -1716,6 +1749,7 @@ const TRACKER_DATA = {
         "Q761"
       ],
       "domains": [
+        "D4",
         "D2"
       ],
       "count": 1,
@@ -1764,6 +1798,7 @@ const TRACKER_DATA = {
         "Q797"
       ],
       "domains": [
+        "D3",
         "D1"
       ],
       "count": 1,
@@ -1800,6 +1835,8 @@ const TRACKER_DATA = {
         "Q820"
       ],
       "domains": [
+        "D4",
+        "D1",
         "D2"
       ],
       "count": 1,
@@ -1824,7 +1861,8 @@ const TRACKER_DATA = {
         "Q855"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1836,7 +1874,8 @@ const TRACKER_DATA = {
         "Q857"
       ],
       "domains": [
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1848,7 +1887,8 @@ const TRACKER_DATA = {
         "Q858"
       ],
       "domains": [
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1872,7 +1912,8 @@ const TRACKER_DATA = {
         "Q879"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1896,6 +1937,7 @@ const TRACKER_DATA = {
         "Q881"
       ],
       "domains": [
+        "D1",
         "D6"
       ],
       "count": 1,
@@ -1944,7 +1986,8 @@ const TRACKER_DATA = {
         "Q899"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1968,7 +2011,8 @@ const TRACKER_DATA = {
         "Q902"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1992,6 +2036,7 @@ const TRACKER_DATA = {
         "Q908"
       ],
       "domains": [
+        "D1",
         "D6"
       ],
       "count": 1,
@@ -2004,7 +2049,8 @@ const TRACKER_DATA = {
         "Q911"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2088,7 +2134,8 @@ const TRACKER_DATA = {
         "Q965"
       ],
       "domains": [
-        "D5"
+        "D5",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2124,6 +2171,7 @@ const TRACKER_DATA = {
         "Q989"
       ],
       "domains": [
+        "D5",
         "D4"
       ],
       "count": 1,

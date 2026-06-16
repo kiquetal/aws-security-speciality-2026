@@ -156,9 +156,11 @@ def parse_tracker_sessions():
     # Calculate domain breakdown
     domain_counts = defaultdict(lambda: {"correct": 0, "partial": 0, "wrong": 0, "unknown": 0})
     for q in all_q:
-        d = q["domain"]
-        if d in DOMAIN_NAMES:
-            domain_counts[d][q["result"]] += 1
+        # Handle multi-domain questions (e.g. D1/D2) by counting them for all listed domains
+        domains = [d.strip() for d in q["domain_raw"].split("/") if d.strip()]
+        for d in domains:
+            if d in DOMAIN_NAMES:
+                domain_counts[d][q["result"]] += 1
             
     domain_proficiency = {}
     for d_code, name in DOMAIN_NAMES.items():
@@ -182,8 +184,10 @@ def parse_tracker_sessions():
         if q["result"] in ("wrong", "partial") and q["review"]:
             t = q["review"]
             weak_topics_dict[t]["questions"].append(f"Q{q['num']}")
-            if q["domain"]:
-                weak_topics_dict[t]["domains"].add(q["domain"])
+            domains = [d.strip() for d in q["domain_raw"].split("/") if d.strip()]
+            for d in domains:
+                if d in DOMAIN_NAMES:
+                    weak_topics_dict[t]["domains"].add(d)
                 
     weak_areas = []
     sorted_topics = sorted(weak_topics_dict.items(), key=lambda x: len(x[1]["questions"]), reverse=True)

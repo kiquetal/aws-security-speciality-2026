@@ -97,9 +97,11 @@ def build_domain_breakdown(sessions):
     counts = defaultdict(lambda: {"correct": 0, "partial": 0, "wrong": 0})
     for s in sessions:
         for q in s["questions"]:
-            d = q["domain"].split("/")[0].strip()  # handle "D4/D6" → "D4"
-            if d and q["result"]:
-                counts[d][q["result"]] += 1
+            # Handle multi-domain questions (e.g. D1/D2) by counting them for all listed domains
+            domains = [d.strip() for d in q["domain"].split("/") if d.strip()]
+            for d in domains:
+                if d and q["result"]:
+                    counts[d][q["result"]] += 1
     lines = [
         "## Domain Breakdown",
         "",
@@ -129,9 +131,10 @@ def build_weak_areas(sessions):
             if q["result"] in ("wrong", "partial") and q["review"]:
                 t = q["review"]
                 topics[t]["questions"].append(f"Q{q['num']}")
-                d = q["domain"].split("/")[0].strip()
-                if d:
-                    topics[t]["domains"].add(d)
+                domains = [d.strip() for d in q["domain"].split("/") if d.strip()]
+                for d in domains:
+                    if d:
+                        topics[t]["domains"].add(d)
     # Sort by number of misses descending
     sorted_topics = sorted(topics.items(), key=lambda x: len(x[1]["questions"]), reverse=True)
     lines = [

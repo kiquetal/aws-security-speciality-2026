@@ -19,12 +19,12 @@
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 189 | 9 | 55 | 253 | 75% | 🟡 |
-| D2: Incident Response | 39 | 2 | 13 | 54 | 72% | 🟡 |
-| D3: Infrastructure Security | 93 | 5 | 21 | 119 | 78% | 🟡 |
-| D4: Identity & Access Management | 200 | 9 | 37 | 246 | 81% | 🟢 |
-| D5: Data Protection | 150 | 6 | 36 | 192 | 78% | 🟡 |
-| D6: Governance | 113 | 2 | 26 | 141 | 80% | 🟢 |
+| D1: Detection | 212 | 10 | 60 | 282 | 75% | 🟡 |
+| D2: Incident Response | 49 | 2 | 13 | 64 | 77% | 🟡 |
+| D3: Infrastructure Security | 139 | 8 | 28 | 175 | 79% | 🟡 |
+| D4: Identity & Access Management | 246 | 10 | 53 | 309 | 80% | 🟢 |
+| D5: Data Protection | 212 | 8 | 50 | 270 | 79% | 🟡 |
+| D6: Governance | 161 | 2 | 42 | 205 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -33,10 +33,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
 | 🔴 1 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153, Q156, Q158, Q546, Q568, Q581 | D1, D5 | 8 |
-| 🔴 2 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1 | 5 |
-| 🔴 3 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870, Q974 | D4 | 5 |
+| 🔴 2 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1, D6 | 5 |
+| 🔴 3 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870, Q974 | D4, D5 | 5 |
 | 🔴 4 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
-| 🔴 5 | No-reboot AMI for volatile memory | Q810, Q825, Q830, Q933 | D2 | 4 |
+| 🔴 5 | No-reboot AMI for volatile memory | Q810, Q825, Q830, Q933 | D1, D2 | 4 |
 | 🔴 6 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
 | 🔴 7 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
 | 🔴 8 | KMS key policy root = delegation, not grant | Q264, Q503, Q687 | D4, D5 | 3 |
@@ -44,28 +44,28 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 10 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
 | 🔴 11 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
 | 🔴 12 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
-| 🔴 13 | S3 server access logging = ACLs | Q864, Q868, Q903 | D5 | 3 |
+| 🔴 13 | S3 server access logging = ACLs | Q864, Q868, Q903 | D5, D6 | 3 |
 | 🔴 14 | Security services comparison | Q5, Q24 | D1 | 2 |
 | 🔴 15 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 16 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4 | 2 |
+| 🔴 16 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4, D5 | 2 |
 | 🔴 17 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
 | 🔴 18 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 19 | SCP for preventive enforcement | Q261, Q413 | D3 | 2 |
+| 🔴 19 | SCP for preventive enforcement | Q261, Q413 | D3, D4 | 2 |
 | 🔴 20 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
 | 🔴 21 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
 | 🔴 22 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
 | 🔴 23 | Access Analyzer unused + policy generation | Q374, Q1003 | D1, D4 | 2 |
 | 🔴 24 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
-| 🔴 25 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1 | 2 |
-| 🔴 26 | GuardDuty ≠ failed attempts | Q534, Q594 | D1 | 2 |
-| 🔴 27 | Session policy + server-side KMS | Q591, Q679 | D4 | 2 |
-| 🔴 28 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4 | 2 |
+| 🔴 25 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1, D4 | 2 |
+| 🔴 26 | GuardDuty ≠ failed attempts | Q534, Q594 | D1, D4, D5, D6 | 2 |
+| 🔴 27 | Session policy + server-side KMS | Q591, Q679 | D4, D5, D6 | 2 |
+| 🔴 28 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4, D6 | 2 |
 | 🔴 29 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
 | 🔴 30 | Sign=private, verify=public | Q812, Q824 | D5 | 2 |
-| 🔴 31 | S3 Access Grants prefix overlap | Q819, Q826 | D1 | 2 |
+| 🔴 31 | S3 Access Grants prefix overlap | Q819, Q826 | D1, D5 | 2 |
 | 🔴 32 | StopLogging kills own CW Logs delivery | Q860, Q866 | D1 | 2 |
 | 🔴 33 | Credential leak IR (Deny-all before investigate) | Q862, Q867 | D2 | 2 |
-| 🔴 34 | Kinesis + KMS VPC endpoints (timeout = network) | Q918, Q950 | D5 | 2 |
+| 🔴 34 | Kinesis + KMS VPC endpoints (timeout = network) | Q918, Q950 | D3, D5 | 2 |
 | 🟡 35 | CloudTrail data vs management events | Q1 | D1 | 1 |
 | 🟡 36 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
 | 🟡 37 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
@@ -115,16 +115,16 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 81 | StackSets vs Conformance Pack | Q276 | D6 | 1 |
 | 🟡 82 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
 | 🟡 83 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
-| 🟡 84 | Verified Access trust providers | Q336 | D3 | 1 |
-| 🟡 85 | Signer revocation (job vs profile vs IAM) | Q339 | D4 | 1 |
-| 🟡 86 | Cognito Identity Pool + KMS permissions | Q341 | D3 | 1 |
+| 🟡 84 | Verified Access trust providers | Q336 | D3, D4 | 1 |
+| 🟡 85 | Signer revocation (job vs profile vs IAM) | Q339 | D4, D6 | 1 |
+| 🟡 86 | Cognito Identity Pool + KMS permissions | Q341 | D3, D4 | 1 |
 | 🟡 87 | GuardDuty suppression rules | Q372 | D1 | 1 |
 | 🟡 88 | Secrets Manager rotation failure | Q376 | D5 | 1 |
-| 🟡 89 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D4 | 1 |
-| 🟡 90 | Data perimeter (RCP blocks IN, SCP blocks OUT) | Q398 | D4 | 1 |
+| 🟡 89 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D3, D4 | 1 |
+| 🟡 90 | Data perimeter (RCP blocks IN, SCP blocks OUT) | Q398 | D4, D6 | 1 |
 | 🟡 91 | EventBridge for fast detection | Q401 | D1 | 1 |
 | 🟡 92 | Timeout vs Access Denied (SG troubleshooting) | Q418 | D3 | 1 |
-| 🟡 93 | KMS is regional | Q423 | D5 | 1 |
+| 🟡 93 | KMS is regional | Q423 | D4, D5 | 1 |
 | 🟡 94 | RCP same-org evaluation | Q427 | D4 | 1 |
 | 🟡 95 | Secrets Manager replication ≠ MRK | Q428 | D5 | 1 |
 | 🟡 96 | SCP prevents disabling services | Q440 | D6 | 1 |
@@ -135,17 +135,17 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 101 | Delegated admin (all services) | Q462 | D6 | 1 |
 | 🟡 102 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
 | 🟡 103 | No single governance service | Q486 | D6 | 1 |
-| 🟡 104 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1 | 1 |
-| 🟡 105 | EventBridge for fast detection + auto-revert | Q523 | D1 | 1 |
-| 🟡 106 | Network FW for IP-level C2 block | Q526 | D3 | 1 |
-| 🟡 107 | Detection + response architecture | Q532 | D1 | 1 |
-| 🟡 108 | Gateway endpoint policy as additional gate | Q535 | D5 | 1 |
-| 🟡 109 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1 | 1 |
+| 🟡 104 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1, D6 | 1 |
+| 🟡 105 | EventBridge for fast detection + auto-revert | Q523 | D1, D6 | 1 |
+| 🟡 106 | Network FW for IP-level C2 block | Q526 | D1, D3 | 1 |
+| 🟡 107 | Detection + response architecture | Q532 | D1, D3, D6 | 1 |
+| 🟡 108 | Gateway endpoint policy as additional gate | Q535 | D3, D4, D5 | 1 |
+| 🟡 109 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1, D4, D5 | 1 |
 | 🟡 110 | Detect vs prevent (GuardDuty vs EventBridge for behavioral) | Q640 | D1 | 1 |
 | 🟡 111 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) | Q655 | D1 | 1 |
-| 🟡 112 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D5 | 1 |
-| 🟡 113 | DGA = allow-list DNS Firewall | Q690 | D3 | 1 |
-| 🟡 114 | Access Analyzer static + GuardDuty ≠ failed attempts | Q706 | D1 | 1 |
+| 🟡 112 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D3, D5 | 1 |
+| 🟡 113 | DGA = allow-list DNS Firewall | Q690 | D1, D3 | 1 |
+| 🟡 114 | Access Analyzer static + GuardDuty ≠ failed attempts | Q706 | D1, D4 | 1 |
 | 🟡 115 | NACLs stateless (Dojo Q19, Q61) | Q707 | D3 | 1 |
 | 🟡 116 | Directory Service + trust direction (Dojo Q5) | Q709 | D4 | 1 |
 | 🟡 117 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
@@ -156,41 +156,41 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 122 | AD Connector vs Simple AD | Q739 | D4 | 1 |
 | 🟡 123 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
 | 🟡 124 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
-| 🟡 125 | InsideAWS = SG isolation | Q761 | D2 | 1 |
+| 🟡 125 | InsideAWS = SG isolation | Q761 | D2, D4 | 1 |
 | 🟡 126 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
 | 🟡 127 | Cognito Identity Pool + role (not direct STS) | Q778 | D4 | 1 |
 | 🟡 128 | NACLs stateless (inbound ACCEPT + outbound REJECT) | Q781 | D3 | 1 |
-| 🟡 129 | EKS Runtime Monitoring (agent required) | Q797 | D1 | 1 |
+| 🟡 129 | EKS Runtime Monitoring (agent required) | Q797 | D1, D3 | 1 |
 | 🟡 130 | CloudFront response headers policy | Q801 | D3 | 1 |
 | 🟡 131 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
-| 🟡 132 | OutsideAWS IR + IMDSv2 hardening | Q820 | D2 | 1 |
+| 🟡 132 | OutsideAWS IR + IMDSv2 hardening | Q820 | D1, D2, D4 | 1 |
 | 🟡 133 | GuardDuty ≠ failed attempts + AA static | Q839 | D1 | 1 |
-| 🟡 134 | S3 Batch Operations cross-account + manifest region | Q855 | D5 | 1 |
-| 🟡 135 | S3 Batch cross-account needs bucket policy | Q857 | D4 | 1 |
-| 🟡 136 | SCP prevention > detect+remediate | Q858 | D4 | 1 |
+| 🟡 134 | S3 Batch Operations cross-account + manifest region | Q855 | D4, D5 | 1 |
+| 🟡 135 | S3 Batch cross-account needs bucket policy | Q857 | D4, D6 | 1 |
+| 🟡 136 | SCP prevention > detect+remediate | Q858 | D4, D6 | 1 |
 | 🟡 137 | S3 Batch Operations regional | Q872 | D5 | 1 |
-| 🟡 138 | Kinesis consumer = Decrypt + DescribeKey | Q879 | D5 | 1 |
+| 🟡 138 | Kinesis consumer = Decrypt + DescribeKey | Q879 | D3, D5 | 1 |
 | 🟡 139 | IoT ThingName = cert-bound, not hardware | Q880 | D3 | 1 |
-| 🟡 140 | Config custom rule = Lambda (max 15min timeout) | Q881 | D6 | 1 |
+| 🟡 140 | Config custom rule = Lambda (max 15min timeout) | Q881 | D1, D6 | 1 |
 | 🟡 141 | CRR dest = kms:GenerateDataKey (not Encrypt) | Q883 | D5 | 1 |
 | 🟡 142 | CRR rewrites encryption context to dest | Q888 | D5 | 1 |
 | 🟡 143 | IoT cert revocation = instant (no CRL delay) | Q892 | D3 | 1 |
-| 🟡 144 | DynamoDB + CMK = CreateGrant + DescribeKey | Q899 | D5 | 1 |
+| 🟡 144 | DynamoDB + CMK = CreateGrant + DescribeKey | Q899 | D4, D5 | 1 |
 | 🟡 145 | Reading comprehension (perms already present) | Q901 | D5 | 1 |
-| 🟡 146 | EBS encryption by default + SCP = full prevention | Q902 | D5 | 1 |
+| 🟡 146 | EBS encryption by default + SCP = full prevention | Q902 | D5, D6 | 1 |
 | 🟡 147 | GWLB GENEVE decapsulation | Q905 | D3 | 1 |
-| 🟡 148 | Config org custom rule cross-account invoke | Q908 | D6 | 1 |
-| 🟡 149 | Reading comprehension (multiple missing perms) | Q911 | D5 | 1 |
+| 🟡 148 | Config org custom rule cross-account invoke | Q908 | D1, D6 | 1 |
+| 🟡 149 | Reading comprehension (multiple missing perms) | Q911 | D3, D5 | 1 |
 | 🟡 150 | CRR custom encryption context preserved | Q923 | D5 | 1 |
 | 🟡 151 | CreateSampleFindings vs FIS | Q934 | D2 | 1 |
 | 🟡 152 | Resilience Hub = assess, FIS = test, ARC = recover | Q935 | D2 | 1 |
 | 🟡 153 | ARC zonal shift | Q936 | D2 | 1 |
 | 🟡 154 | Deny * on user vs TokenIssueTime (user vs role) | Q942 | D2 | 1 |
 | 🟡 155 | CloudTrail Lake (data vs mgmt + no backfill) | Q951 | D1 | 1 |
-| 🟡 156 | KMS endpoint + SG (direct calls only) | Q965 | D5 | 1 |
+| 🟡 156 | KMS endpoint + SG (direct calls only) | Q965 | D3, D5 | 1 |
 | 🟡 157 | API Gateway mTLS = custom domain + S3 truststore | Q967 | D3 | 1 |
 | 🟡 158 | API Gateway TOKEN vs REQUEST authorizer | Q988 | D3 | 1 |
-| 🟡 159 | S3 wraps KMS errors (error surface vs root cause) | Q989 | D4 | 1 |
+| 🟡 159 | S3 wraps KMS errors (error surface vs root cause) | Q989 | D4, D5 | 1 |
 | 🟡 160 | SageMaker notebooks vs Detective (custom vs built-in) | Q996 | D2 | 1 |
 | 🟡 161 | CloudTrail Insights vs GuardDuty (complementary) | Q1004 | D1 | 1 |
 | 🟡 162 | Bedrock IAM guardrail enforcement (condition key) | Q1007 | D3 | 1 |
