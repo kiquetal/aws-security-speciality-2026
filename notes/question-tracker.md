@@ -8,22 +8,22 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 968 |
-| **✅ Correct** | 752 (78%) |
+| **Total Questions** | 978 |
+| **✅ Correct** | 761 (78%) |
 | **⚠️ Partial** | 31 (3%) |
-| **❌ Wrong** | 182 (19%) |
+| **❌ Wrong** | 183 (19%) |
 | **Sessions** | 96 |
-| **Re-tests Passed** | 438 of 530 |
+| **Re-tests Passed** | 446 of 539 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 177 | 8 | 54 | 239 | 74% | 🟡 |
-| D2: Incident Response | 33 | 2 | 12 | 47 | 70% | 🟡 |
-| D3: Infrastructure Security | 89 | 5 | 18 | 112 | 79% | 🟡 |
-| D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
-| D5: Data Protection | 142 | 6 | 36 | 184 | 77% | 🟡 |
+| D1: Detection | 179 | 8 | 54 | 241 | 74% | 🟡 |
+| D2: Incident Response | 34 | 2 | 12 | 48 | 71% | 🟡 |
+| D3: Infrastructure Security | 91 | 5 | 18 | 114 | 80% | 🟢 |
+| D4: Identity & Access Management | 199 | 8 | 37 | 244 | 82% | 🟢 |
+| D5: Data Protection | 146 | 6 | 36 | 188 | 78% | 🟡 |
 | D6: Governance | 112 | 2 | 26 | 140 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -34,8 +34,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 |---|---|---|---|---|
 | 🔴 1 | Detect vs prevent (GuardDuty vs policy) | Q100, Q105, Q153, Q156, Q158, Q546, Q568, Q581 | D1, D5 | 8 |
 | 🔴 2 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1 | 5 |
-| 🔴 3 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
-| 🔴 4 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870 | D4 | 4 |
+| 🔴 3 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870, Q974 | D4 | 5 |
+| 🔴 4 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
 | 🔴 5 | No-reboot AMI for volatile memory | Q810, Q825, Q830, Q933 | D2 | 4 |
 | 🔴 6 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
 | 🔴 7 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
@@ -291,7 +291,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 93 | 2026-06-16 | Q933–Q942 | 5 | 1 | 4 | D2 Incident Response + D1 Detection (D2 never-seen services blitz + D1 decision validation) | [Jump](#session-93--2026-06-16) |
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
-| 96 | 2026-06-16 | Q962–Q971 | 8 | 1 | 1 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
+| 96 | 2026-06-16 | Q962–Q981 | 17 | 1 | 2 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
 
 ---
 
@@ -2196,3 +2196,13 @@ After adding a session:
 | 969 | D3 | Patient SSN encrypted at CF edge before origin, WAF can't see raw — approach? | B: RSA public key + FLE profile + FLE config + cache behavior | ✅ | CloudFront FLE: upload RSA public key, map field in profile, attach to behavior. | — | CloudFront Field-Level Encryption |
 | 970 | D2 | Trojan C2Activity, API must stay up + block C2 + preserve evidence — which TWO? | B+C: NF DROP on C2 IP + no-reboot AMI + EBS snapshot | ✅ | NF = surgical block. No-reboot AMI + snapshot = complete forensics. | Q526, Q933 | Surgical containment (NF + forensics) |
 | 971 | D1/D5 | Prevent ScheduleKeyDeletion + detect PutBucketPolicy 90s + alert anomalous downloads — THREE services? | A: SCP + EventBridge + GuardDuty S3 Protection | ✅ | Prevent = SCP. Detect API = EventBridge. Detect behavior = GuardDuty. | Q688, Q701 | Full prevent/detect/alert architecture |
+| 972 | D5 | Glacier Vault Lock: permanently irreversible after 24hr confirm, even AWS can't modify — mechanism? | B: Glacier Vault Lock | ✅ | "24hr confirm + permanently irreversible" = Vault Lock. Object Lock = per-object retention with expiry. | Q800, Q822, Q828 | Glacier Vault Lock vs Object Lock |
+| 973 | D5/D3 | Lambda private subnet: DynamoDB + direct kms:Decrypt + S3 SSE-KMS — minimum endpoints? | B: 3 (Gateway S3 + Gateway DDB + Interface KMS) | ✅ | S3 SSE-KMS = server-side (no KMS endpoint). Direct kms:Decrypt = needs KMS Interface endpoint. | Q685, Q699 | VPC endpoints (direct KMS + DynamoDB) |
+| 974 | D4/D5 | Cross-account S3+KMS works, then key admin removes Account B from key policy — what fails? | B: Fails at s3:GetObject | ❌ | C: Fails at kms:Decrypt — key policy must name external account. Error surfaces on GetObject but root cause is KMS. | Q541, Q669, Q850 | Cross-account KMS key policy must name external account |
+| 975 | D3 | Private API: only from vpce-111111 + only sg-222222 — which TWO? | A+B: Resource Policy + endpoint SG inbound | ✅ | Resource Policy = API-level gate. Endpoint SG = network-level gate. Both needed. | — | Private API Resource Policy + endpoint SG |
+| 976 | D1 | CT Lake query GetObject returns zero, DeleteBucket works — cause? | B: GetObject is data event, EDS mgmt-only | ✅ | Data events need explicit EDS configuration. Management events work by default. | Q882, Q927, Q951 | CloudTrail Lake (data vs mgmt + no backfill) |
+| 977 | D2 | Forensics Orchestrator: VPC endpoints deployed, deny-all SG, SSM still fails — cause? | A: Deny-all SG blocks outbound to endpoint ENIs | ✅ | Deny-all = no outbound at all. Instance can't reach VPC endpoint ENIs. | Q937, Q957 | Deny-all SG blocks ALL outbound (including to endpoints) |
+| 978 | D3 | API GW: web=Cognito JWT, legacy=HMAC header + IP restrict BEFORE authorizer — config? | B: Cognito + Lambda REQUEST + Resource Policy | ✅ | Resource Policy first (saves Lambda cost). REQUEST type for headers+IP. | Q967 | API Gateway Resource Policy + REQUEST authorizer |
+| 979 | D5 | RSA KMS key for encryption AND signing — why not? | B: One key = one purpose at creation (sign OR encrypt) | ✅ | KMS locks key usage at creation. RSA can do either but must choose one. | Q812, Q824 | KMS one key = one purpose |
+| 980 | D5 | Asymmetric sign, partners verify offline air-gapped — how? | B: Export public key, verify locally OpenSSL | ✅ | Sign=private (KMS). Verify=public (exportable, offline). | Q812, Q824, Q834 | Sign=private, verify=public (offline) |
+| 981 | D1/D3 | DGA domains (unpredictable), block VPC-wide — approach? | C: DNS Firewall allow-list (block all except known-good) | ✅ | DGA = can't enumerate. Flip to allow-list. DNS layer since attacker needs DNS. | Q690, Q756 | DGA = allow-list DNS Firewall |
