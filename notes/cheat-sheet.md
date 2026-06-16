@@ -291,6 +291,24 @@
 
 ---
 
+## GenAI / ML / New Services (SCS-C03 additions)
+
+- 🧠 **Bedrock Guardrails = LLM content filtering (prompt injection, PII, topics). WAF = HTTP filtering. Different layers.**
+- 🧠 **`bedrock:ApplyGuardrail` = standalone API.** Filter ANY text (even non-AWS LLMs) without InvokeModel.
+- 🧠 **Bedrock IAM enforcement: condition `bedrock:GuardrailIdentifier` = mandatory guardrail per call.** Missing condition = InvokeModel denied.
+- 🧠 **"Block model org-wide" = SCP deny `bedrock:InvokeModel` on model ARN.** Simplified access doesn't override IAM/SCP blocks.
+- 🧠 **Two Bedrock VPC endpoints: `bedrock` (management) + `bedrock-runtime` (inference).** Both Interface type.
+- 🧠 **Bedrock data privacy: your data NOT used for training (opted out by default).** No action needed.
+- 🧠 **Q Business = enterprise docs (requires Identity Center + ACL crawling). Q Developer = code security (IDE + SAST).**
+- 🧠 **Q Business ACLs can't be disabled once enabled.** Automatic document-level security from source connectors.
+- 🧠 **CodeGuru Security = SAST (code before deploy). Inspector = CVE scanning (running workloads after deploy).**
+- 🧠 **CodeGuru detects: OWASP Top 10, CWE Top 25, hardcoded secrets, insecure AWS SDK usage.**
+- 🧠 **FSx for Lustre = ALWAYS encrypted (XTS-AES-256), symmetric KMS only, VPC-only.**
+- 🧠 **FSx linked to SSE-KMS S3 bucket: key policy must grant `fsx.amazonaws.com`.** Same pattern as CloudFront OAC.
+- 🧠 **FSx Scratch = no backups, no replication (temp). Persistent = backups + within-AZ replication.**
+
+---
+
 ## Condition Keys to Know Cold
 
 | Key | When to Use |
