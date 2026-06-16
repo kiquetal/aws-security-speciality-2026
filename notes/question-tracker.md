@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 919 |
-| **✅ Correct** | 713 (78%) |
+| **Total Questions** | 929 |
+| **✅ Correct** | 722 (78%) |
 | **⚠️ Partial** | 27 (3%) |
-| **❌ Wrong** | 176 (19%) |
-| **Sessions** | 91 |
-| **Re-tests Passed** | 408 of 494 |
+| **❌ Wrong** | 177 (19%) |
+| **Sessions** | 92 |
+| **Re-tests Passed** | 416 of 503 |
 
 ## Domain Breakdown
 
 | Domain | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|
-| D1: Detection | 166 | 7 | 54 | 227 | 73% | 🟡 |
+| D1: Detection | 167 | 7 | 54 | 228 | 73% | 🟡 |
 | D2: Incident Response | 21 | 1 | 8 | 30 | 70% | 🟡 |
-| D3: Infrastructure Security | 85 | 5 | 17 | 107 | 79% | 🟡 |
+| D3: Infrastructure Security | 87 | 5 | 17 | 109 | 80% | 🟢 |
 | D4: Identity & Access Management | 199 | 8 | 36 | 243 | 82% | 🟢 |
-| D5: Data Protection | 133 | 4 | 35 | 172 | 77% | 🟡 |
-| D6: Governance | 109 | 2 | 26 | 137 | 80% | 🟢 |
+| D5: Data Protection | 137 | 4 | 36 | 177 | 77% | 🟡 |
+| D6: Governance | 111 | 2 | 26 | 139 | 80% | 🟢 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -181,6 +181,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 147 | Config org custom rule cross-account invoke | Q908 | D6 | 1 |
 | 🟡 148 | Reading comprehension (multiple missing perms) | Q911 | D5 | 1 |
 | 🟡 149 | Kinesis + KMS VPC endpoints (timeout = network) | Q918 | D5 | 1 |
+| 🟡 150 | CRR custom encryption context preserved | Q923 | D5 | 1 |
 
 ---
 
@@ -279,6 +280,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 89 | 2026-06-15 | Q893–Q902 | 7 | 0 | 3 | Cross-domain (score uplift drill #2 — CRR, IoT, S3 Batch, DynamoDB KMS, ViaService, EBS encryption) | [Jump](#session-89--2026-06-15) |
 | 90 | 2026-06-15 | Q903–Q912 | 6 | 0 | 4 | Cross-domain (surprise drill — S3 ACLs, GWLB, Roles Anywhere, Private CA, declarative policies, Kinesis, VPC endpoints) | [Jump](#session-90--2026-06-15) |
 | 91 | 2026-06-15 | Q913–Q922 | 9 | 0 | 1 | Cross-domain (Week 1 killer drill — CRR encryption context, StopLogging, credential leak IR, S3 logging, IoT revocation, Kinesis endpoints, S3 Batch, GWLB, Config custom rules, DynamoDB KMS) | [Jump](#session-91--2026-06-15) |
+| 92 | 2026-06-15 | Q923–Q932 | 9 | 0 | 1 | Cross-domain (Week 1 weekly drill — CRR custom context, IoT ThingName, Kinesis SGs, Config Lambda timeout, CloudTrail Lake, S3 Batch regional, GWLB GENEVE, DynamoDB CreateGrant, ACM regional, Config org rule) | [Jump](#session-92--2026-06-15) |
 
 ---
 
@@ -2087,3 +2089,22 @@ After adding a session:
 | 920 | D3/D1 | GWLB + IDS, all logs show GWLB IP instead of client IPs — fix? | B | ✅ | B: Appliances must decapsulate GENEVE outer header — original IP in inner packet. | Q905 | GWLB GENEVE decapsulation |
 | 921 | D6/D1 | Org Config custom rule, Lambda works locally, "Unable to invoke" in 150 members — fix? | B | ✅ | B: Lambda resource-based policy granting config.amazonaws.com with SourceAccount condition. | Q876, Q908 | Config org custom rule cross-account invoke |
 | 922 | D5/D4 | DynamoDB CMK, Lambda has Decrypt+GenerateDataKey, PutItem Access Denied on KMS — missing? | B | ✅ | B: kms:CreateGrant + kms:DescribeKey — DynamoDB delegates via grants like EBS. | Q899 | DynamoDB + CMK = CreateGrant + DescribeKey |
+
+
+### Session 92 — 2026-06-15
+
+**Domains:** Cross-domain (Week 1 weekly drill — CRR custom context, IoT ThingName, Kinesis SGs, Config Lambda timeout, CloudTrail Lake, S3 Batch regional, GWLB GENEVE, DynamoDB CreateGrant, ACM regional, Config org rule)
+**Score:** 9 ✅ · 0 ⚠️ · 1 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 923 | D5 | CRR SSE-KMS, dest key policy checks aws:s3:arn, objects with custom encryption context fail — cause? | A | ❌ | B: CRR preserves source's custom encryption context, which causes mismatch at dest key policy expecting only S3 system context. | Q888, Q913 | CRR custom encryption context preserved |
+| 924 | D3 | IoT ThingName policy, attacker steals cert, installs on different device — which statement true? | A | ✅ | A: Expected behavior — ThingName bound to cert, not hardware. Revoke cert to stop attacker. | Q880 | IoT ThingName = cert-bound, not hardware |
+| 925 | D5/D3 | Lambda private subnet, Kinesis+KMS endpoints exist, GetRecords times out — fix? (TWO) | A+D | ✅ | A+D: Kinesis endpoint SG inbound 443 + Lambda SG outbound 443. Timeout = network (SGs). | Q918 | Kinesis + KMS VPC endpoints (timeout = SGs) |
+| 926 | D6/D1 | Config org custom rule Lambda timeout 3min, check takes 4-7min — least disruptive fix? | A | ✅ | A: Increase Lambda timeout to 15 minutes — Config supports up to 15min. | Q881, Q891 | Config custom rule = Lambda (max 15min timeout) |
+| 927 | D1 | CloudTrail Lake org EDS management-only, PutObject query returns zero — TWO causes? | A+C | ✅ | A+C: PutObject is data event (EDS mgmt only) + Lake doesn't backfill historical events. | Q882 | CloudTrail Lake (data vs mgmt + no backfill) |
+| 928 | D5 | S3 Batch single job us-east-1, manifest lists objects in 4 regions — cause of failure? | A | ✅ | A: S3 Batch is regional — job must be same region as target. | Q872, Q897, Q919 | S3 Batch Operations regional |
+| 929 | D3 | GWLB + IDS, logs show GWLB endpoint IP instead of client — fix? | C | ✅ | C: Appliances must decapsulate GENEVE outer header to access original packet. | Q905, Q920 | GWLB GENEVE decapsulation |
+| 930 | D5/D4 | DynamoDB CMK, Lambda has Decrypt+GenerateDataKey+Encrypt, PutItem Access Denied — minimum additional? | B | ✅ | B: kms:CreateGrant — DynamoDB delegates via grants like EBS. | Q899, Q922 | DynamoDB + CMK = CreateGrant |
+| 931 | D5/D3 | CloudFront + 2 regional ALBs, eu-west-1 ALB cert error — correct architecture? | A | ✅ | A: CF cert in us-east-1 + each ALB needs own regional ACM cert. | — | ACM regional requirements |
+| 932 | D6/D1 | Config org custom rule "Lambda not found" in 180 members, works in admin — cause? | B | ✅ | B: Lambda resource-based policy missing config.amazonaws.com invoke with SourceAccount condition. | Q876, Q908, Q921 | Config org custom rule cross-account invoke |
