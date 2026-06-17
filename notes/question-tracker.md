@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1043 |
-| **✅ Correct** | 810 (78%) |
+| **Total Questions** | 1055 |
+| **✅ Correct** | 818 (78%) |
 | **⚠️ Partial** | 33 (3%) |
-| **❌ Wrong** | 197 (19%) |
+| **❌ Wrong** | 201 (19%) |
 | **Sessions** | 97 |
-| **Re-tests Passed** | 476 of 574 |
+| **Re-tests Passed** | 477 of 576 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 215 | 10 | 60 | 285 | 75% | 🟡 |
+| D1: Detection | 16% | 215 | 10 | 61 | 286 | 75% | 🟡 |
 | D2: Incident Response | 14% | 50 | 2 | 13 | 65 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 155 | 8 | 33 | 196 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 160 | 8 | 37 | 205 | 78% | 🟡 |
 | D4: Identity & Access Management | 20% | 248 | 10 | 55 | 313 | 79% | 🟡 |
-| D5: Data Protection | 18% | 219 | 8 | 55 | 282 | 78% | 🟡 |
-| D6: Governance | 14% | 165 | 2 | 43 | 210 | 79% | 🟡 |
+| D5: Data Protection | 18% | 223 | 8 | 55 | 286 | 78% | 🟡 |
+| D6: Governance | 14% | 166 | 2 | 43 | 211 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -203,6 +203,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 169 | IoT revocation = registry. API GW mTLS revocation = CRL in truststore | Q1032 | D3, D5 | 1 |
 | 🟡 170 | IoT Core = registry-based revocation (instant) | Q1035 | D3 | 1 |
 | 🟡 171 | Key policy conditions enforced regardless of caller's identity policy | Q1040 | D4, D5 | 1 |
+| 🟡 172 | State Manager OnBoot + schedule (dual triggers) | Q1048 | D1, D3 | 1 |
+| 🟡 173 | Inspector SBOM = on-demand API (EventBridge + Lambda to schedule) | Q1051 | D3 | 1 |
+| 🟡 174 | Hardcoded credential → always Secrets Manager | Q1054 | D3 | 1 |
+| 🟡 175 | mTLS 403 = cert expired (if same CA works for others) | Q1055 | D3 | 1 |
 
 ---
 
@@ -306,7 +310,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
 | 96 | 2026-06-16 | Q962–Q1010 | 39 | 3 | 7 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
-| 97 | 2026-06-17 | Q1012–Q1011 | 27 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
+| 97 | 2026-06-17 | Q1012–Q1011 | 35 | 0 | 13 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
 
 ---
 
@@ -2255,7 +2259,7 @@ After adding a session:
 ### Session 97 — 2026-06-17
 
 **Domains:** D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru)
-**Score:** 28 ✅ · 0 ⚠️ · 7 ❌ (80% correct)
+**Score:** 28 ✅ · 0 ⚠️ · 9 ❌ (76% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -2294,4 +2298,16 @@ After adding a session:
 | 1044 | D6 | CISO needs architectural gaps + improvement plan + milestones. SH and AM don't satisfy — why? | B: Neither reviews architecture or generates improvement plans | ✅ | Well-Architected Tool = design-level review + plan + milestones. | Q1031 | Well-Architected Tool = architecture review + improvement plan |
 | 1045 | D3 | Private API: Lambda A works, Lambda B timeout, same VPC/subnet — cause? | B: Endpoint SG only allows sg-aaa inbound, not sg-bbb | ✅ | Timeout = network. Same Resource Policy = permissions fine. Difference = SG. | Q1025 | Private API timeout = SG on endpoint |
 | 1046 | D5/D4 | Access Grants + SSE-KMS, role has Decrypt, ViaService=s3.us-east-1, bucket in eu-west-1 — fails. Cause? | B: ViaService region mismatch (eu-west-1 vs us-east-1) | ✅ | ViaService is region-specific. Must match bucket's region. | Q1026 | kms:ViaService is region-specific |
+| 1047 | D3 | VPC Lattice auth policy: Service A can call B, deny all others — where enforce? | B: Auth policy on Service B (resource-based, allow only A's role) | ✅ | Lattice auth policies = resource-based (like bucket policies). Attached to service. | — | VPC Lattice auth policy (resource-based on service) |
+| 1048 | D1/D3 | State Manager: CIS hardening on every boot + drift fix between boots — config? | D: rate(7 days) | ❌ | B: OnBoot trigger + rate(1 hour) schedule. State Manager supports both event + time triggers on one association. | — | State Manager OnBoot + schedule (dual triggers) |
+| 1049 | D5 | DLM: developer manually deletes 3-day-old snapshot — what happens? | B: Gone permanently, DLM doesn't monitor for deletions | ✅ | DLM = scheduler only. Creates + deletes on schedule. No replacement of manually deleted. | — | DLM = scheduler only (no monitoring) |
+| 1050 | D5 | DataSync: 50 new files + 150 unchanged — behavior? | B: Incremental, only transfers new/modified | ✅ | DataSync compares metadata (size, mtime). Same as rsync. | — | DataSync incremental by default |
+| 1051 | D3 | Inspector SBOM export scheduling — how? | A: Built-in scheduling | ❌ | B: EventBridge scheduled rule → Lambda → CreateSbomExport API. No built-in scheduler. | — | Inspector SBOM = on-demand API (EventBridge + Lambda to schedule) |
+| 1052 | D3/D5 | FLE: where does private key live for origin decryption? | C: On origin server (app decrypts locally with RSA private key) | ✅ | FLE = public key at edge, private key on YOUR origin. AWS never sees private key. | — | FLE private key = origin server (not AWS) |
+| 1053 | D3 | WAF Bot Control: mobile app (no JS) fails challenge — fix? | B: Scope-down statement excluding app's custom header | ✅ | Scope-down = "only apply rule group to matching requests." Exempt known-good. | — | WAF scope-down statement (exempt known traffic) |
+| 1054 | D3 | CodeGuru flags hardcoded key, dev says "test only" — remediation? | C: Environment variable | ❌ | B: Secrets Manager. Env vars = plaintext in console, no rotation. SM = encrypted + rotatable + auditable. | — | Hardcoded credential → always Secrets Manager |
+| 1055 | D3 | mTLS 403 on new partner, same CA, other partners work — cause? | D: Wrong endpoint | ❌ (then A) | A: Certificate expired. Same CA works for others = truststore fine. 403 at handshake = cert itself invalid. | Q1012 | mTLS 403 = cert expired (if same CA works for others) |
+| 1056 | D3 | Lattice: Service C added to network, AccessDeniedException calling B — missing? | B: Auth policy on B must allow C's role | ✅ | Network membership = reachability. Auth policy = authorization. Separate. | Q1022 | VPC Lattice auth policy per-service |
+| 1057 | D5 | DLM 7-day + Object Lock 3yr + 8-day-old objects missing — cause? | B: DLM retention correct + S3 lifecycle policy (separate issue) | ✅ | DLM auto-deletes by design. Object Lock prevents delete but check lifecycle. | — | DLM retention vs S3 lifecycle (separate) |
+| 1058 | D3/D6 | Console deploy EC2 IMDSv1, five enforcement layers — which catches? | D: Only SCP (blocks RunInstances) | ✅ | SCP blocks API regardless of deployment method. Instance never created = other layers never fire. | — | SCP = catches ALL deployment paths |
 | 1011 | D6/D3 | Block specific Bedrock model org-wide, allow others — enforcement? | B: SCP deny InvokeModel on model ARN | ✅ | SCP + model ARN = org-wide block. Simplified access doesn't override IAM/SCP. | — | SCP to block Bedrock model org-wide |
