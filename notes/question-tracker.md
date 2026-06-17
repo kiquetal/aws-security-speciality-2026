@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1037 |
-| **✅ Correct** | 804 (78%) |
+| **Total Questions** | 1043 |
+| **✅ Correct** | 810 (78%) |
 | **⚠️ Partial** | 33 (3%) |
 | **❌ Wrong** | 197 (19%) |
 | **Sessions** | 97 |
-| **Re-tests Passed** | 470 of 568 |
+| **Re-tests Passed** | 476 of 574 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
 | D1: Detection | 16% | 215 | 10 | 60 | 285 | 75% | 🟡 |
-| D2: Incident Response | 14% | 49 | 2 | 13 | 64 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 152 | 8 | 33 | 193 | 79% | 🟡 |
-| D4: Identity & Access Management | 20% | 247 | 10 | 55 | 312 | 79% | 🟡 |
-| D5: Data Protection | 18% | 218 | 8 | 55 | 281 | 78% | 🟡 |
-| D6: Governance | 14% | 164 | 2 | 43 | 209 | 78% | 🟡 |
+| D2: Incident Response | 14% | 50 | 2 | 13 | 65 | 77% | 🟡 |
+| D3: Infrastructure Security | 18% | 155 | 8 | 33 | 196 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 248 | 10 | 55 | 313 | 79% | 🟡 |
+| D5: Data Protection | 18% | 219 | 8 | 55 | 282 | 78% | 🟡 |
+| D6: Governance | 14% | 165 | 2 | 43 | 210 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -306,7 +306,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
 | 96 | 2026-06-16 | Q962–Q1010 | 39 | 3 | 7 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
-| 97 | 2026-06-17 | Q1012–Q1011 | 21 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
+| 97 | 2026-06-17 | Q1012–Q1011 | 27 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
 
 ---
 
@@ -2255,7 +2255,7 @@ After adding a session:
 ### Session 97 — 2026-06-17
 
 **Domains:** D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru)
-**Score:** 22 ✅ · 0 ⚠️ · 7 ❌ (76% correct)
+**Score:** 28 ✅ · 0 ⚠️ · 7 ❌ (80% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -2288,4 +2288,10 @@ After adding a session:
 | 1038 | D3 | WAF Bot Control: bots rotate IPs, don't execute JS — feature? | B: Bot Control + challenge action (JS challenge) | ✅ | Bots can't execute JS → fail challenge → blocked. IP-independent. | — | WAF Bot Control (challenge action for JS-less bots) |
 | 1039 | D3 | Detect hardcoded keys + SQLi + insecure SDK in source code pre-deploy — service? | B: CodeGuru Security (SAST) | ✅ | SAST = source code scanning. Inspector = CVEs in dependencies. | — | CodeGuru Security = SAST (pre-deploy code scanning) |
 | 1040 | D5/D4 | Access Grants + SSE-KMS with encryption context required in key policy, role has Decrypt without condition — GetObject fails. Cause? | A: mTLS truststore issue | ❌ | D: Key policy condition enforces context at KMS layer regardless of role's identity policy. | Q1026 | Key policy conditions enforced regardless of caller's identity policy |
+| 1041 | D3 | mTLS working, one partner cert compromised, block only that cert — how? | B: Add CRL to S3 truststore | ✅ | CRL in truststore = per-cert revocation. Remove CA = blocks ALL partners. | Q1012 | API GW mTLS CRL revocation |
+| 1042 | D2 | Custom Python + viz + reusable template for junior analysts — tool? | C: SageMaker notebooks | ✅ | Custom code + arbitrary queries + reusable = SageMaker. Detective = pre-built. | Q996 | SageMaker notebooks vs Detective |
+| 1043 | D3 | 200 IoT certs compromised, block on IoT Core within seconds — approach? | B: Batch UpdateCertificate to INACTIVE | ✅ | IoT Core = registry check at TLS handshake. Instant. No CRL. | Q1035 | IoT Core = registry-based revocation (instant) |
+| 1044 | D6 | CISO needs architectural gaps + improvement plan + milestones. SH and AM don't satisfy — why? | B: Neither reviews architecture or generates improvement plans | ✅ | Well-Architected Tool = design-level review + plan + milestones. | Q1031 | Well-Architected Tool = architecture review + improvement plan |
+| 1045 | D3 | Private API: Lambda A works, Lambda B timeout, same VPC/subnet — cause? | B: Endpoint SG only allows sg-aaa inbound, not sg-bbb | ✅ | Timeout = network. Same Resource Policy = permissions fine. Difference = SG. | Q1025 | Private API timeout = SG on endpoint |
+| 1046 | D5/D4 | Access Grants + SSE-KMS, role has Decrypt, ViaService=s3.us-east-1, bucket in eu-west-1 — fails. Cause? | B: ViaService region mismatch (eu-west-1 vs us-east-1) | ✅ | ViaService is region-specific. Must match bucket's region. | Q1026 | kms:ViaService is region-specific |
 | 1011 | D6/D3 | Block specific Bedrock model org-wide, allow others — enforcement? | B: SCP deny InvokeModel on model ARN | ✅ | SCP + model ARN = org-wide block. Simplified access doesn't override IAM/SCP. | — | SCP to block Bedrock model org-wide |
