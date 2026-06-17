@@ -58,4 +58,4 @@
 | 8 | 2026-06-15 | 23:16 | 23:45 | 29 | Session 92 (Week 1 weekly drill) |
 | 9 | 2026-06-16 | 11:43 | | | Session 93 re-test + Week 1 weekly drill |
 | 10 | 2026-06-16 | 19:17 | | | Session 96 extended - killer cross-domain |
-| 11 | 2026-06-17 | 19:41 | | | Session 97 - Week 2 never-seen killer drill (35+ Qs) |
+| 11 | 2026-06-17 | 19:41 | 20:33 | 52 | Session 97 - Week 2-5 never-seen deep drill (47 Qs, 81%) |
