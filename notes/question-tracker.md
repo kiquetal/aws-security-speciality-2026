@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1024 |
-| **✅ Correct** | 796 (78%) |
+| **Total Questions** | 1037 |
+| **✅ Correct** | 804 (78%) |
 | **⚠️ Partial** | 33 (3%) |
-| **❌ Wrong** | 192 (19%) |
+| **❌ Wrong** | 197 (19%) |
 | **Sessions** | 97 |
-| **Re-tests Passed** | 466 of 562 |
+| **Re-tests Passed** | 470 of 568 |
 
 ## Domain Breakdown
 
@@ -21,10 +21,10 @@
 |---|---|---|---|---|---|---|---|
 | D1: Detection | 16% | 215 | 10 | 60 | 285 | 75% | 🟡 |
 | D2: Incident Response | 14% | 49 | 2 | 13 | 64 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 147 | 8 | 31 | 186 | 79% | 🟡 |
-| D4: Identity & Access Management | 20% | 247 | 10 | 54 | 311 | 79% | 🟡 |
-| D5: Data Protection | 18% | 216 | 8 | 52 | 276 | 78% | 🟡 |
-| D6: Governance | 14% | 163 | 2 | 42 | 207 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 152 | 8 | 33 | 193 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 247 | 10 | 55 | 312 | 79% | 🟡 |
+| D5: Data Protection | 18% | 218 | 8 | 55 | 281 | 78% | 🟡 |
+| D6: Governance | 14% | 164 | 2 | 43 | 209 | 78% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -198,6 +198,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 164 | Resource Policy = boundary rejection (before authorizer) | Q1013 | D3 | 1 |
 | 🟡 165 | Private API timeout = Resource Policy rejection (not always network) | Q1025 | D3, D5 | 1 |
 | 🟡 166 | Access Grants + SSE-KMS needs explicit kms:Decrypt on role | Q1026 | D4, D5 | 1 |
+| 🟡 167 | EMR in-transit = security config + PEM certs | Q1030 | D5 | 1 |
+| 🟡 168 | Well-Architected Tool = architecture review + improvement plan | Q1031 | D6 | 1 |
+| 🟡 169 | IoT revocation = registry. API GW mTLS revocation = CRL in truststore | Q1032 | D3, D5 | 1 |
+| 🟡 170 | IoT Core = registry-based revocation (instant) | Q1035 | D3 | 1 |
+| 🟡 171 | Key policy conditions enforced regardless of caller's identity policy | Q1040 | D4, D5 | 1 |
 
 ---
 
@@ -301,7 +306,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
 | 96 | 2026-06-16 | Q962–Q1010 | 39 | 3 | 7 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
-| 97 | 2026-06-17 | Q1012–Q1011 | 13 | 0 | 4 | D3 Infrastructure + D5 Data Protection + D1 Detection (Week 2 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants) | [Jump](#session-97--2026-06-17) |
+| 97 | 2026-06-17 | Q1012–Q1011 | 21 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
 
 ---
 
@@ -2249,8 +2254,8 @@ After adding a session:
 
 ### Session 97 — 2026-06-17
 
-**Domains:** D3 Infrastructure + D5 Data Protection + D1 Detection (Week 2 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants)
-**Score:** 13 ✅ · 0 ⚠️ · 4 ❌ (76% correct)
+**Domains:** D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru)
+**Score:** 22 ✅ · 0 ⚠️ · 7 ❌ (76% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -2270,4 +2275,17 @@ After adding a session:
 | 1025 | D3/D5 | Private API timeout, endpoint SG allows all inbound 443, KMS works fine — cause? | A: Lambda SG missing outbound | ❌ | B: Resource Policy doesn't allow Lambda's VPC endpoint. Private API timeout can mean Resource Policy rejection. | — | Private API timeout = Resource Policy rejection (not always network) |
 | 1026 | D5/D4 | Access Grants + SSE-KMS with encryption context, users get Access Denied — missing? | D: Key policy grant s3:GetObject | ❌ | B: Access Grants IAM role needs kms:Decrypt with encryption context condition. Access Grants handles S3 perms, not KMS. | — | Access Grants + SSE-KMS needs explicit kms:Decrypt on role |
 | 1027 | D3/D6 | Three IMDSv2 layers: template validation + drift fix + API block — match services? | A: cfn-guard + State Manager + SCP | ✅ | Template=cfn-guard, drift=State Manager, API=SCP. Three moments. | — | Layered enforcement (cfn-guard + State Manager + SCP) |
+| 1028 | D5 | Automated daily EBS snapshots, 30d retention, cross-region copy, auto-delete — least overhead? | C: DLM policy + tag + schedule + cross-region | ✅ | DLM = EBS snapshot automation (schedule + retain + cross-region + auto-delete). | — | Data Lifecycle Manager (EBS snapshots) |
+| 1029 | D5 | 50TB weekly NFS→S3, encrypted in transit, filter *.parquet, throttle bandwidth — approach? | B: DataSync agent + TLS + include filter + bandwidth limit | ✅ | DataSync = recurring on-prem→AWS. TLS + filtering + throttling built in. | — | DataSync (encrypted transfer + filtering + throttling) |
+| 1030 | D5 | EMR inter-node encryption, no code changes — config? | B: EMR security config → in-transit + PEM certs | ❌ | A: EMR security configuration → enable in-transit encryption + PEM certificates (Private CA). | — | EMR in-transit = security config + PEM certs |
+| 1031 | D6 | Identify architectural gaps vs AWS best practices + improvement plan + track progress — service? | B: Audit Manager | ❌ | C: Well-Architected Tool (Security Pillar). Architectural review + improvement plan + milestones. | — | Well-Architected Tool = architecture review + improvement plan |
+| 1032 | D3/D5 | Compromised IoT device cert, block on IoT Core + API Gateway mTLS — Select TWO? | C+B | ❌ | B+E: IoT Core = mark INACTIVE in registry. API GW mTLS = add CRL to S3 truststore. | — | IoT revocation = registry. API GW mTLS revocation = CRL in truststore |
+| 1033 | D3 | Re-test: EMR inter-node encryption — what to configure? | B: Security config + in-transit + PEM | ✅ | Locked. | Q1030 | EMR in-transit = security config + PEM certs |
+| 1034 | D6 | Re-test: Architectural gaps + improvement plan + track progress — service? | C: Well-Architected Tool | ✅ | Locked. | Q1031 | Well-Architected Tool |
+| 1035 | D3 | Re-test: Block compromised cert on IoT Core specifically? | A: Revoke in Private CA | ❌ | B: Mark INACTIVE in IoT Core registry. IoT Core doesn't use CRL. | Q1032 | IoT Core = registry-based revocation (instant) |
+| 1036 | D3 | Re-test: Block compromised cert on API Gateway mTLS? | B: Add CRL to S3 truststore | ✅ | Locked. | Q1032 | API GW mTLS = CRL in S3 truststore |
+| 1037 | D3 | Re-test: Private API timeout, KMS works, endpoint SG open — cause? | B: Resource Policy doesn't allow vpce | ✅ | Locked. | Q1025 | Private API timeout = Resource Policy rejection |
+| 1038 | D3 | WAF Bot Control: bots rotate IPs, don't execute JS — feature? | B: Bot Control + challenge action (JS challenge) | ✅ | Bots can't execute JS → fail challenge → blocked. IP-independent. | — | WAF Bot Control (challenge action for JS-less bots) |
+| 1039 | D3 | Detect hardcoded keys + SQLi + insecure SDK in source code pre-deploy — service? | B: CodeGuru Security (SAST) | ✅ | SAST = source code scanning. Inspector = CVEs in dependencies. | — | CodeGuru Security = SAST (pre-deploy code scanning) |
+| 1040 | D5/D4 | Access Grants + SSE-KMS with encryption context required in key policy, role has Decrypt without condition — GetObject fails. Cause? | A: mTLS truststore issue | ❌ | D: Key policy condition enforces context at KMS layer regardless of role's identity policy. | Q1026 | Key policy conditions enforced regardless of caller's identity policy |
 | 1011 | D6/D3 | Block specific Bedrock model org-wide, allow others — enforcement? | B: SCP deny InvokeModel on model ARN | ✅ | SCP + model ARN = org-wide block. Simplified access doesn't override IAM/SCP. | — | SCP to block Bedrock model org-wide |
