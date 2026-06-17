@@ -158,6 +158,7 @@
 - 🧠 **API Gateway authorizer types:** Cognito Authorizer (JWT tokens) vs Lambda Authorizer TOKEN (header value) vs Lambda Authorizer REQUEST (headers + query + context + IP). Use REQUEST type when you need to validate custom headers or IP addresses.
 - 🧠 **TOKEN type receives ONLY the token string.** Cannot access other headers, query params, or source IP. "Validate IP or custom header" = REQUEST type always.
 - 🧠 **API Gateway Resource Policy:** JSON policy on the API itself — restrict by IP, VPC, account. Evaluated BEFORE authorizers. "Block at API Gateway boundary" = resource policy.
+- 🧠 **Resource Policy can't inspect header VALUES — only IP/VPC/account.** Header value inspection = Lambda authorizer (REQUEST type) or WAF regex.
 - 🧠 **Private API = VPC endpoint only.** Resource policy restricts to `vpce-xxx`. Endpoint SG controls which clients can reach the endpoint (inbound 443).
 
 ### Troubleshooting
