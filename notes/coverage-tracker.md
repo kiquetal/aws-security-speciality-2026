@@ -14,26 +14,26 @@
 
 These are explicitly listed in the SCS-C03 exam guide but have ZERO coverage in your practice.
 
-| # | Topic | Task | Domain | Scheduled |
-|---|---|---|---|---|
-| 1 | API Gateway security (authorizers, resource policies, mutual TLS, WAF) | 3.1 | D3 | Week 2 |
-| 2 | VPC Lattice (service-to-service auth, auth policies, cross-account) | 3.3 | D3 | Week 4 |
-| 3 | CloudFront Field-Level Encryption (encrypt specific POST fields) | 3.1 | D3 | Week 2 |
-| 4 | Inspector SBOM export (software bill of materials) | 3.2 | D3 | Week 2 |
-| 5 | WAF Bot Control (managed rule group, token challenges, CAPTCHA) | 3.1 | D3 | Week 4 |
-| 6 | CloudFormation Guard (cfn-guard, policy-as-code for templates) | 6.2 | D6 | Week 3 |
-| 7 | Systems Manager State Manager (desired-state associations) | 1.1 | D1 | Week 3 |
-| 8 | Amazon Data Lifecycle Manager (automated EBS snapshot policies) | 5.2 | D5 | Week 5 |
-| 9 | AWS DataSync (encrypted data transfer, scheduling, filtering) | 5.2 | D5 | Week 5 |
-| 10 | Macie custom data identifiers (regex patterns, keyword lists) | 1.1 | D1 | Week 2 |
-| 11 | AWS Resilience Hub (RTO/RPO assessment, compliance) | 2.1 | D2 | Week 7 |
-| 12 | AWS Fault Injection Service (chaos engineering for IR) | 2.1 | D2 | Week 7 |
-| 13 | Amazon Application Recovery Controller (zonal shift, readiness checks) | 2.1 | D2 | Week 7 |
-| 14 | Amazon Q Developer / CodeGuru Security (pipeline scanning) | 3.2 | D3 | Week 4 |
-| 15 | Well-Architected Tool (security pillar reviews) | 6.3 | D6 | Week 5 |
-| 16 | Automated Forensics Orchestrator for EC2 (Step Functions + SSM) | 2.1 | D2 | Week 7 |
-| 17 | SageMaker AI notebooks for IR (forensic analysis) | 2.1 | D2 | Week 7 |
-| 18 | EMR / EKS inter-node encryption (in-transit between nodes) | 5.1 | D5 | Week 5 |
+| # | Topic | Task | Domain | Scheduled | Tested? |
+|---|---|---|---|---|---|
+| 1 | API Gateway security (authorizers, resource policies, mutual TLS, WAF) | 3.1 | D3 | Week 2 | ✅ Session 97 |
+| 2 | VPC Lattice (service-to-service auth, auth policies, cross-account) | 3.3 | D3 | Week 4 | ✅ Session 97 |
+| 3 | CloudFront Field-Level Encryption (encrypt specific POST fields) | 3.1 | D3 | Week 2 | ✅ Session 97 |
+| 4 | Inspector SBOM export (software bill of materials) | 3.2 | D3 | Week 2 | ✅ Session 97 |
+| 5 | WAF Bot Control (managed rule group, token challenges, CAPTCHA) | 3.1 | D3 | Week 4 | ✅ Session 97 |
+| 6 | CloudFormation Guard (cfn-guard, policy-as-code for templates) | 6.2 | D6 | Week 3 | ✅ Session 97 |
+| 7 | Systems Manager State Manager (desired-state associations) | 1.1 | D1 | Week 3 | ✅ Session 97 |
+| 8 | Amazon Data Lifecycle Manager (automated EBS snapshot policies) | 5.2 | D5 | Week 5 | ✅ Session 97 |
+| 9 | AWS DataSync (encrypted data transfer, scheduling, filtering) | 5.2 | D5 | Week 5 | ✅ Session 97 |
+| 10 | Macie custom data identifiers (regex patterns, keyword lists) | 1.1 | D1 | Week 2 | ✅ Session 97 |
+| 11 | AWS Resilience Hub (RTO/RPO assessment, compliance) | 2.1 | D2 | Week 7 | ✅ Session 94 |
+| 12 | AWS Fault Injection Service (chaos engineering for IR) | 2.1 | D2 | Week 7 | ✅ Session 94 |
+| 13 | Amazon Application Recovery Controller (zonal shift, readiness checks) | 2.1 | D2 | Week 7 | ✅ Session 94 |
+| 14 | Amazon Q Developer / CodeGuru Security (pipeline scanning) | 3.2 | D3 | Week 4 | ✅ Session 97 |
+| 15 | Well-Architected Tool (security pillar reviews) | 6.3 | D6 | Week 5 | ⚠️ Session 97 (missed) |
+| 16 | Automated Forensics Orchestrator for EC2 (Step Functions + SSM) | 2.1 | D2 | Week 7 | ✅ Session 95 |
+| 17 | SageMaker AI notebooks for IR (forensic analysis) | 2.1 | D2 | Week 7 | ✅ Session 96 |
+| 18 | EMR / EKS inter-node encryption (in-transit between nodes) | 5.1 | D5 | Week 5 | ⚠️ Session 97 (missed, re-tested ✅) |
 
 ---
 
