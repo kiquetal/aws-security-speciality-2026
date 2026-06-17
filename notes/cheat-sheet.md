@@ -96,6 +96,7 @@
 - `CancelKeyDeletion` → key moves to **Disabled** (not Enabled). Must manually re-enable.
 - **4 KB max** for direct KMS Encrypt/Decrypt. Anything larger → envelope encryption (GenerateDataKey → encrypt locally).
 - 🧠 **"Root in key policy" = enables IAM delegation, NOT a blanket grant.** Each principal still needs explicit kms:Decrypt in their identity policy. Root opens the door for IAM — it doesn't let everyone through.
+- 🧠 **Key policy conditions enforced regardless of caller's identity policy.** Role having kms:Decrypt ≠ key policy conditions are satisfied. KMS evaluates key policy independently.
 - 🧠 **KMS keys are REGIONAL.** Cross-account call to wrong region = Access Denied (key not found). Always verify the endpoint region matches the key's region.
 - 🧠 **Cross-account KMS: key policy MUST name the external account.** Root in key policy enables IAM delegation same-account only. For Account B to use Account A's key, key policy must grant Account B's root or role explicitly.
 - 🧠 **S3 wraps KMS errors as S3 AccessDenied.** Caller called S3, not KMS directly. Error surface = S3, root cause = KMS. Direct `kms:Decrypt` call → KMS.AccessDeniedException.
@@ -161,6 +162,7 @@
 - 🧠 **API Gateway Resource Policy:** JSON policy on the API itself — restrict by IP, VPC, account. Evaluated BEFORE authorizers. "Block at API Gateway boundary" = resource policy.
 - 🧠 **Resource Policy can't inspect header VALUES — only IP/VPC/account.** Header value inspection = Lambda authorizer (REQUEST type) or WAF regex.
 - 🧠 **Private API = VPC endpoint only.** Resource policy restricts to `vpce-xxx`. Endpoint SG controls which clients can reach the endpoint (inbound 443).
+- 🧠 **Private API timeout = Resource Policy rejection (not always network).** If endpoint SG and Lambda SG are fine, check Resource Policy `aws:SourceVpce` condition.
 
 ### Troubleshooting
 - 🧠 **Timeout = network problem (SG, NACL, routing, missing endpoint). Access Denied = permissions problem (IAM, policy, key policy).** The error type tells you where to look.
