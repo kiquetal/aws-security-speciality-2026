@@ -140,6 +140,7 @@
 - Endpoint policy + bucket policy BOTH evaluated. Endpoint policy doesn't replace resource policies.
 - NACLs are stateless — need explicit inbound rule for ephemeral ports (1024–65535) on return traffic. SGs are stateful — handle it automatically.
 - Verified Access = zero-trust access to internal apps without VPN. Evaluates identity + device posture.
+- 🧠 **VPC Lattice = service-to-service (east/west) across accounts.** IAM auth (SigV4), share via RAM, auth policies. No certs, no mesh. "Cross-account service-to-service + least overhead" = Lattice.
 - Network Access Analyzer = find unintended network paths (reachable from internet when shouldn't be).
 - VPC Reachability Analyzer = "why can't A reach B?" (specific pair, troubleshooting one connection).
 - 🧠 **"What's exposed?" = Network Access Analyzer (auditor). "Why can't A reach B?" = Reachability Analyzer (debugger).** Different tools, different questions.

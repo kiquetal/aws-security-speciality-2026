@@ -8,10 +8,10 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1018 |
-| **✅ Correct** | 792 (78%) |
+| **Total Questions** | 1024 |
+| **✅ Correct** | 796 (78%) |
 | **⚠️ Partial** | 33 (3%) |
-| **❌ Wrong** | 190 (19%) |
+| **❌ Wrong** | 192 (19%) |
 | **Sessions** | 97 |
 | **Re-tests Passed** | 466 of 562 |
 
@@ -19,12 +19,12 @@
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 214 | 10 | 60 | 284 | 75% | 🟡 |
+| D1: Detection | 16% | 215 | 10 | 60 | 285 | 75% | 🟡 |
 | D2: Incident Response | 14% | 49 | 2 | 13 | 64 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 144 | 8 | 30 | 182 | 79% | 🟡 |
-| D4: Identity & Access Management | 20% | 247 | 10 | 53 | 310 | 80% | 🟢 |
-| D5: Data Protection | 18% | 216 | 8 | 50 | 274 | 79% | 🟡 |
-| D6: Governance | 14% | 161 | 2 | 42 | 205 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 147 | 8 | 31 | 186 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 247 | 10 | 54 | 311 | 79% | 🟡 |
+| D5: Data Protection | 18% | 216 | 8 | 52 | 276 | 78% | 🟡 |
+| D6: Governance | 14% | 163 | 2 | 42 | 207 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -196,6 +196,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 162 | Bedrock IAM guardrail enforcement (condition key) | Q1007 | D3 | 1 |
 | 🟡 163 | Q Business ACL identity mapping failure | Q1010 | D3 | 1 |
 | 🟡 164 | Resource Policy = boundary rejection (before authorizer) | Q1013 | D3 | 1 |
+| 🟡 165 | Private API timeout = Resource Policy rejection (not always network) | Q1025 | D3, D5 | 1 |
+| 🟡 166 | Access Grants + SSE-KMS needs explicit kms:Decrypt on role | Q1026 | D4, D5 | 1 |
 
 ---
 
@@ -299,7 +301,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 94 | 2026-06-16 | Q943–Q956 | 12 | 2 | 0 | D2 Incident Response + D1 Detection + D5 Data Protection + D3 Infrastructure + D6 Governance (Week 1 weekly drill + Session 93 re-test) | [Jump](#session-94--2026-06-16) |
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
 | 96 | 2026-06-16 | Q962–Q1010 | 39 | 3 | 7 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
-| 97 | 2026-06-17 | Q1012–Q1011 | 9 | 0 | 2 | D3 Infrastructure + D5 Data Protection + D1 Detection (Week 2 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants) | [Jump](#session-97--2026-06-17) |
+| 97 | 2026-06-17 | Q1012–Q1011 | 13 | 0 | 4 | D3 Infrastructure + D5 Data Protection + D1 Detection (Week 2 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants) | [Jump](#session-97--2026-06-17) |
 
 ---
 
@@ -2248,7 +2250,7 @@ After adding a session:
 ### Session 97 — 2026-06-17
 
 **Domains:** D3 Infrastructure + D5 Data Protection + D1 Detection (Week 2 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants)
-**Score:** 8 ✅ · 0 ⚠️ · 2 ❌ (80% correct)
+**Score:** 13 ✅ · 0 ⚠️ · 4 ❌ (76% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -2262,4 +2264,10 @@ After adding a session:
 | 1019 | D3 | Private API only from vpce-444444, only sg-555555 clients — Select TWO? | A+B: Resource Policy + Endpoint SG | ✅ | Resource Policy (vpce restriction) + Endpoint SG (client SG inbound 443). Two layers. | — | Private API = Resource Policy + Endpoint SG |
 | 1020 | D5/D3 | FLE encrypts at edge, ECS stores in S3 SSE-KMS, CMK requires encryption context — how? | B: Key policy condition + app passes context | ✅ | kms:EncryptionContext:key condition in key policy. App code passes context on PutObject. FLE ≠ KMS. | — | Encryption context = key policy condition + app passes it |
 | 1021 | D5 | Inspector SBOM WORM 3yr, root can't delete — least overhead? | A: Object Lock Compliance 3yr | ✅ | Compliance mode = nobody deletes (including root). Fixed retention. | — | Object Lock Compliance (root can't override) |
+| 1022 | D3 | VPC Lattice: 15 microservices across 5 accounts, service-to-service auth without certs — least overhead? | B: Lattice service network + RAM + IAM auth (SigV4) | ✅ | VPC Lattice = service-to-service, IAM auth, share via RAM. No certs. | — | VPC Lattice (cross-account service-to-service + IAM) |
+| 1023 | D1/D3 | Ensure CW agent always installed, auto-fix drift every 30 min — least admin effort? | B: SSM State Manager association + 30min schedule | ✅ | State Manager = desired-state engine, auto-re-applies on schedule. | — | SSM State Manager (desired-state + schedule) |
+| 1024 | D6 | Validate CF template has encryption + IMDSv2 before any resource created — least custom code? | B: cfn-guard rules in CI/CD pipeline | ✅ | cfn-guard = policy-as-code for templates, shift-left validation. | — | CloudFormation Guard (template validation in pipeline) |
+| 1025 | D3/D5 | Private API timeout, endpoint SG allows all inbound 443, KMS works fine — cause? | A: Lambda SG missing outbound | ❌ | B: Resource Policy doesn't allow Lambda's VPC endpoint. Private API timeout can mean Resource Policy rejection. | — | Private API timeout = Resource Policy rejection (not always network) |
+| 1026 | D5/D4 | Access Grants + SSE-KMS with encryption context, users get Access Denied — missing? | D: Key policy grant s3:GetObject | ❌ | B: Access Grants IAM role needs kms:Decrypt with encryption context condition. Access Grants handles S3 perms, not KMS. | — | Access Grants + SSE-KMS needs explicit kms:Decrypt on role |
+| 1027 | D3/D6 | Three IMDSv2 layers: template validation + drift fix + API block — match services? | A: cfn-guard + State Manager + SCP | ✅ | Template=cfn-guard, drift=State Manager, API=SCP. Three moments. | — | Layered enforcement (cfn-guard + State Manager + SCP) |
 | 1011 | D6/D3 | Block specific Bedrock model org-wide, allow others — enforcement? | B: SCP deny InvokeModel on model ARN | ✅ | SCP + model ARN = org-wide block. Simplified access doesn't override IAM/SCP. | — | SCP to block Bedrock model org-wide |
