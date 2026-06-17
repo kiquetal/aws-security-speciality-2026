@@ -16,24 +16,24 @@ These are explicitly listed in the SCS-C03 exam guide but have ZERO coverage in 
 
 | # | Topic | Task | Domain | Scheduled | Tested? |
 |---|---|---|---|---|---|
-| 1 | API Gateway security (authorizers, resource policies, mutual TLS, WAF) | 3.1 | D3 | Week 2 | ✅ Session 97 |
-| 2 | VPC Lattice (service-to-service auth, auth policies, cross-account) | 3.3 | D3 | Week 4 | ✅ Session 97 |
-| 3 | CloudFront Field-Level Encryption (encrypt specific POST fields) | 3.1 | D3 | Week 2 | ✅ Session 97 |
-| 4 | Inspector SBOM export (software bill of materials) | 3.2 | D3 | Week 2 | ✅ Session 97 |
-| 5 | WAF Bot Control (managed rule group, token challenges, CAPTCHA) | 3.1 | D3 | Week 4 | ✅ Session 97 |
-| 6 | CloudFormation Guard (cfn-guard, policy-as-code for templates) | 6.2 | D6 | Week 3 | ✅ Session 97 |
-| 7 | Systems Manager State Manager (desired-state associations) | 1.1 | D1 | Week 3 | ✅ Session 97 |
-| 8 | Amazon Data Lifecycle Manager (automated EBS snapshot policies) | 5.2 | D5 | Week 5 | ✅ Session 97 |
-| 9 | AWS DataSync (encrypted data transfer, scheduling, filtering) | 5.2 | D5 | Week 5 | ✅ Session 97 |
-| 10 | Macie custom data identifiers (regex patterns, keyword lists) | 1.1 | D1 | Week 2 | ✅ Session 97 |
-| 11 | AWS Resilience Hub (RTO/RPO assessment, compliance) | 2.1 | D2 | Week 7 | ✅ Session 94 |
-| 12 | AWS Fault Injection Service (chaos engineering for IR) | 2.1 | D2 | Week 7 | ✅ Session 94 |
-| 13 | Amazon Application Recovery Controller (zonal shift, readiness checks) | 2.1 | D2 | Week 7 | ✅ Session 94 |
-| 14 | Amazon Q Developer / CodeGuru Security (pipeline scanning) | 3.2 | D3 | Week 4 | ✅ Session 97 |
-| 15 | Well-Architected Tool (security pillar reviews) | 6.3 | D6 | Week 5 | ⚠️ Session 97 (missed) |
-| 16 | Automated Forensics Orchestrator for EC2 (Step Functions + SSM) | 2.1 | D2 | Week 7 | ✅ Session 95 |
-| 17 | SageMaker AI notebooks for IR (forensic analysis) | 2.1 | D2 | Week 7 | ✅ Session 96 |
-| 18 | EMR / EKS inter-node encryption (in-transit between nodes) | 5.1 | D5 | Week 5 | ⚠️ Session 97 (missed, re-tested ✅) |
+| 1 | API Gateway security (authorizers, resource policies, mutual TLS, WAF) | 3.1 | D3 | Week 2 | ⚠️ 2 wrong (mTLS twice), Resource Policy locked, authorizers locked |
+| 2 | VPC Lattice (service-to-service auth, auth policies, cross-account) | 3.3 | D3 | Week 4 | ✅ Session 97 (1 correct, basic) — needs harder variant |
+| 3 | CloudFront Field-Level Encryption (encrypt specific POST fields) | 3.1 | D3 | Week 2 | ✅ Session 97 (2 correct: Q1014, Q1020) |
+| 4 | Inspector SBOM export (software bill of materials) | 3.2 | D3 | Week 2 | ✅ Session 97 (1 correct: Q1015) — needs 2nd variant |
+| 5 | WAF Bot Control (managed rule group, token challenges, CAPTCHA) | 3.1 | D3 | Week 4 | ✅ Session 97 (1 correct: Q1038) — needs harder variant |
+| 6 | CloudFormation Guard (cfn-guard, policy-as-code for templates) | 6.2 | D6 | Week 3 | ✅ Session 97 (2 correct: Q1024, Q1027) |
+| 7 | Systems Manager State Manager (desired-state associations) | 1.1 | D1 | Week 3 | ✅ Session 97 (1 correct: Q1023) — needs 2nd variant |
+| 8 | Amazon Data Lifecycle Manager (automated EBS snapshot policies) | 5.2 | D5 | Week 5 | ✅ Session 97 (1 correct: Q1028) — needs 2nd variant |
+| 9 | AWS DataSync (encrypted data transfer, scheduling, filtering) | 5.2 | D5 | Week 5 | ✅ Session 97 (1 correct: Q1029) — needs 2nd variant |
+| 10 | Macie custom data identifiers (regex patterns, keyword lists) | 1.1 | D1 | Week 2 | ✅ Session 96-97 (3 correct: Q968, Q1016, Q1018) — MASTERED |
+| 11 | AWS Resilience Hub (RTO/RPO assessment, compliance) | 2.1 | D2 | Week 7 | ✅ Session 93-96 (3 correct: Q944, Q992, Q935) — MASTERED |
+| 12 | AWS Fault Injection Service (chaos engineering for IR) | 2.1 | D2 | Week 7 | ✅ Session 93-96 (3 correct: Q943, Q993, Q995) — MASTERED |
+| 13 | Amazon Application Recovery Controller (zonal shift, readiness checks) | 2.1 | D2 | Week 7 | ✅ Session 93-96 (3 correct: Q945, Q994, Q936) — MASTERED |
+| 14 | Amazon Q Developer / CodeGuru Security (pipeline scanning) | 3.2 | D3 | Week 4 | ✅ Session 97 (1 correct: Q1039) — needs 2nd variant |
+| 15 | Well-Architected Tool (security pillar reviews) | 6.3 | D6 | Week 5 | ⚠️ Session 97 (missed Q1031, re-test Q1034 ✅) — needs 1 more |
+| 16 | Automated Forensics Orchestrator for EC2 (Step Functions + SSM) | 2.1 | D2 | Week 7 | ✅ Session 93-96 (3 correct: Q957, Q961, Q977) — MASTERED |
+| 17 | SageMaker AI notebooks for IR (forensic analysis) | 2.1 | D2 | Week 7 | ⚠️ Session 96 (missed Q996) — needs re-test |
+| 18 | EMR / EKS inter-node encryption (in-transit between nodes) | 5.1 | D5 | Week 5 | ⚠️ Session 97 (missed Q1030, re-test Q1033 ✅) — needs 1 more |
 
 ---
 
