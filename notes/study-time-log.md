@@ -5,7 +5,7 @@
 
 ---
 
-## Total: ~3,953 minutes (~66 hours)
+## Total: ~4,335 minutes (~72 hours)
 
 ## Sessions
 
@@ -56,6 +56,7 @@
 | 6 | 2026-06-15 | 13:53 | 14:35 | 42 | Session 91 (Week 1 killer drill — 90%) |
 | 7 | 2026-06-15 | 19:41 | 20:04 | 23 | Tracker fix + Q918 re-test (✅) |
 | 8 | 2026-06-15 | 23:16 | 23:45 | 29 | Session 92 (Week 1 weekly drill) |
-| 9 | 2026-06-16 | 11:43 | | | Session 93 re-test + Week 1 weekly drill |
-| 10 | 2026-06-16 | 19:17 | | | Session 96 extended - killer cross-domain |
-| 11 | 2026-06-17 | 19:41 | 20:33 | 52 | Session 97 - Week 2-5 never-seen deep drill (47 Qs, 81%) |
+| 9 | 2026-06-16 | 11:43 | 14:00 | 137 | Sessions 93-95 (D2 never-seen + IR novel patterns) |
+| 10 | 2026-06-16 | 19:17 | 22:30 | 193 | Session 96 extended - killer cross-domain (49 Qs) |
+| 11 | 2026-06-17 | 19:41 | 20:33 | 52 | Session 97 - Week 2-5 never-seen deep drill (47 Qs, 76%) |
+| 12 | 2026-06-18 | 17:53 | | | Session 98 - Week 2 NEVER-SEEN validation (25 Qs) |

@@ -158,6 +158,8 @@ D. Set up an AWS Config custom rule that monitors the destination S3 bucket. If 
 | 5 | Jul 14-20 | Cross-domain killer + **NEVER-SEEN:** Data Lifecycle Manager, DataSync, Well-Architected Tool, EMR inter-node | #8, #9, #15, #18 | ⬜ |
 | 6 | Jul 21-27 | Re-test all ⚠️/❌ from Sessions 81+ | — (consolidation) | ⬜ |
 | 7 | Jul 28 - Aug 3 | **NEVER-SEEN BLITZ 3:** Resilience Hub, FIS, Application Recovery Controller, Automated Forensics Orchestrator, SageMaker IR notebooks | #11, #12, #13, #16, #17 | ⬜ |
+
+**Note:** Session 97 (Jun 17) already tested 14 of 18 never-seen topics. Only 4 remain with errors needing re-test: API GW mTLS (#1), Inspector SBOM scheduling (#4), State Manager dual triggers (#7), EMR in-transit (#18). All others passed.
 | 8 | Aug 4-10 | D1 Detection final push (target 80%) | — | ⬜ |
 | 9 | Aug 11-17 | Cross-domain 65-question untimed simulation (includes all never-seen) | ALL remaining | ⬜ |
 | 10 | Aug 18-24 | Cheat sheet review + 2 short drills only | — | ⬜ |
