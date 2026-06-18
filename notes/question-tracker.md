@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1080 |
-| **✅ Correct** | 835 (77%) |
+| **Total Questions** | 1115 |
+| **✅ Correct** | 866 (78%) |
 | **⚠️ Partial** | 33 (3%) |
-| **❌ Wrong** | 209 (19%) |
+| **❌ Wrong** | 213 (19%) |
 | **Sessions** | 98 |
-| **Re-tests Passed** | 490 of 595 |
+| **Re-tests Passed** | 512 of 621 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 217 | 10 | 62 | 289 | 75% | 🟡 |
-| D2: Incident Response | 14% | 50 | 2 | 14 | 66 | 76% | 🟡 |
-| D3: Infrastructure Security | 18% | 171 | 8 | 42 | 221 | 77% | 🟡 |
-| D4: Identity & Access Management | 20% | 252 | 10 | 56 | 318 | 79% | 🟡 |
-| D5: Data Protection | 18% | 230 | 8 | 58 | 296 | 78% | 🟡 |
-| D6: Governance | 14% | 166 | 2 | 44 | 212 | 78% | 🟡 |
+| D1: Detection | 16% | 227 | 10 | 63 | 300 | 76% | 🟡 |
+| D2: Incident Response | 14% | 54 | 2 | 15 | 71 | 76% | 🟡 |
+| D3: Infrastructure Security | 18% | 176 | 8 | 43 | 227 | 78% | 🟡 |
+| D4: Identity & Access Management | 20% | 259 | 10 | 57 | 326 | 79% | 🟡 |
+| D5: Data Protection | 18% | 239 | 8 | 59 | 306 | 78% | 🟡 |
+| D6: Governance | 14% | 171 | 2 | 45 | 218 | 78% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -44,136 +44,136 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 10 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
 | 🔴 11 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
 | 🔴 12 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
-| 🔴 13 | S3 server access logging = ACLs | Q864, Q868, Q903 | D5, D6 | 3 |
-| 🔴 14 | Security services comparison | Q5, Q24 | D1 | 2 |
-| 🔴 15 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
-| 🔴 16 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4, D5 | 2 |
-| 🔴 17 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
-| 🔴 18 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
-| 🔴 19 | SCP for preventive enforcement | Q261, Q413 | D3, D4 | 2 |
-| 🔴 20 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
-| 🔴 21 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
-| 🔴 22 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
-| 🔴 23 | Access Analyzer unused + policy generation | Q374, Q1003 | D1, D4 | 2 |
-| 🔴 24 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
-| 🔴 25 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1, D4 | 2 |
-| 🔴 26 | GuardDuty ≠ failed attempts | Q534, Q594 | D1, D4, D5, D6 | 2 |
-| 🔴 27 | Gateway endpoint policy as additional gate | Q535, Q1080 | D3, D4, D5 | 2 |
-| 🔴 28 | Session policy + server-side KMS | Q591, Q679 | D4, D5, D6 | 2 |
-| 🔴 29 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4, D6 | 2 |
-| 🔴 30 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
-| 🔴 31 | Sign=private, verify=public | Q812, Q824 | D5 | 2 |
-| 🔴 32 | S3 Access Grants prefix overlap | Q819, Q826 | D1, D5 | 2 |
-| 🔴 33 | StopLogging kills own CW Logs delivery | Q860, Q866 | D1 | 2 |
-| 🔴 34 | Credential leak IR (Deny-all before investigate) | Q862, Q867 | D2 | 2 |
-| 🔴 35 | Kinesis + KMS VPC endpoints (timeout = network) | Q918, Q950 | D3, D5 | 2 |
-| 🔴 36 | API Gateway mTLS = custom domain + S3 truststore | Q967, Q1012 | D3 | 2 |
-| 🔴 37 | EMR in-transit = security config + PEM certs | Q1030, Q1073 | D5 | 2 |
-| 🔴 38 | IoT revocation = registry. API GW mTLS revocation = CRL in truststore | Q1032, Q1070 | D3, D5 | 2 |
-| 🔴 39 | State Manager OnBoot + schedule (dual triggers) | Q1048, Q1071 | D1, D3 | 2 |
-| 🟡 40 | CloudTrail data vs management events | Q1 | D1 | 1 |
-| 🟡 41 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
-| 🟡 42 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
-| 🟡 43 | Policy layers reference | Q7 | D4 | 1 |
-| 🟡 44 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
-| 🟡 45 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
-| 🟡 46 | DNS Firewall | Q14 | D3 | 1 |
-| 🟡 47 | Cross-account patterns | Q15 | D5 | 1 |
-| 🟡 48 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
-| 🟡 49 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 50 | RAM vs RCP | Q38 | D4 | 1 |
-| 🟡 51 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
-| 🟡 52 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
-| 🟡 53 | Cross-account KMS | Q53 | D4 | 1 |
-| 🟡 54 | STS session revocation | Q62 | D4 | 1 |
-| 🟡 55 | Session tags + ABAC | Q63 | D4 | 1 |
-| 🟡 56 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
-| 🟡 57 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
-| 🟡 58 | Session policy as ceiling | Q78 | D4 | 1 |
-| 🟡 59 | SCP cannot be bypassed | Q83 | D4 | 1 |
-| 🟡 60 | MRK independent key policies | Q84 | D5 | 1 |
-| 🟡 61 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
-| 🟡 62 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
-| 🟡 63 | Imported key rotation procedure | Q114 | D5 | 1 |
-| 🟡 64 | SCP for preventive guardrails | Q119 | D6 | 1 |
-| 🟡 65 | RAM for resource sharing | Q126 | D6 | 1 |
-| 🟡 66 | DNS Firewall rule actions | Q129 | D3 | 1 |
-| 🟡 67 | GuardDuty vs Inspector | Q132 | D1 | 1 |
-| 🟡 68 | DNS Firewall rule structure | Q134 | D3 | 1 |
-| 🟡 69 | Step Functions for IR | Q138 | D2 | 1 |
-| 🟡 70 | Access Analyzer modes | Q144 | D1 | 1 |
-| 🟡 71 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
-| 🟡 72 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
-| 🟡 73 | RCP exemptions (SLR) | Q183 | D4 | 1 |
-| 🟡 74 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
-| 🟡 75 | KMS auto-rotation retention | Q192 | D5 | 1 |
-| 🟡 76 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
-| 🟡 77 | Firewall Manager SG audit | Q208 | D3 | 1 |
-| 🟡 78 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
-| 🟡 79 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
-| 🟡 80 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
-| 🟡 81 | Secrets Manager cross-region replication | Q258 | D5 | 1 |
-| 🟡 82 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
-| 🟡 83 | Audit Manager vs Artifact | Q271 | D6 | 1 |
-| 🟡 84 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
-| 🟡 85 | Config conformance packs | Q275 | D6 | 1 |
-| 🟡 86 | StackSets vs Conformance Pack | Q276 | D6 | 1 |
-| 🟡 87 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
-| 🟡 88 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
-| 🟡 89 | Verified Access trust providers | Q336 | D3, D4 | 1 |
-| 🟡 90 | Signer revocation (job vs profile vs IAM) | Q339 | D4, D6 | 1 |
-| 🟡 91 | Cognito Identity Pool + KMS permissions | Q341 | D3, D4 | 1 |
-| 🟡 92 | GuardDuty suppression rules | Q372 | D1 | 1 |
-| 🟡 93 | Secrets Manager rotation failure | Q376 | D5 | 1 |
-| 🟡 94 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D3, D4 | 1 |
-| 🟡 95 | Data perimeter (RCP blocks IN, SCP blocks OUT) | Q398 | D4, D6 | 1 |
-| 🟡 96 | EventBridge for fast detection | Q401 | D1 | 1 |
-| 🟡 97 | Timeout vs Access Denied (SG troubleshooting) | Q418 | D3 | 1 |
-| 🟡 98 | KMS is regional | Q423 | D4, D5 | 1 |
-| 🟡 99 | RCP same-org evaluation | Q427 | D4 | 1 |
-| 🟡 100 | Secrets Manager replication ≠ MRK | Q428 | D5 | 1 |
-| 🟡 101 | SCP prevents disabling services | Q440 | D6 | 1 |
-| 🟡 102 | RAM + FM complementary | Q442 | D6 | 1 |
-| 🟡 103 | Full governance stack | Q445 | D6 | 1 |
-| 🟡 104 | StackSets limitations | Q450 | D6 | 1 |
-| 🟡 105 | FM SG common policy | Q454 | D6 | 1 |
-| 🟡 106 | Delegated admin (all services) | Q462 | D6 | 1 |
-| 🟡 107 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
-| 🟡 108 | No single governance service | Q486 | D6 | 1 |
-| 🟡 109 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1, D6 | 1 |
-| 🟡 110 | EventBridge for fast detection + auto-revert | Q523 | D1, D6 | 1 |
-| 🟡 111 | Network FW for IP-level C2 block | Q526 | D1, D3 | 1 |
-| 🟡 112 | Detection + response architecture | Q532 | D1, D3, D6 | 1 |
-| 🟡 113 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1, D4, D5 | 1 |
-| 🟡 114 | Detect vs prevent (GuardDuty vs EventBridge for behavioral) | Q640 | D1 | 1 |
-| 🟡 115 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) | Q655 | D1 | 1 |
-| 🟡 116 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D3, D5 | 1 |
-| 🟡 117 | DGA = allow-list DNS Firewall | Q690 | D1, D3 | 1 |
-| 🟡 118 | Access Analyzer static + GuardDuty ≠ failed attempts | Q706 | D1, D4 | 1 |
-| 🟡 119 | NACLs stateless (Dojo Q19, Q61) | Q707 | D3 | 1 |
-| 🟡 120 | Directory Service + trust direction (Dojo Q5) | Q709 | D4 | 1 |
-| 🟡 121 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
-| 🟡 122 | GuardDuty Trusted IP list (Dojo Q22) | Q711 | D1 | 1 |
-| 🟡 123 | VPN types (Dojo Q56) | Q719 | D3 | 1 |
-| 🟡 124 | CW metric filter value (Dojo Q57) | Q724 | D1 | 1 |
-| 🟡 125 | ADFS vs AD Connector (Dojo Q48) | Q731 | D4 | 1 |
-| 🟡 126 | AD Connector vs Simple AD | Q739 | D4 | 1 |
-| 🟡 127 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
-| 🟡 128 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
-| 🟡 129 | InsideAWS = SG isolation | Q761 | D2, D4 | 1 |
-| 🟡 130 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
-| 🟡 131 | Cognito Identity Pool + role (not direct STS) | Q778 | D4 | 1 |
-| 🟡 132 | NACLs stateless (inbound ACCEPT + outbound REJECT) | Q781 | D3 | 1 |
-| 🟡 133 | EKS Runtime Monitoring (agent required) | Q797 | D1, D3 | 1 |
-| 🟡 134 | CloudFront response headers policy | Q801 | D3 | 1 |
-| 🟡 135 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
-| 🟡 136 | OutsideAWS IR + IMDSv2 hardening | Q820 | D1, D2, D4 | 1 |
-| 🟡 137 | GuardDuty ≠ failed attempts + AA static | Q839 | D1 | 1 |
-| 🟡 138 | S3 Batch Operations cross-account + manifest region | Q855 | D4, D5 | 1 |
-| 🟡 139 | S3 Batch cross-account needs bucket policy | Q857 | D4, D6 | 1 |
-| 🟡 140 | SCP prevention > detect+remediate | Q858 | D4, D6 | 1 |
-| 🟡 141 | S3 Batch Operations regional | Q872 | D5 | 1 |
-| 🟡 142 | Kinesis consumer = Decrypt + DescribeKey | Q879 | D3, D5 | 1 |
+| 🔴 13 | StopLogging kills own CW Logs delivery | Q860, Q866, Q1092 | D1 | 3 |
+| 🔴 14 | S3 server access logging = ACLs | Q864, Q868, Q903 | D5, D6 | 3 |
+| 🔴 15 | Security services comparison | Q5, Q24 | D1 | 2 |
+| 🔴 16 | RAM vs KMS Grants | Q11, Q37 | D4 | 2 |
+| 🔴 17 | Cross-account KMS + SCP evaluation | Q70, Q256 | D4, D5 | 2 |
+| 🔴 18 | Session policy bypass by resource-based policy | Q96, Q169 | D4 | 2 |
+| 🔴 19 | Detect vs prevent (GuardDuty vs Access Analyzer) | Q187, Q233 | D1 | 2 |
+| 🔴 20 | SCP for preventive enforcement | Q261, Q413 | D3, D4 | 2 |
+| 🔴 21 | Service Catalog (self-service) | Q274, Q277 | D6 | 2 |
+| 🔴 22 | StackSets no auto-remediation | Q283, Q439 | D6 | 2 |
+| 🔴 23 | Firewall Manager auto-remediation | Q284, Q435 | D6 | 2 |
+| 🔴 24 | Access Analyzer unused + policy generation | Q374, Q1003 | D1, D4 | 2 |
+| 🔴 25 | Data perimeter (RCP blocks IN, SCP blocks OUT) | Q398, Q1095 | D4, D6 | 2 |
+| 🔴 26 | Native org-wide deployment | Q483, Q492 | D6 | 2 |
+| 🔴 27 | Access Analyzer + GuardDuty both fire | Q518, Q652 | D1, D4 | 2 |
+| 🔴 28 | GuardDuty ≠ failed attempts | Q534, Q594 | D1, D4, D5, D6 | 2 |
+| 🔴 29 | Gateway endpoint policy as additional gate | Q535, Q1080 | D3, D4, D5 | 2 |
+| 🔴 30 | Session policy + server-side KMS | Q591, Q679 | D4, D5, D6 | 2 |
+| 🔴 31 | RCP scope (your resources only, not outbound) | Q683, Q698 | D4, D6 | 2 |
+| 🔴 32 | Glacier Vault Lock vs Object Lock | Q800, Q822 | D5 | 2 |
+| 🔴 33 | Sign=private, verify=public | Q812, Q824 | D5 | 2 |
+| 🔴 34 | S3 Access Grants prefix overlap | Q819, Q826 | D1, D5 | 2 |
+| 🔴 35 | Credential leak IR (Deny-all before investigate) | Q862, Q867 | D2 | 2 |
+| 🔴 36 | Kinesis consumer = Decrypt + DescribeKey | Q879, Q1100 | D3, D5 | 2 |
+| 🔴 37 | Kinesis + KMS VPC endpoints (timeout = network) | Q918, Q950 | D3, D5 | 2 |
+| 🔴 38 | API Gateway mTLS = custom domain + S3 truststore | Q967, Q1012 | D3 | 2 |
+| 🔴 39 | EMR in-transit = security config + PEM certs | Q1030, Q1073 | D5 | 2 |
+| 🔴 40 | IoT revocation = registry. API GW mTLS revocation = CRL in truststore | Q1032, Q1070 | D3, D5 | 2 |
+| 🔴 41 | State Manager OnBoot + schedule (dual triggers) | Q1048, Q1071 | D1, D3 | 2 |
+| 🟡 42 | CloudTrail data vs management events | Q1 | D1 | 1 |
+| 🟡 43 | Basic vs Advanced event selectors | Q2 | D1 | 1 |
+| 🟡 44 | Troubleshooting (Task 1.3) | Q6 | D1 | 1 |
+| 🟡 45 | Policy layers reference | Q7 | D4 | 1 |
+| 🟡 46 | faq-ram-vs-rcp.md | Q12 | D4 | 1 |
+| 🟡 47 | GuardDuty vs CloudTrail | Q13 | D1 | 1 |
+| 🟡 48 | DNS Firewall | Q14 | D3 | 1 |
+| 🟡 49 | Cross-account patterns | Q15 | D5 | 1 |
+| 🟡 50 | CloudTrail Lake vs S3+Athena | Q23 | D1 | 1 |
+| 🟡 51 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 52 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 53 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 54 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
+| 🟡 55 | Cross-account KMS | Q53 | D4 | 1 |
+| 🟡 56 | STS session revocation | Q62 | D4 | 1 |
+| 🟡 57 | Session tags + ABAC | Q63 | D4 | 1 |
+| 🟡 58 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
+| 🟡 59 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
+| 🟡 60 | Session policy as ceiling | Q78 | D4 | 1 |
+| 🟡 61 | SCP cannot be bypassed | Q83 | D4 | 1 |
+| 🟡 62 | MRK independent key policies | Q84 | D5 | 1 |
+| 🟡 63 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
+| 🟡 64 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
+| 🟡 65 | Imported key rotation procedure | Q114 | D5 | 1 |
+| 🟡 66 | SCP for preventive guardrails | Q119 | D6 | 1 |
+| 🟡 67 | RAM for resource sharing | Q126 | D6 | 1 |
+| 🟡 68 | DNS Firewall rule actions | Q129 | D3 | 1 |
+| 🟡 69 | GuardDuty vs Inspector | Q132 | D1 | 1 |
+| 🟡 70 | DNS Firewall rule structure | Q134 | D3 | 1 |
+| 🟡 71 | Step Functions for IR | Q138 | D2 | 1 |
+| 🟡 72 | Access Analyzer modes | Q144 | D1 | 1 |
+| 🟡 73 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
+| 🟡 74 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
+| 🟡 75 | RCP exemptions (SLR) | Q183 | D4 | 1 |
+| 🟡 76 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
+| 🟡 77 | KMS auto-rotation retention | Q192 | D5 | 1 |
+| 🟡 78 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
+| 🟡 79 | Firewall Manager SG audit | Q208 | D3 | 1 |
+| 🟡 80 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
+| 🟡 81 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
+| 🟡 82 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
+| 🟡 83 | Secrets Manager cross-region replication | Q258 | D5 | 1 |
+| 🟡 84 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
+| 🟡 85 | Audit Manager vs Artifact | Q271 | D6 | 1 |
+| 🟡 86 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
+| 🟡 87 | Config conformance packs | Q275 | D6 | 1 |
+| 🟡 88 | StackSets vs Conformance Pack | Q276 | D6 | 1 |
+| 🟡 89 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
+| 🟡 90 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
+| 🟡 91 | Verified Access trust providers | Q336 | D3, D4 | 1 |
+| 🟡 92 | Signer revocation (job vs profile vs IAM) | Q339 | D4, D6 | 1 |
+| 🟡 93 | Cognito Identity Pool + KMS permissions | Q341 | D3, D4 | 1 |
+| 🟡 94 | GuardDuty suppression rules | Q372 | D1 | 1 |
+| 🟡 95 | Secrets Manager rotation failure | Q376 | D5 | 1 |
+| 🟡 96 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D3, D4 | 1 |
+| 🟡 97 | EventBridge for fast detection | Q401 | D1 | 1 |
+| 🟡 98 | Timeout vs Access Denied (SG troubleshooting) | Q418 | D3 | 1 |
+| 🟡 99 | KMS is regional | Q423 | D4, D5 | 1 |
+| 🟡 100 | RCP same-org evaluation | Q427 | D4 | 1 |
+| 🟡 101 | Secrets Manager replication ≠ MRK | Q428 | D5 | 1 |
+| 🟡 102 | SCP prevents disabling services | Q440 | D6 | 1 |
+| 🟡 103 | RAM + FM complementary | Q442 | D6 | 1 |
+| 🟡 104 | Full governance stack | Q445 | D6 | 1 |
+| 🟡 105 | StackSets limitations | Q450 | D6 | 1 |
+| 🟡 106 | FM SG common policy | Q454 | D6 | 1 |
+| 🟡 107 | Delegated admin (all services) | Q462 | D6 | 1 |
+| 🟡 108 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
+| 🟡 109 | No single governance service | Q486 | D6 | 1 |
+| 🟡 110 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1, D6 | 1 |
+| 🟡 111 | EventBridge for fast detection + auto-revert | Q523 | D1, D6 | 1 |
+| 🟡 112 | Network FW for IP-level C2 block | Q526 | D1, D3 | 1 |
+| 🟡 113 | Detection + response architecture | Q532 | D1, D3, D6 | 1 |
+| 🟡 114 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1, D4, D5 | 1 |
+| 🟡 115 | Detect vs prevent (GuardDuty vs EventBridge for behavioral) | Q640 | D1 | 1 |
+| 🟡 116 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) | Q655 | D1 | 1 |
+| 🟡 117 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D3, D5 | 1 |
+| 🟡 118 | DGA = allow-list DNS Firewall | Q690 | D1, D3 | 1 |
+| 🟡 119 | Access Analyzer static + GuardDuty ≠ failed attempts | Q706 | D1, D4 | 1 |
+| 🟡 120 | NACLs stateless (Dojo Q19, Q61) | Q707 | D3 | 1 |
+| 🟡 121 | Directory Service + trust direction (Dojo Q5) | Q709 | D4 | 1 |
+| 🟡 122 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
+| 🟡 123 | GuardDuty Trusted IP list (Dojo Q22) | Q711 | D1 | 1 |
+| 🟡 124 | VPN types (Dojo Q56) | Q719 | D3 | 1 |
+| 🟡 125 | CW metric filter value (Dojo Q57) | Q724 | D1 | 1 |
+| 🟡 126 | ADFS vs AD Connector (Dojo Q48) | Q731 | D4 | 1 |
+| 🟡 127 | AD Connector vs Simple AD | Q739 | D4 | 1 |
+| 🟡 128 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
+| 🟡 129 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
+| 🟡 130 | InsideAWS = SG isolation | Q761 | D2, D4 | 1 |
+| 🟡 131 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
+| 🟡 132 | Cognito Identity Pool + role (not direct STS) | Q778 | D4 | 1 |
+| 🟡 133 | NACLs stateless (inbound ACCEPT + outbound REJECT) | Q781 | D3 | 1 |
+| 🟡 134 | EKS Runtime Monitoring (agent required) | Q797 | D1, D3 | 1 |
+| 🟡 135 | CloudFront response headers policy | Q801 | D3 | 1 |
+| 🟡 136 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
+| 🟡 137 | OutsideAWS IR + IMDSv2 hardening | Q820 | D1, D2, D4 | 1 |
+| 🟡 138 | GuardDuty ≠ failed attempts + AA static | Q839 | D1 | 1 |
+| 🟡 139 | S3 Batch Operations cross-account + manifest region | Q855 | D4, D5 | 1 |
+| 🟡 140 | S3 Batch cross-account needs bucket policy | Q857 | D4, D6 | 1 |
+| 🟡 141 | SCP prevention > detect+remediate | Q858 | D4, D6 | 1 |
+| 🟡 142 | S3 Batch Operations regional | Q872 | D5 | 1 |
 | 🟡 143 | IoT ThingName = cert-bound, not hardware | Q880 | D3 | 1 |
 | 🟡 144 | Config custom rule = Lambda (max 15min timeout) | Q881 | D1, D6 | 1 |
 | 🟡 145 | CRR dest = kms:GenerateDataKey (not Encrypt) | Q883 | D5 | 1 |
@@ -211,6 +211,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 177 | RCP evaluates S3 CALLER (Lambda), not original HTTP client | Q1074 | D4, D6 | 1 |
 | 🟡 178 | CRR preserves source custom encryption context | Q1075 | D5 | 1 |
 | 🟡 179 | Lambda = no EBS/AMI forensics (ephemeral) | Q1079 | D2, D3 | 1 |
+| 🟡 180 | OutsideAWS + can't disrupt = TokenIssueTime + snapshot | Q1108 | D2 | 1 |
 
 ---
 
@@ -315,7 +316,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 95 | 2026-06-16 | Q957–Q961 | 5 | 0 | 0 | D2 Incident Response (D2 novel patterns blitz — automated forensics, chain of custody, Step Functions orchestration) | [Jump](#session-95--2026-06-16) |
 | 96 | 2026-06-16 | Q962–Q1010 | 39 | 3 | 7 | D1 Detection + D5 Data Protection + D3 Infrastructure + D2 Incident Response (cross-domain uplift — never-seen topics + verb traps) | [Jump](#session-96--2026-06-16) |
 | 97 | 2026-06-17 | Q1012–Q1011 | 35 | 0 | 13 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
-| 98 | 2026-06-18 | Q1056–Q1080 | 17 | 0 | 8 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
+| 98 | 2026-06-18 | Q1056–Q1115 | 48 | 0 | 12 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
 
 ---
 
@@ -2350,3 +2351,42 @@ After adding a session:
 | 1080 | D3/D5 | Data perimeter + mTLS + Lambda Access Denied — check FIRST? | B: SCP ResourceAccount | ❌ | C: S3 Gateway endpoint policy (hidden allowlist gate) | Q535 | Gateway endpoint policy as additional gate |
 
 ---
+**Extended Rounds (Q26-Q60):**
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1081 | D3/D5 | Gateway endpoint policy + ViaService: PutObject not in endpoint policy — result? | C: Access Denied | ✅ | Endpoint policy is allowlist — PutObject not listed = denied | Q535 | Gateway endpoint policy as additional gate |
+| 1082 | D4/D6 | RCP scope: SLR replicates to external partner bucket — RCP blocks? | C: RCP doesn't apply — partner's bucket not your resource | ✅ | RCP protects YOUR resources only. Outbound = SCP's job. | Q683, Q698 | RCP scope (your resources only, not outbound) |
+| 1083 | D4/D6 | Declarative policy vs SCP: new API assigns public IPv6 — what prevents? | B: Declarative policy enforces state regardless of API | ✅ | Declarative = state enforcement. SCP = must enumerate APIs. | — | Declarative policies vs SCP |
+| 1084 | D1 | CloudTrail Lake vs Security Lake — match requirements to services? | B: CT Lake for SQL/API queries, Security Lake for OCSF/your S3 | ✅ | CT Lake = API calls, SQL, managed. Security Lake = all logs, OCSF, your S3. | — | CloudTrail Lake vs Security Lake |
+| 1085 | D4 | Cognito User Pool token + direct AssumeRoleWithWebIdentity — why fails? | A: Use Identity Pool instead (managed STS) | ✅ | Identity Pool handles STS internally. Don't call STS directly. | Q778 | Cognito Identity Pool + role (not direct STS) |
+| 1086 | D2/D4 | InsideAWS: attacker on Instance B, same role — containment? | B: Deny-all SG on Instance B | ✅ | InsideAWS = SG isolation. TokenIssueTime kills both. | Q761 | InsideAWS = SG isolation |
+| 1087 | D1/D5 | S3 Access Grants prefix overlap: Finance user reads HR data — cause? | A: User in All-Staff group with root prefix grant | ✅ | Broadest grant wins. Prefix overlap = #1 Access Grants misconfiguration. | Q819, Q826 | S3 Access Grants prefix overlap |
+| 1088 | D5 | Private CA renewed (new key pair): existing certs affected? | B: Continue working until natural expiry | ✅ | CA renewal ≠ revocation. Previously-issued certs unaffected. | — | Private CA renewal ≠ revocation |
+| 1089 | D1 | CloudTrail Insights 10x spike, GuardDuty silent — which true? | B: Complementary — Insights=volume, GD=behavior | ✅ | Spike may be authorized. Different detection lenses. | Q1004 | CloudTrail Insights vs GuardDuty (complementary) |
+| 1090 | D5 | Secrets Manager rotation success but new ECS task auth fails on RDS — cause? | A: Rotation Lambda failed ALTER USER on DB | ✅ | Secret changed, DB didn't. Error on DATABASE = rotation Lambda problem. | Q376 | Secrets Manager rotation failure |
+| 1091 | D5/D4 | KMS key policy root only + Lambda has s3:GetObject (no kms:Decrypt) — SSE-KMS read? | B: Fails — needs explicit kms:Decrypt | ✅ | Root = delegation not grant. Each principal needs explicit KMS perms. | Q264, Q503 | KMS key policy root = delegation, not grant |
+| 1092 | D1 | StopLogging detection: CW metric filter + EventBridge + Config — which fire? | B (wrong: said C) | ❌ | B: EventBridge + Config both fire. CW metric filter blind (StopLogging kills own delivery). | Q860, Q866 | StopLogging kills own CW Logs delivery |
+| 1093 | D3 | WAF Bot Control: mobile app fails JS challenge — fix? | A: Scope-down statement excluding mobile app header | ✅ | Scope-down = exempt known-good traffic from rule group. | — | WAF scope-down statement (exempt known traffic) |
+| 1094 | D3 | VPC Lattice: cross-account service-to-service, IAM auth, no certs — config? | B: Lattice service network + RAM + IAM auth + auth policy | ✅ | Lattice = east/west, SigV4, share via RAM, auth policies. | — | VPC Lattice (cross-account service-to-service + IAM) |
+| 1095 | D4/D6 | Data perimeter 3 layers: block IN + block OUT + AWS services — which THREE? | A+B+E (wrong: picked C) | ❌ | A+B+E: RCP S3 + SCP ResourceAccount + RCP KMS. Bucket policy doesn't scale. | Q398 | Data perimeter (RCP blocks IN, SCP blocks OUT) |
+| 1096 | D6 | cfn-guard: block RDS without encryption before deploy — approach? | B: cfn-guard rules in CI/CD pipeline | ✅ | cfn-guard = policy-as-code for templates, shift-left. | — | CloudFormation Guard (template validation in pipeline) |
+| 1097 | D5 | DLM: daily EBS snapshots + 30d retention + cross-region + auto-delete — service? | B: DLM policy with tag, schedule, retention, cross-region | ✅ | DLM = EBS snapshot automation, all native. | — | Data Lifecycle Manager (EBS snapshots) |
+| 1098 | D5 | DataSync: 50TB weekly NFS→S3, TLS, filter *.parquet, throttle — approach? | B: DataSync agent + TLS + include filter + bandwidth limit | ✅ | DataSync = recurring on-prem→AWS with built-in features. | — | DataSync (encrypted transfer + filtering + throttling) |
+| 1099 | D6 | Well-Architected Tool: CISO wants architectural gaps + improvement plan — service? | B: Well-Architected Tool Security Pillar | ✅ | Architecture review + improvement plan + milestones. | Q1031 | Well-Architected Tool = architecture review + improvement plan |
+| 1100 | D5/D3 | Kinesis encrypted consumer: has GetRecords, Access Denied — missing? (TWO) | C+D (wrong) | ❌ | A+C: kms:Decrypt + kms:DescribeKey. Not CreateGrant. | Q879 | Kinesis consumer = Decrypt + DescribeKey |
+| 1101 | D6/D1 | Config org custom rule: "Unable to invoke" in members — fix? | B: Lambda resource-based policy for config.amazonaws.com | ✅ | Org custom rule = cross-account invoke. Resource policy needed. | Q908 | Config org custom rule cross-account invoke |
+| 1102 | D5 | S3 Batch Operations: one job us-east-1, targets 4 regions — result? | C: Fails — Batch is regional | ✅ | Job + manifest + target = same region. Need 4 jobs. | Q872 | S3 Batch Operations regional |
+| 1103 | D3/D4 | Verified Access: stolen laptop, block only that device — action? | B: Mark non-compliant in CrowdStrike | ✅ | Device trust provider = surgical device-level control. | Q336 | Verified Access trust providers |
+| 1104 | D3 | GWLB: source IP shows GWLB IP, not client — fix? | B: Appliance decapsulate GENEVE outer header | ✅ | Original packet inside GENEVE tunnel. Decapsulate to see real IP. | Q905 | GWLB GENEVE decapsulation |
+| 1105 | D4/D5 | 5-layer cross-account SSE-KMS: SCP ViaService + RCP + session + key policy B root — succeeds? | C: Succeeds — all gates pass | ✅ | Server-side KMS, ViaService satisfied, session doesn't gate, RCP same-org, key policy enables. | Q591 | Full 5-layer cross-account evaluation |
+| 1106 | D1 | GuardDuty S3 Protection: anomalous download patterns, zero code — service? | B: GuardDuty S3 Protection | ✅ | Anomalous + zero code = GuardDuty S3 Protection. | Q568 | Detect vs prevent (GuardDuty vs policy) |
+| 1107 | D1 | EventBridge: alert 90s on iam:CreateAccessKey for root — approach? | C: EventBridge rule in management account | ✅ | Specific API + fast + org trail = EventBridge. | Q474 | EventBridge for API call detection |
+| 1108 | D2 | OutsideAWS + ALB production: stop attacker, keep app up — which TWO? | B+A (wrong: picked A deny-all SG) | ❌ | B+C: TokenIssueTime + EBS snapshot. Deny-all SG kills ALB traffic. | Q820 | OutsideAWS + can't disrupt = TokenIssueTime + snapshot |
+| 1109 | D1 | Bucket policy grants external, no access yet, AA+GD enabled — which fires? | B: Only Access Analyzer | ✅ | AA = static policy. GD = needs actual access. | Q518 | Access Analyzer static + GuardDuty ≠ failed attempts |
+| 1110 | D2 | Forensics Orchestrator: deny-all SG then SSM fails — why? | B: Deny-all blocks outbound to SSM | ✅ | Deny-all = no outbound. SSM needs HTTPS out. Acquire BEFORE isolate. | Q937 | Forensics Orchestrator (deny-all blocks SSM) |
+| 1111 | D1 | Security Lake: OCSF + all sources + your S3 + Splunk subscriber — service? | B: Security Lake | ✅ | OCSF + your S3 + subscriber model = Security Lake. | — | Security Lake (OCSF + your S3 + subscriber) |
+| 1112 | D2 | CreateSampleFindings: test full IR pipeline without real incident — approach? | B: CreateSampleFindings API | ✅ | Generates realistic findings through EventBridge. FIS = infra failures. | Q934 | CreateSampleFindings = test IR pipeline |
+| 1113 | D1 | EC2 DNS to C2 domain then TLS TCP — findings + ThreatPurpose? | B: Impact then Trojan | ✅ | DNS = Impact. Active TCP to C2 = Trojan. Mining = CryptoCurrency. | Q655 | GuardDuty finding types (C2 = Trojan) |
+| 1114 | D1 | Top 10 source IPs by bytes, Flow Logs in CW — tool? | B: CW Logs Insights | ✅ | Data in CW + aggregation = Insights. Detective = investigate from finding. | Q236 | CW Logs Insights for aggregation |
+| 1115 | D2 | ARC zonal shift: gray failure, AZ-B errors, health checks pass — action? | B: ARC zonal shift | ✅ | LB-level, seconds, no DNS, temporary. Gray failures = ARC. | Q936 | ARC zonal shift |
