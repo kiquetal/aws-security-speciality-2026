@@ -120,7 +120,12 @@
 
 ### Encryption in Transit (New in C03)
 - "Encrypt between instances, no app changes" → **Nitro inter-instance encryption**. Automatic, hardware-level, zero config.
-- Covers EC2-to-EC2, EKS inter-node, EMR, SageMaker. Only Nitro-based instance types.
+- Covers EC2-to-EC2, EKS inter-node, SageMaker. Only Nitro-based instance types.
+- 🧠 **EMR in-transit ≠ Nitro.** EMR inter-node encryption = EMR security configuration + in-transit enabled + PEM certificates (Private CA). Nitro is NOT the answer for EMR compliance.
+- 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Not CreateGrant — Kinesis doesn't delegate via grants.
+- 🧠 **Config org custom rule = central Lambda invoked cross-account.** Fix "Unable to invoke": Lambda resource-based policy granting `config.amazonaws.com` + `SourceAccount` condition for member accounts.
+- 🧠 **State Manager: ONE association supports BOTH OnBoot trigger + rate schedule.** Don't create two associations — one does both.
+- 🧠 **Inspector SBOM = on-demand API only (no built-in scheduler).** Schedule with EventBridge + Lambda calling `CreateSbomExport`. Export needs bucket policy for `inspector2.amazonaws.com`.
 
 ### Detect vs Prevent (D5 Trap)
 - 🧠 **"Detect external decryption" = GuardDuty S3 Protection. "Prevent external decryption" = KMS key policy condition.** The verb tells you the service.
