@@ -59,4 +59,4 @@
 | 9 | 2026-06-16 | 11:43 | 14:00 | 137 | Sessions 93-95 (D2 never-seen + IR novel patterns) |
 | 10 | 2026-06-16 | 19:17 | 22:30 | 193 | Session 96 extended - killer cross-domain (49 Qs) |
 | 11 | 2026-06-17 | 19:41 | 20:33 | 52 | Session 97 - Week 2-5 never-seen deep drill (47 Qs, 76%) |
-| 12 | 2026-06-18 | 17:53 | 18:34 | 41 | Session 98 - Week 2 NEVER-SEEN (17/25 + 8/8 re-test + 13/15 extended) |
+| 12 | 2026-06-18 | 17:53 | 18:45 | 52 | Session 98 - Week 2 NEVER-SEEN (17/25 + 8/8 re-test + 9/10 + 10/10 extended) |
