@@ -27,26 +27,27 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 
 | Metric | Value |
 |--------|-------|
-| **Week** | 11 of 12 (exam-format practice + weak-area deep dives) |
-| **Questions Attempted** | 206 |
-| **Accuracy** | 72% overall, 85-90% on recent exam-format sets |
-| **Sessions** | 27 |
-| **Domains ≥80%** | D3, D4, D5 trending green |
-| **Weakest Domain** | D1 Detection (58%) — improving rapidly |
+| **Phase** | Maintenance mode (decay prevention until Aug 27) |
+| **Questions Attempted** | 1,115 |
+| **Accuracy** | 78% overall, 85-90% on recent sessions |
+| **Sessions** | 98 |
+| **Study Hours** | 72+ hours |
+| **Dojo Mock Scores** | Test 1: 58% → Test 2: 72% (passing) |
+| **Never-Seen Topics Tested** | 14/18 (all passed or re-locked) |
+| **Weakest Domain** | D1 Detection (75%) — target 80% |
 
 ## Domain Weights
 
-| Domain | Weight | Study Weeks | Status |
-|--------|--------|-------------|--------|
-| D4: Identity and Access Management | 20% | 1–2 | ✅ |
-| D5: Data Protection | 18% | 3–4 | ✅ |
-| D3: Infrastructure Security | 18% | 5–6 | ✅ |
-| D1: Detection | 16% | 7–8 | ✅ |
-| D2: Incident Response | 14% | 9 | ✅ |
-| D6: Governance | 14% | 10 | ✅ |
-| Cross-domain practice | — | 11–12 | ⬜ In progress |
+| Domain | Weight | Status | Score |
+|--------|--------|--------|-------|
+| D4: Identity and Access Management | 20% | ✅ Complete | 79% |
+| D5: Data Protection | 18% | ✅ Complete | 78% |
+| D3: Infrastructure Security | 18% | ✅ Complete | 78% |
+| D1: Detection | 16% | ✅ Complete | 75% |
+| D2: Incident Response | 14% | ✅ Complete | 76% |
+| D6: Governance | 14% | ✅ Complete | 78% |
 
-Strategy: heaviest domains first, cross-domain review in weeks 11–12. See [`study-plan.md`](study-plan.md) for the full progress tracker.
+Strategy: All domains covered. Now in maintenance mode — weekly 25-question drills + bi-weekly 65-question Dojo mocks until exam day. See [`notes/maintenance-plan.md`](notes/maintenance-plan.md) for the schedule.
 
 ## Repository Structure
 
