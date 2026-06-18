@@ -5,9 +5,16 @@
 
 ---
 
-## Current Week: 2 (Jun 23-29) — Session 93 Questions
+## Current Week: 2 (Jun 23-29) — Session 98 Questions
 
-**Focus:** NEVER-SEEN BLITZ 1 — API Gateway security (authorizers, resource policies, mutual TLS), CloudFront Field-Level Encryption, Inspector SBOM export, Macie custom data identifiers, S3 Access Grants
+**Focus:** NEVER-SEEN BLITZ 1 — API Gateway security (authorizers, resource policies, mutual TLS), CloudFront Field-Level Encryption, Inspector SBOM export, Macie custom data identifiers, S3 Access Grants + Session 97 error re-tests + cross-domain killers
+
+**Generate:** 25 questions, killer difficulty, novel scenarios only
+
+**Structure:**
+- Q1-10: Never-seen topics (mTLS, FLE, SBOM, Macie regex, Access Grants, Resource Policy)
+- Q11-18: Session 97 error re-tests (novel phrasing — mTLS truststore, TOKEN vs REQUEST, Resource Policy boundary, Access Grants + KMS, IoT revocation, State Manager, SBOM scheduling, EMR in-transit)
+- Q19-25: Cross-domain killers combining never-seen services with known weak areas (ViaService + API GW, RCP + Access Grants, CRR + encryption context, etc.)
 
 **Wording Traps:** "least overhead", "most secure and cost-effective", "least administrative complexity"
 
