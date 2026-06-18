@@ -367,8 +367,8 @@ const TRACKER_DATA = {
         "Q903"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -500,8 +500,8 @@ const TRACKER_DATA = {
         "Q1003"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -514,8 +514,8 @@ const TRACKER_DATA = {
         "Q1095"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -555,8 +555,8 @@ const TRACKER_DATA = {
         "Q594"
       ],
       "domains": [
-        "D6",
         "D5",
+        "D6",
         "D4",
         "D1"
       ],
@@ -571,9 +571,9 @@ const TRACKER_DATA = {
         "Q1080"
       ],
       "domains": [
+        "D3",
         "D5",
-        "D4",
-        "D3"
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -586,9 +586,9 @@ const TRACKER_DATA = {
         "Q679"
       ],
       "domains": [
+        "D6",
         "D5",
-        "D4",
-        "D6"
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -601,8 +601,8 @@ const TRACKER_DATA = {
         "Q698"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -736,8 +736,8 @@ const TRACKER_DATA = {
         "Q1071"
       ],
       "domains": [
-        "D1",
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 2,
       "level": "yellow"
@@ -1350,8 +1350,8 @@ const TRACKER_DATA = {
         "Q339"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1400,8 +1400,8 @@ const TRACKER_DATA = {
         "Q395"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1609,9 +1609,9 @@ const TRACKER_DATA = {
         "Q532"
       ],
       "domains": [
+        "D3",
         "D6",
-        "D1",
-        "D3"
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
@@ -1869,8 +1869,8 @@ const TRACKER_DATA = {
         "Q797"
       ],
       "domains": [
-        "D1",
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
@@ -1945,8 +1945,8 @@ const TRACKER_DATA = {
         "Q857"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1958,8 +1958,8 @@ const TRACKER_DATA = {
         "Q858"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2069,8 +2069,8 @@ const TRACKER_DATA = {
         "Q902"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2401,8 +2401,8 @@ const TRACKER_DATA = {
         "Q1074"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -15991,8 +15991,38 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
-              "text": "Covers EC2-to-EC2, EKS inter-node, EMR, SageMaker. Only Nitro-based instance types.",
+              "text": "Covers EC2-to-EC2, EKS inter-node, SageMaker. Only Nitro-based instance types.",
               "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**EMR in-transit \u2260 Nitro.** EMR inter-node encryption = EMR security configuration + in-transit enabled + PEM certificates (Private CA). Nitro is NOT the answer for EMR compliance.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Not CreateGrant \u2014 Kinesis doesn't delegate via grants.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Config org custom rule = central Lambda invoked cross-account.** Fix \"Unable to invoke\": Lambda resource-based policy granting `config.amazonaws.com` + `SourceAccount` condition for member accounts.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**State Manager: ONE association supports BOTH OnBoot trigger + rate schedule.** Don't create two associations \u2014 one does both.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Inspector SBOM = on-demand API only (no built-in scheduler).** Schedule with EventBridge + Lambda calling `CreateSbomExport`. Export needs bucket policy for `inspector2.amazonaws.com`.",
+              "is_insight": true,
               "is_warning": false
             }
           ]
