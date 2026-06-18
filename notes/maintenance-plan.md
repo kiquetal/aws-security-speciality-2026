@@ -14,9 +14,9 @@ Read section → close eyes → recall 3 rules.
 
 ---
 
-## Weekly (1 session, ~30 min)
+## Weekly (1 session, ~60 min)
 
-10-question novel drill targeting untested or low-attempt topics.
+25-question killer drill targeting untested or low-attempt topics + Session error re-tests + cross-domain combos.
 
 | Week | Date | Focus | Never-Seen Included | Status |
 |------|------|-------|---------------------|--------|
