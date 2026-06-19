@@ -339,3 +339,124 @@
 **Rule:** Interface endpoint = TWO SGs must cooperate. EC2 SG outbound 443 + Endpoint SG inbound 443. Miss either = timeout.
 
 ---
+
+### Q26 (Infrastructure) — NLB + IDS Inspection
+
+**Scenario:** NLB distributes traffic. Security team must inspect ingress/egress traffic using IDS.
+
+**Your Answer:** D (Traffic Mirroring on NLB)
+**Correct:** A (AWS Network Firewall at VPC level with custom rule groups + route tables)
+
+**Key concept:** "IDS/IPS" + "inspect traffic" = AWS Network Firewall (Suricata-based). Traffic Mirroring = copy traffic for passive analysis (not inline inspection/blocking). Network Firewall = inline (can block). NLB doesn't support Traffic Mirroring anyway.
+
+**Rule:** "Inspect + block/IDS/IPS" = Network Firewall (inline). "Copy for analysis" = Traffic Mirroring (passive, doesn't block).
+
+---
+
+### Q27 (Infrastructure) — ALB + HIDS + Perfect Forward Secrecy
+
+**Scenario:** HIDS running on EC2 instances behind ALB. Must add security features for user privacy WITHOUT interfering with HIDS.
+
+**Your Answer:** C (HTTPS listener, decrypt at ALB, PFS on EC2)
+**Correct:** A (HTTPS listener with ECDHE, send encrypted traffic to EC2, enable PFS)
+
+**Key concept:** HIDS needs to inspect traffic ON the instance. If you decrypt at ALB (C), traffic between ALB→EC2 is unencrypted = HIDS can inspect but privacy is weaker. Answer A sends encrypted traffic END-TO-END (ALB re-encrypts to EC2), and HIDS runs on the instance where decryption happens. ECDHE = PFS = each session has unique keys (past sessions can't be decrypted if key is compromised later).
+
+**Rule:** "Without interfering with HIDS" + "improve privacy" = end-to-end encryption (encrypt to EC2). HIDS sees decrypted traffic at the instance level.
+
+---
+
+### Q28 (IR) — Session Manager Encrypted Session Logs
+
+**Scenario:** Secure access to EC2 without SSH/bastion/keys. Must monitor and record encrypted session activity logs.
+
+**Your Answer:** D (CloudWatch Agent + KMS log group)
+**Correct:** C (Session Manager + CloudWatch logging with "upload session logs" option + encrypted CW Logs group)
+
+**Key concept:** Session Manager has BUILT-IN session logging (records every keystroke/command). You enable "upload session logs" in Session Manager preferences → CW Logs. CloudWatch Agent (D) collects OS-level logs, NOT session activity. "Session activity logs" = Session Manager's native feature.
+
+**Rule:** "Record session activity" = Session Manager logging (built-in). NOT CloudWatch Agent (that's for app/OS logs).
+
+---
+
+### Q29 (IR) — GuardDuty Finding Investigation with Detective
+
+**Scenario:** GuardDuty UnauthorizedAccess:EC2/TorClient finding. Determine if instance is compromised. VPC Flow Logs, Config, Detective, Inspector all enabled.
+
+**Your Answer:** D (Inspector risk score)
+**Correct:** A (Investigate VPC Flow logs using Detective — analyze network activity patterns, scope, impact)
+
+**Key concept:** "Determine whether compromised" = INVESTIGATE = Detective. Detective ingests VPC Flow Logs + CloudTrail + GuardDuty and provides visualizations of network patterns. Inspector = CVE scanning (software vulnerabilities), not behavioral investigation. Config = configuration state, not network behavior.
+
+**Rule:** "Investigate" / "determine scope" / "analyze patterns" = Detective. Inspector = vulnerabilities. Config = configuration drift.
+
+---
+
+### Q30 (IR) — Route 53 Public DNS Query Logging
+
+**Scenario:** Misconfigured DNS in Route 53 caused outage. Need to log PUBLIC DNS queries for future debugging.
+
+**Your Answer:** C (Route 53 Resolver query logging → CW Logs)
+**Correct:** A (Route 53 DNS query logging → CW Logs)
+
+**Key concept:** TWO different logging features in Route 53:
+- **DNS query logging** = logs queries to YOUR public hosted zones (external users resolving your domains). Destination = CloudWatch Logs ONLY.
+- **Resolver query logging** = logs queries FROM your VPC (internal resources resolving any domain). Destination = CW Logs, S3, or Kinesis Firehose.
+
+"Public DNS queries" = DNS query logging (A). "VPC DNS queries" = Resolver query logging (C).
+
+**Rule:** Public hosted zone queries = DNS query logging. VPC outbound queries = Resolver query logging.
+
+---
+
+### Q31 (IR) — Lambda + Athena Query Results Not Delivered to S3
+
+**Scenario:** Lambda analyzes CloudTrail logs via Athena. Works in Console but no query results delivered to S3 bucket when Lambda runs.
+
+**Your Answer:** B (Security analyst lacks s3:PutObject)
+**Correct:** A (Lambda execution role has insufficient S3 permissions)
+
+**Key concept:** Lambda runs as its EXECUTION ROLE, not as the analyst. "Works in Console" (analyst's permissions) but "Lambda fails" = Lambda's role is missing permissions. The analyst's permissions are irrelevant at runtime — Lambda uses its own role.
+
+**Rule:** "Works in Console but not in Lambda" = Lambda execution role missing permissions. Lambda doesn't inherit the caller's permissions.
+
+---
+
+### Q32 (IAM) — S3 Bucket Policy for Federated User
+
+**Scenario:** Restrict S3 access for a specific federated user "Bill." Maintain Bill's other permissions unchanged.
+
+**Your Answer:** C (Deny with `arn:aws:sts::123456789012:assumed-role/*/Bill`)
+**Correct:** A (Deny with `arn:aws:sts::123456789012:federated-user/Bill`)
+
+**Key concept:** Federated users have a specific ARN format: `arn:aws:sts::ACCOUNT:federated-user/USERNAME`. `assumed-role` is for IAM roles assumed via STS. `iam::ACCOUNT:user/` is for IAM users. Different identity types = different ARN formats.
+
+**Rule:** Federated user = `sts::account:federated-user/name`. Assumed role = `sts::account:assumed-role/role-name/session`. IAM user = `iam::account:user/name`.
+
+---
+
+### Q33 (IAM) — CloudFormation Stack Policy + Termination Protection
+
+**Scenario:** Prevent users from modifying physical IDs or removing resources from CF stack. Only admins can modify.
+
+**Your Answer:** B + C (Termination protection + Stack Policy deny Update:Replace and Update:Delete)
+**Correct:** A + B (Stack Policy deny Update:* + Termination protection)
+
+**Key concept:** "Unable to modify physical IDs OR remove resources" = deny ALL updates (Update:*). Update:Replace changes physical ID. Update:Delete removes resources. Update:Modify changes in-place. Denying only Replace+Delete still allows Modify — which could change physical IDs in some cases. Deny Update:* = blanket protection.
+
+**Rule:** "Cannot modify or remove" = Stack Policy `Update:*` (deny everything). Termination protection = prevent stack deletion. Both together = full lockdown.
+
+---
+
+### Q34 (IAM) — Cognito JWT Token Verification (Most Secure)
+
+**Scenario:** Compromised user accounts. Security engineer must manually verify ID/access tokens for signs of unauthorized access or tampering.
+
+**Your Answer:** C (Decode JWT, extract claims, compare to expected values)
+**Correct:** B (Use aws-jwt-verify library — verifies signature + sub + aud + iss + exp)
+
+**Key concept:** Decoding a JWT (C) only reads the payload — it does NOT verify the cryptographic signature. An attacker can forge a JWT payload. The `aws-jwt-verify` library (B) verifies the RSA SIGNATURE against Cognito's public key, then validates claims. "Most secure" = signature verification, not just payload decoding.
+
+**Rule:** "Verify JWT securely" = verify SIGNATURE (aws-jwt-verify). "Decode JWT" = just read payload (no tamper detection). Decode ≠ verify.
+
+---
