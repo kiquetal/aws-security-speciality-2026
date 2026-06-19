@@ -102,6 +102,7 @@
 - 🧠 **S3 wraps KMS errors as S3 AccessDenied.** Caller called S3, not KMS directly. Error surface = S3, root cause = KMS. Direct `kms:Decrypt` call → KMS.AccessDeniedException.
 - 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.
 - 🧠 **CRR + SSE-KMS: source = kms:Decrypt. Destination = kms:GenerateDataKey (not kms:Encrypt).** Same rule as all S3 uploads — S3 never uses kms:Encrypt.
+- 🧠 **CRR replication role needs exactly THREE permissions: (1) kms:Decrypt on source key, (2) kms:GenerateDataKey on dest key, (3) s3:GetObjectVersionForReplication on source.** Mnemonic: D-G-F (Decrypt, GenerateDataKey, ForReplication). GetObjectVersion alone is NOT enough — ForReplication is the replication-specific permission.
 - 🧠 **CRR rewrites encryption context to destination bucket ARN.** Key policy conditions on dest key must reference dest bucket, not source.
 - 🧠 **CRR preserves source custom encryption context alongside S3 system context.** If dest key policy uses strict conditions, custom context from source causes mismatch.
 - 🧠 **DynamoDB + customer-managed KMS = needs `kms:CreateGrant` + `kms:DescribeKey`.** DynamoDB delegates via grants internally (like EBS). Never uses kms:Encrypt.
@@ -153,6 +154,8 @@
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
 - 🧠 **IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only Internet Gateway.** NAT doesn't exist for IPv6 — all IPv6 is globally routable. Egress-only IGW = one-way gate (outbound yes, inbound no).
 - 🧠 **"Individual remote users (home)" = Client VPN (SSL). "Two fixed networks (office↔AWS)" = Site-to-Site VPN (IPsec). "Physical dedicated link" = Direct Connect.**
+
+### Troubleshooting
 
 ### Edge
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
@@ -256,6 +259,16 @@
 - 🧠 **Credential leak IR (keys on GitHub): Deactivate exposed keys + attach inline Deny-all to user (covers second key/console/sessions).** Contain ALL access paths BEFORE investigating. Detective comes after containment.
 - 🧠 **Compromised ROLE = TokenIssueTime (only temp creds exist). Compromised IAM USER = Deny * on user (keys + console + sessions = persistent creds).** TokenIssueTime only kills STS tokens, not access keys or console passwords.
 - 🧠 **S3 Access Grants scope access by prefix (location). Overlapping prefixes = unintended cross-department access.** This is the #1 operational misconfiguration — not IAM bypass.
+- 🧠 **"Windows boot issue + collect memory dump" = EC2Rescue for Windows.** SSM agent requires running OS — can't help if instance won't boot.
+- 🧠 **Session Manager logging = built-in "upload session logs" (records keystrokes/commands).** CloudWatch Agent = OS/app logs. Different things. "Record session activity" = Session Manager preferences.
+- 🧠 **Route 53 TWO logging features:** DNS query logging = public hosted zone queries (CW Logs only). Resolver query logging = VPC outbound queries (CW Logs, S3, Firehose). "Public DNS queries" = DNS query logging.
+- 🧠 **JWT decode ≠ JWT verify.** Decode = read payload (no tamper detection). Verify = check cryptographic signature (aws-jwt-verify). "Most secure" = always verify.
+- 🧠 **"AWS managed key" = NEVER the answer when question mentions control, policy, expiration, rotation config, or grants.** AWS managed = autopilot with no steering wheel.
+- 🧠 **Config proactive evaluation = evaluates resources BEFORE CloudFormation creates them.** "Before provisioned" = proactive. "After exists" = detective. Config supports both modes.
+- 🧠 **EFS encryption = creation-time ONLY.** Cannot enable on existing file system. Must create new EFS + migrate.
+- 🧠 **DNSSEC "broken trust chain" = DS record missing in parent zone.** Always.
+- 🧠 **Network Firewall = inline IDS/IPS (inspect + block). Traffic Mirroring = passive copy (doesn't block).** "IDS" in question = Network Firewall.
+- 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance.
 
 ---
 
