@@ -213,3 +213,70 @@ CloudWatch Logs Metric Filter:
 3. **Combine with DNS Firewall** — firewall blocks, logs prove it
 4. **Feed into Security Lake** for OCSF-normalized cross-service analysis
 5. **Monitor for DNS tunneling** — unusually long subdomain queries or high query volume to single domain
+
+---
+
+## DNS Query Logging vs Resolver Query Logging (EXAM-CRITICAL DISTINCTION)
+
+> These are TWO SEPARATE features with confusingly similar names. Dojo tests this.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  ROUTE 53 — TWO DIFFERENT LOGGING FEATURES                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  1. DNS QUERY LOGGING                                            │
+│  ════════════════════                                            │
+│  WHAT: External users resolving YOUR domains                     │
+│  WHO:  Internet → your public hosted zone                        │
+│  DEST: CloudWatch Logs ONLY (no S3, no Firehose)                │
+│  DIR:  INBOUND (world → your zone)                              │
+│                                                                  │
+│  Example: Someone types "app.yourcompany.com" in browser         │
+│           → Route 53 authoritative server answers                │
+│           → DNS query logging captures this                      │
+│                                                                  │
+│  Signal words: "public DNS", "hosted zone", "who resolves us"    │
+│                                                                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  2. RESOLVER QUERY LOGGING                                       │
+│  ═════════════════════════                                       │
+│  WHAT: YOUR resources resolving ANY domain                       │
+│  WHO:  EC2/Lambda in VPC → outbound DNS queries                  │
+│  DEST: CW Logs, S3, OR Kinesis Firehose (all three)             │
+│  DIR:  OUTBOUND (your VPC → world)                              │
+│                                                                  │
+│  Example: Your Lambda calls "api.stripe.com"                     │
+│           → VPC Resolver handles the lookup                      │
+│           → Resolver query logging captures this                 │
+│                                                                  │
+│  Signal words: "VPC DNS", "outbound queries", "what our          │
+│                resources resolve", "DNS exfil detection"          │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Quick Decision Table
+
+| Question says... | Answer | Feature |
+|---|---|---|
+| "Log public DNS queries" | DNS query logging | Inbound to your zone |
+| "Log DNS queries from VPC" | Resolver query logging | Outbound from your VPC |
+| "Monitor DNS for exfiltration" | Resolver query logging | Your resources querying suspicious domains |
+| "Debug public hosted zone resolution" | DNS query logging | External clients resolving your records |
+| "Which domains are my EC2s resolving?" | Resolver query logging | Outbound from VPC |
+| "Who is resolving my domain?" | DNS query logging | Inbound to your zone |
+
+### Destination Trap
+
+| Feature | Destinations |
+|---|---|
+| DNS query logging | **CloudWatch Logs ONLY** (no choice) |
+| Resolver query logging | CW Logs OR S3 OR Firehose (you pick) |
+
+### 🧠 Cheat-Sheet One-Liners
+
+- **"Public DNS queries" = DNS query logging (CW Logs only). "VPC DNS queries" = Resolver query logging (CW Logs, S3, Firehose).**
+- **Direction: DNS query logging = INBOUND (world→you). Resolver query logging = OUTBOUND (you→world).**
+- **Neither requires the other. Both are independent features. GuardDuty reads DNS independently of both.**
