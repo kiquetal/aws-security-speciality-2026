@@ -460,3 +460,55 @@
 **Rule:** "Verify JWT securely" = verify SIGNATURE (aws-jwt-verify). "Decode JWT" = just read payload (no tamper detection). Decode ≠ verify.
 
 ---
+
+### Q35 (Detection) — Inspector Org-Wide Deployment with Auto-Enable
+
+**Scenario:** Assess EC2 + ECR for vulnerabilities. Auto-deploy to all members including new accounts. Forward to Security Hub.
+
+**Your Answer:** A (Delegated admin + EventBridge rule for SH findings + SNS)
+**Correct:** D (Delegated admin + auto-enable for new member accounts)
+
+**Key concept:** The question asks HOW TO DEPLOY Inspector org-wide, not how to route findings. Inspector natively integrates with Security Hub (no EventBridge rule needed for forwarding). "Auto-enable for new member accounts" = the deployment mechanism. A adds unnecessary notification plumbing that wasn't asked for.
+
+**Rule:** "Deploy across all members + new accounts" = delegated admin + auto-enable. Don't add notification layers when the question only asks about deployment.
+
+---
+
+### Q36 (Detection) — CloudTrail KMS Event Filtering (Write-Only)
+
+**Scenario:** Overwhelmed by KMS audit logs (99% are Encrypt/Decrypt/GenerateDataKey). Only need to track Disable, Delete, ScheduleKey. Most efficient solution.
+
+**Your Answer:** B (Macie to classify CloudTrail logs)
+**Correct:** A (Trail configured to record WRITE-ONLY management events)
+
+**Key concept:** Encrypt/Decrypt/GenerateDataKey = READ operations (using the key). Disable/Delete/ScheduleKey = WRITE operations (modifying the key). Setting trail to "write-only management events" filters out 99% of the noise at source. Macie = S3 PII scanning, not log filtering.
+
+**Rule:** KMS usage (Encrypt/Decrypt) = Read events. KMS management (Disable/Delete/Schedule) = Write events. Filter at CloudTrail trail level, not after.
+
+---
+
+### Q37 (Detection) — GuardDuty Suppression for Known Mining Instances
+
+**Scenario:** Company does Bitcoin mining on AWS. GuardDuty generates too many CryptoCurrency findings. Reduce false positives + reduce management overhead.
+
+**Your Answer:** D (Suppression rule filtered by instance ID)
+**Correct:** C (Tag instances with "Mining" + suppression rule filtered by finding type + tag value)
+
+**Key concept:** Instance IDs change (scaling, replacement). Tags persist across instance lifecycle. "Reduce management overhead" = use tags (no need to update suppression rule when instances change). Filter by tag = scalable. Filter by instance ID = brittle (must update rule every time instances change).
+
+**Rule:** Suppression rules: filter by TAG (scalable) not instance ID (brittle). Tags survive scaling/replacement.
+
+---
+
+### Q38 (Data Protection) — Enforce Specific KMS Key Org-Wide (SCP + Key Policy)
+
+**Scenario:** Centrally enforce encryption with specific CMK across all accounts. Prevent noncompliant resources. Principle of least privilege for key access.
+
+**Your Answer:** A (S3 Bucket policy + SCP)
+**Correct:** C (Key policy with kms:Decrypt for S3/DynamoDB/Lambda + SCP denying creation without the key)
+
+**Key concept:** The question requires TWO things: (1) prevent noncompliant resources = SCP, (2) least privilege KEY ACCESS = key policy. Option A uses bucket policy (per-bucket, doesn't scale org-wide) and misses the key policy requirement. C uses SCP (org-wide prevention) + key policy (least privilege on who can use the key).
+
+**Rule:** "Centrally enforce" = SCP. "Least privilege for key access" = key policy. Both needed together.
+
+---
