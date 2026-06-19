@@ -251,3 +251,91 @@
 **Rule:** IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only Internet Gateway.
 
 ---
+
+### Q19 — Threat Detection for AWS Accounts ✅
+
+**Scenario:** Continuous monitoring for malicious activity and unauthorized behavior.
+
+**Your Answer:** A (GuardDuty)
+**Correct:** A ✅
+
+---
+
+### Q20 (Threat Detection/IR) — Compromised IAM Access Key in Lambda
+
+**Scenario:** Compromised access key in Lambda. Key has overly permissive perms. Attacker exploiting Lambda Function URL for crypto mining. Must: neutralize key, prevent future, follow best practices.
+
+**Your Answer:** A (Deactivate key, generate new key, apply to Lambda, least-privilege)
+**Correct:** B (DELETE key, STOP using access keys entirely, create IAM ROLE for Lambda, assign role, respond to abuse report)
+
+**Key concept:** Best practice = Lambda should use IAM ROLES, never embedded access keys. "Prevent future similar incidents" = stop using access keys for Lambda entirely. Deactivate + new key (A) perpetuates the anti-pattern. DELETE + switch to role (B) = proper remediation.
+
+**Rule:** Lambda should NEVER use embedded access keys. Always use execution roles. "Implement best practices" = switch from key to role.
+
+---
+
+### Q21 (Governance) — EC2 Public IP Communication Between Instances
+
+**Scenario:** Two EC2 instances in same VPC, different AZs. Can communicate via private IPs but NOT via public IPs.
+
+**Your Answer:** C (SG inbound rule referencing instance ID)
+**Correct:** D (SG inbound rule allowing the other instance's PUBLIC IP)
+
+**Key concept:** When traffic goes via public IPs, it exits and re-enters the VPC through the Internet Gateway. At that point, the source is the PUBLIC IP, not the instance ID or private IP. Security groups must reference the PUBLIC IP. Instance ID references only work for private IP traffic within the VPC.
+
+**Rule:** Public IP traffic between EC2 instances = traverses IGW = source appears as public IP. SG must allow the public IP explicitly.
+
+---
+
+### Q22 (Governance) — Post-Compromise Security Improvement (same as Q10)
+
+**Scenario:** EC2 compromised. Improve security. (Select TWO)
+
+**Your Answer:** B + C (Security Hub + State Manager remote access)
+**Correct:** A + B (VPC Flow Logs + Security Hub)
+
+**Key concept:** Same as Q10. "State Manager" ≠ "Session Manager." State Manager = desired-state config enforcement. Session Manager = remote access. The option says "State Manager to access remotely" — that's wrong terminology/capability. VPC Flow Logs = essential post-compromise visibility (see what traffic hit the instance).
+
+---
+
+### Q23 (Governance) — DNSSEC Broken Trust Chain
+
+**Scenario:** DNSSEC signing enabled on subdomain, KSK generated. Error: "broken trust chain" resolving DS record.
+
+**Your Answer:** D (Verify DNSSEC propagation to authoritative servers)
+**Correct:** C (Add a Delegation Signer (DS) record for the subdomain in the parent domain's DNS zone)
+
+**Key concept:** DNSSEC trust chain: parent zone must have a DS record pointing to the child zone's KSK. Without DS record in parent = chain of trust is broken. Enabling DNSSEC signing alone isn't enough — you must link child to parent via DS record.
+
+**Rule:** "Broken trust chain" in DNSSEC = DS record missing in parent zone. Always.
+
+---
+
+### Q24 (Infrastructure) — Windows EC2 Boot Issue + Memory Dump Collection
+
+**Scenario:** Windows EC2 can't boot (no RDP access). Need to collect memory dump files from the instance.
+
+**Your Answer:** B (SSM agent + CloudWatch runbook)
+**Correct:** C (EC2Rescue tool for Windows Server — manually run to collect memory dumps)
+
+**Key concept:** EC2Rescue for Windows = AWS tool to diagnose OS-level issues and collect memory dumps. SSM agent can't help if the OS won't boot (agent requires running OS). Inspector = CVE scanning, not memory dumps. Console screenshot = visual only, not actual dump.
+
+**Rule:** "Windows boot issue + collect memory dump" = EC2Rescue for Windows. SSM requires running OS.
+
+---
+
+### Q25 (Infrastructure) — SSM Session Manager + VPC Endpoints + SGs (Select THREE)
+
+**Scenario:** EC2 in private subnet, no IGW, SG has NO inbound/outbound rules. Need to connect via Session Manager. SSM agent installed.
+
+**Your Answer:** A + D (VPC endpoint + EC2 outbound to endpoint SG on 443) — missing third
+**Correct:** A + C + D (VPC endpoint + endpoint SG allows inbound from VPC CIDR on 443 + EC2 SG outbound to endpoint SG on 443)
+
+**Key concept:** THREE things needed for SSM via VPC endpoint in private subnet:
+1. Create VPC interface endpoint for SSM (A)
+2. Endpoint SG: allow INBOUND 443 from VPC CIDR (C) — so EC2 can reach the endpoint
+3. EC2 SG: allow OUTBOUND 443 to the endpoint SG (D) — so EC2 can send HTTPS to endpoint
+
+**Rule:** Interface endpoint = TWO SGs must cooperate. EC2 SG outbound 443 + Endpoint SG inbound 443. Miss either = timeout.
+
+---
