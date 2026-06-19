@@ -512,3 +512,65 @@
 **Rule:** "Centrally enforce" = SCP. "Least privilege for key access" = key policy. Both needed together.
 
 ---
+
+### Q39 (Data Protection) — Parameter Store SecureString KMS Error (Select TWO)
+
+**Scenario:** Error when encrypting/decrypting SecureString parameter with KMS key. Two possible causes?
+
+**Your Answer:** A + C (no permission + KeyID instead of ARN)
+**Correct:** A + D (no permission + KMS key is disabled)
+
+**Key concept:** Parameter Store accepts KeyID, ARN, or alias — all are valid identifiers for KMS keys. Using KeyID instead of ARN is NOT an error. A disabled KMS key WILL cause encrypt/decrypt failures. Two common causes of KMS errors: (1) missing permissions, (2) key disabled/pending deletion.
+
+**Rule:** KMS errors = check permissions + check key state (enabled/disabled/pending deletion). Key identifier format (ID vs ARN vs alias) is never the issue.
+
+---
+
+### Q40 (Data Protection) — S3 Encryption + Logging Requirements (Select THREE)
+
+**Scenario:** S3 files must be encrypted in transit + at rest. Object retrievals must be logged via CloudTrail.
+
+**Your Answer:** A + C + F (SecureTransport + default encryption + versioning)
+**Correct:** A + C + E (SecureTransport + default encryption + object-level logging)
+
+**Key concept:** Three requirements, three answers:
+1. Encrypted in transit = bucket policy deny if `aws:SecureTransport: false` (A)
+2. Encrypted at rest = enable default encryption (C)
+3. Object retrievals logged in CloudTrail = enable OBJECT-LEVEL logging / data events (E)
+
+Versioning (F) = protects against accidental deletion, NOT a logging mechanism. "Object retrievals logged" = CloudTrail data events = object-level logging.
+
+**Rule:** "Log object retrievals in CloudTrail" = data events (object-level logging). NOT S3 Events Notification, NOT versioning.
+
+---
+
+### Q41 (Data Protection) — KMS Key Type: Full Control + No Rotation Overhead
+
+**Scenario:** Full control over KMS keys. Don't want operational overhead of rotating keys annually.
+
+**Your Answer:** A (AWS managed key)
+**Correct:** B (Symmetric customer managed key)
+
+**Key concept:**
+- AWS managed key = you have NO control (AWS manages everything, can't change policy, can't disable, auto-rotates every year but you can't control it)
+- Customer managed key = FULL control (key policy, enable/disable, grants) + AUTO-ROTATION is built-in (set it once, zero overhead after that)
+- Custom key store (CloudHSM) = full control BUT no auto-rotation (manual = MORE overhead)
+
+"Full control + no rotation overhead" = customer managed key with auto-rotation enabled. You set rotation once → AWS handles it forever. Zero operational overhead after initial config.
+
+**Rule:** "Full control" = customer managed (never AWS managed). "No rotation overhead" = auto-rotation (never CloudHSM custom key store — that's manual rotation only).
+
+---
+
+### Q42 (Data Protection) — Find EC2 Instances Using Compromised Key Pair
+
+**Scenario:** EC2 key pair compromised. Need to find all instances launched with that key pair.
+
+**Your Answer:** D (SSH to instance, query metadata)
+**Correct:** A (`aws ec2 describe-instances --filters "Name=key-name,Values=NameOfKeyPair"`)
+
+**Key concept:** `describe-instances` with key-name filter = returns ALL instances using that key pair in one API call. Metadata (D) only tells you the key for ONE instance you're already on — doesn't scale. You need to find ALL affected instances, not check one at a time.
+
+**Rule:** "Find all instances with X" = `describe-instances --filters`. Metadata = per-instance only.
+
+---
