@@ -5,18 +5,20 @@
 
 ---
 
-## Current Week: 2 (Jun 23-29) — Session 98 Questions
+## Current Week: 2 (Jun 23-29) — Session 99 Questions
 
-**Focus:** NEVER-SEEN BLITZ 1 — API Gateway security (authorizers, resource policies, mutual TLS), CloudFront Field-Level Encryption, Inspector SBOM export, Macie custom data identifiers, S3 Access Grants + Session 97 error re-tests + cross-domain killers
+**Focus:** DOJO 3 OPERATIONAL GAP DRILL — targeting all 14 knowledge gaps + speed-reading traps from Dojo 3 (48% score)
 
-**Generate:** 25 questions, killer difficulty, novel scenarios only
+**Generate:** 25 questions, Dojo-style wording, 40% operational detail
 
 **Structure:**
-- Q1-10: Never-seen topics (mTLS, FLE, SBOM, Macie regex, Access Grants, Resource Policy)
-- Q11-18: Session 97 error re-tests (novel phrasing — mTLS truststore, TOKEN vs REQUEST, Resource Policy boundary, Access Grants + KMS, IoT revocation, State Manager, SBOM scheduling, EMR in-transit)
-- Q19-25: Cross-domain killers combining never-seen services with known weak areas (ViaService + API GW, RCP + Access Grants, CRR + encryption context, etc.)
+- Q1-5: Networking mechanics (EC2 public IP via IGW, Egress-Only IGW, NACL ephemeral, VPC endpoint dual SGs, Traffic Mirroring vs NF inline)
+- Q6-10: KMS operational (CRR D-G-F permissions, imported key expiration, customer-managed vs AWS-managed, key disabled vs wrong format, Write-only trail for KMS events)
+- Q11-15: Service distinctions (State Manager vs Session Manager, DNS query logging vs Resolver logging, Config proactive vs detective, Inspector deploy vs notify, OAC vs Lambda@Edge auth)
+- Q16-20: IR/forensics operational (EC2Rescue Windows, Session Manager logging vs CW Agent, JWT decode vs verify, Lambda execution role vs caller, DNSSEC DS record)
+- Q21-25: Cross-domain killers with Dojo-style wording traps (ALB+HIDS+PFS, suppression by tag vs ID, Stack Policy Update:*, federated-user ARN, SCP+key policy for org enforcement)
 
-**Wording Traps:** "least overhead", "most secure and cost-effective", "least administrative complexity"
+**Wording Traps:** Use exact Dojo phrasing — "MOST operationally efficient", "LEAST effort", "MOST secure", mix correct service with wrong specific action as distractors
 
 ---
 
