@@ -151,6 +151,7 @@
 - VPC Reachability Analyzer = "why can't A reach B?" (specific pair, troubleshooting one connection).
 - 🧠 **"What's exposed?" = Network Access Analyzer (auditor). "Why can't A reach B?" = Reachability Analyzer (debugger).** Different tools, different questions.
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
+- 🧠 **IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only Internet Gateway.** NAT doesn't exist for IPv6 — all IPv6 is globally routable. Egress-only IGW = one-way gate (outbound yes, inbound no).
 - 🧠 **"Individual remote users (home)" = Client VPN (SSL). "Two fixed networks (office↔AWS)" = Site-to-Site VPN (IPsec). "Physical dedicated link" = Direct Connect.**
 
 ### Edge
