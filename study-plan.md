@@ -24,7 +24,7 @@
 | 9 | D2: Incident Response (Detective, forensics, remediation, Step Functions) | ✅ | 100% closing quiz, IR sequence, forensic workflow, FIS, validate findings covered |
 | 10 | D6: Governance (Organizations, Control Tower, SCPs, RCPs, Firewall Manager) | ✅ | 60%→pass after re-test, delegated admin + Control Tower vs FM vs SH distinction solid |
 | 11 | Full practice exams + weak-area deep dives | ✅ | Session 100 complete: 90% on weekly drill with all Dojo 3 gaps and recurring failures resolved |
-| 12 | Final review, exam simulations, confidence check | ⬜ | |
+| 12 | Final review, exam simulations, confidence check | ✅ | Merged into maintenance-plan.md (Weeks 3-10). Study plan COMPLETE. |
 
 ## Weekly Rhythm
 

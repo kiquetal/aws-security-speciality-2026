@@ -5,20 +5,17 @@
 
 ---
 
-## Current Week: 2 (Jun 23-29) — Session 99 Questions
+## Current Week: 3 (Jun 30 - Jul 6) — D1 Weak Areas + cfn-guard + State Manager
 
-**Focus:** DOJO 3 OPERATIONAL GAP DRILL — targeting all 14 knowledge gaps + speed-reading traps from Dojo 3 (48% score)
+**Focus:** D1 Detection remaining wording traps + CloudFormation Guard (policy-as-code) + SSM State Manager (deeper variants)
 
-**Generate:** 25 questions, Dojo-style wording, 40% operational detail
+**Generate:** 25 questions, killer difficulty
 
 **Structure:**
-- Q1-5: Networking mechanics (EC2 public IP via IGW, Egress-Only IGW, NACL ephemeral, VPC endpoint dual SGs, Traffic Mirroring vs NF inline)
-- Q6-10: KMS operational (CRR D-G-F permissions, imported key expiration, customer-managed vs AWS-managed, key disabled vs wrong format, Write-only trail for KMS events)
-- Q11-15: Service distinctions (State Manager vs Session Manager, DNS query logging vs Resolver logging, Config proactive vs detective, Inspector deploy vs notify, OAC vs Lambda@Edge auth)
-- Q16-20: IR/forensics operational (EC2Rescue Windows, Session Manager logging vs CW Agent, JWT decode vs verify, Lambda execution role vs caller, DNSSEC DS record)
-- Q21-25: Cross-domain killers with Dojo-style wording traps (ALB+HIDS+PFS, suppression by tag vs ID, Stack Policy Update:*, federated-user ARN, SCP+key policy for org enforcement)
-
-**Wording Traps:** Use exact Dojo phrasing — "MOST operationally efficient", "LEAST effort", "MOST secure", mix correct service with wrong specific action as distractors
+- Q1-8: D1 Detection (StopLogging detection mechanisms, GuardDuty ≠ failed attempts, Access Analyzer static vs GD dynamic, EventBridge vs Config speed, CW Logs Insights vs Detective)
+- Q9-14: CloudFormation Guard (cfn-guard rules, CI/CD integration, vs CF Hooks vs SCP, validate template content)
+- Q15-20: State Manager (dual triggers, vs Config remediation, vs Session Manager, desired-state vs reactive, schedule enforcement)
+- Q21-25: Cross-domain killers mixing all Week 3 topics with Dojo-style wording traps
 
 ---
 
