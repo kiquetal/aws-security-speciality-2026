@@ -91,9 +91,99 @@ const TRACKER_DATA = {
     {
       "week": "12",
       "focus": "Final review, exam simulations, confidence check",
+      "status": "completed",
+      "status_raw": "\u2705",
+      "notes": "Merged into maintenance-plan.md (Weeks 3-10). Study plan COMPLETE."
+    }
+  ],
+  "maintenance_plan": [
+    {
+      "week": "1",
+      "date": "Jun 16-22",
+      "focus": "Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules",
+      "never_seen": "\u2014 (recent Session 86-90 gaps)",
+      "status": "completed",
+      "status_raw": "\u2705 86% (S94)"
+    },
+    {
+      "week": "2",
+      "date": "Jun 23-29",
+      "focus": "**NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants",
+      "never_seen": "4 new topics",
+      "status": "completed",
+      "status_raw": "\u2705 90% (Session 100)"
+    },
+    {
+      "week": "3",
+      "date": "Jun 30 - Jul 6",
+      "focus": "D1 weak areas + CloudFormation Guard, SSM State Manager",
+      "never_seen": "2 new topics",
       "status": "pending",
-      "status_raw": "\u2b1c",
-      "notes": ""
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "4",
+      "date": "Jul 7-13",
+      "focus": "**NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced",
+      "never_seen": "3 new topics",
+      "status": "pending",
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "5",
+      "date": "Jul 14-20",
+      "focus": "Cross-domain killer + Data Lifecycle Manager, DataSync, Well-Architected Tool, EMR inter-node",
+      "never_seen": "4 new topics",
+      "status": "pending",
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "6",
+      "date": "Jul 21-27",
+      "focus": "Re-test all remaining errors from Sessions 81+",
+      "never_seen": "\u2014 (consolidation)",
+      "status": "pending",
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "7",
+      "date": "Jul 28 - Aug 3",
+      "focus": "**NEVER-SEEN BLITZ 3:** Resilience Hub, FIS, Application Recovery Controller, Automated Forensics Orchestrator, SageMaker IR",
+      "never_seen": "5 new topics",
+      "status": "pending",
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "8",
+      "date": "Aug 4-10",
+      "focus": "D1 Detection final push (target 80%)",
+      "never_seen": "\u2014",
+      "status": "pending",
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "9",
+      "date": "Aug 11-17",
+      "focus": "Cross-domain full simulation (65 questions, all never-seen revisited)",
+      "never_seen": "Validation of all 18",
+      "status": "pending",
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "10",
+      "date": "Aug 18-24",
+      "focus": "Cheat sheet review only + 2 short drills",
+      "never_seen": "\u2014",
+      "status": "pending",
+      "status_raw": "\u2b1c"
+    },
+    {
+      "week": "11",
+      "date": "Aug 25-26",
+      "focus": "REST. Read cheat sheet once. Sleep well.",
+      "never_seen": "\u2014",
+      "status": "pending",
+      "status_raw": "\u2b1c"
     }
   ],
   "domain_proficiency": {
@@ -190,8 +280,8 @@ const TRACKER_DATA = {
         "Q688"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 5,
       "level": "red"
@@ -447,8 +537,8 @@ const TRACKER_DATA = {
         "Q413"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -500,8 +590,8 @@ const TRACKER_DATA = {
         "Q1003"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -541,8 +631,8 @@ const TRACKER_DATA = {
         "Q652"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -556,9 +646,9 @@ const TRACKER_DATA = {
       ],
       "domains": [
         "D6",
+        "D1",
         "D5",
-        "D4",
-        "D1"
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -571,8 +661,8 @@ const TRACKER_DATA = {
         "Q1080"
       ],
       "domains": [
-        "D3",
         "D5",
+        "D3",
         "D4"
       ],
       "count": 2,
@@ -1350,8 +1440,8 @@ const TRACKER_DATA = {
         "Q336"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1376,8 +1466,8 @@ const TRACKER_DATA = {
         "Q341"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1583,8 +1673,8 @@ const TRACKER_DATA = {
         "Q515"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1596,8 +1686,8 @@ const TRACKER_DATA = {
         "Q523"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1622,9 +1712,9 @@ const TRACKER_DATA = {
         "Q532"
       ],
       "domains": [
-        "D6",
         "D3",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1637,8 +1727,8 @@ const TRACKER_DATA = {
       ],
       "domains": [
         "D5",
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1700,8 +1790,8 @@ const TRACKER_DATA = {
         "Q706"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1833,8 +1923,8 @@ const TRACKER_DATA = {
         "Q761"
       ],
       "domains": [
-        "D4",
-        "D2"
+        "D2",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1919,9 +2009,9 @@ const TRACKER_DATA = {
         "Q820"
       ],
       "domains": [
-        "D4",
         "D2",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2008,8 +2098,8 @@ const TRACKER_DATA = {
         "Q881"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2107,8 +2197,8 @@ const TRACKER_DATA = {
         "Q908"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2427,8 +2517,8 @@ const TRACKER_DATA = {
         "Q1079"
       ],
       "domains": [
-        "D3",
-        "D2"
+        "D2",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"

@@ -908,16 +908,60 @@
             const totalWeeks = TRACKER_DATA.weeks.length;
             const weekPct = intPct(completedWeeks, totalWeeks);
             
+            // Check if study plan is fully completed, then use maintenance plan for tempo
+            const isStudyPlanComplete = completedWeeks === totalWeeks;
+            
+            let displayPct = weekPct;
+            let subtextLabel = "Syllabus Complete";
+            let weeksDoneText = `${completedWeeks} of ${totalWeeks} weeks complete`;
+            let planTypeLabel = "Active Study Plan";
+            let circleColorClass = "text-secondary";
+            
+            if (isStudyPlanComplete && TRACKER_DATA.maintenance_plan && TRACKER_DATA.maintenance_plan.length > 0) {
+                const completedMaintWeeks = TRACKER_DATA.maintenance_plan.filter(w => w.status === 'completed').length;
+                const totalMaintWeeks = TRACKER_DATA.maintenance_plan.length;
+                const maintPct = intPct(completedMaintWeeks, totalMaintWeeks);
+                
+                displayPct = maintPct;
+                subtextLabel = "Maintenance Complete";
+                weeksDoneText = `${completedMaintWeeks} of ${totalMaintWeeks} weeks complete`;
+                planTypeLabel = "Decay Prevention Mode";
+            }
+            
             const tempoPctEl = document.getElementById('tempo-pct');
-            if (tempoPctEl) tempoPctEl.innerText = `${weekPct}%`;
+            if (tempoPctEl) {
+                tempoPctEl.innerText = `${displayPct}%`;
+                const subtextLabelEl = tempoPctEl.nextElementSibling;
+                if (subtextLabelEl && subtextLabelEl.tagName === 'SPAN') {
+                    subtextLabelEl.innerText = subtextLabel;
+                }
+            }
             
             const tempoWeeksEl = document.getElementById('tempo-weeks-done');
-            if (tempoWeeksEl) tempoWeeksEl.innerText = `${completedWeeks} of ${totalWeeks} weeks complete`;
+            if (tempoWeeksEl) tempoWeeksEl.innerText = weeksDoneText;
+            
+            const tempoDaysLeftEl = document.getElementById('tempo-days-left');
+            if (tempoDaysLeftEl) {
+                tempoDaysLeftEl.innerText = planTypeLabel;
+                if (isStudyPlanComplete) {
+                    tempoDaysLeftEl.className = "text-d5-data font-semibold flex items-center gap-1";
+                    tempoDaysLeftEl.innerHTML = `<span class="material-symbols-outlined text-[14px]">shield_heart</span> Decay Prevention`;
+                } else {
+                    tempoDaysLeftEl.className = "text-secondary";
+                }
+            }
             
             // Circular SVG calculations (perimeter is 390 for r=62)
-            const strokeDashOffset = 390 - (390 * (weekPct / 100));
+            const strokeDashOffset = 390 - (390 * (displayPct / 100));
             const tempoCircleEl = document.getElementById('tempo-circle');
-            if (tempoCircleEl) tempoCircleEl.setAttribute('stroke-dashoffset', strokeDashOffset);
+            if (tempoCircleEl) {
+                tempoCircleEl.setAttribute('stroke-dashoffset', strokeDashOffset);
+                if (isStudyPlanComplete) {
+                    tempoCircleEl.className = "text-d5-data transition-all duration-1000";
+                } else {
+                    tempoCircleEl.className = "text-secondary transition-all duration-1000";
+                }
+            }
         }
 
         // Render Domain Proficiency table on Dashboard

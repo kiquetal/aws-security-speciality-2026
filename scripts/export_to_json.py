@@ -11,6 +11,7 @@ TRACKER_PATH = BASE_DIR / "notes" / "question-tracker.md"
 STUDY_PLAN_PATH = BASE_DIR / "study-plan.md"
 EXPORT_JS_PATH = BASE_DIR / "design" / "tracker_data.js"
 CHEAT_SHEET_PATH = BASE_DIR / "notes" / "cheat-sheet.md"
+MAINTENANCE_PLAN_PATH = BASE_DIR / "notes" / "maintenance-plan.md"
 
 DOMAIN_NAMES = {
     "D1": "Detection",
@@ -59,6 +60,45 @@ def parse_study_plan():
                     "status": "completed" if is_completed else ("in_progress" if "In progress" in status or "⬜" not in status else "pending"),
                     "status_raw": status,
                     "notes": notes
+                })
+    return weeks
+
+def parse_maintenance_plan():
+    """Parse week-by-week progress from notes/maintenance-plan.md."""
+    if not MAINTENANCE_PLAN_PATH.exists():
+        return []
+    
+    text = MAINTENANCE_PLAN_PATH.read_text(encoding="utf-8")
+    weeks = []
+    lines = text.splitlines()
+    table_started = False
+    for line in lines:
+        if "Never-Seen Included" in line and "Status" in line:
+            table_started = True
+            continue
+        if table_started:
+            if not line.strip() or not line.startswith("|"):
+                if weeks:  # End of table
+                    break
+                continue
+            if "---" in line:
+                continue
+            cols = [c.strip() for c in line.split("|")[1:-1]]
+            if len(cols) >= 5:
+                week_num = cols[0]
+                date_range = cols[1]
+                focus = cols[2]
+                never_seen = cols[3]
+                status = cols[4]  # ✅ or ⬜
+                
+                is_completed = "✅" in status
+                weeks.append({
+                    "week": week_num,
+                    "date": date_range,
+                    "focus": focus,
+                    "never_seen": never_seen,
+                    "status": "completed" if is_completed else "pending",
+                    "status_raw": status
                 })
     return weeks
 
@@ -586,6 +626,9 @@ def main():
     print("Parsing study-plan.md...")
     weeks = parse_study_plan()
     
+    print("Parsing notes/maintenance-plan.md...")
+    maintenance_plan = parse_maintenance_plan()
+    
     print("Parsing question-tracker.md...")
     sessions, domain_proficiency, weak_areas, stats = parse_tracker_sessions()
     
@@ -598,6 +641,7 @@ def main():
     tracker_data = {
         "stats": stats,
         "weeks": weeks,
+        "maintenance_plan": maintenance_plan,
         "domain_proficiency": domain_proficiency,
         "weak_areas": weak_areas,
         "sessions": sessions,
@@ -613,7 +657,7 @@ def main():
     EXPORT_JS_PATH.write_text(js_content, encoding="utf-8")
     
     print(f"Successfully exported tracker data to {EXPORT_JS_PATH}")
-    print(f"Parsed {stats['total_questions']} questions, {len(sessions)} sessions, {len(weeks)} study-plan weeks, {len(cheat_sheet)} cheat-sheet sections, {len(faqs)} FAQ guides.")
+    print(f"Parsed {stats['total_questions']} questions, {len(sessions)} sessions, {len(weeks)} study-plan weeks, {len(maintenance_plan)} maintenance weeks, {len(cheat_sheet)} cheat-sheet sections, {len(faqs)} FAQ guides.")
 
 if __name__ == "__main__":
     main()
