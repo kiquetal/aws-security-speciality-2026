@@ -204,6 +204,10 @@ Follow this step-by-step workflow to run a study session:
 ### Step 1: Start a New Session / Generate a Practice Drill
 You have two options to prepare a session:
 - **Interactive Portal**: If the local study portal is running, click the **Start New Session** button in the sidebar. Select your target number of questions (e.g., 10 for a mini-drill, 25 for standard practice, or 65 for a full mock) and click **Generate Drill**. This automatically appends a new empty session template with pre-numbered tables to `notes/question-tracker.md` and reloads the portal.
+
+  *The interactive session configuration modal:*
+  ![Start New Study Session Modal](diagrams/start_session_modal.png)
+
 - **Command Line**: Alternatively, run the generator script directly:
   ```bash
   python3 scripts/start-session.py --questions 25
@@ -234,6 +238,9 @@ You can run a local study portal to visualize your progress:
 1. Start the portal with `./run_server.sh`.
 2. Open `http://localhost:8188` in your browser.
 3. Click the **Sync Study Logs** button on the sidebar to instantly synchronize and update statistics (such as the total number of questions or domain breakdown) directly from your markdown logs!
+
+   *The interactive Study Sessions Audit Logs view:*
+   ![Study Sessions Audit Logs](diagrams/sessions_tab.png)
 
 ## How to Reset Your Progress
 

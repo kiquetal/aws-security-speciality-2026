@@ -880,23 +880,40 @@
                 console.error("Tracker data was not found. Please run scripts/export_to_json.py first.");
                 return;
             }
+
+            // Handle URL parameters for screenshot automation ASAP
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('modal') === 'session') {
+                openSessionModal();
+            }
+            if (params.get('tab')) {
+                switchTab(params.get('tab'));
+            }
             
             // Randomize sidebar quote
-            const randQuote = STOIC_QUOTES[Math.floor(Math.random() * STOIC_QUOTES.length)];
-            document.getElementById('sidebar-quote').innerHTML = `"${randQuote.text}" — ${randQuote.author}`;
+            try {
+                const randQuote = STOIC_QUOTES[Math.floor(Math.random() * STOIC_QUOTES.length)];
+                document.getElementById('sidebar-quote').innerHTML = `"${randQuote.text}" — ${randQuote.author}`;
+            } catch (e) {
+                console.error("Failed to randomize quote:", e);
+            }
 
             // Initialize views
-            initGlobalHeaderStats();
-            initDashboardProgress();
-            initDomainProficiency();
-            loadRandomQuestion();
-            buildQuestionsSyllabus();
-            buildRoadmapTimeline();
-            buildWeakAreasBoard();
-            initSessionsStats();
-            buildSessionsView();
-            buildCheatSheetView();
-            initFaqs();
+            try {
+                initGlobalHeaderStats();
+                initDashboardProgress();
+                initDomainProficiency();
+                loadRandomQuestion();
+                buildQuestionsSyllabus();
+                buildRoadmapTimeline();
+                buildWeakAreasBoard();
+                initSessionsStats();
+                buildSessionsView();
+                buildCheatSheetView();
+                initFaqs();
+            } catch (e) {
+                console.error("Failed to initialize views:", e);
+            }
         });
 
         // Initialize top header and general stats
