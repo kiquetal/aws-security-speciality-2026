@@ -3157,7 +3157,7 @@
             }
         }
 
-        function startInteractiveLiveDemo() {
+        async function startInteractiveLiveDemo() {
             // Count how many non-empty sessions we have, or check the limit
             const sessionsCount = (TRACKER_DATA.sessions || []).filter(s => s.questions && s.questions.length > 0).length;
             if (sessionsCount >= 4) {
@@ -3165,14 +3165,45 @@
                 return;
             }
             
+            const btn = document.getElementById('btn-live-demo');
+            const origText = btn ? btn.innerHTML : "";
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = "⚡ Initializing Demo...";
+            }
+            
             try {
-                // Start a new interactive session (unanswered, isQuiz = true) with 6 questions
-                const active_sess_num = simulateStartSessionClientSide(6, "", false, true, false);
+                // 1. Start session on python backend first if server is online
+                let active_sess_num = (TRACKER_DATA.sessions ? TRACKER_DATA.sessions.length : 0) + 1;
+                try {
+                    const response = await fetch('/api/start-session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            questions: 6,
+                            domains: "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance",
+                            demo: false,
+                            quiz: true,
+                            blank: false
+                        })
+                    });
+                    const result = await response.json();
+                    if (result.status !== 'success') {
+                        console.warn("Server failed to start session:", result.message);
+                    } else {
+                        console.log("🚀 [Live Demo] Session started successfully on python server.");
+                    }
+                } catch (apiErr) {
+                    console.warn("Server offline or static portal fallback starting session client-side:", apiErr);
+                }
+
+                // 2. Start new interactive session (unanswered, isQuiz = true) with 6 questions locally
+                active_sess_num = simulateStartSessionClientSide(6, "", false, true, false);
                 
-                // Set the active session pointer so the system knows this is an active live demo session!
+                // Set active session pointer so system knows this is an active live demo session!
                 sessionStorage.setItem('LIVE_DEMO_ACTIVE_SESSION', active_sess_num);
                 
-                // Set auto-open flag so the modal re-opens this session at Question 1
+                // Set auto-open flag so modal re-opens this session at Question 1
                 sessionStorage.setItem('AUTO_OPEN_QUESTION', `S${active_sess_num}-Q1`);
                 
                 alert(`🚀 [Live Demo] Started Interactive Session ${active_sess_num} (Bank ${active_sess_num}) with 6 fresh scenario questions!\n\nPlease answer them to see your stats update in real-time.`);
@@ -3182,6 +3213,10 @@
             } catch (err) {
                 console.error("Failed to start live demo session:", err);
                 alert("Error starting live demo session: " + err.message);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origText;
+                }
             }
         }
 
