@@ -9,6 +9,9 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 - [Exam Snapshot](#exam-snapshot)
 - [Current Progress](#current-progress)
 - [Domain Weights](#domain-weights)
+- [Local Study Portal & Live Sync](#local-study-portal--live-sync)
+- [How to Conduct and Log a Study Session](#how-to-conduct-and-log-a-study-session)
+- [How to Reset Your Progress](#how-to-reset-your-progress)
 - [Repository Structure](#repository-structure)
 - [Study Approach](#study-approach)
 - [What's New in SCS-C03 (vs C02)](#whats-new-in-scs-c03-vs-c02)
@@ -50,6 +53,78 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | D6: Governance | 14% | ⬜ Unstarted | — |
 
 Strategy: Reset to a clean state. Follow [`study-plan.md`](study-plan.md) to track your progress week-by-week.
+
+## Local Study Portal & Live Sync
+
+You can run a local study portal to visualize your progress:
+1. Start the portal with `./run_server.sh`.
+2. Open `http://localhost:8188` in your browser.
+3. Click the **Sync Study Logs** button on the sidebar to instantly synchronize and update statistics (such as the total number of questions or domain breakdown) directly from your markdown logs!
+
+   *The interactive Study Sessions Audit Logs view:*
+   ![Study Sessions Audit Logs](diagrams/sessions_tab.png)
+
+## How to Conduct and Log a Study Session
+
+This repository is designed to track your active-recall progress as you attempt practice questions (e.g., from Tutorials Dojo, Udemy, or AWS official practice exams).
+
+Follow this step-by-step workflow to run a study session:
+
+### Step 1: Start a New Session / Generate a Practice Drill
+You have two options to prepare a session:
+- **Interactive Portal**: If the local study portal is running, click the **Start New Session** button in the sidebar. Select your target number of questions (e.g., 10 for a mini-drill, 25 for standard practice, or 65 for a full mock) and click **Generate Drill**. This automatically appends a new empty session template with pre-numbered tables to `notes/question-tracker.md` and reloads the portal.
+
+  *(Onboarding Tip: Keep **Auto-Populate Demo Answers** checked to instantly fill the drill with realistic AWS security questions, answers, and scores, letting you explore the live stats dashboard and audit logs immediately without manual logging!)*
+
+  *The interactive session configuration modal:*
+  ![Start New Study Session Modal](diagrams/start_session_modal.png)
+
+- **Command Line**: Alternatively, run the generator script directly:
+  ```bash
+  python3 scripts/start-session.py --questions 25
+  ```
+
+### Step 2: Answer the Practice Questions (Automated for Onboarding!)
+On this onboarding branch, **you do not need to manually edit files or log questions**. 
+
+Since the **Auto-Populate Demo Answers** option in Step 1 is enabled by default, the system instantly generates realistic, pre-answered questions with correct/wrong marks and review topics. 
+
+*(Note: On your active study branch, this is where you would attempt real questions from Tutorials Dojo, Udemy, or AWS Skills Builder, and log each result in the markdown file [`notes/question-tracker.md`](notes/question-tracker.md).)*
+
+### Step 3: Recompile Your Metrics (Automated for Onboarding!)
+Once the session is generated with demo answers, the local server **instantly recompiles all statistics automatically**.
+
+The portal immediately reloads, showing your updated scores, cumulative accuracy dials, domain proficiency levels, and priority weak areas on the dashboard—with zero manual compile steps!
+
+*(Note: On your active study branch, after manually logging questions, you would click **Sync Study Logs** on the sidebar or run `python3 scripts/update-tracker.py` and `python3 scripts/export_to_json.py` to recompile your live metrics.)*
+
+## How to Reset Your Progress
+
+If you have completed some study logs and want to reset your local changes back to a completely clean 0% progress onboarding template, run the following git commands:
+
+```bash
+# Fetch the latest origin updates
+git fetch origin
+
+# Make sure you are on the onboarding branch
+git checkout onboarding
+
+# Reset your local files to the remote's clean template state
+git reset --hard origin/onboarding
+```
+
+If you wish to re-compile your study data and refresh the dashboard screenshot manually at any time after making changes, run:
+
+```bash
+# Compile statistics in notes/question-tracker.md
+python3 scripts/update-tracker.py
+
+# Recompile design/tracker_data.js for the local portal
+python3 scripts/export_to_json.py
+
+# Capture a fresh dashboard.png screenshot
+python3 scripts/capture_screenshot.py
+```
 
 ## Repository Structure
 
@@ -195,74 +270,4 @@ All policies in this repo follow exam best practices:
 5. Review `notes/flashcards-*.md` for active recall on recurring errors
 6. Follow the weekly rhythm above
 
-## How to Conduct and Log a Study Session
 
-This repository is designed to track your active-recall progress as you attempt practice questions (e.g., from Tutorials Dojo, Udemy, or AWS official practice exams).
-
-Follow this step-by-step workflow to run a study session:
-
-### Step 1: Start a New Session / Generate a Practice Drill
-You have two options to prepare a session:
-- **Interactive Portal**: If the local study portal is running, click the **Start New Session** button in the sidebar. Select your target number of questions (e.g., 10 for a mini-drill, 25 for standard practice, or 65 for a full mock) and click **Generate Drill**. This automatically appends a new empty session template with pre-numbered tables to `notes/question-tracker.md` and reloads the portal.
-
-  *(Onboarding Tip: Keep **Auto-Populate Demo Answers** checked to instantly fill the drill with realistic AWS security questions, answers, and scores, letting you explore the live stats dashboard and audit logs immediately without manual logging!)*
-
-  *The interactive session configuration modal:*
-  ![Start New Study Session Modal](diagrams/start_session_modal.png)
-
-- **Command Line**: Alternatively, run the generator script directly:
-  ```bash
-  python3 scripts/start-session.py --questions 25
-  ```
-
-### Step 2: Answer the Practice Questions (Automated for Onboarding!)
-On this onboarding branch, **you do not need to manually edit files or log questions**. 
-
-Since the **Auto-Populate Demo Answers** option in Step 1 is enabled by default, the system instantly generates realistic, pre-answered questions with correct/wrong marks and review topics. 
-
-*(Note: On your active study branch, this is where you would attempt real questions from Tutorials Dojo, Udemy, or AWS Skills Builder, and log each result in the markdown file [`notes/question-tracker.md`](notes/question-tracker.md).)*
-
-### Step 3: Recompile Your Metrics (Automated for Onboarding!)
-Once the session is generated with demo answers, the local server **instantly recompiles all statistics automatically**.
-
-The portal immediately reloads, showing your updated scores, cumulative accuracy dials, domain proficiency levels, andpriority weak areas on the dashboard—with zero manual compile steps!
-
-*(Note: On your active study branch, after manually logging questions, you would click **Sync Study Logs** on the sidebar or run `python3 scripts/update-tracker.py` and `python3 scripts/export_to_json.py` to recompile your live metrics.)*
-
-## Local Study Portal & Live Sync
-
-You can run a local study portal to visualize your progress:
-1. Start the portal with `./run_server.sh`.
-2. Open `http://localhost:8188` in your browser.
-3. Click the **Sync Study Logs** button on the sidebar to instantly synchronize and update statistics (such as the total number of questions or domain breakdown) directly from your markdown logs!
-
-   *The interactive Study Sessions Audit Logs view:*
-   ![Study Sessions Audit Logs](diagrams/sessions_tab.png)
-
-## How to Reset Your Progress
-
-If you have completed some study logs and want to reset your local changes back to a completely clean 0% progress onboarding template, run the following git commands:
-
-```bash
-# Fetch the latest origin updates
-git fetch origin
-
-# Make sure you are on the onboarding branch
-git checkout onboarding
-
-# Reset your local files to the remote's clean template state
-git reset --hard origin/onboarding
-```
-
-If you wish to re-compile your study data and refresh the dashboard screenshot manually at any time after making changes, run:
-
-```bash
-# Compile statistics in notes/question-tracker.md
-python3 scripts/update-tracker.py
-
-# Recompile design/tracker_data.js for the local portal
-python3 scripts/export_to_json.py
-
-# Capture a fresh dashboard.png screenshot
-python3 scripts/capture_screenshot.py
-```
