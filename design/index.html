@@ -2032,7 +2032,7 @@
                     else if (q.result === 'partial') badgeClass = "bg-secondary/20 text-secondary hover:bg-secondary/30 border border-secondary/20";
                     else if (q.result === 'wrong') badgeClass = "bg-error-container text-error hover:bg-error/20 border border-error/20";
                     
-                    return `<button onclick="viewQuestionByNum('Q${q.num}')" 
+                    return `<button onclick="viewQuestionByNum('S${s.num}-Q${q.num}')" 
                                     title="Q${q.num}: ${q.scenario.replace(/"/g, '&quot;')}"
                                     class="${badgeClass} px-3 py-1 rounded font-code-md text-xs font-bold transition-all duration-200 hover:scale-105">
                                 Q${q.num}
@@ -2114,13 +2114,15 @@
             selectedQuizResult = '';
             
             // Find which session this question belongs to
-            let sNum = null;
-            if (TRACKER_DATA && TRACKER_DATA.sessions) {
-                TRACKER_DATA.sessions.forEach(s => {
-                    if (s.questions && s.questions.some(item => item.num === q.num)) {
-                        sNum = s.num;
-                    }
-                });
+            let sNum = q.sessionNum;
+            if (!sNum) {
+                if (TRACKER_DATA && TRACKER_DATA.sessions) {
+                    TRACKER_DATA.sessions.forEach(s => {
+                        if (s.questions && s.questions.some(item => item.num === q.num)) {
+                            sNum = s.num;
+                        }
+                    });
+                }
             }
             activeQuizQuestion.sessionNum = sNum || 1;
 
@@ -2417,22 +2419,54 @@
         }
 
         // Lookups
+        function findQuestionBySessionAndNum(sessionNum, num) {
+            let found = null;
+            if (TRACKER_DATA && TRACKER_DATA.sessions) {
+                const s = TRACKER_DATA.sessions.find(item => item.num === sessionNum);
+                if (s && s.questions) {
+                    found = s.questions.find(q => q.num === num) || null;
+                }
+            }
+            return found;
+        }
+
         function findQuestionByNum(num) {
             let found = null;
-            TRACKER_DATA.sessions.forEach(s => {
-                s.questions.forEach(q => {
-                    if (q.num == num) {
-                        found = q;
-                    }
+            if (TRACKER_DATA && TRACKER_DATA.sessions) {
+                TRACKER_DATA.sessions.forEach(s => {
+                    s.questions.forEach(q => {
+                        if (q.num == num) {
+                            found = q;
+                        }
+                    });
                 });
-            });
+            }
             return found;
         }
 
         function viewQuestionByNum(qNumStr) {
-            const num = qNumStr.replace('Q', '').trim();
-            const q = findQuestionByNum(num);
+            let sessionNum = null;
+            let qNum = qNumStr;
+            
+            // Check if format is S<num>-Q<num> or similar
+            const sqMatch = qNumStr.match(/S(\d+)-?Q(\d+)/i);
+            if (sqMatch) {
+                sessionNum = parseInt(sqMatch[1]);
+                qNum = "Q" + sqMatch[2];
+            }
+            
+            const num = qNum.replace('Q', '').trim();
+            let q = null;
+            if (sessionNum) {
+                q = findQuestionBySessionAndNum(sessionNum, parseInt(num));
+            } else {
+                q = findQuestionByNum(num);
+            }
+            
             if (q) {
+                if (sessionNum) {
+                    q.sessionNum = sessionNum;
+                }
                 openQuestionModal(q);
             } else {
                 console.error(`Question ${qNumStr} not found.`);
