@@ -169,6 +169,8 @@
 
 ### API Gateway Security
 - 🧠 **API Gateway mTLS = custom domain name + S3 truststore (PEM file + object version).** Not ACM. Not Lambda authorizer. mTLS only works on custom domains, never on default execute-api endpoint.
+- 🧠 **mTLS troubleshooting: ALL fail = truststore/CA problem. ONE fails (same CA) = that partner's cert expired.** Same CA = truststore already trusts all certs from it. Individual cert issue only.
+- 🧠 **mTLS revoke ONE cert = add CRL to S3 truststore.** Remove CA = blocks ALL partners using that CA.
 - 🧠 **API Gateway authorizer types:** Cognito Authorizer (JWT tokens) vs Lambda Authorizer TOKEN (header value) vs Lambda Authorizer REQUEST (headers + query + context + IP). Use REQUEST type when you need to validate custom headers or IP addresses.
 - 🧠 **TOKEN type receives ONLY the token string.** Cannot access other headers, query params, or source IP. "Validate IP or custom header" = REQUEST type always.
 - 🧠 **API Gateway Resource Policy:** JSON policy on the API itself — restrict by IP, VPC, account. Evaluated BEFORE authorizers. "Block at API Gateway boundary" = resource policy.
