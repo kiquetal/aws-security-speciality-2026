@@ -14,86 +14,86 @@ const TRACKER_DATA = {
     {
       "week": "1",
       "focus": "D4: IAM fundamentals, policy evaluation logic",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "90% on final quiz, all FAQs + diagrams done"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "2",
       "focus": "D4: IAM advanced (ABAC, boundaries, cross-account, Verified Permissions)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "80% final quiz, lab via Cybr.com course"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "3",
       "focus": "D5: KMS (key types, grants, policies, multi-region)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "80% mini-exam, key stores + MRK + deletion solid, detect vs prevent gap found"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "4",
       "focus": "D5: Data protection (S3 encryption, CloudHSM, Secrets Manager, ACM)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "100% closing quiz, ACM Private CA FAQ created, Nitro covered, detect-vs-prevent drills passed"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "5",
       "focus": "D3: Network security (SGs, NACLs, Network Firewall, VPC endpoints)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "80% closing quiz, VPC endpoints + Verified Access + MACsec covered"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "6",
       "focus": "D3: Edge security (WAF, Shield, CloudFront) + Compute (Inspector, SSM)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "100% closing quiz, OAC/OAI, Inspector, Bedrock Guardrails, WAF limits covered"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "7",
       "focus": "D1: Detection (GuardDuty, Security Hub, Macie, Config)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "100% closing quiz, service selection + dependencies + integration patterns solid"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "8",
       "focus": "D1: Logging (CloudTrail, CloudWatch, Security Lake, Athena)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "80% closing quiz, Security Lake/OCSF, advanced selectors, org trail immutability covered"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "9",
       "focus": "D2: Incident Response (Detective, forensics, remediation, Step Functions)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "100% closing quiz, IR sequence, forensic workflow, FIS, validate findings covered"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "10",
       "focus": "D6: Governance (Organizations, Control Tower, SCPs, RCPs, Firewall Manager)",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "60%\u2192pass after re-test, delegated admin + Control Tower vs FM vs SH distinction solid"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "11",
       "focus": "Full practice exams + weak-area deep dives",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "Session 100 complete: 90% on weekly drill with all Dojo 3 gaps and recurring failures resolved"
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     },
     {
       "week": "12",
       "focus": "Final review, exam simulations, confidence check",
-      "status": "completed",
-      "status_raw": "\u2705",
-      "notes": "Merged into maintenance-plan.md (Weeks 3-10). Study plan COMPLETE."
+      "status": "pending",
+      "status_raw": "\u2b1c",
+      "notes": ""
     }
   ],
   "maintenance_plan": [
@@ -102,16 +102,16 @@ const TRACKER_DATA = {
       "date": "Jun 16-22",
       "focus": "Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules",
       "never_seen": "\u2014 (recent Session 86-90 gaps)",
-      "status": "completed",
-      "status_raw": "\u2705 86% (S94)"
+      "status": "pending",
+      "status_raw": "\u2b1c"
     },
     {
       "week": "2",
       "date": "Jun 23-29",
       "focus": "**NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants",
       "never_seen": "4 new topics",
-      "status": "completed",
-      "status_raw": "\u2705 90% (Session 100)"
+      "status": "pending",
+      "status_raw": "\u2b1c"
     },
     {
       "week": "3",
@@ -253,14 +253,14 @@ const TRACKER_DATA = {
       "priority": 1,
       "topic": "Detect vs prevent (GuardDuty vs policy)",
       "questions": [
-        "Q100",
-        "Q105",
-        "Q153",
-        "Q156",
-        "Q158",
-        "Q546",
-        "Q568",
-        "Q581"
+        "S18-Q100",
+        "S19-Q105",
+        "S24-Q153",
+        "S25-Q156",
+        "S25-Q158",
+        "S56-Q546",
+        "S58-Q568",
+        "S60-Q581"
       ],
       "domains": [
         "D1",
@@ -273,11 +273,11 @@ const TRACKER_DATA = {
       "priority": 2,
       "topic": "EventBridge for API call detection",
       "questions": [
-        "Q474",
-        "Q549",
-        "Q570",
-        "Q574",
-        "Q688"
+        "S51-Q474",
+        "S56-Q549",
+        "S58-Q570",
+        "S58-Q574",
+        "S69-Q688"
       ],
       "domains": [
         "D1",
@@ -290,11 +290,11 @@ const TRACKER_DATA = {
       "priority": 3,
       "topic": "Cross-account KMS key policy must name external account",
       "questions": [
-        "Q541",
-        "Q669",
-        "Q850",
-        "Q870",
-        "Q974"
+        "S56-Q541",
+        "S66-Q669",
+        "S86-Q850",
+        "S87-Q870",
+        "S96-Q974"
       ],
       "domains": [
         "D4",
@@ -307,10 +307,10 @@ const TRACKER_DATA = {
       "priority": 4,
       "topic": "GuardDuty finding types",
       "questions": [
-        "Q116",
-        "Q142",
-        "Q154",
-        "Q155"
+        "S20-Q116",
+        "S23-Q142",
+        "S24-Q154",
+        "S25-Q155"
       ],
       "domains": [
         "D1"
@@ -322,10 +322,10 @@ const TRACKER_DATA = {
       "priority": 5,
       "topic": "No-reboot AMI for volatile memory",
       "questions": [
-        "Q810",
-        "Q825",
-        "Q830",
-        "Q933"
+        "S81-Q810",
+        "S83-Q825",
+        "S84-Q830",
+        "S93-Q933"
       ],
       "domains": [
         "D1",
@@ -338,9 +338,9 @@ const TRACKER_DATA = {
       "priority": 6,
       "topic": "Network Firewall TLS inspection",
       "questions": [
-        "Q35",
-        "Q87",
-        "Q152"
+        "S4-Q35",
+        "S14-Q87",
+        "S24-Q152"
       ],
       "domains": [
         "D3"
@@ -352,9 +352,9 @@ const TRACKER_DATA = {
       "priority": 7,
       "topic": "GuardDuty finding types (Impact vs CryptoCurrency)",
       "questions": [
-        "Q178",
-        "Q226",
-        "Q489"
+        "S26-Q178",
+        "S29-Q226",
+        "S52-Q489"
       ],
       "domains": [
         "D1"
@@ -366,9 +366,9 @@ const TRACKER_DATA = {
       "priority": 8,
       "topic": "KMS key policy root = delegation, not grant",
       "questions": [
-        "Q264",
-        "Q503",
-        "Q687"
+        "S33-Q264",
+        "S52-Q503",
+        "S69-Q687"
       ],
       "domains": [
         "D4",
@@ -381,9 +381,9 @@ const TRACKER_DATA = {
       "priority": 9,
       "topic": "RAM for sharing vs FM for enforcing",
       "questions": [
-        "Q313",
-        "Q441",
-        "Q562"
+        "S39-Q313",
+        "S51-Q441",
+        "S57-Q562"
       ],
       "domains": [
         "D6"
@@ -395,9 +395,9 @@ const TRACKER_DATA = {
       "priority": 10,
       "topic": "Default encryption vs bucket policy Deny",
       "questions": [
-        "Q426",
-        "Q626",
-        "Q643"
+        "S49-Q426",
+        "S64-Q626",
+        "S65-Q643"
       ],
       "domains": [
         "D5"
@@ -409,9 +409,9 @@ const TRACKER_DATA = {
       "priority": 11,
       "topic": "kms:ViaService + SCP",
       "questions": [
-        "Q488",
-        "Q495",
-        "Q495"
+        "S52-Q488",
+        "S52-Q495",
+        "S52-Q495"
       ],
       "domains": [
         "D4",
@@ -424,9 +424,9 @@ const TRACKER_DATA = {
       "priority": 12,
       "topic": "Detect C2 = GuardDuty (zero code)",
       "questions": [
-        "Q571",
-        "Q584",
-        "Q633"
+        "S58-Q571",
+        "S60-Q584",
+        "S65-Q633"
       ],
       "domains": [
         "D1"
@@ -438,9 +438,9 @@ const TRACKER_DATA = {
       "priority": 13,
       "topic": "StopLogging kills own CW Logs delivery",
       "questions": [
-        "Q860",
-        "Q866",
-        "Q1092"
+        "S86-Q860",
+        "S87-Q866",
+        "S98-Q1092"
       ],
       "domains": [
         "D1"
@@ -452,9 +452,9 @@ const TRACKER_DATA = {
       "priority": 14,
       "topic": "S3 server access logging = ACLs",
       "questions": [
-        "Q864",
-        "Q868",
-        "Q903"
+        "S86-Q864",
+        "S87-Q868",
+        "S90-Q903"
       ],
       "domains": [
         "D5",
@@ -467,8 +467,8 @@ const TRACKER_DATA = {
       "priority": 15,
       "topic": "Security services comparison",
       "questions": [
-        "Q5",
-        "Q24"
+        "S1-Q5",
+        "S3-Q24"
       ],
       "domains": [
         "D1"
@@ -480,8 +480,8 @@ const TRACKER_DATA = {
       "priority": 16,
       "topic": "RAM vs KMS Grants",
       "questions": [
-        "Q11",
-        "Q37"
+        "S1-Q11",
+        "S5-Q37"
       ],
       "domains": [
         "D4"
@@ -493,8 +493,8 @@ const TRACKER_DATA = {
       "priority": 17,
       "topic": "Cross-account KMS + SCP evaluation",
       "questions": [
-        "Q70",
-        "Q256"
+        "S11-Q70",
+        "S33-Q256"
       ],
       "domains": [
         "D4",
@@ -507,8 +507,8 @@ const TRACKER_DATA = {
       "priority": 18,
       "topic": "Session policy bypass by resource-based policy",
       "questions": [
-        "Q96",
-        "Q169"
+        "S16-Q96",
+        "S26-Q169"
       ],
       "domains": [
         "D4"
@@ -520,8 +520,8 @@ const TRACKER_DATA = {
       "priority": 19,
       "topic": "Detect vs prevent (GuardDuty vs Access Analyzer)",
       "questions": [
-        "Q187",
-        "Q233"
+        "S27-Q187",
+        "S31-Q233"
       ],
       "domains": [
         "D1"
@@ -533,12 +533,12 @@ const TRACKER_DATA = {
       "priority": 20,
       "topic": "SCP for preventive enforcement",
       "questions": [
-        "Q261",
-        "Q413"
+        "S33-Q261",
+        "S48-Q413"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 2,
       "level": "yellow"
@@ -547,8 +547,8 @@ const TRACKER_DATA = {
       "priority": 21,
       "topic": "Service Catalog (self-service)",
       "questions": [
-        "Q274",
-        "Q277"
+        "S35-Q274",
+        "S36-Q277"
       ],
       "domains": [
         "D6"
@@ -560,8 +560,8 @@ const TRACKER_DATA = {
       "priority": 22,
       "topic": "StackSets no auto-remediation",
       "questions": [
-        "Q283",
-        "Q439"
+        "S37-Q283",
+        "S51-Q439"
       ],
       "domains": [
         "D6"
@@ -573,8 +573,8 @@ const TRACKER_DATA = {
       "priority": 23,
       "topic": "Firewall Manager auto-remediation",
       "questions": [
-        "Q284",
-        "Q435"
+        "S37-Q284",
+        "S51-Q435"
       ],
       "domains": [
         "D6"
@@ -586,12 +586,12 @@ const TRACKER_DATA = {
       "priority": 24,
       "topic": "Access Analyzer unused + policy generation",
       "questions": [
-        "Q374",
-        "Q1003"
+        "S44-Q374",
+        "S96-Q1003"
       ],
       "domains": [
-        "D1",
-        "D4"
+        "D4",
+        "D1"
       ],
       "count": 2,
       "level": "yellow"
@@ -600,8 +600,8 @@ const TRACKER_DATA = {
       "priority": 25,
       "topic": "Data perimeter (RCP blocks IN, SCP blocks OUT)",
       "questions": [
-        "Q398",
-        "Q1095"
+        "S47-Q398",
+        "S98-Q1095"
       ],
       "domains": [
         "D4",
@@ -614,8 +614,8 @@ const TRACKER_DATA = {
       "priority": 26,
       "topic": "Native org-wide deployment",
       "questions": [
-        "Q483",
-        "Q492"
+        "S51-Q483",
+        "S52-Q492"
       ],
       "domains": [
         "D6"
@@ -627,8 +627,8 @@ const TRACKER_DATA = {
       "priority": 27,
       "topic": "Access Analyzer + GuardDuty both fire",
       "questions": [
-        "Q518",
-        "Q652"
+        "S54-Q518",
+        "S66-Q652"
       ],
       "domains": [
         "D1",
@@ -641,14 +641,14 @@ const TRACKER_DATA = {
       "priority": 28,
       "topic": "GuardDuty \u2260 failed attempts",
       "questions": [
-        "Q534",
-        "Q594"
+        "S55-Q534",
+        "S61-Q594"
       ],
       "domains": [
         "D1",
-        "D4",
         "D5",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -657,12 +657,12 @@ const TRACKER_DATA = {
       "priority": 29,
       "topic": "Gateway endpoint policy as additional gate",
       "questions": [
-        "Q535",
-        "Q1080"
+        "S55-Q535",
+        "S98-Q1080"
       ],
       "domains": [
-        "D3",
         "D4",
+        "D3",
         "D5"
       ],
       "count": 2,
@@ -672,8 +672,8 @@ const TRACKER_DATA = {
       "priority": 30,
       "topic": "Session policy + server-side KMS",
       "questions": [
-        "Q591",
-        "Q679"
+        "S61-Q591",
+        "S68-Q679"
       ],
       "domains": [
         "D4",
@@ -687,8 +687,8 @@ const TRACKER_DATA = {
       "priority": 31,
       "topic": "RCP scope (your resources only, not outbound)",
       "questions": [
-        "Q683",
-        "Q698"
+        "S68-Q683",
+        "S70-Q698"
       ],
       "domains": [
         "D4",
@@ -701,8 +701,8 @@ const TRACKER_DATA = {
       "priority": 32,
       "topic": "Glacier Vault Lock vs Object Lock",
       "questions": [
-        "Q800",
-        "Q822"
+        "S81-Q800",
+        "S83-Q822"
       ],
       "domains": [
         "D5"
@@ -714,8 +714,8 @@ const TRACKER_DATA = {
       "priority": 33,
       "topic": "Sign=private, verify=public",
       "questions": [
-        "Q812",
-        "Q824"
+        "S81-Q812",
+        "S83-Q824"
       ],
       "domains": [
         "D5"
@@ -727,8 +727,8 @@ const TRACKER_DATA = {
       "priority": 34,
       "topic": "S3 Access Grants prefix overlap",
       "questions": [
-        "Q819",
-        "Q826"
+        "S82-Q819",
+        "S83-Q826"
       ],
       "domains": [
         "D1",
@@ -741,8 +741,8 @@ const TRACKER_DATA = {
       "priority": 35,
       "topic": "Credential leak IR (Deny-all before investigate)",
       "questions": [
-        "Q862",
-        "Q867"
+        "S86-Q862",
+        "S87-Q867"
       ],
       "domains": [
         "D2"
@@ -754,8 +754,8 @@ const TRACKER_DATA = {
       "priority": 36,
       "topic": "Kinesis consumer = Decrypt + DescribeKey",
       "questions": [
-        "Q879",
-        "Q1100"
+        "S87-Q879",
+        "S98-Q1100"
       ],
       "domains": [
         "D3",
@@ -768,8 +768,8 @@ const TRACKER_DATA = {
       "priority": 37,
       "topic": "Kinesis + KMS VPC endpoints (timeout = network)",
       "questions": [
-        "Q918",
-        "Q950"
+        "S91-Q918",
+        "S94-Q950"
       ],
       "domains": [
         "D3",
@@ -782,8 +782,8 @@ const TRACKER_DATA = {
       "priority": 38,
       "topic": "API Gateway mTLS = custom domain + S3 truststore",
       "questions": [
-        "Q967",
-        "Q1012"
+        "S96-Q967",
+        "S97-Q1012"
       ],
       "domains": [
         "D3"
@@ -795,8 +795,8 @@ const TRACKER_DATA = {
       "priority": 39,
       "topic": "EMR in-transit = security config + PEM certs",
       "questions": [
-        "Q1030",
-        "Q1073"
+        "S97-Q1030",
+        "S98-Q1073"
       ],
       "domains": [
         "D5"
@@ -808,8 +808,8 @@ const TRACKER_DATA = {
       "priority": 40,
       "topic": "IoT revocation = registry. API GW mTLS revocation = CRL in truststore",
       "questions": [
-        "Q1032",
-        "Q1070"
+        "S97-Q1032",
+        "S98-Q1070"
       ],
       "domains": [
         "D3",
@@ -822,8 +822,8 @@ const TRACKER_DATA = {
       "priority": 41,
       "topic": "State Manager OnBoot + schedule (dual triggers)",
       "questions": [
-        "Q1048",
-        "Q1071"
+        "S97-Q1048",
+        "S98-Q1071"
       ],
       "domains": [
         "D1",
@@ -836,8 +836,8 @@ const TRACKER_DATA = {
       "priority": 42,
       "topic": "Inspector SBOM = native export + bucket policy",
       "questions": [
-        "Q1059",
-        "Q1119"
+        "S98-Q1059",
+        "S99-Q1119"
       ],
       "domains": [
         "D3"
@@ -849,7 +849,7 @@ const TRACKER_DATA = {
       "priority": 43,
       "topic": "CloudTrail data vs management events",
       "questions": [
-        "Q1"
+        "S1-Q1"
       ],
       "domains": [
         "D1"
@@ -861,7 +861,7 @@ const TRACKER_DATA = {
       "priority": 44,
       "topic": "Basic vs Advanced event selectors",
       "questions": [
-        "Q2"
+        "S1-Q2"
       ],
       "domains": [
         "D1"
@@ -873,7 +873,7 @@ const TRACKER_DATA = {
       "priority": 45,
       "topic": "Troubleshooting (Task 1.3)",
       "questions": [
-        "Q6"
+        "S1-Q6"
       ],
       "domains": [
         "D1"
@@ -885,7 +885,7 @@ const TRACKER_DATA = {
       "priority": 46,
       "topic": "Policy layers reference",
       "questions": [
-        "Q7"
+        "S1-Q7"
       ],
       "domains": [
         "D4"
@@ -897,7 +897,7 @@ const TRACKER_DATA = {
       "priority": 47,
       "topic": "faq-ram-vs-rcp.md",
       "questions": [
-        "Q12"
+        "S1-Q12"
       ],
       "domains": [
         "D4"
@@ -909,7 +909,7 @@ const TRACKER_DATA = {
       "priority": 48,
       "topic": "GuardDuty vs CloudTrail",
       "questions": [
-        "Q13"
+        "S1-Q13"
       ],
       "domains": [
         "D1"
@@ -921,7 +921,7 @@ const TRACKER_DATA = {
       "priority": 49,
       "topic": "DNS Firewall",
       "questions": [
-        "Q14"
+        "S1-Q14"
       ],
       "domains": [
         "D3"
@@ -933,7 +933,7 @@ const TRACKER_DATA = {
       "priority": 50,
       "topic": "Cross-account patterns",
       "questions": [
-        "Q15"
+        "S1-Q15"
       ],
       "domains": [
         "D5"
@@ -945,7 +945,7 @@ const TRACKER_DATA = {
       "priority": 51,
       "topic": "CloudTrail Lake vs S3+Athena",
       "questions": [
-        "Q23"
+        "S2-Q23"
       ],
       "domains": [
         "D1"
@@ -957,7 +957,7 @@ const TRACKER_DATA = {
       "priority": 52,
       "topic": "NACLs stateless",
       "questions": [
-        "Q34"
+        "S4-Q34"
       ],
       "domains": [
         "D3"
@@ -969,7 +969,7 @@ const TRACKER_DATA = {
       "priority": 53,
       "topic": "RAM vs RCP",
       "questions": [
-        "Q38"
+        "S5-Q38"
       ],
       "domains": [
         "D4"
@@ -981,7 +981,7 @@ const TRACKER_DATA = {
       "priority": 54,
       "topic": "RCP exemptions (SLR vs service principal)",
       "questions": [
-        "Q39"
+        "S6-Q39"
       ],
       "domains": [
         "D4"
@@ -993,7 +993,7 @@ const TRACKER_DATA = {
       "priority": 55,
       "topic": "RCP exemptions (PrincipalIsAWSService)",
       "questions": [
-        "Q42"
+        "S6-Q42"
       ],
       "domains": [
         "D4"
@@ -1005,7 +1005,7 @@ const TRACKER_DATA = {
       "priority": 56,
       "topic": "Cross-account KMS",
       "questions": [
-        "Q53"
+        "S8-Q53"
       ],
       "domains": [
         "D4"
@@ -1017,7 +1017,7 @@ const TRACKER_DATA = {
       "priority": 57,
       "topic": "STS session revocation",
       "questions": [
-        "Q62"
+        "S9-Q62"
       ],
       "domains": [
         "D4"
@@ -1029,7 +1029,7 @@ const TRACKER_DATA = {
       "priority": 58,
       "topic": "Session tags + ABAC",
       "questions": [
-        "Q63"
+        "S9-Q63"
       ],
       "domains": [
         "D4"
@@ -1041,7 +1041,7 @@ const TRACKER_DATA = {
       "priority": 59,
       "topic": "SCP + RequestTag enforcement",
       "questions": [
-        "Q68"
+        "S10-Q68"
       ],
       "domains": [
         "D4"
@@ -1053,7 +1053,7 @@ const TRACKER_DATA = {
       "priority": 60,
       "topic": "Session tags + ABAC (ResourceTag vs RequestTag)",
       "questions": [
-        "Q72"
+        "S11-Q72"
       ],
       "domains": [
         "D4"
@@ -1065,7 +1065,7 @@ const TRACKER_DATA = {
       "priority": 61,
       "topic": "Session policy as ceiling",
       "questions": [
-        "Q78"
+        "S12-Q78"
       ],
       "domains": [
         "D4"
@@ -1077,7 +1077,7 @@ const TRACKER_DATA = {
       "priority": 62,
       "topic": "SCP cannot be bypassed",
       "questions": [
-        "Q83"
+        "S13-Q83"
       ],
       "domains": [
         "D4"
@@ -1089,7 +1089,7 @@ const TRACKER_DATA = {
       "priority": 63,
       "topic": "MRK independent key policies",
       "questions": [
-        "Q84"
+        "S14-Q84"
       ],
       "domains": [
         "D5"
@@ -1101,7 +1101,7 @@ const TRACKER_DATA = {
       "priority": 64,
       "topic": "Object Lock Compliance vs Legal Hold",
       "questions": [
-        "Q85"
+        "S14-Q85"
       ],
       "domains": [
         "D5"
@@ -1113,7 +1113,7 @@ const TRACKER_DATA = {
       "priority": 65,
       "topic": "Detect C2 = GuardDuty (not DNS Firewall)",
       "questions": [
-        "Q106"
+        "S19-Q106"
       ],
       "domains": [
         "D1"
@@ -1125,7 +1125,7 @@ const TRACKER_DATA = {
       "priority": 66,
       "topic": "Imported key rotation procedure",
       "questions": [
-        "Q114"
+        "S20-Q114"
       ],
       "domains": [
         "D5"
@@ -1137,7 +1137,7 @@ const TRACKER_DATA = {
       "priority": 67,
       "topic": "SCP for preventive guardrails",
       "questions": [
-        "Q119"
+        "S20-Q119"
       ],
       "domains": [
         "D6"
@@ -1149,7 +1149,7 @@ const TRACKER_DATA = {
       "priority": 68,
       "topic": "RAM for resource sharing",
       "questions": [
-        "Q126"
+        "S21-Q126"
       ],
       "domains": [
         "D6"
@@ -1161,7 +1161,7 @@ const TRACKER_DATA = {
       "priority": 69,
       "topic": "DNS Firewall rule actions",
       "questions": [
-        "Q129"
+        "S21-Q129"
       ],
       "domains": [
         "D3"
@@ -1173,7 +1173,7 @@ const TRACKER_DATA = {
       "priority": 70,
       "topic": "GuardDuty vs Inspector",
       "questions": [
-        "Q132"
+        "S22-Q132"
       ],
       "domains": [
         "D1"
@@ -1185,7 +1185,7 @@ const TRACKER_DATA = {
       "priority": 71,
       "topic": "DNS Firewall rule structure",
       "questions": [
-        "Q134"
+        "S22-Q134"
       ],
       "domains": [
         "D3"
@@ -1197,7 +1197,7 @@ const TRACKER_DATA = {
       "priority": 72,
       "topic": "Step Functions for IR",
       "questions": [
-        "Q138"
+        "S22-Q138"
       ],
       "domains": [
         "D2"
@@ -1209,7 +1209,7 @@ const TRACKER_DATA = {
       "priority": 73,
       "topic": "Access Analyzer modes",
       "questions": [
-        "Q144"
+        "S23-Q144"
       ],
       "domains": [
         "D1"
@@ -1221,7 +1221,7 @@ const TRACKER_DATA = {
       "priority": 74,
       "topic": "Validate findings (Task 2.2.3)",
       "questions": [
-        "Q148"
+        "S23-Q148"
       ],
       "domains": [
         "D2"
@@ -1233,7 +1233,7 @@ const TRACKER_DATA = {
       "priority": 75,
       "topic": "Data masking (Macie \u2260 logs)",
       "questions": [
-        "Q181"
+        "S26-Q181"
       ],
       "domains": [
         "D5"
@@ -1245,7 +1245,7 @@ const TRACKER_DATA = {
       "priority": 76,
       "topic": "RCP exemptions (SLR)",
       "questions": [
-        "Q183"
+        "S27-Q183"
       ],
       "domains": [
         "D4"
@@ -1257,7 +1257,7 @@ const TRACKER_DATA = {
       "priority": 77,
       "topic": "Access Analyzer policy validation vs Simulator",
       "questions": [
-        "Q184"
+        "S27-Q184"
       ],
       "domains": [
         "D4"
@@ -1269,7 +1269,7 @@ const TRACKER_DATA = {
       "priority": 78,
       "topic": "KMS auto-rotation retention",
       "questions": [
-        "Q192"
+        "S27-Q192"
       ],
       "domains": [
         "D5"
@@ -1281,7 +1281,7 @@ const TRACKER_DATA = {
       "priority": 79,
       "topic": "KMS key policy delegation + GenerateDataKey",
       "questions": [
-        "Q206"
+        "S27-Q206"
       ],
       "domains": [
         "D5"
@@ -1293,7 +1293,7 @@ const TRACKER_DATA = {
       "priority": 80,
       "topic": "Firewall Manager SG audit",
       "questions": [
-        "Q208"
+        "S28-Q208"
       ],
       "domains": [
         "D3"
@@ -1305,7 +1305,7 @@ const TRACKER_DATA = {
       "priority": 81,
       "topic": "GuardDuty is regional + agentless",
       "questions": [
-        "Q232"
+        "S31-Q232"
       ],
       "domains": [
         "D1"
@@ -1317,7 +1317,7 @@ const TRACKER_DATA = {
       "priority": 82,
       "topic": "CloudWatch Logs Insights vs Detective",
       "questions": [
-        "Q236"
+        "S31-Q236"
       ],
       "domains": [
         "D1"
@@ -1329,7 +1329,7 @@ const TRACKER_DATA = {
       "priority": 83,
       "topic": "SCP for preventive guardrails (Control Tower)",
       "questions": [
-        "Q251"
+        "S32-Q251"
       ],
       "domains": [
         "D6"
@@ -1341,7 +1341,7 @@ const TRACKER_DATA = {
       "priority": 84,
       "topic": "Secrets Manager cross-region replication",
       "questions": [
-        "Q258"
+        "S33-Q258"
       ],
       "domains": [
         "D5"
@@ -1353,7 +1353,7 @@ const TRACKER_DATA = {
       "priority": 85,
       "topic": "SCIM provisioning (Identity Center)",
       "questions": [
-        "Q263"
+        "S33-Q263"
       ],
       "domains": [
         "D4"
@@ -1365,7 +1365,7 @@ const TRACKER_DATA = {
       "priority": 86,
       "topic": "Audit Manager vs Artifact",
       "questions": [
-        "Q271"
+        "S35-Q271"
       ],
       "domains": [
         "D6"
@@ -1377,7 +1377,7 @@ const TRACKER_DATA = {
       "priority": 87,
       "topic": "StackSets vs Firewall Manager",
       "questions": [
-        "Q273"
+        "S35-Q273"
       ],
       "domains": [
         "D6"
@@ -1389,7 +1389,7 @@ const TRACKER_DATA = {
       "priority": 88,
       "topic": "Config conformance packs",
       "questions": [
-        "Q275"
+        "S35-Q275"
       ],
       "domains": [
         "D6"
@@ -1401,7 +1401,7 @@ const TRACKER_DATA = {
       "priority": 89,
       "topic": "StackSets vs Conformance Pack",
       "questions": [
-        "Q276"
+        "S36-Q276"
       ],
       "domains": [
         "D6"
@@ -1413,7 +1413,7 @@ const TRACKER_DATA = {
       "priority": 90,
       "topic": "DNS Firewall ALERT \u2260 finding",
       "questions": [
-        "Q295"
+        "S37-Q295"
       ],
       "domains": [
         "D1"
@@ -1425,7 +1425,7 @@ const TRACKER_DATA = {
       "priority": 91,
       "topic": "Security Lake vs CW Logs Insights",
       "questions": [
-        "Q303"
+        "S38-Q303"
       ],
       "domains": [
         "D1"
@@ -1437,11 +1437,11 @@ const TRACKER_DATA = {
       "priority": 92,
       "topic": "Verified Access trust providers",
       "questions": [
-        "Q336"
+        "S42-Q336"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1450,7 +1450,7 @@ const TRACKER_DATA = {
       "priority": 93,
       "topic": "Signer revocation (job vs profile vs IAM)",
       "questions": [
-        "Q339"
+        "S42-Q339"
       ],
       "domains": [
         "D4",
@@ -1463,11 +1463,11 @@ const TRACKER_DATA = {
       "priority": 94,
       "topic": "Cognito Identity Pool + KMS permissions",
       "questions": [
-        "Q341"
+        "S42-Q341"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1476,7 +1476,7 @@ const TRACKER_DATA = {
       "priority": 95,
       "topic": "GuardDuty suppression rules",
       "questions": [
-        "Q372"
+        "S44-Q372"
       ],
       "domains": [
         "D1"
@@ -1488,7 +1488,7 @@ const TRACKER_DATA = {
       "priority": 96,
       "topic": "Secrets Manager rotation failure",
       "questions": [
-        "Q376"
+        "S44-Q376"
       ],
       "domains": [
         "D5"
@@ -1500,11 +1500,11 @@ const TRACKER_DATA = {
       "priority": 97,
       "topic": "Cognito + DynamoDB ABAC (sub vs TenantId)",
       "questions": [
-        "Q395"
+        "S47-Q395"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1513,7 +1513,7 @@ const TRACKER_DATA = {
       "priority": 98,
       "topic": "EventBridge for fast detection",
       "questions": [
-        "Q401"
+        "S47-Q401"
       ],
       "domains": [
         "D1"
@@ -1525,7 +1525,7 @@ const TRACKER_DATA = {
       "priority": 99,
       "topic": "Timeout vs Access Denied (SG troubleshooting)",
       "questions": [
-        "Q418"
+        "S49-Q418"
       ],
       "domains": [
         "D3"
@@ -1537,7 +1537,7 @@ const TRACKER_DATA = {
       "priority": 100,
       "topic": "KMS is regional",
       "questions": [
-        "Q423"
+        "S49-Q423"
       ],
       "domains": [
         "D4",
@@ -1550,7 +1550,7 @@ const TRACKER_DATA = {
       "priority": 101,
       "topic": "RCP same-org evaluation",
       "questions": [
-        "Q427"
+        "S49-Q427"
       ],
       "domains": [
         "D4"
@@ -1562,7 +1562,7 @@ const TRACKER_DATA = {
       "priority": 102,
       "topic": "Secrets Manager replication \u2260 MRK",
       "questions": [
-        "Q428"
+        "S49-Q428"
       ],
       "domains": [
         "D5"
@@ -1574,7 +1574,7 @@ const TRACKER_DATA = {
       "priority": 103,
       "topic": "SCP prevents disabling services",
       "questions": [
-        "Q440"
+        "S51-Q440"
       ],
       "domains": [
         "D6"
@@ -1586,7 +1586,7 @@ const TRACKER_DATA = {
       "priority": 104,
       "topic": "RAM + FM complementary",
       "questions": [
-        "Q442"
+        "S51-Q442"
       ],
       "domains": [
         "D6"
@@ -1598,7 +1598,7 @@ const TRACKER_DATA = {
       "priority": 105,
       "topic": "Full governance stack",
       "questions": [
-        "Q445"
+        "S51-Q445"
       ],
       "domains": [
         "D6"
@@ -1610,7 +1610,7 @@ const TRACKER_DATA = {
       "priority": 106,
       "topic": "StackSets limitations",
       "questions": [
-        "Q450"
+        "S51-Q450"
       ],
       "domains": [
         "D6"
@@ -1622,7 +1622,7 @@ const TRACKER_DATA = {
       "priority": 107,
       "topic": "FM SG common policy",
       "questions": [
-        "Q454"
+        "S51-Q454"
       ],
       "domains": [
         "D6"
@@ -1634,7 +1634,7 @@ const TRACKER_DATA = {
       "priority": 108,
       "topic": "Delegated admin (all services)",
       "questions": [
-        "Q462"
+        "S51-Q462"
       ],
       "domains": [
         "D6"
@@ -1646,7 +1646,7 @@ const TRACKER_DATA = {
       "priority": 109,
       "topic": "Proactive guardrail (CF Hook)",
       "questions": [
-        "Q464"
+        "S51-Q464"
       ],
       "domains": [
         "D6"
@@ -1658,7 +1658,7 @@ const TRACKER_DATA = {
       "priority": 110,
       "topic": "No single governance service",
       "questions": [
-        "Q486"
+        "S51-Q486"
       ],
       "domains": [
         "D6"
@@ -1670,7 +1670,7 @@ const TRACKER_DATA = {
       "priority": 111,
       "topic": "SCP can't inspect payload + RCP prevents consequence",
       "questions": [
-        "Q515"
+        "S53-Q515"
       ],
       "domains": [
         "D1",
@@ -1683,7 +1683,7 @@ const TRACKER_DATA = {
       "priority": 112,
       "topic": "EventBridge for fast detection + auto-revert",
       "questions": [
-        "Q523"
+        "S54-Q523"
       ],
       "domains": [
         "D1",
@@ -1696,11 +1696,11 @@ const TRACKER_DATA = {
       "priority": 113,
       "topic": "Network FW for IP-level C2 block",
       "questions": [
-        "Q526"
+        "S54-Q526"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1709,12 +1709,12 @@ const TRACKER_DATA = {
       "priority": 114,
       "topic": "Detection + response architecture",
       "questions": [
-        "Q532"
+        "S55-Q532"
       ],
       "domains": [
-        "D6",
         "D1",
-        "D3"
+        "D3",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1723,12 +1723,12 @@ const TRACKER_DATA = {
       "priority": 115,
       "topic": "GuardDuty \u2260 failed attempts + Access Analyzer static analysis",
       "questions": [
-        "Q545"
+        "S56-Q545"
       ],
       "domains": [
         "D1",
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1737,7 +1737,7 @@ const TRACKER_DATA = {
       "priority": 116,
       "topic": "Detect vs prevent (GuardDuty vs EventBridge for behavioral)",
       "questions": [
-        "Q640"
+        "S65-Q640"
       ],
       "domains": [
         "D1"
@@ -1749,7 +1749,7 @@ const TRACKER_DATA = {
       "priority": 117,
       "topic": "GuardDuty finding types (C2 = Trojan, not CryptoCurrency)",
       "questions": [
-        "Q655"
+        "S66-Q655"
       ],
       "domains": [
         "D1"
@@ -1761,7 +1761,7 @@ const TRACKER_DATA = {
       "priority": 118,
       "topic": "VPC endpoints (direct KMS + DynamoDB)",
       "questions": [
-        "Q685"
+        "S68-Q685"
       ],
       "domains": [
         "D3",
@@ -1774,11 +1774,11 @@ const TRACKER_DATA = {
       "priority": 119,
       "topic": "DGA = allow-list DNS Firewall",
       "questions": [
-        "Q690"
+        "S69-Q690"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1787,7 +1787,7 @@ const TRACKER_DATA = {
       "priority": 120,
       "topic": "Access Analyzer static + GuardDuty \u2260 failed attempts",
       "questions": [
-        "Q706"
+        "S71-Q706"
       ],
       "domains": [
         "D1",
@@ -1800,7 +1800,7 @@ const TRACKER_DATA = {
       "priority": 121,
       "topic": "NACLs stateless (Dojo Q19, Q61)",
       "questions": [
-        "Q707"
+        "S72-Q707"
       ],
       "domains": [
         "D3"
@@ -1812,7 +1812,7 @@ const TRACKER_DATA = {
       "priority": 122,
       "topic": "Directory Service + trust direction (Dojo Q5)",
       "questions": [
-        "Q709"
+        "S72-Q709"
       ],
       "domains": [
         "D4"
@@ -1824,7 +1824,7 @@ const TRACKER_DATA = {
       "priority": 123,
       "topic": "CloudTrail management events Read/Write (Dojo Q16)",
       "questions": [
-        "Q710"
+        "S72-Q710"
       ],
       "domains": [
         "D1"
@@ -1836,7 +1836,7 @@ const TRACKER_DATA = {
       "priority": 124,
       "topic": "GuardDuty Trusted IP list (Dojo Q22)",
       "questions": [
-        "Q711"
+        "S72-Q711"
       ],
       "domains": [
         "D1"
@@ -1848,7 +1848,7 @@ const TRACKER_DATA = {
       "priority": 125,
       "topic": "VPN types (Dojo Q56)",
       "questions": [
-        "Q719"
+        "S73-Q719"
       ],
       "domains": [
         "D3"
@@ -1860,7 +1860,7 @@ const TRACKER_DATA = {
       "priority": 126,
       "topic": "CW metric filter value (Dojo Q57)",
       "questions": [
-        "Q724"
+        "S74-Q724"
       ],
       "domains": [
         "D1"
@@ -1872,7 +1872,7 @@ const TRACKER_DATA = {
       "priority": 127,
       "topic": "ADFS vs AD Connector (Dojo Q48)",
       "questions": [
-        "Q731"
+        "S74-Q731"
       ],
       "domains": [
         "D4"
@@ -1884,7 +1884,7 @@ const TRACKER_DATA = {
       "priority": 128,
       "topic": "AD Connector vs Simple AD",
       "questions": [
-        "Q739"
+        "S75-Q739"
       ],
       "domains": [
         "D4"
@@ -1896,7 +1896,7 @@ const TRACKER_DATA = {
       "priority": 129,
       "topic": "EC2 EBS + kms:CreateGrant (Dojo T2 Q47)",
       "questions": [
-        "Q745"
+        "S76-Q745"
       ],
       "domains": [
         "D5"
@@ -1908,7 +1908,7 @@ const TRACKER_DATA = {
       "priority": 130,
       "topic": "SCP ceiling implicit deny (Dojo T2 Q65)",
       "questions": [
-        "Q747"
+        "S76-Q747"
       ],
       "domains": [
         "D4"
@@ -1920,7 +1920,7 @@ const TRACKER_DATA = {
       "priority": 131,
       "topic": "InsideAWS = SG isolation",
       "questions": [
-        "Q761"
+        "S77-Q761"
       ],
       "domains": [
         "D4",
@@ -1933,7 +1933,7 @@ const TRACKER_DATA = {
       "priority": 132,
       "topic": "S3 envelope encryption never uses kms:Encrypt",
       "questions": [
-        "Q765"
+        "S78-Q765"
       ],
       "domains": [
         "D5"
@@ -1945,7 +1945,7 @@ const TRACKER_DATA = {
       "priority": 133,
       "topic": "Cognito Identity Pool + role (not direct STS)",
       "questions": [
-        "Q778"
+        "S79-Q778"
       ],
       "domains": [
         "D4"
@@ -1957,7 +1957,7 @@ const TRACKER_DATA = {
       "priority": 134,
       "topic": "NACLs stateless (inbound ACCEPT + outbound REJECT)",
       "questions": [
-        "Q781"
+        "S79-Q781"
       ],
       "domains": [
         "D3"
@@ -1969,7 +1969,7 @@ const TRACKER_DATA = {
       "priority": 135,
       "topic": "EKS Runtime Monitoring (agent required)",
       "questions": [
-        "Q797"
+        "S81-Q797"
       ],
       "domains": [
         "D1",
@@ -1982,7 +1982,7 @@ const TRACKER_DATA = {
       "priority": 136,
       "topic": "CloudFront response headers policy",
       "questions": [
-        "Q801"
+        "S81-Q801"
       ],
       "domains": [
         "D3"
@@ -1994,7 +1994,7 @@ const TRACKER_DATA = {
       "priority": 137,
       "topic": "GuardDuty Extended Threat Detection (too new)",
       "questions": [
-        "Q806"
+        "S81-Q806"
       ],
       "domains": [
         "D1"
@@ -2006,12 +2006,12 @@ const TRACKER_DATA = {
       "priority": 138,
       "topic": "OutsideAWS IR + IMDSv2 hardening",
       "questions": [
-        "Q820"
+        "S82-Q820"
       ],
       "domains": [
         "D1",
-        "D4",
-        "D2"
+        "D2",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2020,7 +2020,7 @@ const TRACKER_DATA = {
       "priority": 139,
       "topic": "GuardDuty \u2260 failed attempts + AA static",
       "questions": [
-        "Q839"
+        "S85-Q839"
       ],
       "domains": [
         "D1"
@@ -2032,7 +2032,7 @@ const TRACKER_DATA = {
       "priority": 140,
       "topic": "S3 Batch Operations cross-account + manifest region",
       "questions": [
-        "Q855"
+        "S86-Q855"
       ],
       "domains": [
         "D4",
@@ -2045,7 +2045,7 @@ const TRACKER_DATA = {
       "priority": 141,
       "topic": "S3 Batch cross-account needs bucket policy",
       "questions": [
-        "Q857"
+        "S86-Q857"
       ],
       "domains": [
         "D4",
@@ -2058,7 +2058,7 @@ const TRACKER_DATA = {
       "priority": 142,
       "topic": "SCP prevention > detect+remediate",
       "questions": [
-        "Q858"
+        "S86-Q858"
       ],
       "domains": [
         "D4",
@@ -2071,7 +2071,7 @@ const TRACKER_DATA = {
       "priority": 143,
       "topic": "S3 Batch Operations regional",
       "questions": [
-        "Q872"
+        "S87-Q872"
       ],
       "domains": [
         "D5"
@@ -2083,7 +2083,7 @@ const TRACKER_DATA = {
       "priority": 144,
       "topic": "IoT ThingName = cert-bound, not hardware",
       "questions": [
-        "Q880"
+        "S87-Q880"
       ],
       "domains": [
         "D3"
@@ -2095,7 +2095,7 @@ const TRACKER_DATA = {
       "priority": 145,
       "topic": "Config custom rule = Lambda (max 15min timeout)",
       "questions": [
-        "Q881"
+        "S87-Q881"
       ],
       "domains": [
         "D1",
@@ -2108,7 +2108,7 @@ const TRACKER_DATA = {
       "priority": 146,
       "topic": "CRR dest = kms:GenerateDataKey (not Encrypt)",
       "questions": [
-        "Q883"
+        "S88-Q883"
       ],
       "domains": [
         "D5"
@@ -2120,7 +2120,7 @@ const TRACKER_DATA = {
       "priority": 147,
       "topic": "CRR rewrites encryption context to dest",
       "questions": [
-        "Q888"
+        "S88-Q888"
       ],
       "domains": [
         "D5"
@@ -2132,7 +2132,7 @@ const TRACKER_DATA = {
       "priority": 148,
       "topic": "IoT cert revocation = instant (no CRL delay)",
       "questions": [
-        "Q892"
+        "S88-Q892"
       ],
       "domains": [
         "D3"
@@ -2144,7 +2144,7 @@ const TRACKER_DATA = {
       "priority": 149,
       "topic": "DynamoDB + CMK = CreateGrant + DescribeKey",
       "questions": [
-        "Q899"
+        "S89-Q899"
       ],
       "domains": [
         "D4",
@@ -2157,7 +2157,7 @@ const TRACKER_DATA = {
       "priority": 150,
       "topic": "Reading comprehension (perms already present)",
       "questions": [
-        "Q901"
+        "S89-Q901"
       ],
       "domains": [
         "D5"
@@ -2169,7 +2169,7 @@ const TRACKER_DATA = {
       "priority": 151,
       "topic": "EBS encryption by default + SCP = full prevention",
       "questions": [
-        "Q902"
+        "S89-Q902"
       ],
       "domains": [
         "D5",
@@ -2182,7 +2182,7 @@ const TRACKER_DATA = {
       "priority": 152,
       "topic": "GWLB GENEVE decapsulation",
       "questions": [
-        "Q905"
+        "S90-Q905"
       ],
       "domains": [
         "D3"
@@ -2194,7 +2194,7 @@ const TRACKER_DATA = {
       "priority": 153,
       "topic": "Config org custom rule cross-account invoke",
       "questions": [
-        "Q908"
+        "S90-Q908"
       ],
       "domains": [
         "D1",
@@ -2207,7 +2207,7 @@ const TRACKER_DATA = {
       "priority": 154,
       "topic": "Reading comprehension (multiple missing perms)",
       "questions": [
-        "Q911"
+        "S90-Q911"
       ],
       "domains": [
         "D3",
@@ -2220,7 +2220,7 @@ const TRACKER_DATA = {
       "priority": 155,
       "topic": "CRR custom encryption context preserved",
       "questions": [
-        "Q923"
+        "S92-Q923"
       ],
       "domains": [
         "D5"
@@ -2232,7 +2232,7 @@ const TRACKER_DATA = {
       "priority": 156,
       "topic": "CreateSampleFindings vs FIS",
       "questions": [
-        "Q934"
+        "S93-Q934"
       ],
       "domains": [
         "D2"
@@ -2244,7 +2244,7 @@ const TRACKER_DATA = {
       "priority": 157,
       "topic": "Resilience Hub = assess, FIS = test, ARC = recover",
       "questions": [
-        "Q935"
+        "S93-Q935"
       ],
       "domains": [
         "D2"
@@ -2256,7 +2256,7 @@ const TRACKER_DATA = {
       "priority": 158,
       "topic": "ARC zonal shift",
       "questions": [
-        "Q936"
+        "S93-Q936"
       ],
       "domains": [
         "D2"
@@ -2268,7 +2268,7 @@ const TRACKER_DATA = {
       "priority": 159,
       "topic": "Deny * on user vs TokenIssueTime (user vs role)",
       "questions": [
-        "Q942"
+        "S93-Q942"
       ],
       "domains": [
         "D2"
@@ -2280,7 +2280,7 @@ const TRACKER_DATA = {
       "priority": 160,
       "topic": "CloudTrail Lake (data vs mgmt + no backfill)",
       "questions": [
-        "Q951"
+        "S94-Q951"
       ],
       "domains": [
         "D1"
@@ -2292,7 +2292,7 @@ const TRACKER_DATA = {
       "priority": 161,
       "topic": "KMS endpoint + SG (direct calls only)",
       "questions": [
-        "Q965"
+        "S96-Q965"
       ],
       "domains": [
         "D3",
@@ -2305,7 +2305,7 @@ const TRACKER_DATA = {
       "priority": 162,
       "topic": "API Gateway TOKEN vs REQUEST authorizer",
       "questions": [
-        "Q988"
+        "S96-Q988"
       ],
       "domains": [
         "D3"
@@ -2317,7 +2317,7 @@ const TRACKER_DATA = {
       "priority": 163,
       "topic": "S3 wraps KMS errors (error surface vs root cause)",
       "questions": [
-        "Q989"
+        "S96-Q989"
       ],
       "domains": [
         "D4",
@@ -2330,7 +2330,7 @@ const TRACKER_DATA = {
       "priority": 164,
       "topic": "SageMaker notebooks vs Detective (custom vs built-in)",
       "questions": [
-        "Q996"
+        "S96-Q996"
       ],
       "domains": [
         "D2"
@@ -2342,7 +2342,7 @@ const TRACKER_DATA = {
       "priority": 165,
       "topic": "CloudTrail Insights vs GuardDuty (complementary)",
       "questions": [
-        "Q1004"
+        "S96-Q1004"
       ],
       "domains": [
         "D1"
@@ -2354,7 +2354,7 @@ const TRACKER_DATA = {
       "priority": 166,
       "topic": "Bedrock IAM guardrail enforcement (condition key)",
       "questions": [
-        "Q1007"
+        "S96-Q1007"
       ],
       "domains": [
         "D3"
@@ -2366,7 +2366,7 @@ const TRACKER_DATA = {
       "priority": 167,
       "topic": "Q Business ACL identity mapping failure",
       "questions": [
-        "Q1010"
+        "S96-Q1010"
       ],
       "domains": [
         "D3"
@@ -2378,7 +2378,7 @@ const TRACKER_DATA = {
       "priority": 168,
       "topic": "Resource Policy = boundary rejection (before authorizer)",
       "questions": [
-        "Q1013"
+        "S97-Q1013"
       ],
       "domains": [
         "D3"
@@ -2390,7 +2390,7 @@ const TRACKER_DATA = {
       "priority": 169,
       "topic": "Private API timeout = Resource Policy rejection (not always network)",
       "questions": [
-        "Q1025"
+        "S97-Q1025"
       ],
       "domains": [
         "D3",
@@ -2403,7 +2403,7 @@ const TRACKER_DATA = {
       "priority": 170,
       "topic": "Access Grants + SSE-KMS needs explicit kms:Decrypt on role",
       "questions": [
-        "Q1026"
+        "S97-Q1026"
       ],
       "domains": [
         "D4",
@@ -2416,7 +2416,7 @@ const TRACKER_DATA = {
       "priority": 171,
       "topic": "Well-Architected Tool = architecture review + improvement plan",
       "questions": [
-        "Q1031"
+        "S97-Q1031"
       ],
       "domains": [
         "D6"
@@ -2428,7 +2428,7 @@ const TRACKER_DATA = {
       "priority": 172,
       "topic": "IoT Core = registry-based revocation (instant)",
       "questions": [
-        "Q1035"
+        "S97-Q1035"
       ],
       "domains": [
         "D3"
@@ -2440,7 +2440,7 @@ const TRACKER_DATA = {
       "priority": 173,
       "topic": "Key policy conditions enforced regardless of caller's identity policy",
       "questions": [
-        "Q1040"
+        "S97-Q1040"
       ],
       "domains": [
         "D4",
@@ -2453,7 +2453,7 @@ const TRACKER_DATA = {
       "priority": 174,
       "topic": "Inspector SBOM = on-demand API (EventBridge + Lambda to schedule)",
       "questions": [
-        "Q1051"
+        "S97-Q1051"
       ],
       "domains": [
         "D3"
@@ -2465,7 +2465,7 @@ const TRACKER_DATA = {
       "priority": 175,
       "topic": "Hardcoded credential \u2192 always Secrets Manager",
       "questions": [
-        "Q1054"
+        "S97-Q1054"
       ],
       "domains": [
         "D3"
@@ -2477,7 +2477,7 @@ const TRACKER_DATA = {
       "priority": 176,
       "topic": "mTLS 403 = cert expired (if same CA works for others)",
       "questions": [
-        "Q1055"
+        "S97-Q1055"
       ],
       "domains": [
         "D3"
@@ -2489,7 +2489,7 @@ const TRACKER_DATA = {
       "priority": 177,
       "topic": "RCP evaluates S3 CALLER (Lambda), not original HTTP client",
       "questions": [
-        "Q1074"
+        "S98-Q1074"
       ],
       "domains": [
         "D4",
@@ -2502,7 +2502,7 @@ const TRACKER_DATA = {
       "priority": 178,
       "topic": "CRR preserves source custom encryption context",
       "questions": [
-        "Q1075"
+        "S98-Q1075"
       ],
       "domains": [
         "D5"
@@ -2514,7 +2514,7 @@ const TRACKER_DATA = {
       "priority": 179,
       "topic": "Lambda = no EBS/AMI forensics (ephemeral)",
       "questions": [
-        "Q1079"
+        "S98-Q1079"
       ],
       "domains": [
         "D3",
@@ -2527,7 +2527,7 @@ const TRACKER_DATA = {
       "priority": 180,
       "topic": "OutsideAWS + can't disrupt = TokenIssueTime + snapshot",
       "questions": [
-        "Q1108"
+        "S98-Q1108"
       ],
       "domains": [
         "D2"
@@ -2539,7 +2539,7 @@ const TRACKER_DATA = {
       "priority": 181,
       "topic": "Cron vs Rate vs PITR",
       "questions": [
-        "Q1124"
+        "S99-Q1124"
       ],
       "domains": [
         "D5"
@@ -2551,7 +2551,7 @@ const TRACKER_DATA = {
       "priority": 182,
       "topic": "Traffic Mirroring = passive. GWLB = inline. 3x failed.",
       "questions": [
-        "Q1126"
+        "S99-Q1126"
       ],
       "domains": [
         "D3"
@@ -2563,7 +2563,7 @@ const TRACKER_DATA = {
       "priority": 183,
       "topic": "State Manager = schedule enforcement (proactive)",
       "questions": [
-        "Q1127"
+        "S99-Q1127"
       ],
       "domains": [
         "D1",
@@ -2576,7 +2576,7 @@ const TRACKER_DATA = {
       "priority": 184,
       "topic": "Session Manager logging = session activity (not CW Agent)",
       "questions": [
-        "Q1132"
+        "S99-Q1132"
       ],
       "domains": [
         "D2"
@@ -2588,7 +2588,7 @@ const TRACKER_DATA = {
       "priority": 185,
       "topic": "DNSSEC broken chain = DS in parent",
       "questions": [
-        "Q1135"
+        "S99-Q1135"
       ],
       "domains": [
         "D3"
@@ -2600,7 +2600,7 @@ const TRACKER_DATA = {
       "priority": 186,
       "topic": "Stack Policy = protect resources inside stack",
       "questions": [
-        "Q1138"
+        "S99-Q1138"
       ],
       "domains": [
         "D6"
@@ -2612,7 +2612,7 @@ const TRACKER_DATA = {
       "priority": 187,
       "topic": "Federated user ARN = sts:: not iam::",
       "questions": [
-        "Q1139"
+        "S99-Q1139"
       ],
       "domains": [
         "D4"
@@ -2624,7 +2624,7 @@ const TRACKER_DATA = {
       "priority": 188,
       "topic": "SCP = what key, Key policy = who uses it",
       "questions": [
-        "Q1140"
+        "S99-Q1140"
       ],
       "domains": [
         "D4",
@@ -2637,7 +2637,7 @@ const TRACKER_DATA = {
       "priority": 189,
       "topic": "mTLS = custom domain + S3",
       "questions": [
-        "Q1172"
+        "S100-Q1172"
       ],
       "domains": [
         "D3"
@@ -2649,7 +2649,7 @@ const TRACKER_DATA = {
       "priority": 190,
       "topic": "Bedrock guardrail condition key",
       "questions": [
-        "Q1187"
+        "S100-Q1187"
       ],
       "domains": [
         "D3"
@@ -2666,6 +2666,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 1,
+          "session_num": 1,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "S3 bucket exfiltrated object-by-object \u2014 which CloudTrail event type? Enabled by default?",
@@ -2677,6 +2678,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 2,
+          "session_num": 1,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda `UpdProdCount` \u2014 most flexible way to log invocations?",
@@ -2688,6 +2690,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 3,
+          "session_num": 1,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Session Manager \u2014 security advantage from network perspective?",
@@ -2699,6 +2702,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 4,
+          "session_num": 1,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "NACLs or Security Groups \u2014 which is stateless and needs ephemeral ports?",
@@ -2710,6 +2714,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 5,
+          "session_num": 1,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect public S3 buckets org-wide with least overhead?",
@@ -2721,6 +2726,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 6,
+          "session_num": 1,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda stopped logging \u2014 Config + what?",
@@ -2732,6 +2738,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 7,
+          "session_num": 1,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Resource-based policy vs RCP \u2014 difference?",
@@ -2743,6 +2750,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 8,
+          "session_num": 1,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Can you rotate imported KMS key material?",
@@ -2754,6 +2762,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 9,
+          "session_num": 1,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS imported key \u2014 who owns durability?",
@@ -2765,6 +2774,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 10,
+          "session_num": 1,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Import NEW material into EXISTING key?",
@@ -2776,6 +2786,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 11,
+          "session_num": 1,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Why can't you use RAM for KMS cross-account?",
@@ -2787,6 +2798,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 12,
+          "session_num": 1,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RAM vs RCP \u2014 difference?",
@@ -2798,6 +2810,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 13,
+          "session_num": 1,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Suspicious root login attempts \u2014 GuardDuty vs CloudTrail + CloudWatch?",
@@ -2809,6 +2822,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 14,
+          "session_num": 1,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda in private subnet \u2014 restrict domain lookup to one domain?",
@@ -2820,6 +2834,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 15,
+          "session_num": 1,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Cross-account S3 + SSE-KMS \u2014 how many policies needed?",
@@ -2831,6 +2846,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 16,
+          "session_num": 1,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "When to use RCP \u2014 identify the use case?",
@@ -2842,6 +2858,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 17,
+          "session_num": 1,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty \u2014 what is it responsible for?",
@@ -2853,6 +2870,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 18,
+          "session_num": 1,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Security Hub setup order \u2014 4 steps?",
@@ -2864,6 +2882,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 19,
+          "session_num": 1,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "`aws:PrincipalIsAWSService` \u2014 when to use?",
@@ -2875,6 +2894,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 20,
+          "session_num": 1,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "VPC endpoints \u2014 why 3 for Session Manager?",
@@ -2893,6 +2913,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 21,
+          "session_num": 2,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Root user API calls from unexpected country \u2014 detect + isolate with least overhead?",
@@ -2904,6 +2925,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 22,
+          "session_num": 2,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Log only `Prod-*` Lambda invocations, exclude read-only, queryable in Lake?",
@@ -2915,6 +2937,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 23,
+          "session_num": 2,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "What is CloudTrail Lake? What problem does it solve?",
@@ -2933,6 +2956,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 24,
+          "session_num": 3,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "200 accounts, detect public S3 buckets org-wide, least overhead \u2014 Config conformance pack vs Security Hub vs Macie vs Lambda?",
@@ -2944,6 +2968,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 25,
+          "session_num": 3,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Investigate credential compromise across 15 accounts, need SQL + dashboards + fast results \u2014 Athena vs Lake vs CloudWatch Logs vs OpenSearch?",
@@ -2962,6 +2987,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 26,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda in private subnet making DNS queries to C2 domains \u2014 block immediately?",
@@ -2973,6 +2999,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 27,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "ALB receiving credential-stuffing from single IP \u2014 block?",
@@ -2984,6 +3011,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 28,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Detect malware signatures in egress traffic, have Suricata rules?",
@@ -2995,6 +3023,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 29,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "SG opened to 0.0.0.0/0 in 150 accounts \u2014 auto-detect and fix org-wide?",
@@ -3006,6 +3035,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 30,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "40 Gbps UDP DDoS, bill spiking, want AWS to credit scaling costs?",
@@ -3017,6 +3047,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 31,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "EC2 needs to reach only api.stripe.com, cheapest layer to block?",
@@ -3028,6 +3059,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 32,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Ensure all 300 accounts have same WAF rules on ALBs, auto for new accounts?",
@@ -3039,6 +3071,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 33,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Data encoded in DNS subdomain queries (exfiltration) \u2014 block?",
@@ -3050,6 +3083,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 34,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "NACL allows inbound 443, SG allows 443, web server not responding?",
@@ -3061,6 +3095,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 35,
+          "session_num": 4,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Decrypt TLS traffic, inspect plaintext for malware, re-encrypt?",
@@ -3079,6 +3114,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 36,
+          "session_num": 5,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Dev puts Principal:* on bucket policy, external attacker reads objects. Block all external S3 access org-wide without modifying bucket policies \u2014 which policy type and why not SCP?",
@@ -3090,6 +3126,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 37,
+          "session_num": 5,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "300 customers need Decrypt on your KMS key, onboard/offboard weekly. Junior suggests RAM \u2014 why won't it work?",
@@ -3101,6 +3138,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 38,
+          "session_num": 5,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "One sentence each: what problem does RAM solve vs RCP?",
@@ -3119,6 +3157,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 39,
+          "session_num": 6,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SLR in Account A does PutObject, RCP denies non-org principals \u2014 does SLR succeed?",
@@ -3130,6 +3169,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 40,
+          "session_num": 6,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role identity policy allows kms:Decrypt, boundary only allows s3:* and ec2:* \u2014 what happens?",
@@ -3141,6 +3181,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 41,
+          "session_num": 6,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "External Account B assumes role in Account A, role allows s3:GetObject, SCP allows all, no RCP \u2014 succeeds?",
@@ -3152,6 +3193,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 42,
+          "session_num": 6,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies kms:Decrypt for external principals. CloudTrail needs to decrypt \u2014 blocked?",
@@ -3163,6 +3205,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 43,
+          "session_num": 6,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role: identity=Allow s3:*, boundary=Allow GetObject+ListBucket only. Calls PutObject?",
@@ -3181,6 +3224,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 44,
+          "session_num": 7,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies s3:* for non-org. ELB SLR writes access logs to S3 \u2014 blocked?",
@@ -3192,6 +3236,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 45,
+          "session_num": 7,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity allows s3:*, boundary allows s3:Get* only. Calls s3:DeleteObject?",
@@ -3203,6 +3248,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 46,
+          "session_num": 7,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "400 external accounts need Decrypt, key policy at 30KB \u2014 mechanism?",
@@ -3214,6 +3260,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 47,
+          "session_num": 7,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role chaining A\u2192B\u2192C, Role C MaxSessionDuration=12hr \u2014 actual max?",
@@ -3225,6 +3272,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 48,
+          "session_num": 7,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "External account calls s3:GetObject, bucket policy grants access, no RCP \u2014 need identity policy?",
@@ -3243,6 +3291,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 49,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Developer creates role with AdministratorAccess \u2014 prevent escalation?",
@@ -3254,6 +3303,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 50,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Block external S3 access org-wide even with Principal:* bucket policy?",
@@ -3265,6 +3315,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 51,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Federated Okta user needs project-scoped S3 access without per-user policies?",
@@ -3276,6 +3327,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 52,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role chaining A\u2192B\u2192C, Role C MaxSessionDuration=12hr \u2014 actual max?",
@@ -3287,6 +3339,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 53,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account KMS decrypt \u2014 minimum policies needed?",
@@ -3298,6 +3351,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 54,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Can GetCallerIdentity be denied by SCP?",
@@ -3309,6 +3363,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 55,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies kms:Decrypt with PrincipalIsAWSService:false. AWS Config decrypts?",
@@ -3320,6 +3375,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 56,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity allows ec2:*, boundary allows RunInstances+Describe only. TerminateInstances?",
@@ -3331,6 +3387,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 57,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Share Transit Gateway with 30 dev accounts in org?",
@@ -3342,6 +3399,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 58,
+          "session_num": 8,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies s3:DeleteBucket. Role identity allows s3:*. DeleteBucket?",
@@ -3360,6 +3418,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 59,
+          "session_num": 9,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account S3+KMS: bucket policy + identity policy correct, forgot KMS key policy \u2014 what error?",
@@ -3371,6 +3430,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 60,
+          "session_num": 9,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Vendor needs to assume role in your account, prevent confused deputy \u2014 condition key?",
@@ -3382,6 +3442,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 61,
+          "session_num": 9,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SaaS app needs \"Can user X edit doc Y in tenant Z?\" at runtime \u2014 IAM or VP?",
@@ -3393,6 +3454,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 62,
+          "session_num": 9,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Compromised role with active STS sessions \u2014 revoke immediately?",
@@ -3404,6 +3466,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 63,
+          "session_num": 9,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Federated user from Okta, SAML assertion includes Project=Phoenix \u2014 what condition key evaluates this?",
@@ -3422,6 +3485,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 64,
+          "session_num": 10,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Okta workforce SSO into 50 accounts with temp creds \u2014 which service?",
@@ -3433,6 +3497,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 65,
+          "session_num": 10,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Broad role, need narrow creds for downstream Lambda \u2014 mechanism?",
@@ -3444,6 +3509,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 66,
+          "session_num": 10,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Multi-tenant SaaS \"Can editor Bob update invoice-789 in tenant Acme?\" \u2014 which service?",
@@ -3455,6 +3521,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 67,
+          "session_num": 10,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Employee signs in via Identity Center \u2014 what does permission set become?",
@@ -3466,6 +3533,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 68,
+          "session_num": 10,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Enforce CostCenter tag on all EC2 creation org-wide \u2014 where + condition key?",
@@ -3484,6 +3552,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 69,
+          "session_num": 11,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "50 customers/month need kms:Decrypt, grant/revoke without key policy edits?",
@@ -3495,6 +3564,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 70,
+          "session_num": 11,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account KMS: key policy grants Account B root, identity policy correct, still AccessDenied?",
@@ -3506,6 +3576,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 71,
+          "session_num": 11,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Exfiltrated role credentials, active sessions making calls \u2014 revoke immediately?",
@@ -3517,6 +3588,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 72,
+          "session_num": 11,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Okta team attribute \u2192 EC2 access by team tag, no per-team policies \u2014 which two?",
@@ -3528,6 +3600,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 73,
+          "session_num": 11,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Enforce CostCenter tag on all EC2 launches org-wide?",
@@ -3546,6 +3619,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 74,
+          "session_num": 12,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "80 accounts, block external S3 access org-wide, exempt AWS services \u2014 which two?",
@@ -3557,6 +3631,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 75,
+          "session_num": 12,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Multi-tenant SaaS \"editors edit own tenant docs\" \u2014 centralized authz?",
@@ -3568,6 +3643,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 76,
+          "session_num": 12,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Boundary delegation + must tag with own team \u2014 how many Deny statements?",
@@ -3579,6 +3655,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 77,
+          "session_num": 12,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies non-org KMS access, same-org Account B calls Decrypt \u2014 blocked?",
@@ -3590,6 +3667,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 78,
+          "session_num": 12,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, session=GetObject+PutObject \u2014 DeleteObject?",
@@ -3608,6 +3686,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 79,
+          "session_num": 13,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity Center + Okta, engineers access EC2 by project tag, no per-engineer policies \u2014 approach?",
@@ -3619,6 +3698,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 80,
+          "session_num": 13,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Boundary allows s3+ec2+logs, identity policy allows *, attempt kms:Encrypt?",
@@ -3630,6 +3710,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 81,
+          "session_num": 13,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account KMS: key policy grants Account B root, identity policy allows Decrypt, no SCP restriction \u2014 result?",
@@ -3641,6 +3722,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 82,
+          "session_num": 13,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Block external principals from S3 org-wide even if bucket policy says Principal:* \u2014 solution?",
@@ -3652,6 +3734,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 83,
+          "session_num": 13,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Lambda in Account B calls S3 in Account A, bucket policy names role ARN directly, Account B SCP denies s3:GetObject \u2014 succeeds?",
@@ -3670,6 +3753,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 84,
+          "session_num": 14,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DynamoDB Global Table + MRK, reads fail in eu-west-1 with AccessDenied on KMS \u2014 cause?",
@@ -3681,6 +3765,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 85,
+          "session_num": 14,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 objects immutable for 5 years, root can't delete \u2014 what combination?",
@@ -3692,6 +3777,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 86,
+          "session_num": 14,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "App in private subnet (no NAT) needs Secrets Manager \u2014 minimum infra?",
@@ -3703,6 +3789,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 87,
+          "session_num": 14,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Network Firewall TLS inspection \u2014 users get cert warnings \u2014 what's missing?",
@@ -3714,6 +3801,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 88,
+          "session_num": 14,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Mask credit cards in CloudWatch Logs without code changes \u2014 Macie?",
@@ -3732,6 +3820,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 89,
+          "session_num": 15,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Network Firewall TLS inspection \u2014 users get cert warnings \u2014 root cause?",
@@ -3743,6 +3832,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 90,
+          "session_num": 15,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DynamoDB Global Table + MRK, reads fail in eu-west-1 with AccessDenied on KMS \u2014 cause?",
@@ -3754,6 +3844,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 91,
+          "session_num": 15,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 objects immutable for 5 years, root can't delete, auto-deletable after \u2014 config?",
@@ -3772,6 +3863,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 92,
+          "session_num": 16,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Lambda in Account B calls S3 in Account A, bucket policy names role ARN, Account B SCP denies s3:GetObject \u2014 succeeds?",
@@ -3783,6 +3875,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 93,
+          "session_num": 16,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role identity=s3:*, no boundary, session policy=GetObject+PutObject only \u2014 DeleteObject?",
@@ -3794,6 +3887,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 94,
+          "session_num": 16,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Okta Team=Platform attribute, restrict StartInstances/StopInstances to matching EC2 tag \u2014 condition?",
@@ -3805,6 +3899,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 95,
+          "session_num": 16,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account KMS: key policy grants Account B root, identity policy correct, AccessDenied \u2014 cause?",
@@ -3816,6 +3911,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 96,
+          "session_num": 16,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, session=GetObject+ListBucket, same-account bucket policy grants PutObject \u2014 PutObject?",
@@ -3834,6 +3930,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 97,
+          "session_num": 17,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies s3:PutObject without Env tag. Config SLR writes snapshot (no tags) \u2014 succeeds?",
@@ -3845,6 +3942,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 98,
+          "session_num": 17,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role identity=s3:*, session policy=GetObject only, same-account bucket policy grants role PutObject \u2014 PutObject?",
@@ -3856,6 +3954,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 99,
+          "session_num": 17,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "200 accounts, detect public S3 buckets org-wide, least overhead \u2014 Config conformance pack vs Security Hub vs Macie vs Lambda?",
@@ -3874,6 +3973,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 100,
+          "session_num": 18,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "SSE-KMS buckets, detect external decryption \u2014 which service?",
@@ -3885,6 +3985,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 101,
+          "session_num": 18,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CreateGrant \u2192 partner gets AccessDenied immediately, works 30s later \u2014 fix?",
@@ -3896,6 +3997,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 102,
+          "session_num": 18,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key material never in AWS + native S3 SSE-KMS integration \u2014 which option?",
@@ -3907,6 +4009,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 103,
+          "session_num": 18,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Global Table + MRK, reads fail in eu-west-1, primary key policy correct \u2014 cause?",
@@ -3918,6 +4021,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 104,
+          "session_num": 18,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secret rotated, open DB connection still works \u2014 why?",
@@ -3936,6 +4040,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 105,
+          "session_num": 19,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS buckets, CISO wants alerts when external accounts decrypt, least overhead?",
@@ -3947,6 +4052,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 106,
+          "session_num": 19,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda making DNS queries to known C2 domain \u2014 detect and generate finding, don't block yet?",
@@ -3958,6 +4064,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 107,
+          "session_num": 19,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Confirmed C2 \u2014 block DNS resolution to that domain VPC-wide immediately?",
@@ -3969,6 +4076,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 108,
+          "session_num": 19,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "300 accounts, dashboard for public S3 + unencrypted EBS + CIS compliance score, least overhead?",
@@ -3980,6 +4088,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 109,
+          "session_num": 19,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 exfiltrating data at 3 AM \u2014 determine who launched it, role used, other resources accessed in 48hr?",
@@ -3998,6 +4107,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 110,
+          "session_num": 20,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity Center permission set=s3:*+ec2:*, boundary=s3:* only \u2014 ec2:DescribeInstances?",
@@ -4009,6 +4119,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 111,
+          "session_num": 20,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account S3, bucket policy grants role ARN, Account B SCP denies s3:GetObject \u2014 succeeds?",
@@ -4020,6 +4131,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 112,
+          "session_num": 20,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspect egress for malware (Suricata) + block C2 DNS \u2014 which TWO services?",
@@ -4031,6 +4143,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 113,
+          "session_num": 20,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Private subnet EC2 needs Secrets Manager, no NAT/IGW \u2014 minimum infra?",
@@ -4042,6 +4155,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 114,
+          "session_num": 20,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Imported key material \u2014 how to rotate?",
@@ -4053,6 +4167,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 115,
+          "session_num": 20,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CreateGrant \u2192 partner gets AccessDenied immediately, works 30s later \u2014 fix?",
@@ -4064,6 +4179,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 116,
+          "session_num": 20,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect credentials used from Tor exit node \u2014 which service, zero custom code?",
@@ -4075,6 +4191,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 117,
+          "session_num": 20,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Query CloudTrail across 50 accounts, SQL, near real-time, dashboards, no S3/Athena?",
@@ -4086,6 +4203,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 118,
+          "session_num": 20,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "EC2 communicating with C2 \u2014 first 3 IR steps?",
@@ -4097,6 +4215,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 119,
+          "session_num": 20,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent disabling GuardDuty/CloudTrail/Flow Logs org-wide, auto for new accounts?",
@@ -4115,6 +4234,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 120,
+          "session_num": 21,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies PutObject without Env tag, Config SLR writes snapshot (no tags) \u2014 succeeds?",
@@ -4126,6 +4246,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 121,
+          "session_num": 21,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect root access key creation in any member account, zero code?",
@@ -4137,6 +4258,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 122,
+          "session_num": 21,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Network Firewall TLS inspection \u2014 users get cert warnings \u2014 root cause?",
@@ -4148,6 +4270,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 123,
+          "session_num": 21,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Global Table + MRK, reads fail in eu-west-1, primary key policy correct \u2014 cause?",
@@ -4159,6 +4282,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 124,
+          "session_num": 21,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, session=GetObject only \u2014 DeleteObject?",
@@ -4170,6 +4294,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 125,
+          "session_num": 21,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "After isolating compromised EC2 (deny-all SG), next step?",
@@ -4181,6 +4306,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 126,
+          "session_num": 21,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Share DNS Firewall rule groups from security account to all members, auto for new accounts?",
@@ -4192,6 +4318,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 127,
+          "session_num": 21,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 immutable 7 years, root can't delete, auto-expire after \u2014 config?",
@@ -4203,6 +4330,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 128,
+          "session_num": 21,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Normalize CloudTrail + VPC Flow + GuardDuty + WAF into common schema, own S3 bucket?",
@@ -4214,6 +4342,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 129,
+          "session_num": 21,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda resolve only 2 domains, block all else \u2014 service + rule structure?",
@@ -4232,6 +4361,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 130,
+          "session_num": 22,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "200 accounts, same WAF rules on all ALBs, auto-remediate \u2014 which service?",
@@ -4243,6 +4373,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 131,
+          "session_num": 22,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Share Transit Gateway from networking account to dev OU \u2014 which service?",
@@ -4254,6 +4385,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 132,
+          "session_num": 22,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda connecting to botnet IP, want security finding auto-generated \u2014 which service?",
@@ -4265,6 +4397,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 133,
+          "session_num": 22,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies s3:* for non-org, ELB SLR writes access logs \u2014 blocked?",
@@ -4276,6 +4409,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 134,
+          "session_num": 22,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Block all DNS except 3 domains, ALERT on \"crypto\" queries \u2014 rule structure?",
@@ -4287,6 +4421,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 135,
+          "session_num": 22,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "AWS_KMS key, auto-rotation enabled, can old ciphertext still be decrypted?",
@@ -4298,6 +4433,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 136,
+          "session_num": 22,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "IAM role used from unexpected country, visualize blast radius \u2014 which service?",
@@ -4309,6 +4445,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 137,
+          "session_num": 22,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account KMS: key policy grants B, identity policy allows, no SCP \u2014 result?",
@@ -4320,6 +4457,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 138,
+          "session_num": 22,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Multi-step IR: isolate \u2192 snapshot \u2192 tag \u2192 notify \u2014 which service orchestrates?",
@@ -4331,6 +4469,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 139,
+          "session_num": 22,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "After rotation, old DB connections still work \u2014 why?",
@@ -4349,6 +4488,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 140,
+          "session_num": 23,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 connecting to botnet IP, want finding auto-generated, zero code \u2014 which service?",
@@ -4360,6 +4500,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 141,
+          "session_num": 23,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "\"Which S3 buckets accessible by external accounts?\" \u2014 which service?",
@@ -4371,6 +4512,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 142,
+          "session_num": 23,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty finding type for credentials used from Tor exit node?",
@@ -4382,6 +4524,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 143,
+          "session_num": 23,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Compromised role, determine other resources accessed in 48hr, visualize blast radius?",
@@ -4393,6 +4536,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 144,
+          "session_num": 23,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "External access vs unused access in IAM Access Analyzer \u2014 one sentence each?",
@@ -4404,6 +4548,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 145,
+          "session_num": 23,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Multi-step IR: isolate \u2192 snapshot \u2192 tag \u2192 notify \u2014 which service orchestrates?",
@@ -4415,6 +4560,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 146,
+          "session_num": 23,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Share DNS Firewall rule groups to all 200 member accounts \u2014 which service?",
@@ -4426,6 +4572,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 147,
+          "session_num": 23,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Ensure all ALBs across 200 accounts have same WAF rules, auto-remediate \u2014 which service?",
@@ -4437,6 +4584,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 148,
+          "session_num": 23,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Before full IR, what should you do first with the GuardDuty finding?",
@@ -4448,6 +4596,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 149,
+          "session_num": 23,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Dedicated Direct Connect, Layer 2 encryption \u2014 which feature?",
@@ -4466,6 +4615,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 150,
+          "session_num": 24,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "200 accounts, dashboard: unencrypted S3/EBS + CIS score, least overhead?",
@@ -4477,6 +4627,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 151,
+          "session_num": 24,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "600 customers need kms:Decrypt, key policy at 28KB, onboard/offboard weekly?",
@@ -4488,6 +4639,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 152,
+          "session_num": 24,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Network Firewall TLS inspection \u2014 users get cert warnings \u2014 root cause?",
@@ -4499,6 +4651,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 153,
+          "session_num": 24,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS buckets, alert when external account decrypts, least overhead?",
@@ -4510,6 +4663,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 154,
+          "session_num": 24,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty finding for credentials used from anonymizing proxy \u2014 finding type pattern?",
@@ -4528,6 +4682,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 155,
+          "session_num": 25,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty finding type for EC2 mining Bitcoin?",
@@ -4539,6 +4694,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 156,
+          "session_num": 25,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS, want to KNOW when external account decrypts, least overhead \u2014 GuardDuty or CloudTrail?",
@@ -4550,6 +4706,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 157,
+          "session_num": 25,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Network Firewall TLS inspection CA cert \u2014 public, private, or self-signed?",
@@ -4561,6 +4718,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 158,
+          "session_num": 25,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Credentials used from unusual geographic location, notify, least overhead?",
@@ -4572,6 +4730,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 159,
+          "session_num": 25,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 communicating with C2 server, alert with zero custom code?",
@@ -4590,6 +4749,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 160,
+          "session_num": 26,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "100 accounts SSE-KMS, alert external decryption, least overhead?",
@@ -4601,6 +4761,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 161,
+          "session_num": 26,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty finding type for EC2 mining cryptocurrency?",
@@ -4612,6 +4773,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 162,
+          "session_num": 26,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Credentials from Tor exit node \u2014 GuardDuty or Access Analyzer?",
@@ -4623,6 +4785,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 163,
+          "session_num": 26,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Block external S3 access org-wide without modifying bucket policies?",
@@ -4634,6 +4797,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 164,
+          "session_num": 26,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Encrypt between EC2 (C6i), no code changes, least overhead?",
@@ -4645,6 +4809,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 165,
+          "session_num": 26,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Global Table + MRK, reads fail eu-west-1, primary key policy correct?",
@@ -4656,6 +4821,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 166,
+          "session_num": 26,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda private subnet, no NAT, needs Secrets Manager \u2014 minimum infra? (TWO)",
@@ -4667,6 +4833,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 167,
+          "session_num": 26,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "EC2 communicating with C2, first action?",
@@ -4678,6 +4845,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 168,
+          "session_num": 26,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "300 accounts, same WAF on all ALBs, auto-remediate, new accounts?",
@@ -4689,6 +4857,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 169,
+          "session_num": 26,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, session=Get+Put, bucket policy grants Delete \u2014 DeleteObject?",
@@ -4700,6 +4869,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 170,
+          "session_num": 26,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Normalize CloudTrail + VPC Flow + GuardDuty + third-party into single schema, own S3?",
@@ -4711,6 +4881,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 171,
+          "session_num": 26,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies PutObject without Env tag, Config SLR writes snapshot (no tags)?",
@@ -4722,6 +4893,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 172,
+          "session_num": 26,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Imported key material \u2014 how to rotate?",
@@ -4733,6 +4905,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 173,
+          "session_num": 26,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Compromised role, active sessions, revoke immediately?",
@@ -4744,6 +4917,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 174,
+          "session_num": 26,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Okta Team attribute \u2192 EC2 access by team tag, no per-team policies? (TWO)",
@@ -4755,6 +4929,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 175,
+          "session_num": 26,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CreateGrant \u2192 partner AccessDenied immediately, works 30s later?",
@@ -4766,6 +4941,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 176,
+          "session_num": 26,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Third-party vendor assumes role, prevent confused deputy?",
@@ -4777,6 +4953,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 177,
+          "session_num": 26,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Query CloudTrail 50 accounts, SQL, near real-time, dashboards, no S3/Athena?",
@@ -4788,6 +4965,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 178,
+          "session_num": 26,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 querying DNS domains for Bitcoin mining pools \u2014 finding type?",
@@ -4799,6 +4977,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 179,
+          "session_num": 26,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role in Account B, SCP denies GetObject, bucket policy in A grants role ARN \u2014 result?",
@@ -4810,6 +4989,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 180,
+          "session_num": 26,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect external S3 access (misconfig) + detect EC2 malicious IP (threat) \u2014 which TWO?",
@@ -4821,6 +5001,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 181,
+          "session_num": 26,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Mask credit cards in CloudWatch Logs, no code changes, restrict who sees raw?",
@@ -4832,6 +5013,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 182,
+          "session_num": 26,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Dedicated Direct Connect, Layer 2 encryption?",
@@ -4850,6 +5032,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 183,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies s3:* for non-org, ELB SLR writes access logs \u2014 blocked?",
@@ -4861,6 +5044,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 184,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Validate policy for security issues BEFORE deploying \u2014 which service?",
@@ -4872,6 +5056,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 185,
+          "session_num": 27,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "EC2 private subnet needs S3 + DynamoDB, no internet \u2014 endpoint types? (TWO)",
@@ -4883,6 +5068,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 186,
+          "session_num": 27,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secret rotated, open DB connections still work \u2014 why?",
@@ -4894,6 +5080,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 187,
+          "session_num": 27,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Role used from never-seen IP, zero code \u2014 which service?",
@@ -4905,6 +5092,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 188,
+          "session_num": 27,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 immutable 3 years, root can't delete, auto-expire after?",
@@ -4916,6 +5104,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 189,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, attempt kms:Encrypt?",
@@ -4927,6 +5116,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 190,
+          "session_num": 27,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty finding Policy:IAMUser/RootCredentialUsage \u2014 what happened?",
@@ -4938,6 +5128,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 191,
+          "session_num": 27,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent disabling GuardDuty/CloudTrail/Flow Logs org-wide?",
@@ -4949,6 +5140,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 192,
+          "session_num": 27,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS auto-rotation: how long are old key material versions kept?",
@@ -4960,6 +5152,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 193,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies s3:* non-org, ELB SLR writes \u2014 blocked? (re-test)",
@@ -4971,6 +5164,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 194,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Validate policy before deploying \u2014 which service? (re-test)",
@@ -4982,6 +5176,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 195,
+          "session_num": 27,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Role from unusual IP, zero code \u2014 which service? (re-test)",
@@ -4993,6 +5188,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 196,
+          "session_num": 27,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS auto-rotation: how long kept? (re-test)",
@@ -5004,6 +5200,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 197,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account KMS: key policy grants B root, identity allows, no SCP \u2014 result?",
@@ -5015,6 +5212,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 198,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies RunInstances without CostCenter tag, dev launches without tag?",
@@ -5026,6 +5224,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 199,
+          "session_num": 27,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Mask SSNs in CW Logs, no code changes, restrict raw access? (TWO)",
@@ -5037,6 +5236,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 200,
+          "session_num": 27,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Session=GetObject only, cross-account bucket policy grants session PutObject \u2014 result?",
@@ -5048,6 +5248,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 201,
+          "session_num": 27,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Exfiltration:S3/AnomalousBehavior \u2014 what does it indicate?",
@@ -5059,6 +5260,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 202,
+          "session_num": 27,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Dedicated DX, encryption without latency?",
@@ -5070,6 +5272,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 203,
+          "session_num": 27,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CMK scheduled for deletion, discovered 3 days later \u2014 what to do?",
@@ -5081,6 +5284,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 204,
+          "session_num": 27,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Block C2 domain resolution VPC-wide immediately?",
@@ -5092,6 +5296,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 205,
+          "session_num": 27,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Access Analyzer finds external SQS access + GuardDuty enabled \u2014 what does each tell you?",
@@ -5103,6 +5308,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 206,
+          "session_num": 27,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Lambda has kms:GenerateDataKey in identity policy, key policy grants account root \u2014 succeeds?",
@@ -5121,6 +5327,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 207,
+          "session_num": 28,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies kms:Decrypt non-org + PrincipalIsAWSService:false. CloudTrail decrypts \u2014 blocked?",
@@ -5132,6 +5339,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 208,
+          "session_num": 28,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "SG opened to 0.0.0.0/0 across 200 accounts, auto-detect + revert \u2014 which service?",
@@ -5143,6 +5351,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 209,
+          "session_num": 28,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "DNS Firewall: allow only 2 domains, block all else \u2014 rule structure?",
@@ -5154,6 +5363,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 210,
+          "session_num": 28,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity Center employee selects permission set \u2014 what does it become?",
@@ -5165,6 +5375,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 211,
+          "session_num": 28,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Lambda uploads to S3 with SSE-KMS \u2014 which KMS permission needed?",
@@ -5176,6 +5387,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 212,
+          "session_num": 28,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Role chaining A\u2192B\u2192C, Role C MaxSessionDuration=12hr \u2014 actual max?",
@@ -5187,6 +5399,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 213,
+          "session_num": 28,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty Runtime Monitoring for EKS \u2014 what extra component needed?",
@@ -5198,6 +5411,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 214,
+          "session_num": 28,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Prevent CreateRole without boundary, org-wide?",
@@ -5209,6 +5423,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 215,
+          "session_num": 28,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail log file modified \u2014 how detected?",
@@ -5220,6 +5435,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 216,
+          "session_num": 28,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "\"Can editor Bob update invoice-789 in tenant Acme?\" \u2014 which service?",
@@ -5238,6 +5454,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 217,
+          "session_num": 29,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies s3:* non-org. Config SLR writes + CloudTrail writes \u2014 which succeed?",
@@ -5249,6 +5466,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 218,
+          "session_num": 29,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 actively sending traffic to Bitcoin mining pool \u2014 finding type?",
@@ -5260,6 +5478,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 219,
+          "session_num": 29,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Check new policy for security issues BEFORE attaching \u2014 which tool?",
@@ -5271,6 +5490,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 220,
+          "session_num": 29,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Mask PHI in CW Logs, only compliance officer sees raw \u2014 which TWO?",
@@ -5282,6 +5502,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 221,
+          "session_num": 29,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Session=GetObject only, bucket policy grants role PutObject \u2014 result?",
@@ -5293,6 +5514,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 222,
+          "session_num": 29,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies GetObject, bucket policy in Account A grants role ARN \u2014 result?",
@@ -5304,6 +5526,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 223,
+          "session_num": 29,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS rotated 3 times, decrypt data from original material 3 years ago?",
@@ -5315,6 +5538,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 224,
+          "session_num": 29,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Detect overly permissive SGs + detect malicious IP comms \u2014 which TWO?",
@@ -5326,6 +5550,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 225,
+          "session_num": 29,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key policy grants root only, Lambda identity has GenerateDataKey \u2014 succeeds?",
@@ -5337,6 +5562,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 226,
+          "session_num": 29,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 queries DNS for crypto domain, no connection yet \u2014 finding type?",
@@ -5355,6 +5581,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 227,
+          "session_num": 30,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 DNS queries to pool.minergate.com, no TCP connection yet \u2014 ThreatPurpose?",
@@ -5366,6 +5593,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 228,
+          "session_num": 30,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 actively sending traffic TO mining pool (connection established) \u2014 ThreatPurpose?",
@@ -5377,6 +5605,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 229,
+          "session_num": 30,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, session=GetObject only, same-account bucket policy grants role DeleteObject \u2014 succeeds?",
@@ -5388,6 +5617,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 230,
+          "session_num": 30,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Same as Q229 but caller's SCP denies DeleteObject \u2014 succeeds?",
@@ -5399,6 +5629,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 231,
+          "session_num": 30,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 queries DNS for known botnet C2 domain, no connection \u2014 ThreatPurpose?",
@@ -5417,6 +5648,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 232,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty enabled via delegated admin, one account has no findings despite production workloads \u2014 cause?",
@@ -5428,6 +5660,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 233,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect credentials used from never-seen IP, zero custom code \u2014 which service?",
@@ -5439,6 +5672,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 234,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Lake vs Security Lake \u2014 how do they store data?",
@@ -5450,6 +5684,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 235,
+          "session_num": 31,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "GuardDuty severity 8.5, EC2 communicating with C2 \u2014 first action?",
@@ -5461,6 +5696,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 236,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Query VPC Flow Logs in CloudWatch for top data sender \u2014 most efficient?",
@@ -5472,6 +5708,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 237,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "S3 logging enforcement across 300 accounts, auto-remediate within 1hr \u2014 which TWO?",
@@ -5483,6 +5720,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 238,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 private subnet, VPC Flow Logs not appearing in CloudWatch, CW agent installed \u2014 cause?",
@@ -5494,6 +5732,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 239,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "GuardDuty Recon finding, want to know what else attacker IP touched in 48hr \u2014 which service?",
@@ -5505,6 +5744,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 240,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "GuardDuty S3 Protection + RCP denying non-org, external attacker tries to read \u2014 what happens?",
@@ -5516,6 +5756,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 241,
+          "session_num": 31,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect CloudTrail StopLogging org-wide within 5 min, minimal setup \u2014 approach?",
@@ -5534,6 +5775,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 246,
+          "session_num": 32,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Lambda uploads to S3 with SSE-KMS \u2014 which KMS permission?",
@@ -5545,6 +5787,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 247,
+          "session_num": 32,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS key scheduled for deletion 5 days ago, 30-day wait \u2014 recover?",
@@ -5556,6 +5799,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 248,
+          "session_num": 32,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "Prevent S3 buckets without encryption org-wide \u2014 approach?",
@@ -5567,6 +5811,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 249,
+          "session_num": 32,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "EC2 private subnet needs S3 + DynamoDB, minimize cost \u2014 endpoint types?",
@@ -5578,6 +5823,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 250,
+          "session_num": 32,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Access keys leaked to GitHub \u2014 correct response sequence?",
@@ -5589,6 +5835,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 251,
+          "session_num": 32,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Control Tower prevent disabling GuardDuty \u2014 which mechanism?",
@@ -5600,6 +5847,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 252,
+          "session_num": 32,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies s3:* non-org, Config SLR writes snapshot \u2014 succeeds?",
@@ -5611,6 +5859,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 253,
+          "session_num": 32,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Validate policy for security issues BEFORE deploying \u2014 which tool?",
@@ -5622,6 +5871,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 254,
+          "session_num": 32,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secret rotated, old DB connection still works \u2014 why?",
@@ -5633,6 +5883,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 255,
+          "session_num": 32,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Encrypt between C6i instances, zero config \u2014 mechanism?",
@@ -5651,6 +5902,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 256,
+          "session_num": 33,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account Lambda \u2192 S3+KMS, all policies correct, still AccessDenied \u2014 cause?",
@@ -5662,6 +5914,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 257,
+          "session_num": 33,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Developers need CreateRole but can't escalate beyond s3+ec2 \u2014 mechanism?",
@@ -5673,6 +5926,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 258,
+          "session_num": 33,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DB credentials available in DR region if primary fails \u2014 which feature?",
@@ -5684,6 +5938,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 259,
+          "session_num": 33,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Suspect CloudTrail log file modified \u2014 how to verify integrity?",
@@ -5695,6 +5950,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 260,
+          "session_num": 33,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 immutable 7 years, root can't delete, auto-expire \u2014 config?",
@@ -5706,6 +5962,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 261,
+          "session_num": 33,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Enforce IMDSv2 org-wide, prevent non-compliant launches \u2014 approach?",
@@ -5717,6 +5974,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 262,
+          "session_num": 33,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda private subnet, no NAT, needs Secrets Manager \u2014 which TWO?",
@@ -5728,6 +5986,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 263,
+          "session_num": 33,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity Center + Okta + SCIM, new engineer joins Platform group \u2014 what happens?",
@@ -5739,6 +5998,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 264,
+          "session_num": 33,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key policy grants root only, engineer has s3:GetObject but no KMS perms \u2014 can they read?",
@@ -5750,6 +6010,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 265,
+          "session_num": 33,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Multi-tenant DynamoDB, restrict users to own tenant rows, no per-tenant policies?",
@@ -5768,6 +6029,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 266,
+          "session_num": 34,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account Lambda \u2192 S3+KMS, all correct, AccessDenied \u2014 cause?",
@@ -5779,6 +6041,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 267,
+          "session_num": 34,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DB credentials available in DR region if primary fails \u2014 which feature?",
@@ -5790,6 +6053,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 268,
+          "session_num": 34,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Enforce IMDSv2 org-wide, prevent non-compliant launches \u2014 approach?",
@@ -5801,6 +6065,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 269,
+          "session_num": 34,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity Center + Okta + SCIM, new engineer joins Platform group \u2014 what happens?",
@@ -5812,6 +6077,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 270,
+          "session_num": 34,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key policy grants root only, engineer has s3:GetObject but no KMS perms \u2014 can they read?",
@@ -5830,6 +6096,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 271,
+          "session_num": 35,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "HIPAA compliance, auto-collect evidence, generate report for auditor?",
@@ -5841,6 +6108,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 272,
+          "session_num": 35,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Auditor needs AWS's PCI DSS Attestation of Compliance \u2014 where?",
@@ -5852,6 +6120,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 273,
+          "session_num": 35,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy GuardDuty + Config + CloudTrail across 150 accounts, auto for new accounts?",
@@ -5863,6 +6132,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 274,
+          "session_num": 35,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Self-service S3/EC2 with encryption+logging baked in, devs don't need broad IAM?",
@@ -5874,6 +6144,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 275,
+          "session_num": 35,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "30 Config rules as single unit + auto-remediation + org-wide from delegated admin?",
@@ -5892,6 +6163,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 276,
+          "session_num": 36,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy GuardDuty + Config + CloudTrail across 200 accounts, auto for new accounts?",
@@ -5903,6 +6175,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 277,
+          "session_num": 36,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Self-service hardened EC2/S3, devs don't need broad IAM (ec2:RunInstances, s3:CreateBucket)?",
@@ -5914,6 +6187,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 278,
+          "session_num": 36,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Evidence that S3 encrypted + CloudTrail enabled, mapped to SOC 2 framework, generate report?",
@@ -5925,6 +6199,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 279,
+          "session_num": 36,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Proof that AWS infrastructure meets PCI DSS \u2014 where to get?",
@@ -5936,6 +6211,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 280,
+          "session_num": 36,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "25 Config rules + auto-remediation + single package + org-wide from delegated admin?",
@@ -5954,6 +6230,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 281,
+          "session_num": 37,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy GuardDuty + Config + CloudTrail across 200 accounts, auto for new accounts?",
@@ -5965,6 +6242,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 282,
+          "session_num": 37,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Junior dev needs VPC but only has servicecatalog:ProvisionProduct \u2014 how?",
@@ -5976,6 +6254,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 283,
+          "session_num": 37,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "StackSet deployed Config, developer disables recorder manually \u2014 what happens?",
@@ -5987,6 +6266,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 284,
+          "session_num": 37,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "200 accounts, same WAF on ALBs, auto for new accounts, re-apply if removed?",
@@ -5998,6 +6278,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 285,
+          "session_num": 37,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "SG opened to 0.0.0.0/0 port 22, auto-revert across 300 accounts?",
@@ -6009,6 +6290,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 286,
+          "session_num": 37,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "15 new accounts join OU, need CloudTrail+Config+GuardDuty immediately, zero manual?",
@@ -6020,6 +6302,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 287,
+          "session_num": 37,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Platform team \"Golden VPC\", app teams self-provision without ec2:CreateVpc?",
@@ -6031,6 +6314,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 288,
+          "session_num": 37,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Bedrock chatbot, prevent prompt injection + block PII in responses?",
@@ -6042,6 +6326,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 289,
+          "session_num": 37,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Mobile app, Cognito sign-in, needs temp AWS creds for S3 upload?",
@@ -6053,6 +6338,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 290,
+          "session_num": 37,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Verify EC2 reachable from internet without sending traffic?",
@@ -6064,6 +6350,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 291,
+          "session_num": 37,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS, alert external decryption, least overhead?",
@@ -6075,6 +6362,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 292,
+          "session_num": 37,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 active traffic to mining pool \u2014 ThreatPurpose?",
@@ -6086,6 +6374,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 293,
+          "session_num": 37,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 DNS query to mining pool, no connection \u2014 ThreatPurpose?",
@@ -6097,6 +6386,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 294,
+          "session_num": 37,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Credentials from never-seen location, zero code?",
@@ -6108,6 +6398,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 295,
+          "session_num": 37,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda DNS to C2 domain, want finding generated, no blocking?",
@@ -6126,6 +6417,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 296,
+          "session_num": 38,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Block external S3 access org-wide without modifying bucket policies?",
@@ -6137,6 +6429,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 297,
+          "session_num": 38,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "EC2 private subnet, no NAT, needs Secrets Manager \u2014 which TWO?",
@@ -6148,6 +6441,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 298,
+          "session_num": 38,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, session=Get+Put \u2014 DeleteObject?",
@@ -6159,6 +6453,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 299,
+          "session_num": 38,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS key scheduled for deletion 5 days ago, 30-day wait \u2014 recover?",
@@ -6170,6 +6465,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 300,
+          "session_num": 38,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity Center + Okta + SCIM, new engineer joins Platform group?",
@@ -6181,6 +6477,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 301,
+          "session_num": 38,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "GuardDuty severity 8.5, EC2 communicating with C2 \u2014 first action?",
@@ -6192,6 +6489,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 302,
+          "session_num": 38,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Investigate finding, blast radius, what else in 48hr?",
@@ -6203,6 +6501,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 303,
+          "session_num": 38,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Normalize CloudTrail + VPC Flow + GuardDuty + third-party, own S3?",
@@ -6214,6 +6513,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 304,
+          "session_num": 38,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies PutObject without Env tag, Config SLR writes (no tags)?",
@@ -6225,6 +6525,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 305,
+          "session_num": 38,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Validate policy for security issues BEFORE deploying?",
@@ -6243,6 +6544,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 306,
+          "session_num": 39,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Query VPC Flow Logs in CW for top 10 source IPs \u2014 most efficient?",
@@ -6254,6 +6556,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 307,
+          "session_num": 39,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda DNS to C2 domain, BLOCK resolution VPC-wide?",
@@ -6265,6 +6568,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 308,
+          "session_num": 39,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda DNS to C2 domain, want FINDING generated, no blocking?",
@@ -6276,6 +6580,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 309,
+          "session_num": 39,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Normalize CloudTrail + VPC Flow + WAF into OCSF, third-party SIEM reads from S3?",
@@ -6287,6 +6592,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 310,
+          "session_num": 39,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, session=GetObject only, bucket policy grants role DeleteObject \u2014 result?",
@@ -6298,6 +6604,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 311,
+          "session_num": 39,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Same as Q310 but SCP denies DeleteObject \u2014 result?",
@@ -6309,6 +6616,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 312,
+          "session_num": 39,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prove AWS data centers meet ISO 27001 \u2014 where?",
@@ -6320,6 +6628,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 313,
+          "session_num": 39,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Share DNS Firewall rule groups from security account to 15 new accounts?",
@@ -6331,6 +6640,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 314,
+          "session_num": 39,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "20 Config rules + remediation + single unit + org-wide from delegated admin?",
@@ -6342,6 +6652,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 315,
+          "session_num": 39,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Impact:EC2/BitcoinDomainRequest.Reputation \u2014 what happened?",
@@ -6353,6 +6664,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 316,
+          "session_num": 39,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies s3:* non-org, ELB SLR writes access logs \u2014 blocked?",
@@ -6364,6 +6676,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 317,
+          "session_num": 39,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Validate new policy + test existing role access \u2014 which TWO tools?",
@@ -6375,6 +6688,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 318,
+          "session_num": 39,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secret rotated, open DB connection still works \u2014 why?",
@@ -6386,6 +6700,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 319,
+          "session_num": 39,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS rotated 3 times, decrypt 3-year-old data?",
@@ -6397,6 +6712,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 320,
+          "session_num": 39,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Detect overly permissive SGs + detect malicious IP comms \u2014 which TWO?",
@@ -6408,6 +6724,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 321,
+          "session_num": 39,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Imported key rotation procedure, keep old key for historical data?",
@@ -6419,6 +6736,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 322,
+          "session_num": 39,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Global Table + MRK, reads fail eu-west-1, primary key policy correct?",
@@ -6430,6 +6748,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 323,
+          "session_num": 39,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account same-org, RCP denies non-org \u2014 result?",
@@ -6441,6 +6760,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 324,
+          "session_num": 39,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Enforce IMDSv2 org-wide, block non-compliant launches?",
@@ -6452,6 +6772,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 325,
+          "session_num": 39,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Mobile app, Cognito sign-in, per-user S3 prefix \u2014 which TWO?",
@@ -6470,6 +6791,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 326,
+          "session_num": 40,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "GuardDuty Trojan finding severity 8.9, contain + preserve + investigate 72hr \u2014 correct sequence? (THREE)",
@@ -6481,6 +6803,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 327,
+          "session_num": 40,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*+ec2:*+lambda:*, boundary=s3:*+ec2:*, session=Get+Put, same-account bucket policy grants role DeleteObject \u2014 result?",
@@ -6492,6 +6815,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 328,
+          "session_num": 40,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "PHI in S3 with CMK, need: DR credentials, key in both regions, mask PHI in CW Logs \u2014 which THREE?",
@@ -6503,6 +6827,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 329,
+          "session_num": 40,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "400 accounts, block malicious DNS org-wide, auto-apply new accounts, auto-remediate disassociation \u2014 which TWO?",
@@ -6514,6 +6839,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 330,
+          "session_num": 40,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "CIS compliance dashboard across 200 accounts + collect SOC 2 evidence for audit \u2014 which TWO services?",
@@ -6532,6 +6858,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 331,
+          "session_num": 41,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Bedrock chatbot: prevent prompt injection + block PII in responses + restrict model access \u2014 which TWO?",
@@ -6543,6 +6870,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 332,
+          "session_num": 41,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Mobile app, Cognito sign-in, per-user S3 folders + guest read-only \u2014 which TWO?",
@@ -6554,6 +6882,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 333,
+          "session_num": 41,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CloudFront + S3 origin + SSE-KMS, only CF can access \u2014 which TWO?",
@@ -6565,6 +6894,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 334,
+          "session_num": 41,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Security Lake + Splunk \u2014 which THREE true statements?",
@@ -6576,6 +6906,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 335,
+          "session_num": 41,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Private subnet (no NAT), needs Secrets Manager + S3 SSE-KMS upload \u2014 minimum infra? (THREE)",
@@ -6594,6 +6925,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 360,
+          "session_num": 43,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Verified Access: stolen laptop, block specific device without affecting others?",
@@ -6605,6 +6937,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 361,
+          "session_num": 43,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "StackSets deployed Config, developer disables recorder \u2014 what happens?",
@@ -6616,6 +6949,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 362,
+          "session_num": 43,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty finding `Trojan:EC2/DriveBySourceTraffic!DNS` \u2014 what does !DNS mean?",
@@ -6627,6 +6961,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 363,
+          "session_num": 43,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account S3+KMS, all policies correct, still fails \u2014 cause?",
@@ -6638,6 +6973,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 364,
+          "session_num": 43,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Self-provision hardened RDS, devs don't need rds:CreateDBInstance?",
@@ -6649,6 +6985,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 365,
+          "session_num": 43,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "After containment, determine other resources accessed, visualize timeline?",
@@ -6660,6 +6997,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 366,
+          "session_num": 43,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS rotated 3 times, decrypt original data from year 1?",
@@ -6671,6 +7009,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 367,
+          "session_num": 43,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "DNS Firewall: ALLOW 2 domains + ALERT crypto + BLOCK all \u2014 priority order?",
@@ -6682,6 +7021,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 368,
+          "session_num": 43,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies RunInstances without tag, Config SLR launches (no tags) \u2014 result?",
@@ -6693,6 +7033,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 369,
+          "session_num": 43,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "Prevent external decrypt + alert on attempts \u2014 which TWO?",
@@ -6711,6 +7052,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 336,
+          "session_num": 42,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Verified Access: Okta group + device posture \u2014 which TWO enforce?",
@@ -6722,6 +7064,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 337,
+          "session_num": 42,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Lambda uploads SSE-KMS, key policy grants root, role has GenerateDataKey \u2014 fails?",
@@ -6733,6 +7076,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 338,
+          "session_num": 42,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CryptoCurrency vs Impact finding \u2014 DNS query + active mining from same instance?",
@@ -6744,6 +7088,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 339,
+          "session_num": 42,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Signer: developer left, backdoored Lambda found \u2014 most targeted remediation?",
@@ -6755,6 +7100,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 340,
+          "session_num": 42,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Verify EC2 reachable from internet without sending traffic?",
@@ -6766,6 +7112,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 341,
+          "session_num": 42,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Cognito + S3 per-user + SSE-KMS \u2014 what additional config? (TWO)",
@@ -6777,6 +7124,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 342,
+          "session_num": 42,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "EC2 DNS to C2 domain \u2014 finding generated + block DNS?",
@@ -6788,6 +7136,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 343,
+          "session_num": 42,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Signer: ENFORCE + allowed profile + invalidate one artifact \u2014 THREE?",
@@ -6799,6 +7148,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 344,
+          "session_num": 42,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "S3 immutable 7yr + HIPAA evidence \u2014 THREE?",
@@ -6810,6 +7160,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 345,
+          "session_num": 42,
           "domain": "D4",
           "domain_raw": "D4/D3",
           "scenario": "Prevent IMDSv1 launches org-wide \u2014 approach?",
@@ -6821,6 +7172,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 346,
+          "session_num": 42,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "Alert external KMS decryption, least overhead?",
@@ -6832,6 +7184,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 347,
+          "session_num": 42,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "Exfiltrated role creds, stop attacker + keep app working?",
@@ -6843,6 +7196,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 348,
+          "session_num": 42,
           "domain": "D6",
           "domain_raw": "D6/D3",
           "scenario": "25 Config rules + remediation + single package + org-wide?",
@@ -6854,6 +7208,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 349,
+          "session_num": 42,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Dedicated DX, Layer 2 encryption, zero overhead?",
@@ -6865,6 +7220,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 350,
+          "session_num": 42,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account Lambda \u2192 S3+KMS, all correct, AccessDenied \u2014 cause?",
@@ -6876,6 +7232,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 351,
+          "session_num": 42,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "Impact finding then CryptoCurrency finding 30min later \u2014 what happened?",
@@ -6887,6 +7244,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 352,
+          "session_num": 42,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "RAM shares rule group + FM policy, developer disassociates \u2014 what happens?",
@@ -6898,6 +7256,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 353,
+          "session_num": 42,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies non-org s3:*. ELB SLR + CloudTrail + external attacker \u2014 which succeed?",
@@ -6909,6 +7268,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 354,
+          "session_num": 42,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Key material NEVER in AWS + native S3 SSE-KMS integration?",
@@ -6920,6 +7280,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 355,
+          "session_num": 42,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "Access Analyzer finds external access + GuardDuty finds malicious IP \u2014 what does each tell you?",
@@ -6931,6 +7292,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 356,
+          "session_num": 42,
           "domain": "D2",
           "domain_raw": "D2/D1",
           "scenario": "After containment, determine roles used + buckets accessed + 72hr timeline?",
@@ -6942,6 +7304,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 357,
+          "session_num": 42,
           "domain": "D6",
           "domain_raw": "D6/D4",
           "scenario": "Identity Center + Okta + SCIM, new engineer joins Platform group?",
@@ -6953,6 +7316,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 358,
+          "session_num": 42,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CreateGrant \u2192 partner AccessDenied immediately, works 30s later?",
@@ -6964,6 +7328,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 359,
+          "session_num": 42,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Private subnet needs DynamoDB + S3, minimize cost \u2014 endpoint types?",
@@ -6982,6 +7347,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 370,
+          "session_num": 44,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP block external S3 + exempt Config \u2014 which TWO?",
@@ -6993,6 +7359,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 371,
+          "session_num": 44,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt unless ViaService=s3, Lambda still works \u2014 why?",
@@ -7004,6 +7371,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 372,
+          "session_num": 44,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty enabled all regions, zero findings 90 days, active workloads \u2014 cause?",
@@ -7015,6 +7383,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 373,
+          "session_num": 44,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Self-service VPC, no broad IAM, NOT auto for new accounts \u2014 which service?",
@@ -7026,6 +7395,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 374,
+          "session_num": 44,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Find unused permissions 90d + generate replacement policies, least overhead \u2014 which TWO?",
@@ -7037,6 +7407,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 375,
+          "session_num": 44,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CW Logs mask credit cards + only compliance sees raw + audit trail \u2014 which THREE?",
@@ -7048,6 +7419,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 376,
+          "session_num": 44,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secrets Manager rotation, batch works, new Lambda fails on RDS \u2014 cause?",
@@ -7059,6 +7431,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 377,
+          "session_num": 44,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Data perimeter: block external IN + block exfil OUT + exempt services \u2014 which TWO?",
@@ -7070,6 +7443,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 378,
+          "session_num": 44,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Private subnet, Secrets Manager + S3 SSE-KMS + CW Logs \u2014 minimum endpoints?",
@@ -7081,6 +7455,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 379,
+          "session_num": 44,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "Trojan finding severity 8.2, contain + preserve + investigate 72hr \u2014 sequence?",
@@ -7099,6 +7474,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 380,
+          "session_num": 45,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty zero findings 6 months, junior created filter \u2014 investigate first?",
@@ -7110,6 +7486,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 381,
+          "session_num": 45,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Find unused permissions 90d + generate replacement policy, least overhead?",
@@ -7121,6 +7498,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 382,
+          "session_num": 45,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Rotation completes, new Lambda \"password auth failed\" on RDS, ECS works \u2014 cause?",
@@ -7132,6 +7510,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 383,
+          "session_num": 45,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 CRR + MRK, decrypt fails in destination, replica exists \u2014 cause?",
@@ -7143,6 +7522,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 384,
+          "session_num": 45,
           "domain": "D4",
           "domain_raw": "D4/D1",
           "scenario": "Block external S3 access org-wide + detect attempts \u2014 which TWO?",
@@ -7161,6 +7541,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 385,
+          "session_num": 46,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Block external S3 org-wide, exempt AWS services \u2014 which TWO?",
@@ -7172,6 +7553,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 386,
+          "session_num": 46,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "EC2 C2 communication, determine other resources + roles + 72hr timeline?",
@@ -7183,6 +7565,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 387,
+          "session_num": 46,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key policy grants root only, Lambda has GenerateDataKey \u2014 upload result?",
@@ -7194,6 +7577,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 388,
+          "session_num": 46,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "WAF on all ALBs, auto-remediate if removed, new accounts \u2014 which service?",
@@ -7205,6 +7589,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 389,
+          "session_num": 46,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty enabled, zero findings 90d, active workloads, Flow Logs not enabled \u2014 cause?",
@@ -7216,6 +7601,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 390,
+          "session_num": 46,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account S3+KMS, SCP denies kms:* unless ViaService=s3 \u2014 result?",
@@ -7227,6 +7613,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 391,
+          "session_num": 46,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "SOC 2: own evidence mapped to controls + AWS certification \u2014 which TWO?",
@@ -7238,6 +7625,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 392,
+          "session_num": 46,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, session=Get+Put, bucket policy grants Delete \u2014 result?",
@@ -7249,6 +7637,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 393,
+          "session_num": 46,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "DNS Firewall: ALLOW 2 domains + ALERT crypto + BLOCK all \u2014 rule order?",
@@ -7260,6 +7649,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 394,
+          "session_num": 46,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Service Catalog, dev only has ProvisionProduct, VPC created \u2014 how?",
@@ -7278,6 +7668,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 395,
+          "session_num": 47,
           "domain": "D4",
           "domain_raw": "D4/D3",
           "scenario": "Multi-tenant DynamoDB, Cognito Identity Pool, Tenant A reads Tenant B \u2014 fix? (TWO)",
@@ -7289,6 +7680,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 396,
+          "session_num": 47,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "Exfiltrated role creds, stop attacker + keep ECS running?",
@@ -7300,6 +7692,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 397,
+          "session_num": 47,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Network Firewall TLS inspection \u2014 cert warnings \u2014 fix?",
@@ -7311,6 +7704,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 398,
+          "session_num": 47,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Data perimeter: block external IN + block exfil OUT \u2014 which TWO?",
@@ -7322,6 +7716,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 399,
+          "session_num": 47,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 CRR + MRK, decrypt fails in eu-west-1 \u2014 cause?",
@@ -7333,6 +7728,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 400,
+          "session_num": 47,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity Center + Okta + SCIM, new engineer joins Platform group \u2014 how? (TWO)",
@@ -7344,6 +7740,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 401,
+          "session_num": 47,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect StopLogging within 5 min, org trail exists, least overhead?",
@@ -7355,6 +7752,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 402,
+          "session_num": 47,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Private subnet, Secrets Manager + S3 SSE-KMS + CW Logs \u2014 minimum endpoints?",
@@ -7366,6 +7764,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 403,
+          "session_num": 47,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Rotation completes, new Lambda \"password auth failed\" on RDS, ECS works \u2014 cause?",
@@ -7377,6 +7776,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 404,
+          "session_num": 47,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Find unused permissions 90d + generate replacement policies, least overhead?",
@@ -7395,6 +7795,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 405,
+          "session_num": 48,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CW Logs mask credit cards + only compliance sees raw \u2014 which TWO?",
@@ -7406,6 +7807,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 406,
+          "session_num": 48,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "External account, trust policy allows, RCP denies non-org STS \u2014 result?",
@@ -7417,6 +7819,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 407,
+          "session_num": 48,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "Share DNS FW rule groups + auto-remediate disassociation \u2014 which TWO?",
@@ -7428,6 +7831,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 408,
+          "session_num": 48,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda private subnet, restrict DNS to one domain, cheapest?",
@@ -7439,6 +7843,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 409,
+          "session_num": 48,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS rotated 3 times, decrypt original data from 3 years ago?",
@@ -7450,6 +7855,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 410,
+          "session_num": 48,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect public S3 org-wide, dashboard + least overhead \u2014 Config vs Security Hub?",
@@ -7461,6 +7867,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 411,
+          "session_num": 48,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP denies PutObject without tag, Config SLR writes (no tags) \u2014 result?",
@@ -7472,6 +7879,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 412,
+          "session_num": 48,
           "domain": "D4",
           "domain_raw": "D4/D3",
           "scenario": "Cognito per-user S3, pen tester crafts request to other user's prefix?",
@@ -7483,6 +7891,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 413,
+          "session_num": 48,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Enforce IMDSv2 org-wide, block non-compliant launches immediately?",
@@ -7494,6 +7903,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 414,
+          "session_num": 48,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CloudFront + S3 SSE-KMS, only CF can access \u2014 which TWO?",
@@ -7512,6 +7922,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 415,
+          "session_num": 49,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Prevent StopLogging from ever happening again, org-wide?",
@@ -7523,6 +7934,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 416,
+          "session_num": 49,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Query VPC Flow Logs in CW for top 10 source IPs \u2014 most efficient?",
@@ -7534,6 +7946,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 417,
+          "session_num": 49,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Enforce CostCenter tag on all EC2 launches org-wide, never create without?",
@@ -7545,6 +7958,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 418,
+          "session_num": 49,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda timeout calling Secrets Manager, endpoint exists, endpoint SG correct \u2014 cause?",
@@ -7556,6 +7970,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 419,
+          "session_num": 49,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Normalize CloudTrail + VPC Flow + GuardDuty + third-party, own S3, SIEM reads?",
@@ -7567,6 +7982,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 420,
+          "session_num": 49,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Bedrock: prevent prompt injection + block PII in responses + restrict model access \u2014 which TWO?",
@@ -7578,6 +7994,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 421,
+          "session_num": 49,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "EC2 C2 communication: contain + preserve + investigate 72hr \u2014 sequence?",
@@ -7589,6 +8006,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 422,
+          "session_num": 49,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS auto-rotation enabled, rotated once in 2 years \u2014 how many material versions?",
@@ -7600,6 +8018,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 423,
+          "session_num": 49,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Cross-account KMS, key policy + identity policy correct, still Access Denied \u2014 cause?",
@@ -7611,6 +8030,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 424,
+          "session_num": 49,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "RAM shares DNS FW rule group, FM enforces, developer disassociates \u2014 what happens?",
@@ -7622,6 +8042,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 425,
+          "session_num": 49,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt unless ViaService=s3, developer calls KMS directly from CLI?",
@@ -7633,6 +8054,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 426,
+          "session_num": 49,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Default encryption SSE-KMS + bucket policy Deny if wrong key header \u2014 upload without header?",
@@ -7644,6 +8066,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 427,
+          "session_num": 49,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies non-org s3:*, same-account Lambda writes to own bucket \u2014 result?",
@@ -7655,6 +8078,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 428,
+          "session_num": 49,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secrets Manager cross-region replication, source key is single-region (not MRK) \u2014 works?",
@@ -7666,6 +8090,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 429,
+          "session_num": 49,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Employee terminated in Okta, revoke AWS access within minutes \u2014 mechanism?",
@@ -7684,6 +8109,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 430,
+          "session_num": 50,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda timeout calling Secrets Manager, endpoint exists, endpoint SG correct \u2014 cause?",
@@ -7695,6 +8121,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 431,
+          "session_num": 50,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Default encryption SSE-KMS + bucket policy Deny if wrong key header \u2014 upload without header?",
@@ -7706,6 +8133,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 432,
+          "session_num": 50,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies non-org s3:*, same-account Lambda writes to own bucket \u2014 result?",
@@ -7717,6 +8145,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 433,
+          "session_num": 50,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secrets Manager cross-region replication, source key is single-region (not MRK) \u2014 works?",
@@ -7728,6 +8157,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 434,
+          "session_num": 50,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "Prevent EC2 launch without IMDSv2 + detect existing IMDSv1 and fix \u2014 which TWO?",
@@ -7746,6 +8176,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 435,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "WAF on all ALBs, auto-apply new accounts, re-attach if removed \u2014 which service?",
@@ -7757,6 +8188,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 436,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Self-provision Golden VPC, dev only has ProvisionProduct \u2014 how?",
@@ -7768,6 +8200,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 437,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "15 new accounts need GuardDuty + Config + CloudTrail, zero manual \u2014 which service?",
@@ -7779,6 +8212,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 438,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Proof AWS meets ISO 27001 + YOUR evidence mapped to SOC 2 \u2014 which TWO?",
@@ -7790,6 +8224,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 439,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "StackSets deployed Config, developer stops recorder \u2014 what happens?",
@@ -7801,6 +8236,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 440,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Want Config to stay enabled, auto re-enable if stopped \u2014 approach?",
@@ -7812,6 +8248,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 441,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Share DNS FW rule groups from security account to 200 members \u2014 which service?",
@@ -7823,6 +8260,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 442,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule groups: share + enforce on all VPCs + re-associate if removed \u2014 which TWO?",
@@ -7834,6 +8272,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 443,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "WAF on all ALBs, auto-remediate \u2014 need RAM?",
@@ -7845,6 +8284,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 444,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Control Tower prevent disabling GuardDuty/CloudTrail/Config \u2014 which mechanism?",
@@ -7856,6 +8296,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 445,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "GuardDuty + S3 encryption check + WAF + DNS FW + prevent CloudTrail disable \u2014 which FOUR?",
@@ -7867,6 +8308,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 446,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Network FW policy: share to 200 accounts + enforce + recreate if deleted \u2014 which TWO?",
@@ -7878,6 +8320,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 447,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Self-provision hardened RDS, dev only has ProvisionProduct \u2014 how?",
@@ -7889,6 +8332,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 448,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Match verbs to RAM vs FM (4 items)",
@@ -7900,6 +8344,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 449,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent unencrypted uploads + collect PCI evidence for auditor \u2014 which TWO?",
@@ -7911,6 +8356,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 450,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Why can't StackSets do everything? Two limitations?",
@@ -7922,6 +8368,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 451,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Shield Advanced on all CloudFront + ALBs across 150 accounts \u2014 which service?",
@@ -7933,6 +8380,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 452,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "TGW in shared-services account, 40 accounts need to attach \u2014 which service?",
@@ -7944,6 +8392,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 453,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Detect overly permissive SGs (0.0.0.0/0 port 22) + auto-revoke across 300 accounts?",
@@ -7955,6 +8404,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 454,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Ensure baseline SG (deny all inbound) applied to all EC2 across 300 accounts?",
@@ -7966,6 +8416,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 455,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "\"DNS FW rule group needs to be accessible to member accounts\" \u2014 which service?",
@@ -7977,6 +8428,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 456,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "\"DNS FW rule group must be associated with every VPC + re-associated if removed\" \u2014 which?",
@@ -7988,6 +8440,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 457,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Network FW policy: Step 1 share, Step 2 enforce \u2014 correct sequence?",
@@ -7999,6 +8452,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 458,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent IGW creation + detect/fix flow logs + self-provision VPC + SOC 2 evidence \u2014 which FOUR?",
@@ -8010,6 +8464,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 459,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Control Tower: someone modifies SCP outside CT \u2014 what happens?",
@@ -8021,6 +8476,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 460,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deny LeaveOrganization + CreateUser + StopLogging org-wide \u2014 where?",
@@ -8032,6 +8488,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 461,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Block external S3 reads even with Principal:* bucket policy \u2014 where?",
@@ -8043,6 +8500,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 462,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Which services support delegated admin? (GuardDuty, SH, FM, Config, Audit Manager)",
@@ -8054,6 +8512,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 463,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "SCP denies DeleteBucket, user in management account calls it \u2014 result?",
@@ -8065,6 +8524,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 464,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Block CF template deploying S3 without encryption \u2014 which guardrail type?",
@@ -8076,6 +8536,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 465,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Proactive guardrails \u2014 which statement true?",
@@ -8087,6 +8548,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 466,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Signed Lambda: validate template + detect unsigned + prevent disabling CSC \u2014 which THREE?",
@@ -8098,6 +8560,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 467,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent GuardDuty disablement, never even briefly \u2014 approach?",
@@ -8109,6 +8572,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 468,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "CF template must include StorageEncrypted + DeletionProtection, fail before creation?",
@@ -8120,6 +8584,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 469,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent unsigned Lambda deploy + detect missing CSC + prevent deleting CSC \u2014 THREE?",
@@ -8131,6 +8596,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 470,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "RAM shared subnet, developer launches EC2 \u2014 who owns the instance?",
@@ -8142,6 +8608,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 471,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Match 5 scenarios to 5 services (SCP/Config/FM/SC/Hook)",
@@ -8153,6 +8620,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 472,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "One sentence each: what makes SCP/conformance/FM/StackSets/SC unique?",
@@ -8164,6 +8632,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 473,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6/D4",
           "scenario": "RCP denies non-org s3:*, developer saves Principal:* bucket policy \u2014 what happens?",
@@ -8175,6 +8644,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 474,
+          "session_num": 51,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Detect PutBucketPolicy with Principal:* within 5 min + prevent external access \u2014 TWO?",
@@ -8186,6 +8656,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 475,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Service Catalog provisions VPC, developer removes flow logs 2 weeks later \u2014 what happens?",
@@ -8197,6 +8668,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 476,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Self-provision EC2 + auto-fix IMDSv2 + block ModifyInstanceMetadata \u2014 THREE?",
@@ -8208,6 +8680,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 477,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6/D4",
           "scenario": "SCP denies DeleteDetector, rogue admin in management account calls it \u2014 result?",
@@ -8219,6 +8692,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 478,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent member accounts from sharing resources externally via RAM \u2014 how?",
@@ -8230,6 +8704,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 479,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Audit Manager auto-collected evidence sources \u2014 which THREE?",
@@ -8241,6 +8716,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 480,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "StackSets service-managed, new account joins OU \u2014 what happens?",
@@ -8252,6 +8728,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 481,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Control Tower detective guardrail \"Detect S3 encryption\" \u2014 what's underneath?",
@@ -8263,6 +8740,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 482,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Conformance pack + Security Hub both flag unencrypted bucket \u2014 difference?",
@@ -8274,6 +8752,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 483,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy Inspector across 200 accounts, auto for new \u2014 approach?",
@@ -8285,6 +8764,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 484,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy GuardDuty across 300 accounts, auto for new \u2014 approach?",
@@ -8296,6 +8776,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 485,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy GuardDuty + Config + CloudTrail + custom IAM roles, auto for new \u2014 approach?",
@@ -8307,6 +8788,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 486,
+          "session_num": 51,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "\"ONE service that does everything\" \u2014 which?",
@@ -8325,6 +8807,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 487,
+          "session_num": 52,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Detect PutBucketPolicy within 5 min + prevent external access \u2014 TWO?",
@@ -8336,6 +8819,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 488,
+          "session_num": 52,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "SCP denies kms:* unless ViaService=s3, developer calls KMS directly from CLI \u2014 result?",
@@ -8347,6 +8831,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 489,
+          "session_num": 52,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 DNS query to pool.supportxmr.com, no TCP connection \u2014 ThreatPurpose?",
@@ -8358,6 +8843,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 490,
+          "session_num": 52,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Private subnet Lambda needs Secrets Manager + S3 SSE-KMS + CW Logs \u2014 minimum endpoints?",
@@ -8369,6 +8855,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 491,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, session=GetObject only, same-account bucket policy grants role DeleteObject \u2014 result?",
@@ -8380,6 +8867,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 492,
+          "session_num": 52,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy Macie across 150 accounts, auto for new \u2014 approach?",
@@ -8391,6 +8879,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 493,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Global Table + MRK, reads fail eu-west-1, primary key policy correct \u2014 cause?",
@@ -8402,6 +8891,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 494,
+          "session_num": 52,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Impact finding then CryptoCurrency 30min later \u2014 what happened?",
@@ -8413,6 +8903,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 495,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt unless ViaService=s3, Lambda reads S3 object \u2014 result?",
@@ -8424,6 +8915,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 496,
+          "session_num": 52,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "EC2 DNS to C2 domain \u2014 finding generated + block DNS \u2014 which TWO?",
@@ -8435,6 +8927,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 497,
+          "session_num": 52,
           "domain": "D6",
           "domain_raw": "D6/D4",
           "scenario": "SCP denies ScheduleKeyDeletion, member vs management account \u2014 results?",
@@ -8446,6 +8939,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 498,
+          "session_num": 52,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Rotation completes, new Lambda auth fails on RDS, ECS works \u2014 cause?",
@@ -8457,6 +8951,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 499,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies non-org s3:*, ELB SLR + CloudTrail + external attacker \u2014 which succeed?",
@@ -8468,6 +8963,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 494,
+          "session_num": 52,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Impact finding then CryptoCurrency 30min later \u2014 what happened?",
@@ -8479,6 +8975,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 495,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt unless ViaService=s3, Lambda reads S3 object \u2014 result?",
@@ -8490,6 +8987,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 496,
+          "session_num": 52,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "EC2 DNS to C2 domain \u2014 finding generated + block DNS \u2014 which TWO?",
@@ -8501,6 +8999,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 497,
+          "session_num": 52,
           "domain": "D6",
           "domain_raw": "D6/D4",
           "scenario": "SCP denies ScheduleKeyDeletion, member vs management account \u2014 results?",
@@ -8512,6 +9011,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 498,
+          "session_num": 52,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Rotation completes, new Lambda auth fails on RDS, ECS works \u2014 cause?",
@@ -8523,6 +9023,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 499,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies non-org s3:*, ELB SLR + CloudTrail + external attacker \u2014 which succeed?",
@@ -8534,6 +9035,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 500,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account KMS + ViaService SCP + session policy only s3:GetObject \u2014 Lambda reads encrypted S3?",
@@ -8545,6 +9047,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 501,
+          "session_num": 52,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Verified Access: stolen laptop, block only that device \u2014 action?",
@@ -8556,6 +9059,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 502,
+          "session_num": 52,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "Trojan finding severity 8.7 \u2014 stop + preserve + investigate 72hr \u2014 sequence?",
@@ -8567,6 +9071,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 503,
+          "session_num": 52,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Key policy grants root only, Lambda only has s3:GetObject (no kms:Decrypt) \u2014 reads encrypted object?",
@@ -8578,6 +9083,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 504,
+          "session_num": 52,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Security Hub + GuardDuty + custom IAM role across 300 accounts \u2014 how many mechanisms?",
@@ -8589,6 +9095,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 505,
+          "session_num": 52,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:* unless ViaService=s3 \u2014 which TWO calls succeed?",
@@ -8607,6 +9114,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 506,
+          "session_num": 53,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt unless ViaService=s3, developer calls KMS directly from CLI \u2014 result?",
@@ -8618,6 +9126,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 507,
+          "session_num": 53,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 DNS query to xmr.pool.minergate.com, no TCP connection \u2014 ThreatPurpose?",
@@ -8629,6 +9138,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 508,
+          "session_num": 53,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Key policy grants root only, Lambda has s3:GetObject but no kms:Decrypt \u2014 reads SSE-KMS object?",
@@ -8640,6 +9150,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 509,
+          "session_num": 53,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP denies non-org sts:AssumeRole, external partner has trust policy \u2014 result?",
@@ -8651,6 +9162,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 510,
+          "session_num": 53,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Lambda private subnet, monitoring endpoint exists, PutMetricData times out \u2014 cause?",
@@ -8662,6 +9174,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 511,
+          "session_num": 53,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "Trojan:EC2/DropPoint!DNS severity 8.4, contain + preserve + keep API available \u2014 sequence?",
@@ -8673,6 +9186,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 512,
+          "session_num": 53,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule groups: share from security account + enforce on all VPCs + auto-remediate \u2014 which TWO?",
@@ -8684,6 +9198,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 513,
+          "session_num": 53,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*+kms:*, boundary=s3:*+ec2:*, session=Get+Put, same-account bucket policy grants role DeleteObject \u2014 result?",
@@ -8695,6 +9210,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 514,
+          "session_num": 53,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "CloudFront + S3 + OAC + SSE-KMS, Access Denied \u2014 what's missing?",
@@ -8706,6 +9222,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 515,
+          "session_num": 53,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Prevent PutBucketPolicy with Principal:* + detect within 5 min \u2014 which TWO?",
@@ -8724,6 +9241,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 516,
+          "session_num": 54,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt+GenerateDataKey unless ViaService=s3 or secretsmanager, Lambda does 3 ops \u2014 which succeed?",
@@ -8735,6 +9253,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 517,
+          "session_num": 54,
           "domain": "D6",
           "domain_raw": "D6/D4",
           "scenario": "SCP denies ScheduleKeyDeletion, member admin + member root + management admin \u2014 which denied?",
@@ -8746,6 +9265,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 518,
+          "session_num": 54,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "Bucket policy grants external account, external downloads nightly \u2014 which services generate findings?",
@@ -8757,6 +9277,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 519,
+          "session_num": 54,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Rotation successful, new Lambda Access Denied on RDS, ECS works \u2014 cause?",
@@ -8768,6 +9289,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 520,
+          "session_num": 54,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "WAF on ALBs + DNS FW on VPCs, both via FM \u2014 which needs RAM?",
@@ -8779,6 +9301,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 521,
+          "session_num": 54,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "RCP denies non-org s3:*, same-org Account B Lambda PutObject to Account A bucket \u2014 result?",
@@ -8790,6 +9313,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 522,
+          "session_num": 54,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Lambda private subnet, direct kms:Decrypt from code, no KMS endpoint \u2014 result?",
@@ -8801,6 +9325,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 523,
+          "session_num": 54,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Detect DeleteTrail/StopLogging within 2 min + auto-revert \u2014 architecture?",
@@ -8812,6 +9337,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 524,
+          "session_num": 54,
           "domain": "D4",
           "domain_raw": "D4/D3",
           "scenario": "Cognito per-user S3, pen tester crafts request to other user's prefix \u2014 result?",
@@ -8823,6 +9349,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 525,
+          "session_num": 54,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "7yr immutable + root can't delete + auto-expire + lawsuit preservation beyond 7yr \u2014 config?",
@@ -8834,6 +9361,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 526,
+          "session_num": 54,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Trojan:EC2/C2Activity.B \u2014 block C2 VPC-wide + continue monitoring other instances \u2014 approach?",
@@ -8845,6 +9373,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 527,
+          "session_num": 54,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "SCP forces boundary, dev attaches AdministratorAccess, calls ec2:RunInstances \u2014 result?",
@@ -8856,6 +9385,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 528,
+          "session_num": 54,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Correlate GD + VPC Flow + WAF, SQL, own S3, single schema, SIEM reads \u2014 service?",
@@ -8867,6 +9397,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 529,
+          "session_num": 54,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Identity has kms:Decrypt, session policy only s3:GetObject, reads SSE-KMS object \u2014 result?",
@@ -8878,6 +9409,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 530,
+          "session_num": 54,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "CF template must include StorageEncrypted + DeletionProtection, fail before creation \u2014 guardrail type?",
@@ -8896,6 +9428,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 531,
+          "session_num": 55,
           "domain": "D4",
           "domain_raw": "D4/D5/D6",
           "scenario": "SCP ViaService + RCP + key policy root + session policy \u2014 Lambda reads SSE-KMS object?",
@@ -8907,6 +9440,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 532,
+          "session_num": 55,
           "domain": "D1",
           "domain_raw": "D1/D3/D6",
           "scenario": "Block DNS + detect C2 TCP + auto-block IP + org-wide \u2014 which FOUR?",
@@ -8918,6 +9452,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 533,
+          "session_num": 55,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account S3+KMS, SCP ViaService, Lambda reads via S3 \u2014 result?",
@@ -8929,6 +9464,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 534,
+          "session_num": 55,
           "domain": "D1",
           "domain_raw": "D1/D4/D6",
           "scenario": "External trust policy + RCP + GuardDuty + Access Analyzer + EventBridge \u2014 which THREE true?",
@@ -8940,6 +9476,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 535,
+          "session_num": 55,
           "domain": "D5",
           "domain_raw": "D5/D4/D3",
           "scenario": "Secret works, S3 upload Access Denied, all IAM correct \u2014 cause?",
@@ -8951,6 +9488,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 536,
+          "session_num": 55,
           "domain": "D1",
           "domain_raw": "D1/D2/D4",
           "scenario": "InstanceCredentialExfiltration.OutsideAWS \u2014 stop attacker + keep instance + new creds work?",
@@ -8962,6 +9500,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 537,
+          "session_num": 55,
           "domain": "D6",
           "domain_raw": "D6/D3/D4",
           "scenario": "Prevent IMDSv1 + detect/fix existing + baseline SG + share NF policy \u2014 which FOUR?",
@@ -8973,6 +9512,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 538,
+          "session_num": 55,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Cross-account KMS, key policy grants Account B root, identity policy has Decrypt \u2014 result?",
@@ -8984,6 +9524,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 539,
+          "session_num": 55,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "CIS score + GD findings + Inspector CVEs + custom metric, least overhead \u2014 service?",
@@ -8995,6 +9536,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 540,
+          "session_num": 55,
           "domain": "D4",
           "domain_raw": "D4/D3/D5",
           "scenario": "Cross-account S3+KMS + SCP ViaService + RCP + session policy \u2014 Lambda reads?",
@@ -9013,6 +9555,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 541,
+          "session_num": 56,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "RCP + SCP ViaService + key policy grants only Account A root + Lambda in Account B reads SSE-KMS object cross-account \u2014 result?",
@@ -9024,6 +9567,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 542,
+          "session_num": 56,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP ViaService + session policy (s3:Get+sm:Get only) + same-account SSE-KMS \u2014 3 ops: S3 read, SM GetSecret, direct kms:Decrypt \u2014 which succeed?",
@@ -9035,6 +9579,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 543,
+          "session_num": 56,
           "domain": "D1",
           "domain_raw": "D1/D3/D6",
           "scenario": "3 GD findings (Impact\u2192CryptoCurrency\u2192Trojan), block DNS org-wide + block C2 IP + detect mining \u2014 which THREE?",
@@ -9046,6 +9591,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 544,
+          "session_num": 56,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Session policy=GetObject only, same-account bucket policy grants role DeleteObject, SSE-KMS object \u2014 DeleteObject result?",
@@ -9057,6 +9603,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 545,
+          "session_num": 56,
           "domain": "D1",
           "domain_raw": "D1/D4/D5",
           "scenario": "RCP blocks external + Access Analyzer + GuardDuty + KMS key policy \u2014 which THREE true?",
@@ -9068,6 +9615,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 546,
+          "session_num": 56,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS bucket, CISO wants to KNOW when external decrypts, least overhead?",
@@ -9079,6 +9627,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 547,
+          "session_num": 56,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 resolves pool.minexmr.com via DNS, no TCP connection \u2014 ThreatPurpose?",
@@ -9090,6 +9639,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 548,
+          "session_num": 56,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "RCP blocks non-org s3:*, external tries GetObject, GuardDuty enabled \u2014 what's true?",
@@ -9101,6 +9651,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 549,
+          "session_num": 56,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect PutBucketPolicy with Principal:* within 5 min, org trail exists, least overhead?",
@@ -9112,6 +9663,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 550,
+          "session_num": 56,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 actively sending mining traffic (TCP established, data flowing) \u2014 ThreatPurpose?",
@@ -9123,6 +9675,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 551,
+          "session_num": 56,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule group needs to be VISIBLE to 200 members \u2014 which service?",
@@ -9134,6 +9687,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 552,
+          "session_num": 56,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule group must be ASSOCIATED with every VPC, re-associated if removed \u2014 which?",
@@ -9145,6 +9699,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 553,
+          "session_num": 56,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "StackSets deployed Config, developer stops recorder \u2014 what happens?",
@@ -9156,6 +9711,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 554,
+          "session_num": 56,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy Macie across 150 accounts, auto for new \u2014 approach?",
@@ -9167,6 +9723,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 555,
+          "session_num": 56,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "WAF on all ALBs, auto-apply new accounts, re-attach if removed \u2014 which service?",
@@ -9185,6 +9742,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 556,
+          "session_num": 57,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty zero findings 6 months, active workloads, VPC Flow Logs enabled \u2014 cause?",
@@ -9196,6 +9754,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 557,
+          "session_num": 57,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Detect PutBucketPolicy Principal:* within 2 min + prevent external access \u2014 which TWO?",
@@ -9207,6 +9766,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 558,
+          "session_num": 57,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 resolves pool.supportxmr.com via DNS, no TCP connection \u2014 ThreatPurpose?",
@@ -9218,6 +9778,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 559,
+          "session_num": 57,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account S3+KMS, key policy grants only Account A root, Account B has kms:Decrypt \u2014 result?",
@@ -9229,6 +9790,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 560,
+          "session_num": 57,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Identity=s3:*, boundary=s3:*+ec2:*, session=Get+Put, same-account bucket policy grants Delete \u2014 result?",
@@ -9240,6 +9802,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 561,
+          "session_num": 57,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy Macie across 200 accounts, auto for new \u2014 approach?",
@@ -9251,6 +9814,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 562,
+          "session_num": 57,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "RAM shares DNS FW rule group, developer disassociates from VPC \u2014 what happens?",
@@ -9262,6 +9826,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 563,
+          "session_num": 57,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent disabling Config, junior suggests Config rule \u2014 why won't it work?",
@@ -9273,6 +9838,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 564,
+          "session_num": 57,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt unless ViaService=s3, Lambda reads S3 + dev calls KMS directly \u2014 which succeed?",
@@ -9284,6 +9850,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 565,
+          "session_num": 57,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "Share NF policy + enforce on VPCs + auto-recreate if deleted \u2014 which TWO?",
@@ -9302,6 +9869,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 566,
+          "session_num": 58,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "RAM shares DNS FW rule group, FM enforces, developer disassociates \u2014 what happens?",
@@ -9313,6 +9881,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 567,
+          "session_num": 58,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "RAM share deleted, FM policy still exists \u2014 what happens?",
@@ -9324,6 +9893,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 568,
+          "session_num": 58,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS, detect when external account successfully decrypts, least overhead?",
@@ -9335,6 +9905,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 569,
+          "session_num": 58,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Block external decryption org-wide?",
@@ -9346,6 +9917,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 570,
+          "session_num": 58,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect DeleteTrail within 2 min, org trail exists, least overhead?",
@@ -9357,6 +9929,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 571,
+          "session_num": 58,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 communicating with known C2 IP, alert with zero custom code?",
@@ -9368,6 +9941,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 572,
+          "session_num": 58,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Block C2 IP VPC-wide, attacker hardcoded IP (no DNS)?",
@@ -9379,6 +9953,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 573,
+          "session_num": 58,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Bucket policy grants external account, no access yet \u2014 which service fires?",
@@ -9390,6 +9965,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 574,
+          "session_num": 58,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect DeleteDetector within 1 min, org trail exists?",
@@ -9401,6 +9977,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 575,
+          "session_num": 58,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect PutBucketPolicy within 2 min, org trail exists, least overhead?",
@@ -9419,6 +9996,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 576,
+          "session_num": 59,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Unusual download patterns from unknown country, alert, least overhead?",
@@ -9430,6 +10008,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 577,
+          "session_num": 59,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "PutBucketPolicy with Principal:*, alert within 2 min?",
@@ -9441,6 +10020,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 578,
+          "session_num": 59,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "External account downloading hundreds of objects at 3 AM, zero setup?",
@@ -9452,6 +10032,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 579,
+          "session_num": 59,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Bucket policy grants external access, no access yet \u2014 which service?",
@@ -9463,6 +10044,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 580,
+          "session_num": 59,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "External account downloads from unusual geo + unusual time, least overhead?",
@@ -9481,6 +10063,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 581,
+          "session_num": 60,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS, alert when external decrypts, least overhead?",
@@ -9492,6 +10075,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 582,
+          "session_num": 60,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect DeleteTrail/StopLogging within 2 min, org trail exists, least overhead?",
@@ -9503,6 +10087,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 583,
+          "session_num": 60,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule group: share to 200 accounts + re-associate if removed \u2014 which TWO?",
@@ -9514,6 +10099,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 584,
+          "session_num": 60,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 communicating with known C2 IP, alert, zero custom code, zero infra?",
@@ -9525,6 +10111,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 585,
+          "session_num": 60,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "WAF on all ALBs, auto-apply new accounts, re-attach if removed \u2014 which service?",
@@ -9536,6 +10123,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 586,
+          "session_num": 60,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "PutBucketPolicy with Principal:*, detect within 2 min, org trail exists?",
@@ -9547,6 +10135,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 587,
+          "session_num": 60,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "Prevent external S3 access org-wide + detect anomalous attempts \u2014 which TWO?",
@@ -9558,6 +10147,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 588,
+          "session_num": 60,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 DNS query to pool.minexmr.com, no TCP connection \u2014 ThreatPurpose?",
@@ -9569,6 +10159,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 589,
+          "session_num": 60,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy Macie across 150 accounts, auto for new \u2014 approach?",
@@ -9580,6 +10171,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 590,
+          "session_num": 60,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "External account downloads objects, unusual geo + time, least overhead?",
@@ -9598,6 +10190,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 591,
+          "session_num": 61,
           "domain": "D4",
           "domain_raw": "D4/D5/D6",
           "scenario": "SCP ViaService + RCP same-org + session policy + key policy grants B root + server-side KMS \u2014 Lambda reads cross-account SSE-KMS?",
@@ -9609,6 +10202,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 592,
+          "session_num": 61,
           "domain": "D1",
           "domain_raw": "D1/D3/D6",
           "scenario": "3 GD findings (Impact\u2192CryptoCurrency\u2192Trojan), block DNS + block C2 IP + detect \u2014 which THREE?",
@@ -9620,6 +10214,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 593,
+          "session_num": 61,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account PutObject SSE-KMS, session policy=Get+Put only, boundary=s3:*+kms:* \u2014 succeeds?",
@@ -9631,6 +10226,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 594,
+          "session_num": 61,
           "domain": "D1",
           "domain_raw": "D1/D4/D5",
           "scenario": "RCP blocks external + AA + GD enabled + attacker attempts GetObject for 3 days \u2014 which TWO true?",
@@ -9642,6 +10238,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 595,
+          "session_num": 61,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet, Secrets Manager works, S3 PutObject Access Denied, Gateway endpoint exists \u2014 cause?",
@@ -9653,6 +10250,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 596,
+          "session_num": 61,
           "domain": "D6",
           "domain_raw": "D6/D3/D4",
           "scenario": "Prevent IMDSv1 + detect/fix existing + baseline SG + share NF policy \u2014 which FOUR?",
@@ -9664,6 +10262,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 597,
+          "session_num": 61,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Key policy grants only Account A root, Lambda in Account A has s3:GetObject but no kms:Decrypt \u2014 reads SSE-KMS object?",
@@ -9675,6 +10274,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 598,
+          "session_num": 61,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "InstanceCredentialExfiltration.OutsideAWS, stop attacker + instance stays up + fresh creds work \u2014 single action?",
@@ -9686,6 +10286,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 599,
+          "session_num": 61,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account KMS, key policy grants B root, Account B SCP denies kms:* unless ViaService=s3, Lambda calls Decrypt directly \u2014 result?",
@@ -9697,6 +10298,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 600,
+          "session_num": 61,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Prevent DeleteTrail/StopLogging + detect PutBucketPolicy 2min + prevent external S3 + alert anomalous downloads \u2014 match FOUR services",
@@ -9715,6 +10317,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 601,
+          "session_num": 62,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "RCP blocks external + GuardDuty S3 Protection enabled + attacker attempts 50 GetObjects (all denied) \u2014 did GuardDuty alert?",
@@ -9726,6 +10329,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 602,
+          "session_num": 62,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Detect PutBucketPolicy Principal:* within 2 min + prevent external access \u2014 which TWO?",
@@ -9737,6 +10341,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 603,
+          "session_num": 62,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 actively sending TCP traffic to mining pool (connection established, data flowing) \u2014 ThreatPurpose?",
@@ -9748,6 +10353,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 604,
+          "session_num": 62,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Same instance 10min earlier, resolved pool.minexmr.com via DNS, no TCP connection \u2014 ThreatPurpose?",
@@ -9759,6 +10365,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 605,
+          "session_num": 62,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Trojan:EC2/C2Activity.B!DNS, attacker hardcoded C2 IP, no DNS queries \u2014 block VPC-wide?",
@@ -9770,6 +10377,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 606,
+          "session_num": 62,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect DeleteDetector/StopLogging within 1 min, org trail exists, least overhead?",
@@ -9781,6 +10389,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 607,
+          "session_num": 62,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Prevent DeleteDetector/StopLogging from ever happening \u2014 mechanism?",
@@ -9792,6 +10401,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 608,
+          "session_num": 62,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule groups: share + associate all VPCs + auto-re-associate \u2014 which TWO?",
@@ -9803,6 +10413,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 609,
+          "session_num": 62,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "Prevent external decryption + alert anomalous downloads \u2014 which TWO?",
@@ -9814,6 +10425,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 610,
+          "session_num": 62,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Developer deploys Inspector via StackSets \u2014 why is this wrong?",
@@ -9832,6 +10444,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 611,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account SSE-KMS, key policy grants only Account A root, Lambda in B has kms:Decrypt, SCP ViaService, RCP same-org, session=GetObject \u2014 result?",
@@ -9843,6 +10456,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 612,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Same as Q611 but key policy now grants Account B root \u2014 result?",
@@ -9854,6 +10468,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 613,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account bucket policy grants role DeleteObject, session=Get+Put only \u2014 DeleteObject?",
@@ -9865,6 +10480,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 614,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Same-account bucket policy grants role DeleteObject, session=Get+Put only \u2014 DeleteObject?",
@@ -9876,6 +10492,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 615,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:Decrypt+GenerateDataKey unless ViaService=s3 or secretsmanager \u2014 S3 read + SM GetSecret + direct Decrypt \u2014 which succeed?",
@@ -9887,6 +10504,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 616,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account SSE-KMS, all correct, key policy grants B root, still Access Denied \u2014 cause?",
@@ -9898,6 +10516,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 617,
+          "session_num": 63,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "Bucket policy grants external account, no access yet \u2014 which services fire? (TWO)",
@@ -9909,6 +10528,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 618,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Identity=GetObject+Decrypt, session=GetObject only, boundary=s3:*+kms:*, same-account, no bucket policy naming role \u2014 SSE-KMS read?",
@@ -9920,6 +10540,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 619,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP denies non-org s3:* with PrincipalIsAWSService:false \u2014 ELB SLR + CloudTrail + external attacker \u2014 which succeed? (TWO)",
@@ -9931,6 +10552,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 620,
+          "session_num": 63,
           "domain": "D4",
           "domain_raw": "D4/D5/D6",
           "scenario": "Full 5-layer: key policy grants B root + SCP ViaService + RCP same-org + session=GetObject + cross-account SSE-KMS read \u2014 result?",
@@ -9949,6 +10571,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 621,
+          "session_num": 64,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS, CISO wants visibility into access from inconsistent geographies, NO code/infra/maintenance \u2014 approach?",
@@ -9960,6 +10583,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 622,
+          "session_num": 64,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Data perimeter: no external reads IN + no insider exfil OUT, org-level \u2014 which TWO?",
@@ -9971,6 +10595,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 623,
+          "session_num": 64,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet, SM works, S3 PutObject Access Denied, Gateway endpoint exists \u2014 cause?",
@@ -9982,6 +10607,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 624,
+          "session_num": 64,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect iam:CreateAccessKey for root within 60 seconds, org trail exists \u2014 Config vs EventBridge?",
@@ -9993,6 +10619,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 625,
+          "session_num": 64,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Inspector deployed via StackSets, 8 new accounts missing \u2014 why?",
@@ -10004,6 +10631,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 626,
+          "session_num": 64,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "SCP Deny PutObject if encryption header \u2260 aws:kms, developer uploads without header, bucket has default SSE-KMS \u2014 result?",
@@ -10015,6 +10643,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 627,
+          "session_num": 64,
           "domain": "D6",
           "domain_raw": "D6/D3",
           "scenario": "Baseline SG on all EC2 across 300 accounts, auto-re-apply if removed \u2014 service?",
@@ -10026,6 +10655,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 628,
+          "session_num": 64,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Lambda calls kms:Decrypt directly (not via S3), SCP ViaService=s3 only \u2014 result?",
@@ -10037,6 +10667,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 629,
+          "session_num": 64,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty zero findings 90d, active workloads, junior created suppression filter 80d ago \u2014 investigate first?",
@@ -10048,6 +10679,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 630,
+          "session_num": 64,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account SSE-KMS, RCP denies non-org s3:*, Lambda kms:Decrypt \u2014 at which layer does RCP evaluate KMS?",
@@ -10066,6 +10698,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 631,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS, alert on downloads inconsistent with business hours/geo, zero Lambda/filters/infra \u2014 service?",
@@ -10077,6 +10710,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 632,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect iam:DeactivateMFADevice within 90s, org trail exists, least overhead?",
@@ -10088,6 +10722,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 633,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 communicating with C2 IP (hardcoded, no DNS), alert, zero custom code, zero infra deployment?",
@@ -10099,6 +10734,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 634,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Bucket policy grants external account, no access yet, GD + AA enabled \u2014 which fires?",
@@ -10110,6 +10746,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 635,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "RCP blocks external, attacker attempts 200 GetObjects (all denied), GD enabled \u2014 finding?",
@@ -10121,6 +10758,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 636,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect kms:DisableKey across 300 accounts within 2 min, org trail exists, least overhead?",
@@ -10132,6 +10770,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 637,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda active TCP to mining pool IP (confirmed by Flow Logs) \u2014 ThreatPurpose?",
@@ -10143,6 +10782,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 638,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Same Lambda 10min earlier, only DNS resolution of pool.minexmr.com, no TCP \u2014 ThreatPurpose?",
@@ -10154,6 +10794,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 639,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Visibility into anomalous download patterns (unusual volumes/times/countries), no code/filters/maintenance \u2014 service?",
@@ -10165,6 +10806,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 640,
+          "session_num": 65,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Prevent external S3 reads org-wide + detect internal 3AM unusual-country downloads \u2014 which TWO?",
@@ -10176,6 +10818,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 641,
+          "session_num": 65,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "SCP Deny PutObject if KMS key header \u2260 specific key, upload without header, default encryption set \u2014 result?",
@@ -10187,6 +10830,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 642,
+          "session_num": 65,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Same SCP, upload WITH correct KMS key header \u2014 result?",
@@ -10198,6 +10842,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 643,
+          "session_num": 65,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Bucket policy Deny if encryption header \u2260 aws:kms, default encryption SSE-KMS, upload without header \u2014 result?",
@@ -10209,6 +10854,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 644,
+          "session_num": 65,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "NF policies in central account, 200 members need them applied + auto-re-apply if deleted \u2014 which TWO?",
@@ -10220,6 +10866,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 645,
+          "session_num": 65,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "FM deploys WAF to ALBs, developer disassociates Web ACL \u2014 what happens?",
@@ -10231,6 +10878,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 646,
+          "session_num": 65,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Share TGW with 50 accounts + ensure route table entries in all VPCs \u2014 which TWO?",
@@ -10242,6 +10890,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 647,
+          "session_num": 65,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule groups visible to 300 members, NO auto-association needed \u2014 service?",
@@ -10253,6 +10902,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 648,
+          "session_num": 65,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Match verbs: visible=?, associate=?, re-create=?, deploy IAM role=?",
@@ -10271,6 +10921,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 649,
+          "session_num": 66,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "S3 download volumes inconsistent with baselines, zero Lambda/filters/infra \u2014 service?",
@@ -10282,6 +10933,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 650,
+          "session_num": 66,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect iam:DeleteRolePolicy within 60s, org trail exists \u2014 approach?",
@@ -10293,6 +10945,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 651,
+          "session_num": 66,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 communicating with threat intel IPs, finding generated, zero code/infra \u2014 service?",
@@ -10304,6 +10957,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 655,
+          "session_num": 66,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Lambda resolves C2 domain via DNS then establishes TCP \u2014 how many findings + ThreatPurpose?",
@@ -10315,6 +10969,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 659,
+          "session_num": 66,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "SCP Deny PutObject if KMS key header \u2260 specific key, upload without header, default encryption set \u2014 result?",
@@ -10326,6 +10981,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 661,
+          "session_num": 66,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Bucket policy Deny if encryption header \u2260 aws:kms, upload without header, default encryption SSE-KMS \u2014 result?",
@@ -10337,6 +10993,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 663,
+          "session_num": 66,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "DNS FW rule group in security account, enforce on all VPCs, re-associate if removed \u2014 need RAM first?",
@@ -10348,6 +11005,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 652,
+          "session_num": 66,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Bucket policy grants external account, no access yet, GD + AA enabled \u2014 which fire?",
@@ -10359,6 +11017,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 653,
+          "session_num": 66,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "RCP blocks external, 500 denied GetObjects, GD enabled \u2014 finding?",
@@ -10370,6 +11029,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 662,
+          "session_num": 66,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "NF policies in central account, 300 members, auto-recreate if deleted \u2014 which TWO?",
@@ -10381,6 +11041,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 665,
+          "session_num": 66,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Deploy Detective across 150 accounts, auto for new \u2014 StackSets?",
@@ -10392,6 +11053,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 666,
+          "session_num": 66,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Match verbs: accessible=?, attached/re-attached=?, deployed=?, self-service=?",
@@ -10403,6 +11065,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 664,
+          "session_num": 66,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "FM deploys WAF, developer disassociates Web ACL \u2014 what happens?",
@@ -10414,6 +11077,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 667,
+          "session_num": 66,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 resolves pool.minexmr.com (DNS), then TCP mining traffic \u2014 ThreatPurpose values?",
@@ -10425,6 +11089,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 668,
+          "session_num": 66,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "5-layer cross-account SSE-KMS: key policy grants B root + SCP ViaService + RCP same-org + session=GetObject \u2014 result?",
@@ -10436,6 +11101,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 669,
+          "session_num": 66,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Same as Q668 but key policy grants only Account A root (not B) \u2014 result?",
@@ -10447,6 +11113,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 670,
+          "session_num": 66,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account bucket policy grants DeleteObject, session policy=Get+Put only \u2014 result?",
@@ -10465,6 +11132,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 671,
+          "session_num": 67,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Two GD findings: Impact DNS then active TCP to C2 IP (not mining) \u2014 ThreatPurpose of #2?",
@@ -10476,6 +11144,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 672,
+          "session_num": 67,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 resolves pool.hashvault.pro DNS then TCP port 3333 \u2014 ThreatPurpose values in order?",
@@ -10487,6 +11156,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 673,
+          "session_num": 67,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EKS pod resolves C2 beacon domain then TLS TCP to that IP \u2014 ThreatPurpose of #2?",
@@ -10498,6 +11168,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 674,
+          "session_num": 67,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Key policy grants only Account A root, Account B (same org) calls Decrypt, RCP denies non-org \u2014 result?",
@@ -10509,6 +11180,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 675,
+          "session_num": 67,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Key policy grants Account B root, SCP ViaService=s3, Lambda reads SSE-KMS cross-account \u2014 result?",
@@ -10520,6 +11192,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 676,
+          "session_num": 67,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Key policy grants only Account A root, Account B same org, uploads SSE-KMS \u2014 result?",
@@ -10538,6 +11211,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 677,
+          "session_num": 68,
           "domain": "D4",
           "domain_raw": "D4/D5/D6",
           "scenario": "SCP denies GenerateDataKey unless ViaService=s3, developer calls GenerateDataKey directly from CLI \u2014 result?",
@@ -10549,6 +11223,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 678,
+          "session_num": 68,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "EC2 C2 at hardcoded IP 203.0.113.50:8443, no DNS \u2014 block VPC-wide?",
@@ -10560,6 +11235,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 679,
+          "session_num": 68,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account SSE-KMS, key policy grants B root, session policy=GetObject only \u2014 Lambda reads encrypted object?",
@@ -10571,6 +11247,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 680,
+          "session_num": 68,
           "domain": "D6",
           "domain_raw": "D6/D3",
           "scenario": "NF policies in central account, 250 members, auto-recreate if deleted \u2014 which TWO?",
@@ -10582,6 +11259,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 681,
+          "session_num": 68,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Alert within 60s on iam:DeleteRolePolicy + alert on unusual S3 download volumes/geo \u2014 which TWO services?",
@@ -10593,6 +11271,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 682,
+          "session_num": 68,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Bucket policy Deny if KMS key header \u2260 specific key, default encryption set, upload without header \u2014 result?",
@@ -10604,6 +11283,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 683,
+          "session_num": 68,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP denies non-org s3:*, S3 replication SLR replicates to EXTERNAL partner bucket \u2014 succeeds?",
@@ -10615,6 +11295,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 684,
+          "session_num": 68,
           "domain": "D2",
           "domain_raw": "D2/D1/D4",
           "scenario": "InstanceCredentialExfiltration.OutsideAWS, stop attacker + keep instance + fresh creds \u2014 single action?",
@@ -10626,6 +11307,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 685,
+          "session_num": 68,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet: Secrets Manager + S3 SSE-KMS + direct kms:Decrypt + DynamoDB \u2014 minimum endpoints?",
@@ -10637,6 +11319,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 686,
+          "session_num": 68,
           "domain": "D4",
           "domain_raw": "D4/D5/D6",
           "scenario": "Key policy grants only Account A root, Account B (same org) reads SSE-KMS, RCP denies non-org s3:* \u2014 result?",
@@ -10655,6 +11338,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 687,
+          "session_num": 69,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Key policy grants root only, Lambda has s3:GetObject but no kms:Decrypt \u2014 reads SSE-KMS object?",
@@ -10666,6 +11350,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 688,
+          "session_num": 69,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Prevent StopLogging + detect PutBucketPolicy within 2 min + auto-revert \u2014 which THREE services?",
@@ -10677,6 +11362,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 689,
+          "session_num": 69,
           "domain": "D4",
           "domain_raw": "D4/D5/D6",
           "scenario": "RCP same-org + SCP ViaService + cross-account SSE-KMS read \u2014 result?",
@@ -10688,6 +11374,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 690,
+          "session_num": 69,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Trojan:EC2/DGADomainRequest \u2014 DGA domains, all via DNS, block VPC-wide?",
@@ -10699,6 +11386,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 691,
+          "session_num": 69,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Bucket policy Deny unless KMS key header matches, developer uploads WITH correct header \u2014 result?",
@@ -10710,6 +11398,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 692,
+          "session_num": 69,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Custom SCP added outside Control Tower, drift detected \u2014 what happens?",
@@ -10721,6 +11410,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 693,
+          "session_num": 69,
           "domain": "D2",
           "domain_raw": "D2/D4/D1",
           "scenario": "InstanceCredentialExfiltration.InsideAWS \u2014 attacker on different EC2 same account, contain without breaking legitimate instance?",
@@ -10732,6 +11422,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 694,
+          "session_num": 69,
           "domain": "D5",
           "domain_raw": "D5/D3/D4",
           "scenario": "Lambda private subnet: Secrets Manager + SQS + S3 SSE-KMS + SNS \u2014 minimum endpoints?",
@@ -10743,6 +11434,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 695,
+          "session_num": 69,
           "domain": "D1",
           "domain_raw": "D1/D4/D5",
           "scenario": "RCP deployed, external reads blocked, AA + GD enabled \u2014 which TWO true after RCP?",
@@ -10754,6 +11446,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 696,
+          "session_num": 69,
           "domain": "D6",
           "domain_raw": "D6/D3/D4",
           "scenario": "Baseline SG all EC2 + DNS FW on all VPCs + auto-remediate removal \u2014 which THREE?",
@@ -10772,6 +11465,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 697,
+          "session_num": 70,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account SSE-KMS, session policy=GetObject only, key policy grants B root \u2014 Lambda reads encrypted object?",
@@ -10783,6 +11477,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 698,
+          "session_num": 70,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP denies non-org s3:*, SLR replicates to EXTERNAL partner bucket \u2014 blocked?",
@@ -10794,6 +11489,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 699,
+          "session_num": 70,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet: Secrets Manager + S3 SSE-KMS + direct kms:GenerateDataKey + DynamoDB \u2014 minimum endpoints?",
@@ -10805,6 +11501,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 700,
+          "session_num": 70,
           "domain": "D4",
           "domain_raw": "D4/D5/D6",
           "scenario": "SCP ViaService + session policy=GetObject only + key policy grants B root + RCP same-org \u2014 cross-account SSE-KMS read?",
@@ -10816,6 +11513,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 701,
+          "session_num": 70,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Detect iam:DeleteRolePolicy 60s + detect anomalous S3 downloads + prevent StopLogging \u2014 which THREE?",
@@ -10834,6 +11532,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 702,
+          "session_num": 71,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP denies non-org s3:*, SLR replicates to EXTERNAL partner bucket, replication failing \u2014 cause?",
@@ -10845,6 +11544,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 703,
+          "session_num": 71,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP denies non-org s3:*, Lambda writes to own bucket + partner bucket \u2014 which succeed? (TWO)",
@@ -10856,6 +11556,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 704,
+          "session_num": 71,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Data perimeter: block external reads IN + block insider writes OUT \u2014 which TWO?",
@@ -10867,6 +11568,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 705,
+          "session_num": 71,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "RCP denies non-org kms:Decrypt, Account B (same org) calls Decrypt on Account A key \u2014 result?",
@@ -10878,6 +11580,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 706,
+          "session_num": 71,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "RCP blocks external + AA + GD enabled + 100 denied GetObjects by attacker \u2014 which TWO true?",
@@ -10896,6 +11599,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 707,
+          "session_num": 72,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "VPC Flow Logs: inbound ACCEPT, outbound REJECT \u2014 SG or NACL problem?",
@@ -10907,6 +11611,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 708,
+          "session_num": 72,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW Logs agent was working, logs stopped \u2014 which log file?",
@@ -10918,6 +11623,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 709,
+          "session_num": 72,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "On-prem admins need AWS, cloud users must NOT access on-prem \u2014 which Directory + trust?",
@@ -10929,6 +11635,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 710,
+          "session_num": 72,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EventBridge rule on ConsoleLogin never fires, events visible in console \u2014 cause?",
@@ -10940,6 +11647,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 711,
+          "session_num": 72,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Suppress GD findings from pen-test EC2 (private IPs only) \u2014 approach?",
@@ -10951,6 +11659,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 712,
+          "session_num": 72,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Company generates own keys, keys must NEVER be in AWS \u2014 which S3 encryption?",
@@ -10969,6 +11678,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 713,
+          "session_num": 73,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail log file integrity validation \u2014 what does it do?",
@@ -10980,6 +11690,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 714,
+          "session_num": 73,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT Core client ID injection \u2014 prevent unauthorized topic access?",
@@ -10991,6 +11702,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 715,
+          "session_num": 73,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "ALB health checks failing \u2014 which TWO to check?",
@@ -11002,6 +11714,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 716,
+          "session_num": 73,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Lambda Access Denied on SQS, IAM role has ReceiveMessage \u2014 cause?",
@@ -11013,6 +11726,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 717,
+          "session_num": 73,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "API keys in CloudFormation securely \u2014 approach?",
@@ -11024,6 +11738,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 718,
+          "session_num": 73,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail org trail, new account logs not appearing \u2014 TWO causes?",
@@ -11035,6 +11750,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 719,
+          "session_num": 73,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "3 branch offices with firewalls need encrypted connectivity to AWS \u2014 solution?",
@@ -11046,6 +11762,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 720,
+          "session_num": 73,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty enabled, zero findings 90d, active workloads \u2014 cause?",
@@ -11057,6 +11774,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 721,
+          "session_num": 73,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "s3:PutObject with Resource arn:aws:s3:::bucket (no /*) \u2014 result?",
@@ -11068,6 +11786,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 722,
+          "session_num": 73,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key provided per request, AWS encrypts then discards key \u2014 which encryption?",
@@ -11086,6 +11805,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 723,
+          "session_num": 74,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty member account tries CreateIPSet \u2014 result?",
@@ -11097,6 +11817,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 724,
+          "session_num": 74,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW alarm for CreateAccessKey never fires, trail Write-only, events in Event History \u2014 cause?",
@@ -11108,6 +11829,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 725,
+          "session_num": 74,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Restrict dev to one bucket without modifying existing Allow s3:Get*/List* on * \u2014 approach?",
@@ -11119,6 +11841,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 726,
+          "session_num": 74,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key policy at 28KB, onboard/offboard monthly, need Decrypt only \u2014 mechanism?",
@@ -11130,6 +11853,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 727,
+          "session_num": 74,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Real-time full-text search + dashboards + sub-minute + 30-day hot \u2014 architecture?",
@@ -11141,6 +11865,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 728,
+          "session_num": 74,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CloudFront custom domain + ALB in eu-west-1, HTTPS \u2014 cert config?",
@@ -11152,6 +11877,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 729,
+          "session_num": 74,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EventBridge rule on ConsoleLogin never fires, Event History shows events \u2014 cause?",
@@ -11163,6 +11889,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 730,
+          "session_num": 74,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Legacy app doesn't need metadata, SSRF to 169.254.169.253 \u2014 eliminate?",
@@ -11174,6 +11901,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 731,
+          "session_num": 74,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "On-prem AD, SSO to AWS Console, NO AWS Directory Service infra, AD groups \u2192 permissions?",
@@ -11185,6 +11913,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 732,
+          "session_num": 74,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Upload without encryption headers, bucket has default SSE-KMS + Deny policy checking headers \u2014 result?",
@@ -11203,6 +11932,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 733,
+          "session_num": 75,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "3000 employees, SSO, ZERO AWS infra, AD groups \u2192 permissions \u2014 approach?",
@@ -11214,6 +11944,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 734,
+          "session_num": 75,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "On-prem users need AWS + cloud users need on-prem (bidirectional) \u2014 config?",
@@ -11225,6 +11956,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 735,
+          "session_num": 75,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "WorkSpaces domain-join + RDS SQL Server Windows Auth \u2014 minimum Directory Service?",
@@ -11236,6 +11968,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 736,
+          "session_num": 75,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW alarm fired (threshold >=5), only 2 events in Event History \u2014 why?",
@@ -11247,6 +11980,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 737,
+          "session_num": 75,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Suppress GD findings from pen-test EC2 with private IPs only \u2014 approach?",
@@ -11258,6 +11992,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 738,
+          "session_num": 75,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "3 offices with routers + static IPs, encrypted to AWS, centralized routing \u2014 solution?",
@@ -11269,6 +12004,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 739,
+          "session_num": 75,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "On-prem AD, SSO only, no trusts, no cloud users, some AWS infra OK \u2014 simplest?",
@@ -11280,6 +12016,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 740,
+          "session_num": 75,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IMDSv2 hop limit 1, container PUT to metadata \u2014 no response. Cause?",
@@ -11291,6 +12028,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 741,
+          "session_num": 75,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Already have ADFS, want AWS SSO, no new Directory Service resources \u2014 which TWO?",
@@ -11302,6 +12040,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 742,
+          "session_num": 75,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Match 4 AD scenarios to correct service (Connector, Managed, ADFS, two-way)",
@@ -11320,6 +12059,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 743,
+          "session_num": 76,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Encrypt later, only need encrypted key now \u2014 which KMS API?",
@@ -11331,6 +12071,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 744,
+          "session_num": 76,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 multipart >10GB + SSE-KMS fails on reassembly \u2014 missing permission?",
@@ -11342,6 +12083,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 745,
+          "session_num": 76,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EC2 can't start with encrypted EBS, has kms:Decrypt \u2014 what's missing?",
@@ -11353,6 +12095,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 746,
+          "session_num": 76,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Delegate user creation but cap permissions of created users \u2014 mechanism?",
@@ -11364,6 +12107,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 747,
+          "session_num": 76,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP allows ec2+lambda only, IAM has s3:*, calls s3:PutObject \u2014 result?",
@@ -11375,6 +12119,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 748,
+          "session_num": 76,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Mobile app, Cognito, needs temp creds for S3 \u2014 which STS API?",
@@ -11386,6 +12131,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 749,
+          "session_num": 76,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account role, Access Denied ExternalId required \u2014 cause?",
@@ -11397,6 +12143,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 750,
+          "session_num": 76,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "VPC Flow Logs not enabled, auto-remediate, least config \u2014 approach?",
@@ -11408,6 +12155,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 751,
+          "session_num": 76,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS key PendingDeletion, EC2 still running \u2014 recover data?",
@@ -11419,6 +12167,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 752,
+          "session_num": 76,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Custom TCP protocol, NOT HTTP, need load balancer \u2014 which type?",
@@ -11437,6 +12186,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 753,
+          "session_num": 77,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account KMS, key policy grants only Account A root, Account B same org \u2014 result?",
@@ -11448,6 +12198,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 754,
+          "session_num": 77,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Session=GetObject only, same-account bucket policy grants role DeleteObject \u2014 result?",
@@ -11459,6 +12210,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 755,
+          "session_num": 77,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "RCP blocks external, AA + GD enabled, 100 denied GetObjects \u2014 which TWO true?",
@@ -11470,6 +12222,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 756,
+          "session_num": 77,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "DGA domains, block VPC-wide \u2014 approach?",
@@ -11481,6 +12234,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 757,
+          "session_num": 77,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP denies non-org s3:*, Lambda writes to own bucket + partner bucket \u2014 which succeed?",
@@ -11492,6 +12246,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 758,
+          "session_num": 77,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 multipart 15GB + SSE-KMS fails on reassembly \u2014 missing permission?",
@@ -11503,6 +12258,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 759,
+          "session_num": 77,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP ViaService=s3, Lambda S3 read + direct Decrypt + CLI Decrypt \u2014 which succeed?",
@@ -11514,6 +12270,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 760,
+          "session_num": 77,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Prevent ScheduleKeyDeletion + detect PutBucketPolicy 2min + block external S3 \u2014 THREE services?",
@@ -11525,6 +12282,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 761,
+          "session_num": 77,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "InstanceCredentialExfiltration.InsideAWS, contain without breaking legitimate instance?",
@@ -11536,6 +12294,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 762,
+          "session_num": 77,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cross-account bucket policy grants DeleteObject, session=Get+Put only \u2014 result?",
@@ -11554,6 +12313,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 763,
+          "session_num": 78,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Centrally allow/deny services per account, least complexity \u2014 approach?",
@@ -11565,6 +12325,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 764,
+          "session_num": 78,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS PendingDeletion, EC2 running, unauthorized deletion \u2014 TWO recovery approaches?",
@@ -11576,6 +12337,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 765,
+          "session_num": 78,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Store encrypted key for later + upload 20GB multipart SSE-KMS \u2014 which THREE KMS perms?",
@@ -11587,6 +12349,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 766,
+          "session_num": 78,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Public app, CloudFront\u2192ALB, protect SQLi + geo-restrict \u2014 approach?",
@@ -11598,6 +12361,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 767,
+          "session_num": 78,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EC2 start with existing encrypted EBS, has kms:Decrypt \u2014 what's missing?",
@@ -11609,6 +12373,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 768,
+          "session_num": 78,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Developers create roles but roles can't exceed s3+ec2 \u2014 mechanism?",
@@ -11620,6 +12385,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 769,
+          "session_num": 78,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "SSE-C upload via HTTP (not HTTPS) \u2014 result?",
@@ -11631,6 +12397,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 770,
+          "session_num": 78,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Lambda needs DB creds, rotate every 30d, RDS PostgreSQL \u2014 service?",
@@ -11642,6 +12409,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 771,
+          "session_num": 78,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Insights detects what kind of anomaly?",
@@ -11653,6 +12421,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 772,
+          "session_num": 78,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Lambda reads Parameter Store SecureString (CMK), has ssm:GetParameter \u2014 fails. Missing?",
@@ -11671,6 +12440,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 773,
+          "session_num": 79,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 multipart 50GB + SSE-KMS, Access Denied on complete step \u2014 missing permission?",
@@ -11682,6 +12452,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 774,
+          "session_num": 79,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EC2 encrypted EBS won't start, key policy only has Decrypt + GenerateDataKeyWithoutPlaintext \u2014 cause?",
@@ -11693,6 +12464,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 775,
+          "session_num": 79,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Need encrypted data key NOW but plaintext LATER \u2014 which API?",
@@ -11704,6 +12476,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 776,
+          "session_num": 79,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP allows ec2+s3+lambda only, IAM grants kms:CreateKey \u2014 result?",
@@ -11715,6 +12488,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 777,
+          "session_num": 79,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Created roles must never exceed s3:GetObject+logs:*, least admin effort \u2014 approach?",
@@ -11726,6 +12500,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 778,
+          "session_num": 79,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cognito User Pool + need temp AWS creds for S3 upload \u2014 which TWO?",
@@ -11737,6 +12512,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 779,
+          "session_num": 79,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Non-HTTP binary protocol, TLS on port 9100, health checks \u2014 which LB?",
@@ -11748,6 +12524,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 780,
+          "session_num": 79,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty findings severity >= 7, trigger Lambda, least services \u2014 architecture?",
@@ -11759,6 +12536,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 781,
+          "session_num": 79,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Flow Log: inbound ACCEPT + outbound REJECT \u2014 which TWO true?",
@@ -11770,6 +12548,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 782,
+          "session_num": 79,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "On-prem AD + SSO + WorkSpaces + RDS SQL + cloud-only accounts \u2014 which Directory?",
@@ -11788,6 +12567,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 783,
+          "session_num": 80,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cognito User Pool + need temp AWS creds for S3 upload \u2014 which TWO?",
@@ -11799,6 +12579,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 784,
+          "session_num": 80,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Flow Log: inbound ACCEPT port 443 + outbound REJECT ephemeral \u2014 cause?",
@@ -11810,6 +12591,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 785,
+          "session_num": 80,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "InstanceCredentialExfiltration.InsideAWS, contain without breaking legitimate?",
@@ -11821,6 +12603,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 786,
+          "session_num": 80,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 multipart 15-50GB + SSE-KMS, fails at complete step \u2014 missing permission?",
@@ -11832,6 +12615,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 787,
+          "session_num": 80,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EC2 encrypted EBS won't start, has kms:Decrypt + GenerateDataKeyWithoutPlaintext \u2014 missing?",
@@ -11843,6 +12627,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 788,
+          "session_num": 80,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Need encrypted data key now, plaintext later \u2014 which API?",
@@ -11854,6 +12639,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 789,
+          "session_num": 80,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "SCP Allow ec2+s3+lambda only, IAM grants kms:CreateKey \u2014 result?",
@@ -11865,6 +12651,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 790,
+          "session_num": 80,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Devs create roles but can't exceed s3:GetObject+logs:*, least effort?",
@@ -11876,6 +12663,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 791,
+          "session_num": 80,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cognito User Pool token + direct AssumeRoleWithWebIdentity \u2014 what's wrong?",
@@ -11887,6 +12675,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 792,
+          "session_num": 80,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Non-HTTP binary protocol, TLS on port 6379, health checks \u2014 which LB?",
@@ -11898,6 +12687,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 793,
+          "session_num": 80,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect unusual API call volume vs 30-day baseline, least overhead?",
@@ -11909,6 +12699,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 794,
+          "session_num": 80,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EventBridge rule on ConsoleLogin never fires, Event History shows logins, Write-only trail \u2014 cause?",
@@ -11920,6 +12711,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 795,
+          "session_num": 80,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Suppress GD findings from pen-test EC2 with private IPs only \u2014 approach? (TWO)",
@@ -11938,6 +12730,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 796,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Encryption context in key policy + PrincipalTag ABAC, engineering Lambda reads finance object \u2014 result?",
@@ -11949,6 +12742,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 797,
+          "session_num": 81,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "EKS Runtime Monitoring enabled, crypto miner in pod, no findings, audit log works \u2014 cause?",
@@ -11960,6 +12754,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 798,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda generates presigned URL, partners upload from internet fails, VPC Gateway endpoint exists \u2014 cause?",
@@ -11971,6 +12766,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 799,
+          "session_num": 81,
           "domain": "D6",
           "domain_raw": "D6/D5",
           "scenario": "Deploy to EC2 + on-prem + rotate creds, proposes Elastic Beanstalk \u2014 TWO issues?",
@@ -11982,6 +12778,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 800,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "WORM 7yr, root can't delete, irreversible once confirmed \u2014 approach?",
@@ -11993,6 +12790,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 801,
+          "session_num": 81,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "CloudFront missing HSTS/CSP/X-Content-Type headers, least overhead \u2014 approach?",
@@ -12004,6 +12802,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 802,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "S3 Access Point VPC-only, partner needs internet access \u2014 solution?",
@@ -12015,6 +12814,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 803,
+          "session_num": 81,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "Container CVE in Inspector + active reverse shell \u2014 which statement true?",
@@ -12026,6 +12826,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 804,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 CRR + encryption context + destination key policy condition \u2014 staging object replication?",
@@ -12037,6 +12838,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 805,
+          "session_num": 81,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "On-prem server, X.509 cert, short-lived creds, least overhead \u2014 approach?",
@@ -12048,6 +12850,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 806,
+          "session_num": 81,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Two GD findings correlated into attack sequence in console \u2014 which feature?",
@@ -12059,6 +12862,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 807,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Same bucket, analytics needs PII redacted, compliance needs full \u2014 least duplication?",
@@ -12070,6 +12874,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 808,
+          "session_num": 81,
           "domain": "D6",
           "domain_raw": "D6/D3",
           "scenario": "Guarantee no public IPs regardless of ANY API (current or future) \u2014 approach?",
@@ -12081,6 +12886,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 809,
+          "session_num": 81,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Route 53 Resolver logs not appearing in CW Logs, VPC Flow Logs work fine \u2014 cause?",
@@ -12092,6 +12898,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 810,
+          "session_num": 81,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Trojan finding, preserve volatile memory + disk evidence \u2014 sequence?",
@@ -12103,6 +12910,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 811,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "S3 SSE-KMS uploads work, direct kms:Decrypt times out \u2014 fix?",
@@ -12114,6 +12922,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 812,
+          "session_num": 81,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Asymmetric KMS keys, sign artifacts, customers verify \u2014 which flow?",
@@ -12125,6 +12934,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 813,
+          "session_num": 81,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Credential stuffing from 3 countries + rate limit 200/5min \u2014 where + rules? (TWO)",
@@ -12143,6 +12953,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 814,
+          "session_num": 82,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "CloudFront + 2 ALBs (us-west-2 + eu-west-1), eu-west-1 ALB cert errors \u2014 cause?",
@@ -12154,6 +12965,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 815,
+          "session_num": 82,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "RDS DeletionProtection enforcement, 200 accounts, remediate 15min, least overhead?",
@@ -12165,6 +12977,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 816,
+          "session_num": 82,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Encryption context TenantId + PrincipalTag ABAC, alpha Lambda decrypts beta object \u2014 which TWO true?",
@@ -12176,6 +12989,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 817,
+          "session_num": 82,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Third-party IDS/IPS appliances, centralized inspection, scale + health check + transparent \u2014 component?",
@@ -12187,6 +13001,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 818,
+          "session_num": 82,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Declarative policy vs SCP, new API assigns public IP \u2014 which protects without changes?",
@@ -12198,6 +13013,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 819,
+          "session_num": 82,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "S3 Access Grants, Finance analyst accesses Marketing prefix \u2014 cause?",
@@ -12209,6 +13025,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 820,
+          "session_num": 82,
           "domain": "D2",
           "domain_raw": "D2/D1/D4",
           "scenario": "OutsideAWS credential exfil, can't stop instance, preserve + prevent IMDS \u2014 FOUR actions?",
@@ -12227,6 +13044,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 821,
+          "session_num": 83,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "EKS Runtime Monitoring, crypto miner in pod, zero findings, audit log works, no DaemonSet \u2014 cause?",
@@ -12238,6 +13056,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 822,
+          "session_num": 83,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "WORM 10yr, policy permanently irreversible after 24hr confirm, even AWS Support can't modify \u2014 approach?",
@@ -12249,6 +13068,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 823,
+          "session_num": 83,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Static HSTS/CSP/X-Content-Type headers on CloudFront, least overhead?",
@@ -12260,6 +13080,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 824,
+          "session_num": 83,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Asymmetric KMS, devs sign artifacts, customers verify offline with public key \u2014 correct flow?",
@@ -12271,6 +13092,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 825,
+          "session_num": 83,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Trojan C2Activity, preserve volatile memory + disk, can't stop instance \u2014 TWO actions?",
@@ -12282,6 +13104,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 826,
+          "session_num": 83,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "S3 Access Grants, Finance grant for /finance/, analyst lists marketing-budgets/ \u2014 cause?",
@@ -12293,6 +13116,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 827,
+          "session_num": 83,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "OutsideAWS, API must stay up, stop attacker + preserve disk + prevent IMDS SSRF \u2014 THREE?",
@@ -12311,6 +13135,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 828,
+          "session_num": 84,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Audit records in Glacier, policy cannot be altered after validation, brief testing before permanent?",
@@ -12322,6 +13147,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 829,
+          "session_num": 84,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Asymmetric KMS, signed binaries, customers verify offline, junior says verification needs KMS \u2014 correct?",
@@ -12333,6 +13159,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 830,
+          "session_num": 84,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Trojan C2Activity, capture volatile memory + disk, instance must not stop \u2014 TWO actions?",
@@ -12344,6 +13171,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 831,
+          "session_num": 84,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "Access Grants, Engineering grant for /engineering/, engineer reads /hr/salaries/ \u2014 check FIRST?",
@@ -12355,6 +13183,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 832,
+          "session_num": 84,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "InsideAWS, stolen creds on different EC2 same role, stop attacker without breaking production?",
@@ -12366,6 +13195,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 833,
+          "session_num": 84,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 objects undeletable 5 years exactly, auto-deletable after, root can't override \u2014 config?",
@@ -12377,6 +13207,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 834,
+          "session_num": 84,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Asymmetric KMS sign, on-prem Jenkins no AWS creds, verify signature \u2014 how?",
@@ -12395,6 +13226,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 835,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "SSE-KMS, alert on 10x volume + never-seen IP, no Lambda/filters/infra \u2014 service?",
@@ -12406,6 +13238,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 836,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Alert 90s on iam:DeleteRolePolicy + alert on S3 baseline deviation \u2014 which TWO?",
@@ -12417,6 +13250,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 837,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "C2Activity finding, attacker hardcoded IP (no DNS), block VPC-wide \u2014 action?",
@@ -12428,6 +13262,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 838,
+          "session_num": 85,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Trojan 8.9, capture running processes + network conns + kernel modules, no reboot \u2014 action?",
@@ -12439,6 +13274,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 839,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "RCP blocks external, 500 denied GetObjects, GD + AA enabled \u2014 which true?",
@@ -12450,6 +13286,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 840,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 DNS to C2 beacon, then TLS TCP to resolved IP \u2014 ThreatPurpose order?",
@@ -12461,6 +13298,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 841,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GD enabled 6 months all regions, 50 EC2s, zero findings, VPC Flow Logs not enabled \u2014 cause?",
@@ -12472,6 +13310,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 842,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "Bucket policy grants external, no access yet, GD + AA enabled \u2014 which TWO true?",
@@ -12483,6 +13322,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 843,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect kms:DisableKey 400 accounts within 60s, org trail exists \u2014 approach?",
@@ -12494,6 +13334,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 844,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 active TCP to mining pool IP port 3333, sustained \u2014 ThreatPurpose?",
@@ -12505,6 +13346,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 845,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "DGADomainRequest finding, all via DNS, block VPC-wide \u2014 approach?",
@@ -12516,6 +13358,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 846,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Prevent StopLogging + detect PutBucketPolicy 2min + block external S3 \u2014 THREE services?",
@@ -12527,6 +13370,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 847,
+          "session_num": 85,
           "domain": "D2",
           "domain_raw": "D2/D1",
           "scenario": "OutsideAWS, API must stay up, stop attacker + preserve + prevent SSRF \u2014 combo?",
@@ -12538,6 +13382,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 848,
+          "session_num": 85,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GD org-wide, admin suppression <4, member suppression all pen-test \u2014 both valid?",
@@ -12556,6 +13401,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 849,
+          "session_num": 86,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "RCP blocks external, 200 denied GetObjects, AA + GD enabled \u2014 which TWO true?",
@@ -12567,6 +13413,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 850,
+          "session_num": 86,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "ECS task retrieves secret, KMS key policy updated to remove task's account, retry Decrypt \u2014 result?",
@@ -12578,6 +13425,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 851,
+          "session_num": 86,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT device publishes to other device's topic by spoofing MQTT client ID \u2014 fix?",
@@ -12589,6 +13437,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 852,
+          "session_num": 86,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Lake org-level, architect expects 30s latency \u2014 limitation?",
@@ -12600,6 +13449,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 853,
+          "session_num": 86,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Org Config custom rule fails in member accounts \"Lambda function not found\" \u2014 fix?",
@@ -12611,6 +13461,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 854,
+          "session_num": 86,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "50GB/hr WAF logs, real-time full-text search + 90d retention + User-Agent alerts \u2014 architecture?",
@@ -12622,6 +13473,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 855,
+          "session_num": 86,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "S3 Batch Operations cross-account re-encrypt 12M objects \u2014 which TWO required?",
@@ -12633,6 +13485,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 856,
+          "session_num": 86,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Lambda private subnet, direct kms:Decrypt times out, SM + DDB work \u2014 cause?",
@@ -12644,6 +13497,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 857,
+          "session_num": 86,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "S3 Batch Operations 100% failure PutObjectTagging cross-account, role has s3:* Resource:* \u2014 cause?",
@@ -12655,6 +13509,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 858,
+          "session_num": 86,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Detect CreateRole without boundary within 2 min + delete within 5 min \u2014 which TWO?",
@@ -12666,6 +13521,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 859,
+          "session_num": 86,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "ACM cert \"not found\" on ap-southeast-1 ALB, cert issued and valid \u2014 cause?",
@@ -12677,6 +13533,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 860,
+          "session_num": 86,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW metric filter on StopLogging, alarm worked in test, real attack undetected \u2014 cause?",
@@ -12688,6 +13545,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 861,
+          "session_num": 86,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Private CA cert renewed, existing 24hr microservice certs have 20hr remaining \u2014 what happens?",
@@ -12699,6 +13557,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 862,
+          "session_num": 86,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Developer keys on GitHub 6hrs, attacker used from foreign IP \u2014 which TWO FIRST?",
@@ -12710,6 +13569,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 863,
+          "session_num": 86,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP Deny kms:* unless ViaService=s3, Lambda reads+writes S3 SSE-KMS \u2014 result?",
@@ -12721,6 +13581,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 864,
+          "session_num": 86,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "Config auto-remediation S3 logging fails \"role does not have permission\" \u2014 missing?",
@@ -12732,6 +13593,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 865,
+          "session_num": 86,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Kinesis encrypted stream, new consumer Lambda Access Denied \u2014 missing permission?",
@@ -12750,6 +13612,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 866,
+          "session_num": 87,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW metric filter on StopLogging, alarm worked in test, real attack undetected \u2014 cause?",
@@ -12761,6 +13624,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 867,
+          "session_num": 87,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Keys on GitHub 4hrs, attacker created new keys + console access \u2014 which TWO FIRST?",
@@ -12772,6 +13636,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 868,
+          "session_num": 87,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "Config auto-remediation S3 logging fails \"role does not have permission\" \u2014 missing?",
@@ -12783,6 +13648,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 869,
+          "session_num": 87,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "S3 Batch Operations cross-account re-encrypt 15M objects, 100% failure \u2014 cause?",
@@ -12794,6 +13660,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 870,
+          "session_num": 87,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account ECS task, KMS key policy removes task's account \u2014 at which layer fails?",
@@ -12805,6 +13672,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 871,
+          "session_num": 87,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "SCP denies CreateRole without boundary, engineer proposes EventBridge+Lambda detect+delete \u2014 why rejected?",
@@ -12816,6 +13684,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 872,
+          "session_num": 87,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 Batch Operations same-account, manifest us-east-1, target eu-west-1, job us-east-1 \u2014 result?",
@@ -12827,6 +13696,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 873,
+          "session_num": 87,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "CloudFront + 3 ALBs (3 regions), custom domain HTTPS \u2014 minimum ACM certs?",
@@ -12838,6 +13708,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 874,
+          "session_num": 87,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT fleet, Device A publishes to Device B's topic via clientId spoofing \u2014 fix?",
@@ -12849,6 +13720,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 875,
+          "session_num": 87,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "200GB/hr WAF logs, full-text search, sub-second, 90d, alerts, dashboards \u2014 architecture?",
@@ -12860,6 +13732,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 876,
+          "session_num": 87,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Config org custom rule, Lambda in delegated admin, member accounts \"Unable to invoke\" \u2014 fix?",
@@ -12871,6 +13744,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 877,
+          "session_num": 87,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Lake SQL: AssumeRole outside corporate CIDR \u2014 correct syntax?",
@@ -12882,6 +13756,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 878,
+          "session_num": 87,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "ACM cert in us-east-1 attached to ap-southeast-1 ALB \u2014 result?",
@@ -12893,6 +13768,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 879,
+          "session_num": 87,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Kinesis encrypted stream, consumer Lambda Access Denied, has GetRecords \u2014 missing? (TWO)",
@@ -12904,6 +13780,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 880,
+          "session_num": 87,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT policy uses ThingName, attacker steals cert, uses from different device \u2014 can publish?",
@@ -12915,6 +13792,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 881,
+          "session_num": 87,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Config org custom rule, Lambda needs 5min, evaluations timeout \u2014 fix?",
@@ -12926,6 +13804,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 882,
+          "session_num": 87,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Lake org EDS, query returns zero results despite activity \u2014 TWO causes?",
@@ -12944,6 +13823,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 883,
+          "session_num": 88,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 CRR cross-account, replication role has kms:Encrypt on dest key, fails \u2014 missing?",
@@ -12955,6 +13835,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 884,
+          "session_num": 88,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Org trail + EventBridge rule in mgmt account, attacker calls StopLogging in member \u2014 fires?",
@@ -12966,6 +13847,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 885,
+          "session_num": 88,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Three detection mechanisms for StopLogging (CW filter, EventBridge, Config) \u2014 which work?",
@@ -12977,6 +13859,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 886,
+          "session_num": 88,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Attacker created 2nd key + console + EC2, broadest single containment action?",
@@ -12988,6 +13871,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 887,
+          "session_num": 88,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "20GB multipart SSE-KMS fails at CompleteMultipartUpload, has GenerateDataKey \u2014 missing?",
@@ -12999,6 +13883,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 888,
+          "session_num": 88,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 CRR SSE-KMS, encryption context on dest object shows source or dest bucket ARN?",
@@ -13010,6 +13895,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 889,
+          "session_num": 88,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EC2 encrypted EBS fails to start, key policy has Decrypt + GenerateDataKeyWithoutPlaintext only \u2014 missing?",
@@ -13021,6 +13907,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 890,
+          "session_num": 88,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "C2Activity finding, C2 IP hardcoded (no DNS), block VPC-wide \u2014 action?",
@@ -13032,6 +13919,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 891,
+          "session_num": 88,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Config org custom rule Lambda 8min, timing out at 3min \u2014 fix?",
@@ -13043,6 +13931,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 892,
+          "session_num": 88,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT cert revoked in IoT Core, attacker still has private key, attempts connect \u2014 result?",
@@ -13061,6 +13950,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 893,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 CRR cross-account, replication role has Decrypt+GenerateDataKey, dest key policy only grants dest root \u2014 cause?",
@@ -13072,6 +13962,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 894,
+          "session_num": 89,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT cert revoked 30 seconds ago, attacker attempts new MQTT connection \u2014 result?",
@@ -13083,6 +13974,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 895,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet, direct GenerateDataKeyWithoutPlaintext times out, S3 reads work \u2014 fix?",
@@ -13094,6 +13986,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 896,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CRR dest key policy condition checks source bucket ARN in encryption context \u2014 why fails?",
@@ -13105,6 +13998,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 897,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 Batch Operations, manifest in us-east-1, job in ap-southeast-1 \u2014 result?",
@@ -13116,6 +14010,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 898,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secrets Manager cross-region replication, source uses single-region CMK \u2014 works?",
@@ -13127,6 +14022,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 899,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "DynamoDB CMK, Lambda has Decrypt+GenerateDataKey, Access Denied on PutItem \u2014 missing?",
@@ -13138,6 +14034,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 900,
+          "session_num": 89,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP denies kms:* unless ViaService=s3, Lambda reads S3 + writes DynamoDB \u2014 which succeed?",
@@ -13149,6 +14046,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 901,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Lambda has s3:GetObject + kms:Decrypt + kms:GenerateDataKey, GetObject Access Denied \u2014 cause?",
@@ -13160,6 +14058,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 902,
+          "session_num": 89,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "Ensure every new EC2 has encrypted EBS, preventive only \u2014 approach?",
@@ -13178,6 +14077,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 903,
+          "session_num": 90,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 server access logging, target bucket policy uses service principal \u2014 why logs stopped?",
@@ -13189,6 +14089,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 904,
+          "session_num": 90,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Private CA renewed (new key pair), existing 24hr certs have 20hr remaining \u2014 what happens?",
@@ -13200,6 +14101,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 905,
+          "session_num": 90,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "GWLB + IDS, source IP shows GWLB IP instead of original client \u2014 cause?",
@@ -13211,6 +14113,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 906,
+          "session_num": 90,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Roles Anywhere, cert expires, server has cached STS creds \u2014 when does access stop?",
@@ -13222,6 +14125,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 907,
+          "session_num": 90,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Static HSTS/CSP headers on CloudFront, least overhead?",
@@ -13233,6 +14137,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 908,
+          "session_num": 90,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Config org custom rule works in admin, times out in members \u2014 cause?",
@@ -13244,6 +14149,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 909,
+          "session_num": 90,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "S3 Gateway endpoint policy allows Get+Put on data-bucket/*, Lambda calls ListBucket \u2014 result?",
@@ -13255,6 +14161,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 910,
+          "session_num": 90,
           "domain": "D6",
           "domain_raw": "D6/D3",
           "scenario": "Guarantee no public IPs regardless of ANY API (current or future) \u2014 mechanism?",
@@ -13266,6 +14173,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 911,
+          "session_num": 90,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Producer Lambda has PutRecord + GenerateDataKey, tries to read own records \u2014 why fails?",
@@ -13277,6 +14185,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 912,
+          "session_num": 90,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "SCP denies PutObject if KMS key header \u2260 specific key, upload without flags, default encryption set \u2014 result?",
@@ -13295,6 +14204,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 913,
+          "session_num": 91,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "CRR cross-account, dest key policy checks encryption context against source bucket ARN \u2014 why fails? (TWO)",
@@ -13306,6 +14216,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 914,
+          "session_num": 91,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Org trail + CW metric filter on StopLogging doesn't fire, EventBridge does \u2014 why?",
@@ -13317,6 +14228,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 915,
+          "session_num": 91,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "Keys on GitHub 8hrs, attacker created 2nd keys + console + EC2 \u2014 broadest single containment?",
@@ -13328,6 +14240,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 916,
+          "session_num": 91,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "Config auto-remediation S3 logging fails AccessDenied, has PutBucketLogging + PutObject \u2014 missing?",
@@ -13339,6 +14252,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 917,
+          "session_num": 91,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "IoT cert revoked 3 seconds ago, device attempts new MQTT connection \u2014 result?",
@@ -13350,6 +14264,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 918,
+          "session_num": 91,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet, encrypted Kinesis, times out on GetRecords, SM works \u2014 fix? (TWO)",
@@ -13361,6 +14276,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 919,
+          "session_num": 91,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 Batch Operations job in us-east-1 targeting ap-southeast-1 bucket \u2014 error cause?",
@@ -13372,6 +14288,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 920,
+          "session_num": 91,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "GWLB + IDS, all logs show GWLB IP instead of client IPs \u2014 fix?",
@@ -13383,6 +14300,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 921,
+          "session_num": 91,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Org Config custom rule, Lambda works locally, \"Unable to invoke\" in 150 members \u2014 fix?",
@@ -13394,6 +14312,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 922,
+          "session_num": 91,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "DynamoDB CMK, Lambda has Decrypt+GenerateDataKey, PutItem Access Denied on KMS \u2014 missing?",
@@ -13412,6 +14331,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 923,
+          "session_num": 92,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CRR SSE-KMS, dest key policy checks aws:s3:arn, objects with custom encryption context fail \u2014 cause?",
@@ -13423,6 +14343,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 924,
+          "session_num": 92,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT ThingName policy, attacker steals cert, installs on different device \u2014 which statement true?",
@@ -13434,6 +14355,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 925,
+          "session_num": 92,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet, Kinesis+KMS endpoints exist, GetRecords times out \u2014 fix? (TWO)",
@@ -13445,6 +14367,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 926,
+          "session_num": 92,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Config org custom rule Lambda timeout 3min, check takes 4-7min \u2014 least disruptive fix?",
@@ -13456,6 +14379,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 927,
+          "session_num": 92,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Lake org EDS management-only, PutObject query returns zero \u2014 TWO causes?",
@@ -13467,6 +14391,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 928,
+          "session_num": 92,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 Batch single job us-east-1, manifest lists objects in 4 regions \u2014 cause of failure?",
@@ -13478,6 +14403,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 929,
+          "session_num": 92,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "GWLB + IDS, logs show GWLB endpoint IP instead of client \u2014 fix?",
@@ -13489,6 +14415,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 930,
+          "session_num": 92,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "DynamoDB CMK, Lambda has Decrypt+GenerateDataKey+Encrypt, PutItem Access Denied \u2014 minimum additional?",
@@ -13500,6 +14427,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 931,
+          "session_num": 92,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "CloudFront + 2 regional ALBs, eu-west-1 ALB cert error \u2014 correct architecture?",
@@ -13511,6 +14439,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 932,
+          "session_num": 92,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Config org custom rule \"Lambda not found\" in 180 members, works in admin \u2014 cause?",
@@ -13529,6 +14458,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 933,
+          "session_num": 93,
           "domain": "D2",
           "domain_raw": "D2/D1",
           "scenario": "Trojan C2Activity, API must stay up, stop exfil + capture memory + preserve disk \u2014 THREE?",
@@ -13540,6 +14470,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 934,
+          "session_num": 93,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Test GuardDuty\u2192EventBridge\u2192Step Functions pipeline without real incident \u2014 approach?",
@@ -13551,6 +14482,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 935,
+          "session_num": 93,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Demonstrate RTO/RPO compliance to auditors, least overhead \u2014 service?",
@@ -13562,6 +14494,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 936,
+          "session_num": 93,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "AZ degraded but health checks pass, stop traffic to AZ, no DNS/ASG changes \u2014 fastest?",
@@ -13573,6 +14506,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 937,
+          "session_num": 93,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Forensics Orchestrator: isolation succeeds but SSM memory acquisition fails \u2014 cause?",
@@ -13584,6 +14518,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 938,
+          "session_num": 93,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Alert 90s on DeleteRolePolicy + alert on S3 baseline deviation \u2014 which TWO?",
@@ -13595,6 +14530,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 939,
+          "session_num": 93,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "RCP blocks external, 500 denied GetObjects, AA + GD enabled \u2014 which true?",
@@ -13606,6 +14542,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 940,
+          "session_num": 93,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Forensic analysis: query CT Lake + Security Lake, custom viz, reusable template \u2014 approach?",
@@ -13617,6 +14554,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 941,
+          "session_num": 93,
           "domain": "D1",
           "domain_raw": "D1/D2",
           "scenario": "Impact then Trojan findings, block hardcoded C2 IP + preserve + investigate 48hr \u2014 THREE?",
@@ -13628,6 +14566,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 942,
+          "session_num": 93,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Keys on GitHub, attacker created 2nd keys + console + EC2, SSO active \u2014 single containment?",
@@ -13646,6 +14585,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 943,
+          "session_num": 94,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Test GD\u2192EB\u2192Step Functions pipeline without real incidents \u2014 approach?",
@@ -13657,6 +14597,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 944,
+          "session_num": 94,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Prove RTO/RPO compliance to auditors, least overhead, no breakage \u2014 service?",
@@ -13668,6 +14609,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 945,
+          "session_num": 94,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "AZ degraded, gray failure, shift traffic in seconds, no DNS/ASG changes \u2014 fastest?",
@@ -13679,6 +14621,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 946,
+          "session_num": 94,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Keys on GitHub, attacker created 2nd keys + console + EC2, single broadest containment?",
@@ -13690,6 +14633,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 947,
+          "session_num": 94,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Config org custom rule \"Lambda not found\" in 200 members, works in admin \u2014 fix?",
@@ -13701,6 +14645,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 948,
+          "session_num": 94,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CRR cross-account, replication role has kms:Encrypt on dest key, fails \u2014 missing?",
@@ -13712,6 +14657,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 949,
+          "session_num": 94,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "EKS Runtime Monitoring enabled, crypto miner in pod, zero findings, audit log works \u2014 cause?",
@@ -13723,6 +14669,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 950,
+          "session_num": 94,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet, Kinesis+KMS endpoints exist, GetRecords times out, SM works \u2014 fix? (TWO)",
@@ -13734,6 +14681,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 951,
+          "session_num": 94,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CT Lake org EDS mgmt-only, PutObject query returns zero, EDS created 2 weeks ago \u2014 TWO causes?",
@@ -13745,6 +14693,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 952,
+          "session_num": 94,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT ThingName policy, attacker steals cert, installs on different device \u2014 result?",
@@ -13756,6 +14705,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 953,
+          "session_num": 94,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "CF + 3 ALBs, eu-west-1 ALB cert error, other ALBs work \u2014 cause?",
@@ -13767,6 +14717,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 954,
+          "session_num": 94,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "DynamoDB CMK, Lambda has Decrypt+GenerateDataKey, PutItem Access Denied on KMS \u2014 missing?",
@@ -13778,6 +14729,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 955,
+          "session_num": 94,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 Batch job us-east-1, manifest lists objects in 3 regions \u2014 result?",
@@ -13789,6 +14741,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 956,
+          "session_num": 94,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "200GB/hr WAF logs, full-text, sub-second, 90d, alerts, dashboards \u2014 architecture?",
@@ -13807,6 +14760,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 957,
+          "session_num": 95,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Forensics Orchestrator: isolate\u2192SSM memory capture\u2192snapshot, step 2 fails, SSM agent running \u2014 cause?",
@@ -13818,6 +14772,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 958,
+          "session_num": 95,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Forensics: no cross-contamination + audit trail of evidence access + evidence immutability \u2014 architecture?",
@@ -13829,6 +14784,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 959,
+          "session_num": 95,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Step Functions IR workflow, 4 severity branches \u2014 how does it decide which branch?",
@@ -13840,6 +14796,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 960,
+          "session_num": 95,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Credential compromise, determine other resources + roles + 72hr timeline + visualizations across 15 accounts?",
@@ -13851,6 +14808,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 961,
+          "session_num": 95,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Automated containment <5min, zero human, private subnet, multi-step \u2014 architecture?",
@@ -13869,6 +14827,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 962,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Detect PutBucketPolicy with Principal:* within 2 min, org trail exists \u2014 approach?",
@@ -13880,6 +14839,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 963,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Unusual country + large volumes + 3AM + no code/infra \u2014 service?",
@@ -13891,6 +14851,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 964,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Bucket policy grants external, no access yet, AA + GD enabled \u2014 which fires?",
@@ -13902,6 +14863,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 965,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet, S3 SSE-KMS works, direct GenerateDataKeyWithoutPlaintext times out \u2014 fix? (TWO)",
@@ -13913,6 +14875,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 966,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CRR custom encryption context \"Engineering\", dest key policy requires \"Finance\" \u2014 result?",
@@ -13924,6 +14887,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 967,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "B2B API, partners authenticate with client certs, private CA PEM in S3 \u2014 mTLS config?",
@@ -13935,6 +14899,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 968,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Macie flag PROJ-[A-Z]{4}-\\d{4} only when \"Classified\" within 50 chars \u2014 how?",
@@ -13946,6 +14911,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 969,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Patient SSN encrypted at CF edge before origin, WAF can't see raw \u2014 approach?",
@@ -13957,6 +14923,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 970,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Trojan C2Activity, API must stay up + block C2 + preserve evidence \u2014 which TWO?",
@@ -13968,6 +14935,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 971,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "Prevent ScheduleKeyDeletion + detect PutBucketPolicy 90s + alert anomalous downloads \u2014 THREE services?",
@@ -13979,6 +14947,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 972,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Glacier Vault Lock: permanently irreversible after 24hr confirm, even AWS can't modify \u2014 mechanism?",
@@ -13990,6 +14959,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 973,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Lambda private subnet: DynamoDB + direct kms:Decrypt + S3 SSE-KMS \u2014 minimum endpoints?",
@@ -14001,6 +14971,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 974,
+          "session_num": 96,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account S3+KMS works, then key admin removes Account B from key policy \u2014 what fails?",
@@ -14012,6 +14983,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 975,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Private API: only from vpce-111111 + only sg-222222 \u2014 which TWO?",
@@ -14023,6 +14995,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 976,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CT Lake query GetObject returns zero, DeleteBucket works \u2014 cause?",
@@ -14034,6 +15007,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 977,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Forensics Orchestrator: VPC endpoints deployed, deny-all SG, SSM still fails \u2014 cause?",
@@ -14045,6 +15019,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 978,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "API GW: web=Cognito JWT, legacy=HMAC header + IP restrict BEFORE authorizer \u2014 config?",
@@ -14056,6 +15031,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 979,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "RSA KMS key for encryption AND signing \u2014 why not?",
@@ -14067,6 +15043,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 980,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Asymmetric sign, partners verify offline air-gapped \u2014 how?",
@@ -14078,6 +15055,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 981,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "DGA domains (unpredictable), block VPC-wide \u2014 approach?",
@@ -14089,6 +15067,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 982,
+          "session_num": 96,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "5-layer: key policy grants B + SCP ViaService + session=GetObject + RCP same-org \u2014 SSE-KMS cross-account read?",
@@ -14100,6 +15079,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 983,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1/D4",
           "scenario": "RCP blocks external, 500 denied GetObjects 3 days, AA + GD enabled \u2014 which fires?",
@@ -14111,6 +15091,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 984,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "Config auto-remediation S3 logging AccessDenied, has PutBucketLogging+PutObject \u2014 missing?",
@@ -14122,6 +15103,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 985,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Detect threat IP + block org-wide + auto-update \u2014 which THREE?",
@@ -14133,6 +15115,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 986,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "InsideAWS credential exfil, both instances production \u2014 containment?",
@@ -14144,6 +15127,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 987,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "50GB multipart SSE-KMS fails at CompleteMultipartUpload, has GenerateDataKey \u2014 missing?",
@@ -14155,6 +15139,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 988,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "TOKEN authorizer modified to check X-Signature + IP \u2014 why fails?",
@@ -14166,6 +15151,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 989,
+          "session_num": 96,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Cross-account KMS, B removed from key policy, Lambda calls GetObject \u2014 error type?",
@@ -14177,6 +15163,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 990,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5/D6",
           "scenario": "EBS encryption by default alone \u2014 why insufficient for org-wide prevention?",
@@ -14188,6 +15175,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 991,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW metric filter on StopLogging doesn't fire, EventBridge does \u2014 why?",
@@ -14199,6 +15187,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 992,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Prove RTO/RPO to auditors without breaking anything \u2014 service?",
@@ -14210,6 +15199,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 993,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Validate failover works in production with safety guardrails (auto-stop at 1% error) \u2014 service?",
@@ -14221,6 +15211,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 994,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Gray failure, shift traffic from AZ in seconds, LB-level, temporary, no DNS \u2014 action?",
@@ -14232,6 +15223,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 995,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Test full IR pipeline (GD\u2192EB\u2192SF) with realistic findings through EventBridge \u2014 approach?",
@@ -14243,6 +15235,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 996,
+          "session_num": 96,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Investigate across 15 accounts + custom viz + reusable templates for junior analysts \u2014 tool?",
@@ -14254,6 +15247,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 997,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty member tries CreateIPSet \u2014 result?",
@@ -14265,6 +15259,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 998,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EventBridge ConsoleLogin rule never fires, Event History shows logins, Write-only trail \u2014 cause?",
@@ -14276,6 +15271,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 999,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW metric filter AuthorizeSecurityGroupIngress never fires, alarm >= 1, pattern correct \u2014 cause?",
@@ -14287,6 +15283,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1000,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CW Logs agent was working, stops, process running, IAM unchanged \u2014 check first?",
@@ -14298,6 +15295,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1001,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "100GB/hr real-time full-text search + sub-second + dashboards + 30d \u2014 architecture?",
@@ -14309,6 +15307,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1002,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "\"Which S3 buckets accessible by externals based on policy?\" no access yet \u2014 service?",
@@ -14320,6 +15319,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1003,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Unused roles 90d + generate replacement policy scoped to actual usage \u2014 service?",
@@ -14331,6 +15331,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1004,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Insights fires 10x RunInstances spike \u2014 what does Insights detect vs GuardDuty?",
@@ -14342,6 +15343,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1005,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Top 10 source IPs to private subnet last hour, Flow Logs in CW \u2014 tool?",
@@ -14353,6 +15355,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1006,
+          "session_num": 96,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Security Lake: CloudTrail+Flow+GD+WAF+Splunk \u2014 which THREE true?",
@@ -14364,6 +15367,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1007,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Bedrock: force guardrail on every InvokeModel, no exceptions \u2014 how?",
@@ -14375,6 +15379,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1008,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Filter PII from self-hosted LLM on EC2, not Bedrock \u2014 approach?",
@@ -14386,6 +15391,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1009,
+          "session_num": 96,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "FSx Lustre linked to SSE-KMS S3, creation fails Access Denied \u2014 missing?",
@@ -14397,6 +15403,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1010,
+          "session_num": 96,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Q Business user sees HR doc they shouldn't \u2014 cause?",
@@ -14415,6 +15422,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 1012,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "API Gateway mTLS, private Root CA, most secure + operationally efficient?",
@@ -14426,6 +15434,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1013,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Web=Cognito, Legacy=HMAC+IP, reject unknown IPs at boundary before authorizer \u2014 least overhead?",
@@ -14437,6 +15446,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1014,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Encrypt claim_id POST field at CloudFront edge with asymmetric crypto \u2014 least config?",
@@ -14448,6 +15458,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1015,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspector SBOM CycloneDX to central S3, least overhead \u2014 Select TWO?",
@@ -14459,6 +15470,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1016,
+          "session_num": 97,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Macie detect PROJ-[4 letters]-[4 digits] only when keyword within 40 chars?",
@@ -14470,6 +15482,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1017,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Map AD groups to S3 prefixes via Identity Center, least admin complexity?",
@@ -14481,6 +15494,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1018,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "Block X-Product-Key regex at API GW edge + Macie scan S3 with keyword proximity \u2014 least overhead?",
@@ -14492,6 +15506,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1019,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Private API only from vpce-444444, only sg-555555 clients \u2014 Select TWO?",
@@ -14503,6 +15518,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1020,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "FLE encrypts at edge, ECS stores in S3 SSE-KMS, CMK requires encryption context \u2014 how?",
@@ -14514,6 +15530,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1021,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Inspector SBOM WORM 3yr, root can't delete \u2014 least overhead?",
@@ -14525,6 +15542,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1022,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "VPC Lattice: 15 microservices across 5 accounts, service-to-service auth without certs \u2014 least overhead?",
@@ -14536,6 +15554,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1023,
+          "session_num": 97,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "Ensure CW agent always installed, auto-fix drift every 30 min \u2014 least admin effort?",
@@ -14547,6 +15566,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1024,
+          "session_num": 97,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Validate CF template has encryption + IMDSv2 before any resource created \u2014 least custom code?",
@@ -14558,6 +15578,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1025,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Private API timeout, endpoint SG allows all inbound 443, KMS works fine \u2014 cause?",
@@ -14569,6 +15590,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1026,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Access Grants + SSE-KMS with encryption context, users get Access Denied \u2014 missing?",
@@ -14580,6 +15602,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1027,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "Three IMDSv2 layers: template validation + drift fix + API block \u2014 match services?",
@@ -14591,6 +15614,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1028,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Automated daily EBS snapshots, 30d retention, cross-region copy, auto-delete \u2014 least overhead?",
@@ -14602,6 +15626,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1029,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "50TB weekly NFS\u2192S3, encrypted in transit, filter *.parquet, throttle bandwidth \u2014 approach?",
@@ -14613,6 +15638,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1030,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EMR inter-node encryption, no code changes \u2014 config?",
@@ -14624,6 +15650,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1031,
+          "session_num": 97,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Identify architectural gaps vs AWS best practices + improvement plan + track progress \u2014 service?",
@@ -14635,6 +15662,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1032,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Compromised IoT device cert, block on IoT Core + API Gateway mTLS \u2014 Select TWO?",
@@ -14646,6 +15674,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1033,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Re-test: EMR inter-node encryption \u2014 what to configure?",
@@ -14657,6 +15686,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1034,
+          "session_num": 97,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Re-test: Architectural gaps + improvement plan + track progress \u2014 service?",
@@ -14668,6 +15698,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1035,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Re-test: Block compromised cert on IoT Core specifically?",
@@ -14679,6 +15710,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1036,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Re-test: Block compromised cert on API Gateway mTLS?",
@@ -14690,6 +15722,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1037,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Re-test: Private API timeout, KMS works, endpoint SG open \u2014 cause?",
@@ -14701,6 +15734,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1038,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "WAF Bot Control: bots rotate IPs, don't execute JS \u2014 feature?",
@@ -14712,6 +15746,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1039,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Detect hardcoded keys + SQLi + insecure SDK in source code pre-deploy \u2014 service?",
@@ -14723,6 +15758,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1040,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Access Grants + SSE-KMS with encryption context required in key policy, role has Decrypt without condition \u2014 GetObject fails. Cause?",
@@ -14734,6 +15770,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1041,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "mTLS working, one partner cert compromised, block only that cert \u2014 how?",
@@ -14745,6 +15782,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1042,
+          "session_num": 97,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Custom Python + viz + reusable template for junior analysts \u2014 tool?",
@@ -14756,6 +15794,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1043,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "200 IoT certs compromised, block on IoT Core within seconds \u2014 approach?",
@@ -14767,6 +15806,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1044,
+          "session_num": 97,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "CISO needs architectural gaps + improvement plan + milestones. SH and AM don't satisfy \u2014 why?",
@@ -14778,6 +15818,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1045,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Private API: Lambda A works, Lambda B timeout, same VPC/subnet \u2014 cause?",
@@ -14789,6 +15830,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1046,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Access Grants + SSE-KMS, role has Decrypt, ViaService=s3.us-east-1, bucket in eu-west-1 \u2014 fails. Cause?",
@@ -14800,6 +15842,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1047,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "VPC Lattice auth policy: Service A can call B, deny all others \u2014 where enforce?",
@@ -14811,6 +15854,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1048,
+          "session_num": 97,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "State Manager: CIS hardening on every boot + drift fix between boots \u2014 config?",
@@ -14822,6 +15866,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1049,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DLM: developer manually deletes 3-day-old snapshot \u2014 what happens?",
@@ -14833,6 +15878,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1050,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DataSync: 50 new files + 150 unchanged \u2014 behavior?",
@@ -14844,6 +15890,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1051,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspector SBOM export scheduling \u2014 how?",
@@ -14855,6 +15902,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1052,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "FLE: where does private key live for origin decryption?",
@@ -14866,6 +15914,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1053,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "WAF Bot Control: mobile app (no JS) fails challenge \u2014 fix?",
@@ -14877,6 +15926,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1054,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "CodeGuru flags hardcoded key, dev says \"test only\" \u2014 remediation?",
@@ -14888,6 +15938,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1055,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "mTLS 403 on new partner, same CA, other partners work \u2014 cause?",
@@ -14899,6 +15950,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1056,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lattice: Service C added to network, AccessDeniedException calling B \u2014 missing?",
@@ -14910,6 +15962,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1057,
+          "session_num": 97,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DLM 7-day + Object Lock 3yr + 8-day-old objects missing \u2014 cause?",
@@ -14921,6 +15974,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1058,
+          "session_num": 97,
           "domain": "D3",
           "domain_raw": "D3/D6",
           "scenario": "Console deploy EC2 IMDSv1, five enforcement layers \u2014 which catches?",
@@ -14932,6 +15986,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1011,
+          "session_num": 97,
           "domain": "D6",
           "domain_raw": "D6/D3",
           "scenario": "Block specific Bedrock model org-wide, allow others \u2014 enforcement?",
@@ -14950,6 +16005,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 1056,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "API GW mTLS: B2B private Root CA \u2014 config?",
@@ -14961,6 +16017,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1057,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "API GW: Cognito web + HMAC legacy + IP block at boundary \u2014 config?",
@@ -14972,6 +16029,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1058,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "CloudFront FLE: encrypt claim_id at edge with asymmetric crypto \u2014 config?",
@@ -14983,6 +16041,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1059,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspector SBOM: centralized CycloneDX to S3 \u2014 which TWO?",
@@ -14994,6 +16053,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1060,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Macie: custom regex + keywords + proximity \u2014 config?",
@@ -15005,6 +16065,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1061,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "S3 Access Grants: map AD groups to prefixes, least complexity?",
@@ -15016,6 +16077,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1062,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3/D1",
           "scenario": "API GW + Macie: block header regex + scan S3 with keyword proximity \u2014 arch?",
@@ -15027,6 +16089,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1063,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Private API: vpce + client SG restriction \u2014 which TWO?",
@@ -15038,6 +16101,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1064,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "FLE + KMS encryption context: how to enforce context on S3 CMK?",
@@ -15049,6 +16113,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1065,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Inspector SBOM + Object Lock: WORM 3yr, root can't delete?",
@@ -15060,6 +16125,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1066,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "mTLS: 15 partners work, 1 new gets 403, same CA \u2014 cause?",
@@ -15071,6 +16137,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1067,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "TOKEN authorizer + need custom header + IP \u2014 why fails?",
@@ -15082,6 +16149,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1068,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Private API timeout, all SGs open, IAM correct \u2014 cause?",
@@ -15093,6 +16161,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1069,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "Access Grants + SSE-KMS + encryption context condition \u2014 Access Denied cause?",
@@ -15104,6 +16173,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1070,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT revocation + API GW mTLS revocation \u2014 which TWO?",
@@ -15115,6 +16185,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1071,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "State Manager: CIS on boot + every 4hr drift fix \u2014 config?",
@@ -15126,6 +16197,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1072,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspector SBOM scheduling: weekly auto-export \u2014 approach?",
@@ -15137,6 +16209,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1073,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EMR inter-node encryption \u2014 config?",
@@ -15148,6 +16221,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1074,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP + Lambda caller: partner calls API GW, Lambda writes S3 \u2014 why succeeds?",
@@ -15159,6 +16233,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1075,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CRR + custom encryption context: partner objects fail replication \u2014 cause?",
@@ -15170,6 +16245,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1076,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "ViaService + session policy + private API \u2014 which ops succeed?",
@@ -15181,6 +16257,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1077,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Bedrock: WAF + guardrail enforcement + PII filter \u2014 which THREE?",
@@ -15192,6 +16269,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1078,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Access Grants + cross-account KMS + RCP \u2014 Access Denied fix?",
@@ -15203,6 +16281,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1079,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3/D2",
           "scenario": "Lambda C2 + private API timeout + forensics \u2014 which THREE?",
@@ -15214,6 +16293,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1080,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Data perimeter + mTLS + Lambda Access Denied \u2014 check FIRST?",
@@ -15225,6 +16305,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1081,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "Gateway endpoint policy + ViaService: PutObject not in endpoint policy \u2014 result?",
@@ -15236,6 +16317,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1082,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "RCP scope: SLR replicates to external partner bucket \u2014 RCP blocks?",
@@ -15247,6 +16329,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1083,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Declarative policy vs SCP: new API assigns public IPv6 \u2014 what prevents?",
@@ -15258,6 +16341,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1084,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Lake vs Security Lake \u2014 match requirements to services?",
@@ -15269,6 +16353,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1085,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Cognito User Pool token + direct AssumeRoleWithWebIdentity \u2014 why fails?",
@@ -15280,6 +16365,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1086,
+          "session_num": 98,
           "domain": "D2",
           "domain_raw": "D2/D4",
           "scenario": "InsideAWS: attacker on Instance B, same role \u2014 containment?",
@@ -15291,6 +16377,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1087,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1/D5",
           "scenario": "S3 Access Grants prefix overlap: Finance user reads HR data \u2014 cause?",
@@ -15302,6 +16389,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1088,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Private CA renewed (new key pair): existing certs affected?",
@@ -15313,6 +16401,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1089,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "CloudTrail Insights 10x spike, GuardDuty silent \u2014 which true?",
@@ -15324,6 +16413,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1090,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Secrets Manager rotation success but new ECS task auth fails on RDS \u2014 cause?",
@@ -15335,6 +16425,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1091,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "KMS key policy root only + Lambda has s3:GetObject (no kms:Decrypt) \u2014 SSE-KMS read?",
@@ -15346,6 +16437,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1092,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "StopLogging detection: CW metric filter + EventBridge + Config \u2014 which fire?",
@@ -15357,6 +16449,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1093,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "WAF Bot Control: mobile app fails JS challenge \u2014 fix?",
@@ -15368,6 +16461,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1094,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "VPC Lattice: cross-account service-to-service, IAM auth, no certs \u2014 config?",
@@ -15379,6 +16473,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1095,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "Data perimeter 3 layers: block IN + block OUT + AWS services \u2014 which THREE?",
@@ -15390,6 +16485,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1096,
+          "session_num": 98,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "cfn-guard: block RDS without encryption before deploy \u2014 approach?",
@@ -15401,6 +16497,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1097,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DLM: daily EBS snapshots + 30d retention + cross-region + auto-delete \u2014 service?",
@@ -15412,6 +16509,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1098,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "DataSync: 50TB weekly NFS\u2192S3, TLS, filter *.parquet, throttle \u2014 approach?",
@@ -15423,6 +16521,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1099,
+          "session_num": 98,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Well-Architected Tool: CISO wants architectural gaps + improvement plan \u2014 service?",
@@ -15434,6 +16533,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1100,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Kinesis encrypted consumer: has GetRecords, Access Denied \u2014 missing? (TWO)",
@@ -15445,6 +16545,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1101,
+          "session_num": 98,
           "domain": "D6",
           "domain_raw": "D6/D1",
           "scenario": "Config org custom rule: \"Unable to invoke\" in members \u2014 fix?",
@@ -15456,6 +16557,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1102,
+          "session_num": 98,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "S3 Batch Operations: one job us-east-1, targets 4 regions \u2014 result?",
@@ -15467,6 +16569,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1103,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "Verified Access: stolen laptop, block only that device \u2014 action?",
@@ -15478,6 +16581,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1104,
+          "session_num": 98,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "GWLB: source IP shows GWLB IP, not client \u2014 fix?",
@@ -15489,6 +16593,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1105,
+          "session_num": 98,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "5-layer cross-account SSE-KMS: SCP ViaService + RCP + session + key policy B root \u2014 succeeds?",
@@ -15500,6 +16605,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1106,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty S3 Protection: anomalous download patterns, zero code \u2014 service?",
@@ -15511,6 +16617,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1107,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EventBridge: alert 90s on iam:CreateAccessKey for root \u2014 approach?",
@@ -15522,6 +16629,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1108,
+          "session_num": 98,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "OutsideAWS + ALB production: stop attacker, keep app up \u2014 which TWO?",
@@ -15533,6 +16641,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1109,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Bucket policy grants external, no access yet, AA+GD enabled \u2014 which fires?",
@@ -15544,6 +16653,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1110,
+          "session_num": 98,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Forensics Orchestrator: deny-all SG then SSM fails \u2014 why?",
@@ -15555,6 +16665,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1111,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Security Lake: OCSF + all sources + your S3 + Splunk subscriber \u2014 service?",
@@ -15566,6 +16677,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1112,
+          "session_num": 98,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "CreateSampleFindings: test full IR pipeline without real incident \u2014 approach?",
@@ -15577,6 +16689,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1113,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "EC2 DNS to C2 domain then TLS TCP \u2014 findings + ThreatPurpose?",
@@ -15588,6 +16701,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1114,
+          "session_num": 98,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Top 10 source IPs by bytes, Flow Logs in CW \u2014 tool?",
@@ -15599,6 +16713,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1115,
+          "session_num": 98,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "ARC zonal shift: gray failure, AZ-B errors, health checks pass \u2014 action?",
@@ -15617,6 +16732,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 1116,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "API GW mTLS: private Root CA, B2B integrations \u2014 config?",
@@ -15628,6 +16744,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1117,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "API GW: Cognito web + HMAC legacy + IP block at boundary \u2014 config?",
@@ -15639,6 +16756,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1118,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3/D5",
           "scenario": "CloudFront FLE: encrypt claim_id at edge with asymmetric crypto \u2014 config?",
@@ -15650,6 +16768,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1119,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspector SBOM: CycloneDX to central S3 \u2014 which TWO?",
@@ -15661,6 +16780,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1120,
+          "session_num": 99,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Macie: custom regex + keywords + proximity \u2014 config?",
@@ -15672,6 +16792,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1121,
+          "session_num": 99,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "ELB access logs: centralize + searchable + TLS cipher metrics \u2014 arch?",
@@ -15683,6 +16804,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1122,
+          "session_num": 99,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "MFA condition keys: require MFA + 3hr session max \u2014 which TWO?",
@@ -15694,6 +16816,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1123,
+          "session_num": 99,
           "domain": "D2",
           "domain_raw": "D2/D3",
           "scenario": "NACL vs SG: isolate instance with active connections immediately \u2014 action?",
@@ -15705,6 +16828,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1124,
+          "session_num": 99,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "AWS Backup: DynamoDB 10th+20th monthly, retain 4mo \u2014 which TWO?",
@@ -15716,6 +16840,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1125,
+          "session_num": 99,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "KMS key type: auto-rotate + control + old data readable \u2014 type?",
@@ -15727,6 +16852,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1126,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IDS on EC2, inspect full packets passively \u2014 action?",
@@ -15738,6 +16864,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1127,
+          "session_num": 99,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "Ensure CW agent installed + re-applied every 30min + on launch \u2014 service?",
@@ -15749,6 +16876,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1128,
+          "session_num": 99,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Public hosted zone DNS misconfiguration logging \u2014 solution?",
@@ -15760,6 +16888,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1129,
+          "session_num": 99,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "No public IPs BEFORE provisioned via CF + Security Hub \u2014 mode?",
@@ -15771,6 +16900,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1130,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3/D4",
           "scenario": "CF serves SPA, prevent unauthenticated CF access \u2014 which TWO?",
@@ -15782,6 +16912,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1131,
+          "session_num": 99,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Windows EC2 won't boot, need memory dump \u2014 approach?",
@@ -15793,6 +16924,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1132,
+          "session_num": 99,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Secure access no SSH + record session keystrokes \u2014 solution?",
@@ -15804,6 +16936,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1133,
+          "session_num": 99,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "JWT compromise, verify tokens most securely \u2014 method?",
@@ -15815,6 +16948,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1134,
+          "session_num": 99,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Lambda Access Denied writing S3, analyst works in console \u2014 cause?",
@@ -15826,6 +16960,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1135,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "DNSSEC enabled on subdomain, broken trust chain \u2014 cause?",
@@ -15837,6 +16972,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1136,
+          "session_num": 99,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "ALB + HIDS + PFS, don't interfere with HIDS \u2014 solution?",
@@ -15848,6 +16984,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1137,
+          "session_num": 99,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty CryptoCurrency suppression, ASG replaces instances \u2014 approach?",
@@ -15859,6 +16996,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1138,
+          "session_num": 99,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Protect CF stack resources from modification + prevent deletion \u2014 which TWO?",
@@ -15870,6 +17008,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1139,
+          "session_num": 99,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Deny federated user Bill in bucket policy \u2014 ARN format?",
@@ -15881,6 +17020,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1140,
+          "session_num": 99,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Org-wide enforce specific KMS key + least privilege on key \u2014 which TWO?",
@@ -15899,6 +17039,7 @@ const TRACKER_DATA = {
       "questions": [
         {
           "num": 1141,
+          "session_num": 100,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "CF service role, dev has cloudformation:* only, create-stack fails \u2014 cause?",
@@ -15910,6 +17051,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1142,
+          "session_num": 100,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Stack Policy Deny Update:* + termination protection, dev deletes RDS via console \u2014 result?",
@@ -15921,6 +17063,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1143,
+          "session_num": 100,
           "domain": "D4",
           "domain_raw": "D4/D6",
           "scenario": "SCP restrict PassRole to platform team for Lambda+ECS \u2014 which statement?",
@@ -15932,6 +17075,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1144,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IDS full packets, passive, no production impact \u2014 architecture?",
@@ -15943,6 +17087,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1145,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Suricata rules, drop malicious egress \u2014 architecture?",
@@ -15954,6 +17099,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1146,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Third-party Palo Alto, inline, transparent, scale, health-check \u2014 architecture?",
@@ -15965,6 +17111,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1147,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "EC2 public IP to another EC2 public IP, SG ref sg-aaa, times out \u2014 cause?",
@@ -15976,6 +17123,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1148,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IPv6 outbound only, block inbound \u2014 component?",
@@ -15987,6 +17135,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1149,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Lambda private subnet, SQS Interface endpoint exists, timeout \u2014 missing?",
@@ -15998,6 +17147,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1150,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Gateway endpoint allows Get+List, Lambda calls PutObject \u2014 error?",
@@ -16009,6 +17159,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1151,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Network Firewall proposed for passive IDS \u2014 why incorrect?",
@@ -16020,6 +17171,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1152,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CRR SSE-KMS, has Encrypt dest + GetObjectVersionForReplication, fails \u2014 missing?",
@@ -16031,6 +17183,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1153,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Key material must auto-expire after 30 days \u2014 config?",
@@ -16042,6 +17195,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1154,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CancelKeyDeletion called, key shows Disabled \u2014 why?",
@@ -16053,6 +17207,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1155,
+          "session_num": 100,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "SCP Deny kms:Decrypt unless ViaService, dev calls from CLI \u2014 result?",
@@ -16064,6 +17219,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1156,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Auto-rotation + full control + old data decryptable \u2014 key type?",
@@ -16075,6 +17231,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1157,
+          "session_num": 100,
           "domain": "D1",
           "domain_raw": "D1/D3",
           "scenario": "State Manager CW agent on boot + every 30min \u2014 config?",
@@ -16086,6 +17243,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1158,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "DNSSEC subdomain, SERVFAIL for validating resolvers \u2014 cause?",
@@ -16097,6 +17255,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1159,
+          "session_num": 100,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "Public DNS queries to hosted zone \u2014 which logging?",
@@ -16108,6 +17267,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1160,
+          "session_num": 100,
           "domain": "D1",
           "domain_raw": "D1/D6",
           "scenario": "Detect unversioned buckets + prevent via CF \u2014 which combo?",
@@ -16119,6 +17279,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1161,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspector via StackSets, 8 new accounts missing \u2014 cause?",
@@ -16130,6 +17291,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1162,
+          "session_num": 100,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Windows EC2 won't boot, collect memory dump \u2014 tool?",
@@ -16141,6 +17303,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1163,
+          "session_num": 100,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Session Manager record all keystrokes encrypted \u2014 config?",
@@ -16152,6 +17315,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1164,
+          "session_num": 100,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "JWT tampered, most secure verification \u2014 method?",
@@ -16163,6 +17327,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1165,
+          "session_num": 100,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Lambda Access Denied PutObject, analyst works in console \u2014 cause?",
@@ -16174,6 +17339,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1166,
+          "session_num": 100,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "Capture volatile memory, instance stays running \u2014 action?",
@@ -16185,6 +17351,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1167,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "ALB + HIDS + PFS \u2014 config?",
@@ -16196,6 +17363,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1168,
+          "session_num": 100,
           "domain": "D1",
           "domain_raw": "D1",
           "scenario": "GuardDuty CryptoCurrency, ASG replaces instances \u2014 suppression approach?",
@@ -16207,6 +17375,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1169,
+          "session_num": 100,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "Deny federated user Bill in bucket policy \u2014 ARN format?",
@@ -16218,6 +17387,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1170,
+          "session_num": 100,
           "domain": "D4",
           "domain_raw": "D4/D5",
           "scenario": "Enforce specific KMS key org-wide + least privilege on key \u2014 which TWO?",
@@ -16229,6 +17399,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1171,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "mTLS 403, same CA, new 16th partner \u2014 check first?",
@@ -16240,6 +17411,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1172,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "mTLS uploaded PEM to ACM, enabled on default endpoint \u2014 TWO problems?",
@@ -16251,6 +17423,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1173,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "mTLS revoke ONE compromised cert \u2014 action?",
@@ -16262,6 +17435,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1174,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "CRR custom encryption context fails, no-context objects work \u2014 cause?",
@@ -16273,6 +17447,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1175,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5/D4",
           "scenario": "DynamoDB CMK, has Decrypt+GenerateDataKey, PutItem fails \u2014 missing?",
@@ -16284,6 +17459,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1176,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Kinesis consumer, has GetRecords + kms:Decrypt, fails \u2014 missing?",
@@ -16295,6 +17471,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1177,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "IoT cert revoked, attacker connects 5s later \u2014 result?",
@@ -16306,6 +17483,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1178,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "mTLS remove CA from truststore \u2014 what happens?",
@@ -16317,6 +17495,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1179,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "Backup on 10th+20th monthly \u2014 schedule type?",
@@ -16328,6 +17507,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1180,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Flow Logs inbound ACCEPT, outbound REJECT \u2014 cause?",
@@ -16339,6 +17519,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1181,
+          "session_num": 100,
           "domain": "D6",
           "domain_raw": "D6",
           "scenario": "Stack Policy: Aurora locked, Lambda modify-only, SQS full \u2014 which?",
@@ -16350,6 +17531,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1182,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Inspector SBOM via SSM+Lambda \u2014 what's wrong?",
@@ -16361,6 +17543,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1183,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5",
           "scenario": "EMR inter-node encryption, engineer picks Nitro \u2014 why wrong?",
@@ -16372,6 +17555,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1184,
+          "session_num": 100,
           "domain": "D5",
           "domain_raw": "D5/D3",
           "scenario": "Gateway endpoint allows Get+Put, Lambda calls ListBucket \u2014 result?",
@@ -16383,6 +17567,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1185,
+          "session_num": 100,
           "domain": "D4",
           "domain_raw": "D4",
           "scenario": "MFA session max 3 hours \u2014 condition key?",
@@ -16394,6 +17579,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1186,
+          "session_num": 100,
           "domain": "D2",
           "domain_raw": "D2",
           "scenario": "SageMaker: custom viz + reusable template + query Lake \u2014 tool?",
@@ -16405,6 +17591,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1187,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Bedrock mandatory guardrail enforcement \u2014 how?",
@@ -16416,6 +17603,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1188,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Q Business user sees HR docs, ACLs enabled \u2014 cause?",
@@ -16427,6 +17615,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1189,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "VPC Lattice: only Service A can call B, deny C \u2014 where enforce?",
@@ -16438,6 +17627,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1190,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "WAF Bot Control blocks mobile app (no JS) \u2014 fix?",
@@ -16449,6 +17639,7 @@ const TRACKER_DATA = {
         },
         {
           "num": 1191,
+          "session_num": 100,
           "domain": "D3",
           "domain_raw": "D3",
           "scenario": "Bedrock SCP enforce guardrail \u2014 which statement?",
