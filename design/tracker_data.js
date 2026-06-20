@@ -173,8 +173,8 @@ const TRACKER_DATA = {
         "Q581"
       ],
       "domains": [
-        "D5",
-        "D1"
+        "D1",
+        "D5"
       ],
       "count": 8,
       "level": "red"
@@ -190,8 +190,8 @@ const TRACKER_DATA = {
         "Q688"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 5,
       "level": "red"
@@ -281,8 +281,8 @@ const TRACKER_DATA = {
         "Q687"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -324,8 +324,8 @@ const TRACKER_DATA = {
         "Q495"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -447,8 +447,8 @@ const TRACKER_DATA = {
         "Q413"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -541,8 +541,8 @@ const TRACKER_DATA = {
         "Q652"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -555,10 +555,10 @@ const TRACKER_DATA = {
         "Q594"
       ],
       "domains": [
+        "D1",
         "D5",
-        "D6",
         "D4",
-        "D1"
+        "D6"
       ],
       "count": 2,
       "level": "yellow"
@@ -571,9 +571,9 @@ const TRACKER_DATA = {
         "Q1080"
       ],
       "domains": [
+        "D4",
         "D3",
-        "D5",
-        "D4"
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -641,8 +641,8 @@ const TRACKER_DATA = {
         "Q826"
       ],
       "domains": [
-        "D5",
-        "D1"
+        "D1",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -668,8 +668,8 @@ const TRACKER_DATA = {
         "Q1100"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -682,8 +682,8 @@ const TRACKER_DATA = {
         "Q950"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -722,8 +722,8 @@ const TRACKER_DATA = {
         "Q1070"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -736,8 +736,8 @@ const TRACKER_DATA = {
         "Q1071"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 2,
       "level": "yellow"
@@ -1337,8 +1337,8 @@ const TRACKER_DATA = {
         "Q336"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1363,8 +1363,8 @@ const TRACKER_DATA = {
         "Q341"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1437,8 +1437,8 @@ const TRACKER_DATA = {
         "Q423"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -1570,8 +1570,8 @@ const TRACKER_DATA = {
         "Q515"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1583,8 +1583,8 @@ const TRACKER_DATA = {
         "Q523"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1609,9 +1609,9 @@ const TRACKER_DATA = {
         "Q532"
       ],
       "domains": [
+        "D1",
         "D3",
-        "D6",
-        "D1"
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1623,9 +1623,9 @@ const TRACKER_DATA = {
         "Q545"
       ],
       "domains": [
+        "D1",
         "D5",
-        "D4",
-        "D1"
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1661,8 +1661,8 @@ const TRACKER_DATA = {
         "Q685"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -1687,8 +1687,8 @@ const TRACKER_DATA = {
         "Q706"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1869,8 +1869,8 @@ const TRACKER_DATA = {
         "Q797"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1906,8 +1906,8 @@ const TRACKER_DATA = {
         "Q820"
       ],
       "domains": [
-        "D2",
         "D4",
+        "D2",
         "D1"
       ],
       "count": 1,
@@ -1932,8 +1932,8 @@ const TRACKER_DATA = {
         "Q855"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2044,8 +2044,8 @@ const TRACKER_DATA = {
         "Q899"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2107,8 +2107,8 @@ const TRACKER_DATA = {
         "Q911"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2192,8 +2192,8 @@ const TRACKER_DATA = {
         "Q965"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2290,8 +2290,8 @@ const TRACKER_DATA = {
         "Q1025"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2303,8 +2303,8 @@ const TRACKER_DATA = {
         "Q1026"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2340,8 +2340,8 @@ const TRACKER_DATA = {
         "Q1040"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -15904,6 +15904,12 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**CRR replication role needs exactly THREE permissions: (1) kms:Decrypt on source key, (2) kms:GenerateDataKey on dest key, (3) s3:GetObjectVersionForReplication on source.** Mnemonic: D-G-F (Decrypt, GenerateDataKey, ForReplication). GetObjectVersion alone is NOT enough \u2014 ForReplication is the replication-specific permission.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**CRR rewrites encryption context to destination bucket ARN.** Key policy conditions on dest key must reference dest bucket, not source.",
               "is_insight": true,
               "is_warning": false
@@ -16134,6 +16140,12 @@ const TRACKER_DATA = {
               "type": "bullet",
               "text": "MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection \u2192 use Site-to-Site VPN over DX (IPsec).",
               "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only Internet Gateway.** NAT doesn't exist for IPv6 \u2014 all IPv6 is globally routable. Egress-only IGW = one-way gate (outbound yes, inbound no).",
+              "is_insight": true,
               "is_warning": false
             },
             {
@@ -16677,6 +16689,66 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**S3 Access Grants scope access by prefix (location). Overlapping prefixes = unintended cross-department access.** This is the #1 operational misconfiguration \u2014 not IAM bypass.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Windows boot issue + collect memory dump\" = EC2Rescue for Windows.** SSM agent requires running OS \u2014 can't help if instance won't boot.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Session Manager logging = built-in \"upload session logs\" (records keystrokes/commands).** CloudWatch Agent = OS/app logs. Different things. \"Record session activity\" = Session Manager preferences.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Route 53 TWO logging features:** DNS query logging = public hosted zone queries (CW Logs only). Resolver query logging = VPC outbound queries (CW Logs, S3, Firehose). \"Public DNS queries\" = DNS query logging.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**JWT decode \u2260 JWT verify.** Decode = read payload (no tamper detection). Verify = check cryptographic signature (aws-jwt-verify). \"Most secure\" = always verify.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"AWS managed key\" = NEVER the answer when question mentions control, policy, expiration, rotation config, or grants.** AWS managed = autopilot with no steering wheel.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Config proactive evaluation = evaluates resources BEFORE CloudFormation creates them.** \"Before provisioned\" = proactive. \"After exists\" = detective. Config supports both modes.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**EFS encryption = creation-time ONLY.** Cannot enable on existing file system. Must create new EFS + migrate.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**DNSSEC \"broken trust chain\" = DS record missing in parent zone.** Always.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Network Firewall = inline IDS/IPS (inspect + block). Traffic Mirroring = passive copy (doesn't block).** \"IDS\" in question = Network Firewall.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance.",
               "is_insight": true,
               "is_warning": false
             }
@@ -19059,6 +19131,241 @@ const TRACKER_DATA = {
       ]
     },
     {
+      "filename": "faq-cloudfront-auth-patterns.md",
+      "title": "CloudFront Authentication & Security Patterns",
+      "sections": [
+        {
+          "title": "The Four CloudFront Security Mechanisms",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  CLOUDFRONT SECURITY \u2014 FOUR DIFFERENT PROBLEMS                   \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  1. OAC (Origin Access Control)                                  \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                  \u2502\n\u2502  PROBLEM: Prevent direct S3 access (bypass CloudFront)           \u2502\n\u2502  HOW:     S3 bucket policy only allows CloudFront service        \u2502\n\u2502  RESULT:  Users MUST go through CloudFront, can't hit S3 URL     \u2502\n\u2502  DOES NOT: Authenticate users at CloudFront level                \u2502\n\u2502                                                                  \u2502\n\u2502  2. Lambda@Edge (viewer-request)                                 \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                 \u2502\n\u2502  PROBLEM: Enforce authentication BEFORE serving content          \u2502\n\u2502  HOW:     Check JWT/cookie/session on every request              \u2502\n\u2502  RESULT:  Unauthenticated users get redirected to login          \u2502\n\u2502  USE:     When you need custom auth logic at the edge            \u2502\n\u2502                                                                  \u2502\n\u2502  3. CloudFront Response Headers Policy                           \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                            \u2502\n\u2502  PROBLEM: Add security headers (HSTS, CSP, X-Content-Type)      \u2502\n\u2502  HOW:     Managed policy attached to cache behavior              \u2502\n\u2502  RESULT:  Every response includes security headers               \u2502\n\u2502  USE:     Static headers, zero code, least overhead              \u2502\n\u2502                                                                  \u2502\n\u2502  4. Field-Level Encryption (FLE)                                 \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                \u2502\n\u2502  PROBLEM: Encrypt specific POST fields at the edge               \u2502\n\u2502  HOW:     RSA public key \u2192 profile \u2192 config \u2192 cache behavior    \u2502\n\u2502  RESULT:  Intermediate systems can't see raw field values        \u2502\n\u2502  USE:     PII/credit cards encrypted before reaching origin      \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "OAC vs Lambda@Edge Auth \u2014 THE KEY DISTINCTION",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "SCENARIO: SPA on S3 via CloudFront. Unsigned users downloading source code.\n\n  OAC alone:\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502  Unauthenticated user \u2192 CloudFront \u2192 S3        \u2502\n  \u2502                          \u2705 serves content     \u2502\n  \u2502                                                 \u2502\n  \u2502  Unauthenticated user \u2192 S3 direct              \u2502\n  \u2502                          \u274c BLOCKED (no OAC)   \u2502\n  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n  OAC prevents S3 BYPASS, but CloudFront still serves to EVERYONE.\n\n  Lambda@Edge viewer-request:\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502  Unauthenticated user \u2192 CloudFront \u2192 Lambda@Edge \u2502\n  \u2502                          \u2192 no valid token?      \u2502\n  \u2502                          \u2192 REDIRECT to login \u274c \u2502\n  \u2502                                                 \u2502\n  \u2502  Authenticated user \u2192 CloudFront \u2192 Lambda@Edge  \u2502\n  \u2502                          \u2192 valid token? \u2705      \u2502\n  \u2502                          \u2192 serve SPA            \u2502\n  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n  Lambda@Edge AUTHENTICATES at CloudFront level."
+                }
+              ]
+            },
+            {
+              "title": "Decision Table",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Question says...",
+                    "Answer",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "\"Prevent direct S3 access\"",
+                      "OAC",
+                      "Locks origin, not the edge"
+                    ],
+                    [
+                      "\"Prevent unauthenticated access via CloudFront\"",
+                      "Lambda@Edge viewer-request",
+                      "Auth gate at the edge"
+                    ],
+                    [
+                      "\"Unsigned users can see content\"",
+                      "Lambda@Edge (not OAC!)",
+                      "OAC doesn't solve this"
+                    ],
+                    [
+                      "\"S3 + CloudFront + Cognito auth\"",
+                      "OAC (lock S3) + Lambda@Edge (check JWT)",
+                      "Often need BOTH"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** OAC is NOT authentication. It's origin protection. \"Users can still access content without signing in\" = Lambda@Edge viewer-request is missing.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Response Headers Policy vs Lambda@Edge",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  ADDING HEADERS TO RESPONSES                                     \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  STATIC headers (HSTS, CSP, X-Frame-Options):                   \u2502\n\u2502  \u2192 CloudFront Response Headers Policy (managed, zero code)       \u2502\n\u2502  \u2192 \"SecurityHeadersPolicy\" = built-in managed policy             \u2502\n\u2502  \u2192 LEAST overhead, LEAST effort                                  \u2502\n\u2502                                                                  \u2502\n\u2502  DYNAMIC/CONDITIONAL headers (vary by request, user, path):      \u2502\n\u2502  \u2192 Lambda@Edge (viewer-response or origin-response)              \u2502\n\u2502  \u2192 Custom code required                                          \u2502\n\u2502  \u2192 More overhead, more flexibility                               \u2502\n\u2502                                                                  \u2502\n\u2502  CloudFront Functions (viewer-response):                         \u2502\n\u2502  \u2192 Lightweight (< 10KB, no network, < 1ms)                      \u2502\n\u2502  \u2192 Simple header manipulation only                               \u2502\n\u2502  \u2192 Can't validate tokens or make API calls                       \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            },
+            {
+              "title": "Rule",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Need",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Add security headers, least overhead\"",
+                      "Response Headers Policy (managed)"
+                    ],
+                    [
+                      "\"Dynamic logic per request\"",
+                      "Lambda@Edge"
+                    ],
+                    [
+                      "\"Simple header rewrite, lightweight\"",
+                      "CloudFront Functions"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** \"HSTS + CSP + least overhead\" \u2260 Lambda@Edge. That's the managed Response Headers Policy.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Field-Level Encryption (FLE) \u2014 Setup Chain",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "Step 1: Upload RSA PUBLIC key to CloudFront\nStep 2: Create FLE Profile (map field name \u2192 public key)\nStep 3: Create FLE Configuration (map content-type \u2192 profile)\nStep 4: Attach FLE Config to cache behavior\n\n  POST request \u2192 CloudFront edge\n    \u2192 FLE encrypts \"claim_id\" field with RSA public key\n    \u2192 Encrypted payload forwarded to origin\n    \u2192 Origin decrypts with RSA PRIVATE key (lives on YOUR server)\n    \u2192 AWS never sees the private key"
+                }
+              ]
+            },
+            {
+              "title": "Key Facts",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Fact",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "Key type",
+                      "RSA (asymmetric) \u2014 public at edge, private at origin"
+                    ],
+                    [
+                      "KMS involved?",
+                      "NO \u2014 FLE uses its own RSA keys, not KMS"
+                    ],
+                    [
+                      "Who decrypts?",
+                      "YOUR origin server (private key lives there)"
+                    ],
+                    [
+                      "What's encrypted?",
+                      "Specific POST form fields (not entire request)"
+                    ],
+                    [
+                      "Intermediate visibility?",
+                      "Cannot see raw values (WAF, logs, caches)"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** FLE \u2260 KMS. FLE uses RSA keys you upload. KMS encryption context is a SEPARATE concern enforced at the S3/KMS layer by application code.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Signed URLs vs Signed Cookies",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "Signed URL:  One URL = one resource. Embed expiry + signature in URL.\n             Use when: single file download, time-limited access.\n\nSigned Cookie: One cookie = access to multiple resources.\n               Use when: entire site/SPA access for authenticated users.\n\nBoth use CloudFront key pairs (not KMS)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**OAC = \"prevent S3 bypass.\" Lambda@Edge viewer-request = \"enforce auth at CloudFront level.\" Different problems.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Unsigned users see content via CloudFront\" = Lambda@Edge missing (OAC alone doesn't solve this).**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Add HSTS/CSP headers, least overhead\" = CloudFront Response Headers Policy (managed, zero code). NOT Lambda@Edge.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**FLE = RSA public key at edge, private key on YOUR origin. NOT KMS. Intermediate systems can't see raw values.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**FLE setup chain: key \u2192 profile (field\u2192key) \u2192 config (content-type\u2192profile) \u2192 cache behavior.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Signed URL = one file. Signed Cookie = multiple files/whole site.**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "filename": "faq-cloudfront-oac.md",
       "title": "CloudFront Origin Access Control (OAC)",
       "sections": [
@@ -20836,6 +21143,226 @@ const TRACKER_DATA = {
                 {
                   "type": "code",
                   "text": "{\n  \"Effect\": \"Allow\",\n  \"Action\": [\"s3:GetObject\", \"s3:PutObject\"],\n  \"Resource\": \"arn:aws:s3:::mybucket/${cognito-identity.amazonaws.com:sub}/*\"\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-config-evaluation-modes.md",
+      "title": "AWS Config Evaluation Modes (Proactive vs Detective)",
+      "sections": [
+        {
+          "title": "Three Evaluation Modes",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  AWS CONFIG \u2014 THREE WAYS TO EVALUATE                             \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  1. DETECTIVE (default \u2014 what most people know)                  \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                    \u2502\n\u2502  WHEN:  AFTER resource exists (periodic or on change)            \u2502\n\u2502  WHAT:  Evaluates existing resources against rules               \u2502\n\u2502  RESULT: COMPLIANT / NON_COMPLIANT finding                       \u2502\n\u2502  ACTION: Can auto-remediate via SSM Automation                   \u2502\n\u2502  USE:    \"Detect drift and fix\"                                  \u2502\n\u2502                                                                  \u2502\n\u2502  2. PROACTIVE (newer \u2014 the one Dojo tests)                       \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                       \u2502\n\u2502  WHEN:  BEFORE resource is created (during CloudFormation)       \u2502\n\u2502  WHAT:  Evaluates resource config in CF template before deploy   \u2502\n\u2502  RESULT: COMPLIANT \u2192 resource created. NON_COMPLIANT \u2192 blocked  \u2502\n\u2502  ACTION: Resource NEVER exists if non-compliant                  \u2502\n\u2502  USE:    \"Prevent bad resources from ever existing\"              \u2502\n\u2502                                                                  \u2502\n\u2502  3. CUSTOM (Lambda-based)                                        \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                       \u2502\n\u2502  WHEN:  On change or periodic (like detective)                   \u2502\n\u2502  WHAT:  YOUR Lambda code evaluates whatever logic you want       \u2502\n\u2502  RESULT: COMPLIANT / NON_COMPLIANT                               \u2502\n\u2502  ACTION: Can auto-remediate                                      \u2502\n\u2502  USE:    \"Complex business logic not in managed rules\"           \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Proactive vs Detective \u2014 The Decision",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "QUESTION SAYS:                              ANSWER:\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                \u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n\"Before provisioned\"                    \u2192   PROACTIVE\n\"Before resource is created\"            \u2192   PROACTIVE\n\"Ensure NO public IPs before subnets    \u2192   PROACTIVE\n are provisioned\"\n\"Prevent creation of noncompliant\"      \u2192   PROACTIVE (or SCP)\n\n\"Detect noncompliant resources\"         \u2192   DETECTIVE\n\"After resource exists\"                 \u2192   DETECTIVE\n\"Remediate drift\"                       \u2192   DETECTIVE + SSM\n\"Track configuration changes\"           \u2192   DETECTIVE (config history)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "All \"Before Creation\" Mechanisms Compared",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Mechanism",
+                    "Service",
+                    "How it works",
+                    "Scope"
+                  ],
+                  "rows": [
+                    [
+                      "Config PROACTIVE rules",
+                      "AWS Config",
+                      "Evaluates resource in CF template before creation",
+                      "Per-account (or org via org rules)"
+                    ],
+                    [
+                      "CloudFormation Guard (cfn-guard)",
+                      "CI/CD pipeline",
+                      "Policy-as-code validates template in pipeline",
+                      "Pipeline-level (shift-left)"
+                    ],
+                    [
+                      "CloudFormation Hooks",
+                      "CloudFormation",
+                      "Custom logic runs before each resource in stack",
+                      "Per-account"
+                    ],
+                    [
+                      "Control Tower proactive guardrail",
+                      "Control Tower",
+                      "CF Hook deployed org-wide via CT",
+                      "Organization-wide"
+                    ],
+                    [
+                      "SCP",
+                      "Organizations",
+                      "Blocks the API call itself",
+                      "Organization-wide"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "When to pick which:",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Signal in question",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Config\" in the options + \"before provisioned\"",
+                      "Config proactive"
+                    ],
+                    [
+                      "\"CI/CD pipeline\" + \"before deploy\"",
+                      "cfn-guard"
+                    ],
+                    [
+                      "\"Control Tower\" + \"proactive guardrail\"",
+                      "CF Hook via CT"
+                    ],
+                    [
+                      "\"Block API call org-wide\"",
+                      "SCP"
+                    ],
+                    [
+                      "\"Validate template content\" (no Config in options)",
+                      "cfn-guard or CF Hook"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Config Proactive \u2014 How It Works",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "Developer writes CloudFormation template:\n  Resources:\n    MySubnet:\n      Type: AWS::EC2::Subnet\n      Properties:\n        MapPublicIpOnLaunch: true   \u2190 noncompliant!\n\nCloudFormation BEFORE creating the subnet:\n  \u2192 Sends resource config to Config proactive rule\n  \u2192 Rule evaluates: \"MapPublicIpOnLaunch = true? NON_COMPLIANT\"\n  \u2192 CloudFormation: \"Rule says NO. Abort resource creation.\"\n  \u2192 Subnet NEVER exists."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Detective + Remediation (Standard Pattern)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "Resource created (already exists)\n  \u2192 Config recorder captures configuration\n  \u2192 Config rule evaluates: NON_COMPLIANT\n  \u2192 Auto-remediation fires (SSM Automation document)\n  \u2192 SSM fixes the resource (e.g., enables encryption, removes public access)\n  \n  GAP: Resource exists in non-compliant state briefly (minutes)\n  RISK: Acceptable for most cases, not for \"must NEVER exist\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Gotchas",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Truth"
+                  ],
+                  "rows": [
+                    [
+                      "\"Config can prevent resource creation\"",
+                      "YES \u2014 with proactive mode (newer feature)"
+                    ],
+                    [
+                      "\"Config is only detective\"",
+                      "WRONG \u2014 also supports proactive (since ~2023)"
+                    ],
+                    [
+                      "\"SCP prevents, Config detects\"",
+                      "MOSTLY true, but Config proactive also prevents"
+                    ],
+                    [
+                      "\"Proactive = SCP\"",
+                      "DIFFERENT \u2014 SCP blocks API. Config proactive validates resource CONFIG in template. SCP can't inspect template content."
+                    ],
+                    [
+                      "\"Config proactive vs cfn-guard\"",
+                      "Config proactive = AWS-managed rules. cfn-guard = custom policy-as-code in YOUR pipeline."
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Config proactive = evaluates BEFORE CloudFormation creates resources.** \"Before provisioned\" = proactive. \"After exists\" = detective.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**SCP blocks the API call. Config proactive validates the resource configuration in the template.** Different layers.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Config detective + SSM = detect and fix (resource exists briefly). Config proactive = resource never exists.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Prevent noncompliant resources\" + Config in options = proactive. Without Config = SCP.**",
+                  "is_insight": false,
+                  "is_warning": false
                 }
               ]
             }
@@ -22831,6 +23358,244 @@ const TRACKER_DATA = {
                 {
                   "type": "bullet",
                   "text": "**\"Detect + find + investigate\" chain: GuardDuty (find) \u2192 EventBridge (route) \u2192 Detective (investigate).**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-ec2-networking-mechanics.md",
+      "title": "EC2 Networking Mechanics (Operational Details)",
+      "sections": [
+        {
+          "title": "Public IP Communication Between EC2 Instances",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  SAME VPC, DIFFERENT AZs \u2014 TWO COMMUNICATION PATHS               \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  PATH 1: Private IP (stays inside VPC)                           \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                           \u2502\n\u2502  Instance A \u2500\u2500(private IP)\u2500\u2500\u25ba Instance B                         \u2502\n\u2502  \u2022 Traffic stays INSIDE VPC fabric                               \u2502\n\u2502  \u2022 SG can reference: instance ID, SG ID, private IP             \u2502\n\u2502  \u2022 NACL on both subnets evaluates                                \u2502\n\u2502                                                                  \u2502\n\u2502  PATH 2: Public IP (exits and re-enters via IGW)                 \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                  \u2502\n\u2502  Instance A \u2500\u2500\u25ba IGW \u2500\u2500(internet routing)\u2500\u2500\u25ba IGW \u2500\u2500\u25ba Instance B   \u2502\n\u2502  \u2022 Traffic LEAVES VPC through Internet Gateway                   \u2502\n\u2502  \u2022 Source appears as PUBLIC IP (not instance ID)                  \u2502\n\u2502  \u2022 SG must reference: PUBLIC IP address                          \u2502\n\u2502  \u2022 Instance ID / SG reference = WON'T WORK                      \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            },
+            {
+              "title": "Rule",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Communication via",
+                    "SG can reference"
+                  ],
+                  "rows": [
+                    [
+                      "Private IP",
+                      "Instance ID, SG ID, private IP, CIDR"
+                    ],
+                    [
+                      "Public IP",
+                      "**Public IP only** (traffic traverses IGW, identity is lost)"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** \"Two instances can communicate via private IPs but NOT public IPs\" = SG must allow the OTHER instance's public IP. Instance ID references only work for private-IP traffic.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "IPv4 vs IPv6 Outbound-Only",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  OUTBOUND-ONLY INTERNET ACCESS                                   \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  IPv4: NAT Gateway                                               \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                               \u2502\n\u2502  Private subnet \u2192 NAT GW (public subnet) \u2192 IGW \u2192 Internet       \u2502\n\u2502  \u2022 Translates private IPv4 \u2192 public IPv4                         \u2502\n\u2502  \u2022 Outbound yes, inbound no (NAT hides private IP)              \u2502\n\u2502  \u2022 ONLY for IPv4                                                 \u2502\n\u2502                                                                  \u2502\n\u2502  IPv6: Egress-Only Internet Gateway                              \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                               \u2502\n\u2502  Private subnet \u2192 Egress-Only IGW \u2192 Internet                     \u2502\n\u2502  \u2022 NO translation needed (all IPv6 = globally routable)          \u2502\n\u2502  \u2022 Outbound yes, inbound no (one-way gate)                       \u2502\n\u2502  \u2022 ONLY for IPv6                                                 \u2502\n\u2502  \u2022 NAT Gateway does NOT support IPv6                             \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            },
+            {
+              "title": "Rule",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Protocol",
+                    "Outbound-only mechanism",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "IPv4",
+                      "NAT Gateway",
+                      "Private IPs need translation"
+                    ],
+                    [
+                      "IPv6",
+                      "Egress-Only Internet Gateway",
+                      "All IPv6 is public \u2014 just need a one-way gate"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** \"IPv6 outbound-only\" + NAT Gateway as an option = WRONG. NAT = IPv4 only. Always.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "VPC Endpoint Security Groups (Dual SG Pattern)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  INTERFACE VPC ENDPOINT \u2014 TWO SGs MUST COOPERATE                 \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  EC2/Lambda                    VPC Endpoint (ENI)                 \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510                 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510              \u2502\n\u2502  \u2502 SG-A     \u2502 \u2500\u2500(443)\u2500\u2500\u25ba     \u2502 SG-B             \u2502              \u2502\n\u2502  \u2502          \u2502                 \u2502                  \u2502              \u2502\n\u2502  \u2502 OUTBOUND \u2502                 \u2502 INBOUND          \u2502              \u2502\n\u2502  \u2502 Allow 443\u2502                 \u2502 Allow 443 from   \u2502              \u2502\n\u2502  \u2502 to SG-B  \u2502                 \u2502 SG-A (or CIDR)   \u2502              \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518              \u2502\n\u2502                                                                  \u2502\n\u2502  Miss SG-A outbound \u2192 TIMEOUT                                   \u2502\n\u2502  Miss SG-B inbound  \u2192 TIMEOUT                                   \u2502\n\u2502  Both missing       \u2192 TIMEOUT                                   \u2502\n\u2502  Permission issue   \u2192 ACCESS DENIED (different error!)           \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            },
+            {
+              "title": "Rule",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Symptom",
+                    "Cause",
+                    "Check"
+                  ],
+                  "rows": [
+                    [
+                      "Timeout",
+                      "Network (SG, NACL, routing, missing endpoint)",
+                      "Both SGs"
+                    ],
+                    [
+                      "Access Denied",
+                      "Permissions (IAM, endpoint policy, resource policy)",
+                      "Policies"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** \"Lambda timeout calling Secrets Manager, endpoint exists\" = check BOTH SGs. Not IAM.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Gateway Endpoint Policy (Hidden Gate)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  S3 GATEWAY ENDPOINT POLICY = ADDITIONAL ALLOWLIST               \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  Evaluation chain for Lambda \u2192 S3 (via Gateway endpoint):        \u2502\n\u2502                                                                  \u2502\n\u2502  1. SCP              \u2192 allows? \u2705                                \u2502\n\u2502  2. RCP              \u2192 allows? \u2705                                \u2502\n\u2502  3. IAM policy       \u2192 allows? \u2705                                \u2502\n\u2502  4. Bucket policy    \u2192 allows? \u2705                                \u2502\n\u2502  5. ENDPOINT POLICY  \u2192 allows? \u274c (PutObject not listed)        \u2502\n\u2502                                                                  \u2502\n\u2502  Result: Access Denied                                           \u2502\n\u2502                                                                  \u2502\n\u2502  Default endpoint policy = Allow * (everything passes)           \u2502\n\u2502  Hardened endpoint policy = explicit allowlist of actions/buckets \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            },
+            {
+              "title": "Rule",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "\"All IAM correct + bucket policy correct + same account + Access Denied + private subnet\"",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "blockquote",
+                  "text": "= **Check Gateway endpoint policy** (the invisible 6th gate)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Data Exfiltration Prevention Pattern",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "Endpoint policy:\n{\n  \"Effect\": \"Allow\",\n  \"Principal\": \"*\",\n  \"Action\": [\"s3:GetObject\", \"s3:PutObject\"],\n  \"Resource\": [\"arn:aws:s3:::my-company-bucket/*\"]\n}\n\n\u2192 Attacker's own creds trying to upload to external bucket = DENIED\n\u2192 Because external bucket ARN is NOT in the endpoint policy\n\u2192 Attacker's credentials are irrelevant \u2014 network won't carry the request"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "NACL Stateless Reminder",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "SGs = STATEFUL (accepted inbound = auto-allowed return)\nNACLs = STATELESS (must explicitly allow BOTH directions)\n\nFlow Log: inbound ACCEPT + outbound REJECT = ALWAYS NACL\n(SG would never cause this \u2014 stateful handles return traffic)\n\nFix: Add outbound rule allowing ephemeral ports (1024-65535)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**Public IP traffic between EC2s = traverses IGW = SG must allow public IP (not instance ID).**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only IGW. NAT doesn't support IPv6.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Interface endpoint = TWO SGs (EC2 outbound 443 + endpoint inbound 443). Miss either = timeout.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Gateway endpoint policy = hidden allowlist. All IAM correct + Access Denied = check endpoint policy.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Timeout = network. Access Denied = permissions. The error type tells you where to look.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Flow Log inbound ACCEPT + outbound REJECT = NACL (stateless). Never SG (stateful).**",
                   "is_insight": false,
                   "is_warning": false
                 }
@@ -26528,6 +27293,228 @@ const TRACKER_DATA = {
                 {
                   "type": "bullet",
                   "text": "**Credential leak = Deactivate keys + Deny-all on user BEFORE investigating.** Contain all paths first.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-ir-forensics-tools.md",
+      "title": "IR Forensics Tools (Operational Details)",
+      "sections": [
+        {
+          "title": "Evidence Collection Decision Tree",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  WHAT EVIDENCE DO YOU NEED?                                      \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  DISK (files, logs, malware):                                    \u2502\n\u2502  \u2192 EBS Snapshot (point-in-time, instance keeps running)          \u2502\n\u2502                                                                  \u2502\n\u2502  VOLATILE MEMORY (processes, network conns, kernel modules):     \u2502\n\u2502  \u2192 No-reboot AMI (captures RAM state without stopping)           \u2502\n\u2502                                                                  \u2502\n\u2502  NETWORK TRAFFIC (what came in/out):                             \u2502\n\u2502  \u2192 VPC Flow Logs (already flowing, check existing)               \u2502\n\u2502                                                                  \u2502\n\u2502  API ACTIVITY (who did what):                                    \u2502\n\u2502  \u2192 CloudTrail (already logged, query via Lake/Athena)            \u2502\n\u2502                                                                  \u2502\n\u2502  BLAST RADIUS (what else was touched):                           \u2502\n\u2502  \u2192 Detective (timeline, related entities, visualizations)        \u2502\n\u2502                                                                  \u2502\n\u2502  WINDOWS BOOT ISSUE + MEMORY DUMPS:                              \u2502\n\u2502  \u2192 EC2Rescue for Windows (standalone diagnostic tool)            \u2502\n\u2502                                                                  \u2502\n\u2502  LAMBDA FORENSICS:                                               \u2502\n\u2502  \u2192 CloudWatch Logs + X-Ray traces + GuardDuty findings           \u2502\n\u2502  \u2192 NO EBS, NO AMI (Lambda is ephemeral)                         \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "EC2Rescue \u2014 When and Why",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  EC2Rescue for Windows Server                                    \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  USE WHEN: OS won't boot / can't RDP / need memory dumps         \u2502\n\u2502                                                                  \u2502\n\u2502  HOW IT WORKS:                                                   \u2502\n\u2502  1. Detach EBS volume from broken instance                       \u2502\n\u2502  2. Attach to a healthy \"rescue\" instance                        \u2502\n\u2502  3. Run EC2Rescue against the attached volume                    \u2502\n\u2502  4. Collects: memory dumps, event logs, crash data               \u2502\n\u2502  5. Can also attempt OS repair                                   \u2502\n\u2502                                                                  \u2502\n\u2502  KEY POINT: Works OFFLINE (doesn't need running OS)              \u2502\n\u2502                                                                  \u2502\n\u2502  WHY NOT SSM?                                                    \u2502\n\u2502  \u2192 SSM agent requires a RUNNING OS                               \u2502\n\u2502  \u2192 If instance won't boot, SSM is useless                        \u2502\n\u2502  \u2192 EC2Rescue works on the volume directly                        \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\nEC2Rescue for Linux:\n  \u2192 Same concept: diagnose boot issues, collect logs\n  \u2192 Works on detached volumes"
+                }
+              ]
+            },
+            {
+              "title": "Decision",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Scenario",
+                    "Tool"
+                  ],
+                  "rows": [
+                    [
+                      "Instance running, need memory",
+                      "No-reboot AMI"
+                    ],
+                    [
+                      "Instance running, need disk",
+                      "EBS Snapshot"
+                    ],
+                    [
+                      "Instance WON'T BOOT, need diagnostics",
+                      "EC2Rescue (detach volume, analyze offline)"
+                    ],
+                    [
+                      "Instance won't boot, need SSM",
+                      "IMPOSSIBLE (SSM needs running OS)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Session Manager Logging vs CloudWatch Agent",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  TWO DIFFERENT THINGS \u2014 DON'T CONFUSE                            \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  SESSION MANAGER LOGGING:                                        \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                       \u2502\n\u2502  WHAT: Records the SESSION itself (keystrokes, commands, output) \u2502\n\u2502  HOW:  Enable \"upload session logs\" in Session Manager prefs     \u2502\n\u2502  DEST: CloudWatch Logs OR S3 (you choose)                        \u2502\n\u2502  USE:  \"Record/monitor admin session activity\"                   \u2502\n\u2502  ENCRYPTION: Optional KMS encryption on the log group/bucket     \u2502\n\u2502                                                                  \u2502\n\u2502  CLOUDWATCH AGENT:                                               \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                                \u2502\n\u2502  WHAT: Collects OS-level logs (syslog, app logs, custom logs)    \u2502\n\u2502  HOW:  Install agent + configure which log files to ship         \u2502\n\u2502  DEST: CloudWatch Logs                                           \u2502\n\u2502  USE:  \"Collect application/OS logs from instances\"              \u2502\n\u2502  NOTE: Knows NOTHING about Session Manager sessions              \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            },
+            {
+              "title": "Decision",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Question says...",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Record session activity / keystrokes\"",
+                      "Session Manager logging (built-in)"
+                    ],
+                    [
+                      "\"Monitor encrypted session logs\"",
+                      "Session Manager logging + encrypted destination"
+                    ],
+                    [
+                      "\"Collect application logs\"",
+                      "CloudWatch Agent"
+                    ],
+                    [
+                      "\"Collect OS syslog\"",
+                      "CloudWatch Agent"
+                    ],
+                    [
+                      "\"Session Manager + logging, LEAST effort\"",
+                      "Session Manager preferences \u2192 enable upload"
+                    ]
+                  ]
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** \"Record all encrypted session activity logs\" \u2260 CloudWatch Agent. It's Session Manager's native \"upload session logs\" feature with encrypted CW Logs group.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "No-Reboot AMI \u2014 Why It Matters",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "Regular AMI:     Stop \u2192 Snapshot \u2192 Start\n                 \u274c Memory LOST on stop (volatile = gone)\n\nNo-reboot AMI:   Snapshot while RUNNING\n                 \u2705 Memory state preserved in the image\n                 \u2705 Instance never stops\n                 \u26a0\ufe0f Filesystem may not be perfectly consistent\n\ndd /dev/mem:     \u274c Restricted on modern Amazon Linux 2+ kernels\n                 Not the AWS-recommended approach"
+                }
+              ]
+            },
+            {
+              "title": "Rule",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Need",
+                    "Method"
+                  ],
+                  "rows": [
+                    [
+                      "Volatile memory (RAM)",
+                      "No-reboot AMI"
+                    ],
+                    [
+                      "Disk evidence",
+                      "EBS Snapshot"
+                    ],
+                    [
+                      "Both memory + disk",
+                      "No-reboot AMI + EBS Snapshot (two actions)"
+                    ],
+                    [
+                      "Windows memory dump + boot issue",
+                      "EC2Rescue for Windows"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Lambda Forensics \u2014 What You CAN'T Do",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "Lambda = EPHEMERAL. No persistent storage.\n\n  \u274c EBS Snapshot (Lambda has no EBS)\n  \u274c No-reboot AMI (Lambda has no AMI)\n  \u274c Attach volume to rescue instance (no volume)\n  \u274c SSM RunCommand (no persistent OS)\n\n  \u2705 CloudWatch Logs (function output, errors)\n  \u2705 X-Ray traces (invocation chain)\n  \u2705 GuardDuty findings (behavioral detection)\n  \u2705 CloudTrail (API calls the function made)"
+                },
+                {
+                  "type": "blockquote",
+                  "text": "**Exam trap:** \"Preserve forensic evidence from Lambda\" \u2014 if EBS snapshot is an option, it's WRONG.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**\"Windows boot issue + memory dump\" = EC2Rescue (works offline). SSM needs running OS.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**\"Record session activity\" = Session Manager logging (built-in). NOT CloudWatch Agent.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**CloudWatch Agent = OS/app logs. Session Manager logging = session keystrokes/commands. Different.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Lambda = no EBS, no AMI, no disk forensics. Evidence = CW Logs + X-Ray + CloudTrail + GD findings.**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**No-reboot AMI = volatile memory. EBS Snapshot = disk. Need both = two separate actions.**",
                   "is_insight": false,
                   "is_warning": false
                 }
@@ -30936,6 +31923,116 @@ const TRACKER_DATA = {
                 {
                   "type": "text",
                   "text": "5. **Monitor for DNS tunneling** \u2014 unusually long subdomain queries or high query volume to single domain"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "DNS Query Logging vs Resolver Query Logging (EXAM-CRITICAL DISTINCTION)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "blockquote",
+                  "text": "These are TWO SEPARATE features with confusingly similar names. Dojo tests this.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  ROUTE 53 \u2014 TWO DIFFERENT LOGGING FEATURES                       \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  1. DNS QUERY LOGGING                                            \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                            \u2502\n\u2502  WHAT: External users resolving YOUR domains                     \u2502\n\u2502  WHO:  Internet \u2192 your public hosted zone                        \u2502\n\u2502  DEST: CloudWatch Logs ONLY (no S3, no Firehose)                \u2502\n\u2502  DIR:  INBOUND (world \u2192 your zone)                              \u2502\n\u2502                                                                  \u2502\n\u2502  Example: Someone types \"app.yourcompany.com\" in browser         \u2502\n\u2502           \u2192 Route 53 authoritative server answers                \u2502\n\u2502           \u2192 DNS query logging captures this                      \u2502\n\u2502                                                                  \u2502\n\u2502  Signal words: \"public DNS\", \"hosted zone\", \"who resolves us\"    \u2502\n\u2502                                                                  \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502                                                                  \u2502\n\u2502  2. RESOLVER QUERY LOGGING                                       \u2502\n\u2502  \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550                                       \u2502\n\u2502  WHAT: YOUR resources resolving ANY domain                       \u2502\n\u2502  WHO:  EC2/Lambda in VPC \u2192 outbound DNS queries                  \u2502\n\u2502  DEST: CW Logs, S3, OR Kinesis Firehose (all three)             \u2502\n\u2502  DIR:  OUTBOUND (your VPC \u2192 world)                              \u2502\n\u2502                                                                  \u2502\n\u2502  Example: Your Lambda calls \"api.stripe.com\"                     \u2502\n\u2502           \u2192 VPC Resolver handles the lookup                      \u2502\n\u2502           \u2192 Resolver query logging captures this                 \u2502\n\u2502                                                                  \u2502\n\u2502  Signal words: \"VPC DNS\", \"outbound queries\", \"what our          \u2502\n\u2502                resources resolve\", \"DNS exfil detection\"          \u2502\n\u2502                                                                  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            },
+            {
+              "title": "Quick Decision Table",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Question says...",
+                    "Answer",
+                    "Feature"
+                  ],
+                  "rows": [
+                    [
+                      "\"Log public DNS queries\"",
+                      "DNS query logging",
+                      "Inbound to your zone"
+                    ],
+                    [
+                      "\"Log DNS queries from VPC\"",
+                      "Resolver query logging",
+                      "Outbound from your VPC"
+                    ],
+                    [
+                      "\"Monitor DNS for exfiltration\"",
+                      "Resolver query logging",
+                      "Your resources querying suspicious domains"
+                    ],
+                    [
+                      "\"Debug public hosted zone resolution\"",
+                      "DNS query logging",
+                      "External clients resolving your records"
+                    ],
+                    [
+                      "\"Which domains are my EC2s resolving?\"",
+                      "Resolver query logging",
+                      "Outbound from VPC"
+                    ],
+                    [
+                      "\"Who is resolving my domain?\"",
+                      "DNS query logging",
+                      "Inbound to your zone"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Destination Trap",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Feature",
+                    "Destinations"
+                  ],
+                  "rows": [
+                    [
+                      "DNS query logging",
+                      "**CloudWatch Logs ONLY** (no choice)"
+                    ],
+                    [
+                      "Resolver query logging",
+                      "CW Logs OR S3 OR Firehose (you pick)"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**\"Public DNS queries\" = DNS query logging (CW Logs only). \"VPC DNS queries\" = Resolver query logging (CW Logs, S3, Firehose).**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Direction: DNS query logging = INBOUND (world\u2192you). Resolver query logging = OUTBOUND (you\u2192world).**",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Neither requires the other. Both are independent features. GuardDuty reads DNS independently of both.**",
+                  "is_insight": false,
+                  "is_warning": false
                 }
               ]
             }
