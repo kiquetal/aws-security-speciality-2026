@@ -60,3 +60,4 @@
 | 10 | 2026-06-16 | 19:17 | 22:30 | 193 | Session 96 extended - killer cross-domain (49 Qs) |
 | 11 | 2026-06-17 | 19:41 | 20:33 | 52 | Session 97 - Week 2-5 never-seen deep drill (47 Qs, 76%) |
 | 12 | 2026-06-18 | 17:53 | 18:53 | 60 | Session 98 - Week 2 NEVER-SEEN + extended (50 Qs, 85-90% on extensions) |
+| 100 | 2026-06-20 | 12:37 | | | CF Stack Policy + PassRole + Traffic Mirroring drill |
