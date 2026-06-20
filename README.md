@@ -215,24 +215,19 @@ You have two options to prepare a session:
   python3 scripts/start-session.py --questions 25
   ```
 
-### Step 2: Answer the Practice Questions
-Attempt the questions from your external practice source, and log each result inside [`notes/question-tracker.md`](notes/question-tracker.md) under your newly created session section:
-- Update the **Domain** column (e.g., `D4` for IAM, `D5` for Data Protection).
-- Write a short, keyword-dense description in **Question / Scenario**.
-- Log your choice in **Your Answer**.
-- Change the pending status (`⬜`) in the **Result** column to `✅` (Correct), `❌` (Wrong), or `⚠️` (Partial).
-- Note down the **Correct Answer** and list the core concept in **Review Topic** to auto-track your weak areas.
+### Step 2: Answer the Practice Questions (Automated for Onboarding!)
+On this onboarding branch, **you do not need to manually edit files or log questions**. 
 
-### Step 3: Recompile Your Metrics
-Once you finish logging, update your dashboard statistics:
-- **Interactive Portal**: Click **Sync Study Logs** in the sidebar.
-- **Command Line**: Run the compilation scripts:
-  ```bash
-  python3 scripts/update-tracker.py
-  python3 scripts/export_to_json.py
-  ```
+Since the **Auto-Populate Demo Answers** option in Step 1 is enabled by default, the system instantly generates realistic, pre-answered questions with correct/wrong marks and review topics. 
 
-The portal will automatically reload, displaying your updated scores, accuracy, domain breakdown, and priority weak areas!
+*(Note: On your active study branch, this is where you would attempt real questions from Tutorials Dojo, Udemy, or AWS Skills Builder, and log each result in the markdown file [`notes/question-tracker.md`](notes/question-tracker.md).)*
+
+### Step 3: Recompile Your Metrics (Automated for Onboarding!)
+Once the session is generated with demo answers, the local server **instantly recompiles all statistics automatically**.
+
+The portal immediately reloads, showing your updated scores, cumulative accuracy dials, domain proficiency levels, andpriority weak areas on the dashboard—with zero manual compile steps!
+
+*(Note: On your active study branch, after manually logging questions, you would click **Sync Study Logs** on the sidebar or run `python3 scripts/update-tracker.py` and `python3 scripts/export_to_json.py` to recompile your live metrics.)*
 
 ## Local Study Portal & Live Sync
 
