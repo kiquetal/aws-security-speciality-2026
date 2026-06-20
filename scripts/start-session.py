@@ -65,12 +65,9 @@ def start_session(questions_count, domains=DEFAULT_DOMAINS, demo_mode=False, qui
         bank_size = len(DEMO_QUESTIONS) // 4
         active_bank_qs = DEMO_QUESTIONS[bank_index * bank_size : (bank_index + 1) * bank_size]
         
-        # If questions requested is <= bank size, sample without replacement to avoid duplicates inside the same session
-        if questions_count <= len(active_bank_qs):
-            chosen_qs = random.sample(active_bank_qs, k=questions_count)
-        else:
-            # If they request more than the bank size, sample with replacement
-            chosen_qs = random.choices(active_bank_qs, k=questions_count)
+        # Enforce exact bank size of 6 questions for live demo
+        questions_count = len(active_bank_qs)
+        chosen_qs = list(active_bank_qs)
         
     if demo_mode:
         # Calculate summary scores for the demo session

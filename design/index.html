@@ -206,6 +206,14 @@
             </button>
         </div>
 
+        <!-- Live Demo Quick-Start Button -->
+        <div class="px-4 mb-2">
+            <button onclick="startInteractiveLiveDemo()" id="btn-live-demo" class="w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 transition-all duration-300 shadow-lg font-extrabold text-sm border border-orange-400/20 tracking-wider uppercase animate-pulse">
+                <span class="material-symbols-outlined text-xl">bolt</span>
+                <span>⚡ LIVEDEMO Quick Start</span>
+            </button>
+        </div>
+
         <!-- Start New Session Button -->
         <div class="px-4 mb-2">
             <button onclick="openSessionModal()" id="btn-start-session" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-on-secondary bg-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-semibold text-sm">
@@ -713,10 +721,29 @@
             </div>
             
             <div class="space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar text-sm pr-1">
+                <!-- Question Carousel Navigation -->
+                <div id="modal-carousel-nav" class="flex justify-between items-center bg-surface-container-high border border-outline-variant p-2.5 rounded text-[11px] font-code-md hidden transition-all duration-200">
+                    <button id="btn-carousel-prev" class="flex items-center gap-1.5 text-on-surface-variant hover:text-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-all font-bold">
+                        <span class="material-symbols-outlined text-[14px]">arrow_back</span>
+                        <span>PREV QUESTION</span>
+                    </button>
+                    <span id="text-carousel-indicator" class="font-bold text-secondary uppercase tracking-wider text-center">Question 1 of 6</span>
+                    <button id="btn-carousel-next" class="flex items-center gap-1.5 text-on-surface-variant hover:text-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-all font-bold">
+                        <span>NEXT QUESTION</span>
+                        <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                    </button>
+                </div>
+
                 <!-- Question Scenario -->
                 <div class="space-y-1">
                     <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Scenario / Challenge:</p>
                     <p id="modal-scenario" class="p-3 bg-surface border border-outline-variant rounded font-body-md text-on-surface leading-relaxed italic"></p>
+                </div>
+                
+                <!-- Question Options (Visible during Live Demo / Normal Quiz Console) -->
+                <div id="modal-options-container" class="space-y-1.5 hidden">
+                    <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Answer Options:</p>
+                    <div id="modal-options-list" class="space-y-2"></div>
                 </div>
                 
                 <!-- Your Attempt -->
@@ -754,6 +781,7 @@
                                 <button onclick="selectQuizResult('✅')" id="btn-result-correct" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">✅ Correct</button>
                                 <button onclick="selectQuizResult('❌')" id="btn-result-wrong" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">❌ Wrong</button>
                                 <button onclick="selectQuizResult('⚠️')" id="btn-result-partial" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">⚠️ Partial</button>
+                                <button onclick="selectQuizResult('⬜')" id="btn-result-unanswered" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">⬜ Unanswered</button>
                             </div>
                         </div>
                     </div>
@@ -865,30 +893,342 @@
 
         // --- CLIENT-SIDE INTERACTIVE SIMULATION ENGINE FOR LIVE DEMO ---
         const DEMO_QUESTIONS_POOL = [
-            {"domain": "D1", "scenario": "GuardDuty detects SSH brute-force attacks against EC2 instances. You need to block source IPs automatically.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "GuardDuty remediation via EventBridge"},
-            {"domain": "D1", "scenario": "Analyze Amazon VPC Flow Logs for rejected TCP traffic on port 3389. Filter and log only rejected packets to CloudWatch Logs.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "VPC Flow Logs Rejected Traffic Filtering"},
-            {"domain": "D1", "scenario": "Configure AWS Security Hub to automatically import findings from external vulnerability scanners and standard AWS services.", "your_answer": "C", "result": "❌", "correct": "D", "topic": "Security Hub Custom Finder Integration"},
-            {"domain": "D1", "scenario": "Set up a CloudTrail trail to log S3 data events for a highly sensitive bucket containing financial transactions.", "your_answer": "B", "result": "⚠️", "correct": "A", "topic": "CloudTrail S3 Data Event Logging"},
-            {"domain": "D2", "scenario": "An EC2 instance is suspected of being compromised. Isolate the instance immediately in the VPC without rebooting.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "Incident Response - EC2 Security Group Isolation"},
-            {"domain": "D2", "scenario": "Automate forensic disk capture of a compromised EC2 instance EBS volume by taking a snapshot and sharing it with a security account.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "Forensic EBS Snapshot Sharing"},
-            {"domain": "D2", "scenario": "Establish AWS Systems Manager Session Manager access to EC2 instances in private subnets, logging all SSH-like sessions to encrypted S3.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "Session Manager Private Endpoints"},
-            {"domain": "D3", "scenario": "Protect a public-facing Application Load Balancer from Layer 7 SQL injection and cross-site scripting (XSS) attacks.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "AWS WAF SQLi and XSS Protection Rules"},
-            {"domain": "D3", "scenario": "Deploy AWS Network Firewall to inspect all inbound and outbound traffic across multiple public/private subnets in a VPC.", "your_answer": "A", "result": "❌", "correct": "B", "topic": "AWS Network Firewall Topologies"},
-            {"domain": "D3", "scenario": "Establish a Route 53 Resolver DNS Firewall rule to block DNS exfiltration queries to known malicious domains.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "Route 53 DNS Firewall Domain Blocking"},
-            {"domain": "D4", "scenario": "Implement an IAM Permission Boundary to restrict administrative role privilege escalation on member accounts.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "IAM Permission Boundaries"},
-            {"domain": "D4", "scenario": "Configure cross-account IAM role assumption with external ID to prevent the 'confused deputy' security issue.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "Cross-Account IAM AssumeRole with ExternalID"},
-            {"domain": "D4", "scenario": "Audit unused IAM credentials, access keys older than 90 days, and console passwords without MFA across the organization.", "your_answer": "A", "result": "⚠️", "correct": "D", "topic": "IAM Credential Report"},
-            {"domain": "D4", "scenario": "Set up a resource-based IAM policy on an S3 bucket to enforce TLS-only connections and block HTTP access.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "S3 Bucket Policy Secure Transport"},
-            {"domain": "D5", "scenario": "Configure cross-account S3 bucket access where objects are encrypted with a Customer Managed KMS key in the source account.", "your_answer": "A", "result": "❌", "correct": "C", "topic": "Cross-Account KMS Key Grants"},
-            {"domain": "D5", "scenario": "Enable S3 Object Lock in Compliance mode to protect backups from deletion or modification by any user, including root.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "S3 Object Lock Compliance Mode"},
-            {"domain": "D5", "scenario": "Configure automatic rotation of database credentials stored in AWS Secrets Manager every 30 days using a Lambda template.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "Secrets Manager Credentials Rotation"},
-            {"domain": "D5", "scenario": "Implement envelope encryption of large files locally using KMS GenerateDataKey and local AES encryption.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "KMS Envelope Encryption and Data Keys"},
-            {"domain": "D6", "scenario": "Implement AWS Organizations Service Control Policies (SCPs) to restrict regions where resources can be created.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "Organizations SCPs Region Lock"},
-            {"domain": "D6", "scenario": "Set up AWS Config to automatically monitor and alert when S3 buckets are public or EBS volumes are unencrypted.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "AWS Config Managed Rules Compliance"},
-            {"domain": "D6", "scenario": "Deploy AWS CloudFormation Guard rules in your CI/CD pipeline to scan templates for security policy violations before deployment.", "your_answer": "B", "result": "❌", "correct": "A", "topic": "CloudFormation Guard Infrastructure Scan"},
-            {"domain": "D2", "scenario": "During an active incident, isolate a compromised IAM User credential by applying an explicit deny policy and revoking active sessions.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "Incident Response - IAM User Revocation"},
-            {"domain": "D3", "scenario": "Deploy AWS Shield Advanced to protect a fleet of Route 53 hosted zones and CloudFront distributions from DDoS attacks.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "Infrastructure Security - DDoS Protection"},
-            {"domain": "D6", "scenario": "Configure AWS Control Tower lifecycle events to automatically enroll new accounts into organizational units with security baselines.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "Governance - AWS Control Tower Enrollment"}
+            {
+                "domain": "D1",
+                "scenario": "Amazon GuardDuty has detected an active SSH brute-force attack against an EC2 instance in a public subnet. The security team requires immediate, automated blocking of the attacking source IP address at the network level. Which architecture meets this requirement with the least disruption?",
+                "options": [
+                    "Create an AWS WAF rule to block the source IP and associate it with the VPC's main subnet router.",
+                    "Configure a GuardDuty finding to trigger an EventBridge rule, which invokes an AWS Lambda function to add an entry in the VPC Network ACL (NACL) denying the attacking IP.",
+                    "Configure a GuardDuty finding to trigger an AWS Lambda function that stops the target EC2 instance and terminates its network interface.",
+                    "Configure GuardDuty to directly update the target EC2 instance's security group to deny the attacker's port."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "GuardDuty remediation via EventBridge"
+            },
+            {
+                "domain": "D1",
+                "scenario": "You are auditing a web application VPC and need to analyze rejected TCP connection attempts on port 3389. The data should be filtered and logged only for rejected packets, sending them to a centralized CloudWatch Logs log group. How should you configure this?",
+                "options": [
+                    "Enable VPC Flow Logs for the entire VPC, filter for 'REJECT' traffic, and set the destination to CloudWatch Logs.",
+                    "Deploy Amazon Kinesis Firehose on all EC2 instances to filter out and stream TCP rejected packets.",
+                    "Enable AWS CloudTrail data events logging on all Elastic Network Interfaces (ENIs) with log level set to Reject.",
+                    "Install the CloudWatch agent on each instance and configure custom iptables logging rules to capture rejected RDP requests."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "VPC Flow Logs Rejected Traffic Filtering"
+            },
+            {
+                "domain": "D1",
+                "scenario": "Your enterprise uses standard AWS security services and a third-party container vulnerability scanner. You need to configure AWS Security Hub to automatically import findings from the third-party container scanner so that all security alerts are aggregated in a single dashboard. What is the correct approach?",
+                "options": [
+                    "Configure the third-party scanner to drop JSON files directly into an S3 bucket with Security Hub S3-Sync enabled.",
+                    "Create an IAM role for the third-party scanner and assign it the AmazonSecurityHubFullAccess managed policy to let it directly update DB tables.",
+                    "Set up AWS Systems Manager Explorer to pull data from the scanner's API endpoint every 15 minutes.",
+                    "Enable Security Hub and use the Security Hub standard integration with the vendor, or write a custom Lambda script that formats findings into the AWS Security Finding Format (ASFF) and imports them using the BatchImportFindings API."
+                ],
+                "your_answer": "C",
+                "result": "❌",
+                "correct": "D",
+                "topic": "Security Hub Custom Finder Integration"
+            },
+            {
+                "domain": "D1",
+                "scenario": "A company wants to log all read and write object-level API operations for a highly sensitive S3 bucket containing customer financial data. They need to ensure that these activities are captured in AWS CloudTrail for auditing. What configuration should be implemented?",
+                "options": [
+                    "Configure an AWS CloudTrail trail to include Data Events for S3, selecting the specific bucket and logging both Read and Write options.",
+                    "Enable CloudTrail management events on the bucket and set up an S3 Event Notification to trigger a Lambda logging function.",
+                    "Enable S3 Server Access Logging on the bucket, and point the destination to CloudWatch Logs directly.",
+                    "Activate AWS Systems Manager State Manager to track the bucket configuration and notify when read/write calls happen."
+                ],
+                "your_answer": "B",
+                "result": "⚠️",
+                "correct": "A",
+                "topic": "CloudTrail S3 Data Event Logging"
+            },
+            {
+                "domain": "D2",
+                "scenario": "During an active security incident, an EC2 instance in a private subnet is suspected of communicating with a command-and-control server. You need to immediately isolate the instance from all network traffic while preserving its current memory state for forensic analysis. Which action is the fastest and safest?",
+                "options": [
+                    "Terminate the EC2 instance immediately to prevent further outbound data exfiltration.",
+                    "Modify the main Route Table of the subnet to point 0.0.0.0/0 to a blackhole.",
+                    "Disassociate the Elastic Network Interface (ENI) from the EC2 instance.",
+                    "Modify the EC2 instance's security group to remove all existing inbound and outbound rules, and add an outbound rule allowing only a security forensics subnet."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "Incident Response - EC2 Security Group Isolation"
+            },
+            {
+                "domain": "D2",
+                "scenario": "A compromised EC2 instance has an encrypted EBS volume. You need to capture a forensic disk image of this volume and securely share it with a separate, dedicated Security Forensics AWS Account for analysis. How can this be done securely?",
+                "options": [
+                    "Take an unencrypted snapshot of the volume and copy it directly to an S3 bucket in the Forensics Account using public read-write ACLs.",
+                    "Use rsync to copy files from the volume to an EC2 instance in the Forensics Account over a public elastic IP.",
+                    "Take an EBS snapshot of the volume. Ensure the snapshot is encrypted with a custom KMS customer managed key, grant the Forensics Account permission to the KMS key, and share the snapshot directly with the Forensics Account.",
+                    "Export the EBS volume as an OVA image, upload it to S3, and make the S3 bucket public."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "Forensic EBS Snapshot Sharing"
+            },
+            {
+                "domain": "D2",
+                "scenario": "You are designing secure administrative access to a fleet of private EC2 instances without using bastion hosts. The instances must not have public IP addresses or route through an Internet Gateway. You decide to use Systems Manager Session Manager. How do you establish connectivity?",
+                "options": [
+                    "Configure VPC endpoints (Interface Endpoints) for Systems Manager, SSM Messages, and EC2 Messages in the VPC, and attach an IAM role with SSM agent permissions to the instances.",
+                    "Configure a NAT Gateway in a public subnet, add a route to the private route tables, and enable port 22 in the security groups.",
+                    "Deploy a Route 53 Resolver endpoint and establish an IPsec VPN tunnel between your on-premises router and the EC2 instances.",
+                    "Enable SSH in the security groups and assign an Elastic IP to each private network interface."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "Session Manager Private Endpoints"
+            },
+            {
+                "domain": "D3",
+                "scenario": "A public-facing Application Load Balancer (ALB) is receiving a high volume of SQL Injection (SQLi) and Cross-Site Scripting (XSS) attack payloads. You need to protect the backend web application with the least operational overhead. What should you do?",
+                "options": [
+                    "Deploy a network inspection appliance on an EC2 instance in front of the ALB and configure custom regular expressions for SQLi.",
+                    "Modify the Application Load Balancer listener configuration to block requests containing special characters like quotes or brackets.",
+                    "Associate an AWS WAF Web ACL with the ALB, and enable the AWSManagedRulesSQLiRuleSet and AWSManagedRulesCommonRuleSet managed rule groups.",
+                    "Implement custom application-level validation filters inside backend container code for every HTTP request header."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "AWS WAF SQLi and XSS Protection Rules"
+            },
+            {
+                "domain": "D3",
+                "scenario": "Your organization wants to inspect all inbound and outbound traffic across multiple public and private subnets in a VPC. You decide to use AWS Network Firewall. To ensure that traffic from all subnets is properly routed through the firewall endpoints, which topology should you deploy?",
+                "options": [
+                    "Deploy a single firewall endpoint in the public subnet and enable proxy protocol on the Application Load Balancers.",
+                    "Deploy AWS Network Firewall endpoints in dedicated firewall subnets in each Availability Zone, and update subnet route tables to route all traffic to the firewall endpoints before hitting the Internet Gateway or NAT Gateway.",
+                    "Attach the Network Firewall directly to the Transit Gateway route table and set up VPC peering with the firewall account.",
+                    "Install the Network Firewall agent on all EC2 instances and set their default gateway to the virtual private gateway."
+                ],
+                "your_answer": "A",
+                "result": "❌",
+                "correct": "B",
+                "topic": "AWS Network Firewall Topologies"
+            },
+            {
+                "domain": "D3",
+                "scenario": "You suspect malware inside your VPC is exfiltrating data via DNS queries (DNS tunneling) to malicious external domains. You need to inspect and block outbound DNS resolution requests to known malicious domain lists. What should you configure?",
+                "options": [
+                    "Configure an AWS Network Firewall rule to block UDP port 53 traffic to all external IP addresses.",
+                    "Create an Amazon Route 53 Resolver DNS Firewall rule group with domain list rules set to BLOCK, and associate it with your VPC.",
+                    "Modify the VPC DHCP options set to point to an on-premises Active Directory DNS server over a Direct Connect connection.",
+                    "Configure an outbound security group rule on the EC2 instances blocking UDP port 53."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "Route 53 DNS Firewall Domain Blocking"
+            },
+            {
+                "domain": "D4",
+                "scenario": "A company wants to delegate IAM role creation to DevOps leads in a development account. However, DevOps leads must not be able to create roles with administrative privileges or elevate their own privileges. How do you enforce this restriction?",
+                "options": [
+                    "Use AWS Organizations SCPs to block all Role Creation actions except those originating from AWS Control Tower.",
+                    "Set up a resource-based policy on the DevOps roles that blocks the AssumeRole API for administrative roles.",
+                    "Configure an AWS Config rule to automatically delete any newly created role that has AdministratorAccess attached.",
+                    "Create an IAM Permission Boundary that allows only limited services, and require that all newly created roles include this Permission Boundary using an explicit IAM policy Condition."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "IAM Permission Boundaries"
+            },
+            {
+                "domain": "D4",
+                "scenario": "A third-party SaaS company wants to monitor your AWS resources using their software. They require access to assume an IAM role in your account. To prevent the 'Confused Deputy' problem where another customer of the SaaS company could access your account, which measure must be implemented?",
+                "options": [
+                    "Configure the third-party IAM role to use an administrative boundary that restricts actions to S3 read-only access.",
+                    "Implement VPC Peering between your account and the third-party SaaS provider's AWS infrastructure.",
+                    "In the trust policy of the IAM role in your account, require a unique, secret ExternalID string generated by the SaaS provider as a condition.",
+                    "Create an IAM User in your account, generate access keys, and share them via encrypted email with the third-party vendor."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "Cross-Account IAM AssumeRole with ExternalID"
+            },
+            {
+                "domain": "D4",
+                "scenario": "You are preparing for a security audit and need a complete list of all IAM users in your AWS account, showing the status of their passwords, access keys, and multi-factor authentication (MFA) devices. Which AWS feature provides this capability in a downloadable format?",
+                "options": [
+                    "Generate an IAM Credential Report from the IAM console or via the AWS CLI, and download the resulting CSV file.",
+                    "Use AWS Systems Manager Inventory to scan the IAM service databases and export a PDF report to S3.",
+                    "Configure an Amazon Athena query against the CloudTrail logs to list all users who logged in within 90 days.",
+                    "Retrieve the IAM Account Summary dashboard and take screenshots of the user list."
+                ],
+                "your_answer": "A",
+                "result": "⚠️",
+                "correct": "D",
+                "topic": "IAM Credential Report"
+            },
+            {
+                "domain": "D4",
+                "scenario": "A security standard requires that all traffic to and from a highly sensitive S3 bucket containing compliance files be encrypted in transit using TLS. Which configuration will block any non-encrypted HTTP requests to the bucket?",
+                "options": [
+                    "Enable Default Encryption with SSE-KMS on the S3 bucket configuration tab.",
+                    "Add an S3 bucket policy with a Deny effect for all principal actions where the condition 'aws:SecureTransport' evaluates to false.",
+                    "Add a Network ACL inbound rule to block port 80 traffic for all S3 endpoint IP prefixes.",
+                    "Use AWS WAF to filter out HTTP traffic going to the bucket's public website endpoint."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "S3 Bucket Policy Secure Transport"
+            },
+            {
+                "domain": "D5",
+                "scenario": "You need to share S3 bucket objects encrypted with a customer managed KMS key in Account A with an IAM role in Account B. What configuration is required on the KMS key and S3 bucket?",
+                "options": [
+                    "Change the S3 bucket encryption to SSE-S3 so that KMS permissions are not evaluated across accounts.",
+                    "Import the Account B IAM role's public certificate directly into the Account A KMS key store.",
+                    "Enable cross-account access in the KMS key policy in Account A allowing Account B, and grant the Account B IAM role permissions to both the S3 bucket and the KMS key.",
+                    "Deploy a Lambda function in Account B to copy the unencrypted files to a temporary S3 bucket."
+                ],
+                "your_answer": "A",
+                "result": "❌",
+                "correct": "C",
+                "topic": "Cross-Account KMS Key Grants"
+            },
+            {
+                "domain": "D5",
+                "scenario": "A financial corporation wants to protect their historical audit logs stored in an S3 bucket from being deleted or overwritten, even by the AWS Account root user or administrative users, for a fixed retention period. Which S3 feature satisfies this?",
+                "options": [
+                    "Enable S3 Object Lock on the bucket and configure it in Compliance Mode with the desired retention period.",
+                    "Enable S3 Object Lock and configure it in Governance Mode with an explicit IAM deny policy on delete actions.",
+                    "Deploy a Service Control Policy (SCP) blocking s3:DeleteObject on all buckets with 'audit-logs' in the name.",
+                    "Use S3 Glacier Vault Lock and enable multi-factor authentication (MFA) delete on the primary bucket."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "S3 Object Lock Compliance Mode"
+            },
+            {
+                "domain": "D5",
+                "scenario": "A database password must be rotated automatically every 30 days. The application retrieves the credentials dynamically from AWS Secrets Manager. How should you implement this rotation with the least operational overhead?",
+                "options": [
+                    "Create a cron job on an EC2 instance that runs a python script to change the database password and update the secret.",
+                    "Configure automatic rotation in AWS Secrets Manager, selecting the RDS database type and letting Secrets Manager deploy and manage the rotation Lambda function.",
+                    "Write a custom Lambda function triggered by an EventBridge schedule to modify the database security group and secret.",
+                    "Enable AWS Config automated remediation to rotate the credentials when a non-compliant credential is found."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "Secrets Manager Credentials Rotation"
+            },
+            {
+                "domain": "D5",
+                "scenario": "You want to encrypt a 10 GB file on-premises before uploading it to an S3 bucket. You decide to use envelope encryption. What is the correct sequence of steps to encrypt this file using AWS KMS?",
+                "options": [
+                    "Call KMS GenerateDataKey to receive a plaintext data key and an encrypted data key. Encrypt the file locally with the plaintext key, delete the plaintext key, and store the encrypted data key alongside the encrypted file.",
+                    "Send the entire 10 GB file directly to the KMS Encrypt API and store the returned encrypted ciphertext.",
+                    "Use the KMS key directly in S3 SSE-KMS, letting S3 stream-encrypt the file as it is being uploaded.",
+                    "Call KMS GenerateRandom to get an encryption password, hash it with SHA-256, and encrypt the file with openSSL."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "KMS Envelope Encryption and Data Keys"
+            },
+            {
+                "domain": "D6",
+                "scenario": "A multinational company wants to ensure that no developer can create or launch resources in any AWS Region other than us-east-1 and us-west-2 across all member accounts in their AWS Organization. How can this be centrally enforced?",
+                "options": [
+                    "Configure AWS Config rules in every region to terminate resources that are not in us-east-1 or us-west-2.",
+                    "Modify all IAM group policies across member accounts to block access to regional endpoint APIs.",
+                    "Apply a Service Control Policy (SCP) at the Organization Root with a Deny effect on all actions if the condition 'aws:RequestedRegion' is not us-east-1 or us-west-2.",
+                    "Deploy AWS Control Tower and set up a Service Catalog portfolio that only lists products in the approved regions."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "Organizations SCPs Region Lock"
+            },
+            {
+                "domain": "D6",
+                "scenario": "You want to ensure that all EBS volumes across your accounts are always encrypted. If an unencrypted EBS volume is created, a security notification should be sent, and the volume should be flagged for remediation. Which AWS service is designed for this?",
+                "options": [
+                    "Create a CloudTrail trail and use Athena to scan logs for the CreateVolume API and inspect the Encrypted parameter.",
+                    "Configure Amazon Inspector to run a continuous network vulnerability scan of all block storage volumes.",
+                    "Use AWS Systems Manager OpsCenter to monitor EBS disk sector encryption status on active instances.",
+                    "Enable AWS Config, activate the 'encrypted-volumes' managed rule, and set up an Amazon EventBridge notification for non-compliant compliance changes."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "AWS Config Managed Rules Compliance"
+            },
+            {
+                "domain": "D6",
+                "scenario": "You want to implement policy-as-code in your CI/CD pipeline to scan CloudFormation templates for security compliance violations (like public S3 buckets) before any resources are deployed. Which AWS open-source CLI tool is best suited for this?",
+                "options": [
+                    "Use CloudFormation Guard (cfn-guard) to write rules and scan templates during the build stage of the pipeline.",
+                    "Use the CloudFormation Linter (cfn-lint) to validate JSON/YAML syntax and schema conformance.",
+                    "Run the AWS CLI cloudformation validate-template command to check the resource definitions.",
+                    "Deploy AWS Systems Manager Change Manager to approve templates before they are executed."
+                ],
+                "your_answer": "B",
+                "result": "❌",
+                "correct": "A",
+                "topic": "CloudFormation Guard Infrastructure Scan"
+            },
+            {
+                "domain": "D2",
+                "scenario": "An IAM User's access keys are leaked on a public repository. You need to immediately revoke all of the user's active sessions and block any further API access. What is the most thorough incident response step?",
+                "options": [
+                    "Reset the user's console password and send them an MFA verification request.",
+                    "Delete the IAM User and recreate a new one with a different username.",
+                    "Run the Systems Manager Run Command to scan the developer's laptop for the leaked keys.",
+                    "Delete or deactivate the active access keys, and attach an explicit Deny policy to the user denying all actions."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "Incident Response - IAM User Revocation"
+            },
+            {
+                "domain": "D3",
+                "scenario": "A corporate website is hosted on AWS behind Amazon CloudFront and Route 53. To protect the site from sophisticated Layer 3, 4, and 7 DDoS attacks, and to get access to 24/7 AWS Shield Response Team (SRT) support, which service should you subscribe to?",
+                "options": [
+                    "Deploy AWS WAF with rate-based rules across all regional Application Load Balancers.",
+                    "Subscribe to AWS Shield Advanced and associate your CloudFront distributions and Route 53 hosted zones.",
+                    "Enable AWS Firewall Manager and set up a VPC security group policy.",
+                    "Configure Amazon Route 53 Resolver DNS Firewall with custom rule groups."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "Infrastructure Security - DDoS Protection"
+            },
+            {
+                "domain": "D6",
+                "scenario": "An enterprise uses AWS Control Tower to govern a multi-account structure. You need to ensure that any newly created AWS account is automatically enrolled in an Organizational Unit (OU) with all required security guardrails and baseline configurations. How is this achieved?",
+                "options": [
+                    "Create new accounts using the AWS Control Tower Account Factory, which automatically provisions them with the standard baselines.",
+                    "Write a custom CloudFormation StackSet that deploys resources when a new account is added to AWS Organizations.",
+                    "Manually copy the AWS Control Tower baseline templates and execute them in the newly created account.",
+                    "Set up a Systems Manager Automation runbook that runs a bootstrap script when a new account joins the organization."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "Governance - AWS Control Tower Enrollment"
+            }
         ];
 
         // Load mock tracker data from localStorage if saved in previous client-side actions
@@ -955,16 +1295,16 @@
                     sTotal++;
                     totalQuestions++;
                     
-                    if (res === '✅') { sCorrect++; correct++; }
-                    else if (res === '⚠️') { sPartial++; partial++; }
-                    else if (res === '❌') { sWrong++; wrong++; }
+                    if (res === '✅' || res === 'correct') { sCorrect++; correct++; }
+                    else if (res === '⚠️' || res === 'partial') { sPartial++; partial++; }
+                    else if (res === '❌' || res === 'wrong') { sWrong++; wrong++; }
                     
                     const dom = q.domain;
                     if (domainProficiency[dom]) {
                         domainProficiency[dom].total++;
-                        if (res === '✅') domainProficiency[dom].correct++;
-                        else if (res === '⚠️') domainProficiency[dom].partial++;
-                        else if (res === '❌') domainProficiency[dom].wrong++;
+                        if (res === '✅' || res === 'correct') domainProficiency[dom].correct++;
+                        else if (res === '⚠️' || res === 'partial') domainProficiency[dom].partial++;
+                        else if (res === '❌' || res === 'wrong') domainProficiency[dom].wrong++;
                     }
                     
                     const topic = q.topic;
@@ -973,7 +1313,7 @@
                             topicCounts[topic] = { correct: 0, total: 0, domain: dom || "D1" };
                         }
                         topicCounts[topic].total++;
-                        if (res === '✅') {
+                        if (res === '✅' || res === 'correct') {
                             topicCounts[topic].correct++;
                         }
                     }
@@ -1096,15 +1436,9 @@
                 const bank_size = Math.floor(DEMO_QUESTIONS_POOL.length / 4);
                 const active_bank_qs = DEMO_QUESTIONS_POOL.slice(bank_index * bank_size, (bank_index + 1) * bank_size);
                 
-                // Shuffle bank questions
-                const shuffled = [...active_bank_qs].sort(() => 0.5 - Math.random());
-                if (qCount <= shuffled.length) {
-                    chosen_qs = shuffled.slice(0, qCount);
-                } else {
-                    for (let i = 0; i < qCount; i++) {
-                        chosen_qs.push(shuffled[i % shuffled.length]);
-                    }
-                }
+                // Enforce exact bank size of 6 questions
+                qCount = active_bank_qs.length;
+                chosen_qs = [...active_bank_qs];
             }
             
             for (let i = 1; i <= qCount; i++) {
@@ -1119,6 +1453,7 @@
                         num: i,
                         domain: q.domain,
                         scenario: q.scenario,
+                        options: q.options || null,
                         your_answer: q.your_answer,
                         result: textResult,
                         correct: q.correct,
@@ -1132,6 +1467,7 @@
                         num: i,
                         domain: q.domain,
                         scenario: q.scenario,
+                        options: q.options || null,
                         your_answer: "",
                         result: "unknown",
                         correct: q.correct,
@@ -1144,6 +1480,7 @@
                         num: i,
                         domain: "",
                         scenario: "",
+                        options: null,
                         your_answer: "",
                         result: "unknown",
                         correct: "",
@@ -1156,6 +1493,7 @@
             
             recompileStatsClientSide();
             console.log(`🚀 [Client Sync] Simulated Session ${next_num} locally in memory.`);
+            return next_num;
         }
 
         function simulateRecordAnswerClientSide(sessionNum, questionNum, yourAnswer, result) {
@@ -1172,6 +1510,7 @@
             if (result === '✅') textResult = 'correct';
             else if (result === '❌') textResult = 'wrong';
             else if (result === '⚠️') textResult = 'partial';
+            else if (result === '⬜') textResult = 'unknown';
             
             question.result = textResult;
             
@@ -1301,6 +1640,13 @@
                 buildSessionsView();
                 buildCheatSheetView();
                 initFaqs();
+
+                // Handle auto-opening of question if specified in sessionStorage (useful across reloads)
+                const autoOpen = sessionStorage.getItem('AUTO_OPEN_QUESTION');
+                if (autoOpen) {
+                    sessionStorage.removeItem('AUTO_OPEN_QUESTION');
+                    viewQuestionByNum(autoOpen);
+                }
             } catch (e) {
                 console.error("Failed to initialize views:", e);
             }
@@ -1617,13 +1963,24 @@
                 });
             });
             
-            // Expand the first domain default
-            toggleDomainBlock('D4');
+            // Expand the first domain default (or first available with questions)
+            const availableDomains = Object.keys(DOMAIN_STYLES).filter(code => {
+                const list = questionsByDomain[code];
+                return list && list.length > 0;
+            });
+            if (availableDomains.length > 0) {
+                if (availableDomains.includes('D4')) {
+                    toggleDomainBlock('D4');
+                } else {
+                    toggleDomainBlock(availableDomains[0]);
+                }
+            }
         }
 
         function toggleDomainBlock(code) {
             const listBlock = document.getElementById(`list-${code}`);
             const arrow = document.getElementById(`arrow-${code}`);
+            if (!listBlock || !arrow) return;
             if (listBlock.classList.contains('hidden')) {
                 listBlock.classList.remove('hidden');
                 arrow.style.transform = 'rotate(180deg)';
@@ -2125,6 +2482,15 @@
                 }
             }
             activeQuizQuestion.sessionNum = sNum || 1;
+            
+            // If the question belongs to an active/unanswered session,
+            // make sure it is marked as the active live demo session so they can answer interactively!
+            if (activeQuizQuestion.sessionNum) {
+                const session = TRACKER_DATA.sessions.find(s => s.num === activeQuizQuestion.sessionNum);
+                if (session && session.questions.some(item => item.result === 'unknown' || !item.your_answer)) {
+                    sessionStorage.setItem('LIVE_DEMO_ACTIVE_SESSION', activeQuizQuestion.sessionNum);
+                }
+            }
 
             const domainStyle = DOMAIN_STYLES[q.domain] || { label: 'Security', badgeBg: 'bg-surface-container-highest' };
             
@@ -2137,6 +2503,31 @@
             document.getElementById('modal-correct-answer').innerHTML = q.correct_answer || "N/A";
             document.getElementById('modal-review').innerText = q.review || "General Practice Review";
             
+            // Render multiple-choice options if they exist
+            const optionsContainer = document.getElementById('modal-options-container');
+            const optionsList = document.getElementById('modal-options-list');
+            if (optionsContainer && optionsList) {
+                if (q.options && q.options.length > 0) {
+                    optionsContainer.classList.remove('hidden');
+                    optionsList.innerHTML = '';
+                    const optionLabels = ['A', 'B', 'C', 'D'];
+                    q.options.forEach((opt, idx) => {
+                        const label = optionLabels[idx] || '';
+                        const div = document.createElement('div');
+                        div.className = "p-3 bg-surface hover:bg-surface-container-high border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all";
+                        div.onclick = () => selectQuizOption(label);
+                        div.setAttribute('id', `modal-opt-card-${label}`);
+                        div.innerHTML = `
+                            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all">${label}</span>
+                            <span class="flex-1">${opt}</span>
+                        `;
+                        optionsList.appendChild(div);
+                    });
+                } else {
+                    optionsContainer.classList.add('hidden');
+                }
+            }
+            
             if (q.retest) {
                 document.getElementById('modal-retest-container').style.display = "block";
                 document.getElementById('modal-retest').innerText = q.retest;
@@ -2147,17 +2538,54 @@
             // Reset console UI
             resetQuizConsoleUI();
             
+            const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
             const isUnanswered = q.result === 'unknown' || !q.your_answer;
             
-            if (isUnanswered) {
-                // Unanswered question state: show console, hide answers (no cheating!)
+            // Hide "Verify Result Status" column in Live Demo Mode to focus strictly on A/B/C/D choices
+            const resultsCol = document.getElementById('quiz-results-container') ? document.getElementById('quiz-results-container').parentElement : null;
+            if (resultsCol) {
+                if (isLiveDemoSession) {
+                    resultsCol.style.display = 'none';
+                } else {
+                    resultsCol.style.display = 'block';
+                }
+            }
+            
+            if (isLiveDemoSession) {
+                // Live Demo mode: Always keep console visible for fluid interaction
+                document.getElementById('modal-quiz-console').classList.remove('hidden');
+                document.getElementById('quiz-review').value = q.review || '';
+                
+                // CRITICAL: Keep answers and explanations hidden so clients can't see correct/incorrect during the demo!
+                document.getElementById('modal-your-answer-container').style.display = 'none';
+                document.getElementById('modal-correct-answer-container').style.display = 'none';
+                
+                if (isUnanswered) {
+                    // Unanswered question in live demo
+                    selectedQuizOption = '';
+                    selectedQuizResult = '⬜';
+                    highlightOptionButton('');
+                    highlightResultButton('⬜');
+                    document.getElementById('quiz-evaluation-feedback').innerText = 'Ready to answer. Select option A, B, C, or D.';
+                } else {
+                    // Answered question in live demo (allows editing / reviewing previous answer without showing correctness)
+                    selectedQuizOption = q.your_answer;
+                    selectedQuizResult = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : (q.result === 'partial' || q.result === '⚠️' ? '⚠️' : '⬜'));
+                    highlightOptionButton(selectedQuizOption);
+                    highlightResultButton(selectedQuizResult);
+                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold font-sans">Option ${selectedQuizOption} selected.</span>`;
+                }
+            } else if (isUnanswered) {
+                // Normal Mode - Unanswered question state: show console, hide answers (no cheating!)
                 document.getElementById('modal-your-answer-container').style.display = 'none';
                 document.getElementById('modal-correct-answer-container').style.display = 'none';
                 document.getElementById('modal-quiz-console').classList.remove('hidden');
                 document.getElementById('quiz-review').value = q.review || '';
                 document.getElementById('quiz-evaluation-feedback').innerText = 'Ready to answer. Select options below.';
+                selectedQuizResult = '⬜';
+                highlightResultButton('⬜');
             } else {
-                // Answered question state: show previous result, hide console by default
+                // Normal Mode - Answered question state: show previous result, hide console by default
                 document.getElementById('modal-your-answer-container').style.display = 'block';
                 document.getElementById('modal-correct-answer-container').style.display = 'block';
                 document.getElementById('modal-quiz-console').classList.add('hidden');
@@ -2165,7 +2593,7 @@
                 // Pre-populate console if they want to edit
                 document.getElementById('quiz-review').value = q.review || '';
                 selectedQuizOption = q.your_answer;
-                selectedQuizResult = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : '⚠️');
+                selectedQuizResult = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : (q.result === 'partial' || q.result === '⚠️' ? '⚠️' : '⬜'));
                 highlightOptionButton(selectedQuizOption);
                 highlightResultButton(selectedQuizResult);
             }
@@ -2173,13 +2601,26 @@
             // Toggle edit button visibility
             const editBtn = document.getElementById('btn-toggle-edit-answer');
             if (editBtn) {
-                if (isUnanswered) {
+                if (isUnanswered || isLiveDemoSession) {
                     editBtn.style.display = 'none';
                 } else {
                     editBtn.style.display = 'inline-block';
                     editBtn.innerText = "Edit / Update Record";
                 }
             }
+
+            // Hide the individual save button in Live Demo since completion happens via the carousel end card
+            const submitBtn = document.getElementById('btn-submit-answer');
+            if (submitBtn) {
+                if (isLiveDemoSession) {
+                    submitBtn.style.display = 'none';
+                } else {
+                    submitBtn.style.display = 'inline-flex';
+                }
+            }
+
+            // Update Carousel Navigation controls
+            updateCarouselNav(q);
 
             // Show modal
             const modal = document.getElementById('question-modal');
@@ -2188,6 +2629,108 @@
 
         function closeModal() {
             document.getElementById('question-modal').classList.add('hidden');
+        }
+
+        function updateCarouselNav(q) {
+            const carouselNav = document.getElementById('modal-carousel-nav');
+            if (!carouselNav) return;
+
+            const sNum = q.sessionNum || q.session_num;
+            if (!sNum || !TRACKER_DATA || !TRACKER_DATA.sessions) {
+                carouselNav.classList.add('hidden');
+                return;
+            }
+
+            const session = TRACKER_DATA.sessions.find(s => s.num === sNum);
+            if (!session || !session.questions || session.questions.length <= 1) {
+                carouselNav.classList.add('hidden');
+                return;
+            }
+
+            const sIndex = session.questions.findIndex(item => item.num === q.num);
+            if (sIndex === -1) {
+                carouselNav.classList.add('hidden');
+                return;
+            }
+
+            // Show carousel navigation block
+            carouselNav.classList.remove('hidden');
+
+            // Update indicator
+            const indicator = document.getElementById('text-carousel-indicator');
+            if (indicator) {
+                indicator.innerText = `Question ${sIndex + 1} of ${session.questions.length}`;
+            }
+
+            // Set up Prev button
+            const prevBtn = document.getElementById('btn-carousel-prev');
+            if (prevBtn) {
+                const hasPrev = sIndex > 0;
+                prevBtn.disabled = !hasPrev;
+                // Clear and assign click handler
+                prevBtn.onclick = hasPrev ? () => {
+                    const prevQ = session.questions[sIndex - 1];
+                    prevQ.sessionNum = sNum;
+                    openQuestionModal(prevQ);
+                } : null;
+            }
+
+            // Set up Next button
+            const nextBtn = document.getElementById('btn-carousel-next');
+            if (nextBtn) {
+                const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == sNum;
+                const hasNext = sIndex < session.questions.length - 1;
+                
+                if (isLiveDemoSession && !hasNext) {
+                    // On the last question of a live demo, show "Finish & Evaluate" button!
+                    nextBtn.disabled = false;
+                    nextBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 transition-all font-bold scale-105 shadow-sm";
+                    nextBtn.innerHTML = `
+                        <span>⚡ Finish & Evaluate</span>
+                        <span class="material-symbols-outlined text-base">emoji_events</span>
+                    `;
+                    nextBtn.onclick = () => {
+                        completeLiveDemoSession(sNum);
+                    };
+                } else {
+                    // Normal Next button behavior
+                    nextBtn.disabled = !hasNext;
+                    nextBtn.className = "flex items-center gap-1.5 text-on-surface-variant hover:text-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-all font-bold";
+                    nextBtn.innerHTML = `
+                        <span>Next</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    `;
+                    nextBtn.onclick = hasNext ? () => {
+                        const nextQ = session.questions[sIndex + 1];
+                        nextQ.sessionNum = sNum;
+                        openQuestionModal(nextQ);
+                    } : null;
+                }
+            }
+        }
+
+        function completeLiveDemoSession(sNum) {
+            try {
+                // Ensure stats are recompiled based on final memory states
+                recompileStatsClientSide();
+                
+                // Ensure final mock state is cleanly serialized to disk
+                localStorage.setItem('TRACKER_DATA_MOCK', JSON.stringify(TRACKER_DATA));
+                
+                // Clear active live demo session pointer
+                sessionStorage.removeItem('LIVE_DEMO_ACTIVE_SESSION');
+                
+                // Close Modal
+                closeModal();
+                
+                // Switch back to Dashboard view to watch it update in real time
+                switchTab('dashboard');
+                
+                alert(`🎉 [Live Demo Completed] Congratulations! Session ${sNum} has been completed and evaluated.\n\nYour stats, Study Roadmap progress, and Syllabus domains have filled up in real time!`);
+            } catch (err) {
+                console.error("Failed to evaluate live demo session:", err);
+                alert("Error completing session evaluation: " + err.message);
+            }
         }
 
         function toggleEditAnswer() {
@@ -2209,18 +2752,55 @@
             
             // Auto-evaluate if correct answer exists
             const correctAns = activeQuizQuestion.correct_answer ? activeQuizQuestion.correct_answer.trim() : "";
+            const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
             
             if (correctAns && correctAns !== "" && ["A", "B", "C", "D"].includes(correctAns)) {
                 if (opt === correctAns) {
                     selectedQuizResult = '✅';
-                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold">Correct! Option ${opt} is correct. 🎉</span>`;
                 } else {
                     selectedQuizResult = '❌';
-                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-error font-bold">Incorrect. You selected ${opt}, correct is ${correctAns}.</span>`;
                 }
-                highlightResultButton(selectedQuizResult);
+                
+                if (isLiveDemoSession) {
+                    // Do NOT show correctness feedback during the live demo quiz
+                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold font-sans">Option ${opt} selected.</span>`;
+                } else {
+                    // Normal Mode: Show correct/incorrect instantly
+                    if (opt === correctAns) {
+                        document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold font-sans">Correct! Option ${opt} is correct. 🎉</span>`;
+                    } else {
+                        document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-error font-bold font-sans">Incorrect. You selected ${opt}, correct is ${correctAns}.</span>`;
+                    }
+                    highlightResultButton(selectedQuizResult);
+                }
             } else {
-                document.getElementById('quiz-evaluation-feedback').innerText = `Selected Option ${opt}. Please verify result status.`;
+                document.getElementById('quiz-evaluation-feedback').innerText = `Selected Option ${opt}.`;
+            }
+
+            // Live Demo auto-save state directly in-memory for zero-delay fluid carousel interaction
+            if (isLiveDemoSession) {
+                const session = TRACKER_DATA.sessions.find(s => s.num === activeQuizQuestion.sessionNum);
+                if (session) {
+                    const question = session.questions.find(item => item.num === activeQuizQuestion.num);
+                    if (question) {
+                        question.your_answer = opt;
+                        let textResult = selectedQuizResult;
+                        if (selectedQuizResult === '✅') textResult = 'correct';
+                        else if (selectedQuizResult === '❌') textResult = 'wrong';
+                        else if (selectedQuizResult === '⚠️') textResult = 'partial';
+                        else if (selectedQuizResult === '⬜') textResult = 'unknown';
+                        question.result = textResult;
+                    }
+                }
+                
+                // Keep answers and explanations hidden so clients can't see correct/incorrect during the demo!
+                document.getElementById('modal-your-answer-container').style.display = 'none';
+                document.getElementById('modal-correct-answer-container').style.display = 'none';
+            } else {
+                // Normal Mode: instantly reveal correct answers and explanations for interactive learning!
+                document.getElementById('modal-your-answer-container').style.display = 'block';
+                document.getElementById('modal-correct-answer-container').style.display = 'block';
+                document.getElementById('modal-your-answer').innerText = opt;
             }
         }
 
@@ -2234,19 +2814,60 @@
                         btn.className = "flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all";
                     }
                 }
+                
+                // Highlight option list card if present
+                const optCard = document.getElementById(`modal-opt-card-${letter}`);
+                if (optCard) {
+                    if (letter === opt) {
+                        optCard.className = "p-3 bg-secondary/15 border-2 border-secondary rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all scale-[1.01]";
+                        const circle = optCard.querySelector('span');
+                        if (circle) {
+                            circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-on-secondary text-xs font-bold font-code-md transition-all";
+                        }
+                    } else {
+                        optCard.className = "p-3 bg-surface hover:bg-surface-container-high border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all";
+                        const circle = optCard.querySelector('span');
+                        if (circle) {
+                            circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all";
+                        }
+                    }
+                }
             });
         }
 
         function selectQuizResult(res) {
             selectedQuizResult = res;
+            if (res === '⬜') {
+                selectedQuizOption = "";
+                highlightOptionButton("");
+            }
             highlightResultButton(res);
             document.getElementById('quiz-evaluation-feedback').innerHTML = `Result manually set to: <span class="font-bold">${res}</span>`;
+
+            // Live Demo auto-save manually selected result states in memory
+            const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+            if (isLiveDemoSession) {
+                const session = TRACKER_DATA.sessions.find(s => s.num === activeQuizQuestion.sessionNum);
+                if (session) {
+                    const question = session.questions.find(item => item.num === activeQuizQuestion.num);
+                    if (question) {
+                        question.your_answer = selectedQuizOption;
+                        let textResult = res;
+                        if (res === '✅') textResult = 'correct';
+                        else if (res === '❌') textResult = 'wrong';
+                        else if (res === '⚠️') textResult = 'partial';
+                        else if (res === '⬜') textResult = 'unknown';
+                        question.result = textResult;
+                    }
+                }
+            }
         }
 
         function highlightResultButton(res) {
             const btnCorrect = document.getElementById('btn-result-correct');
             const btnWrong = document.getElementById('btn-result-wrong');
             const btnPartial = document.getElementById('btn-result-partial');
+            const btnUnanswered = document.getElementById('btn-result-unanswered');
             
             if (btnCorrect) {
                 if (res === '✅') {
@@ -2269,6 +2890,13 @@
                     btnPartial.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
                 }
             }
+            if (btnUnanswered) {
+                if (res === '⬜') {
+                    btnUnanswered.className = "flex-1 py-1.5 rounded border-2 border-outline bg-outline/15 text-on-surface text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnUnanswered.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
         }
 
         function resetQuizConsoleUI() {
@@ -2280,9 +2908,11 @@
             const btnCorrect = document.getElementById('btn-result-correct');
             const btnWrong = document.getElementById('btn-result-wrong');
             const btnPartial = document.getElementById('btn-result-partial');
+            const btnUnanswered = document.getElementById('btn-result-unanswered');
             if (btnCorrect) btnCorrect.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
             if (btnWrong) btnWrong.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
             if (btnPartial) btnPartial.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            if (btnUnanswered) btnUnanswered.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
             
             const reviewInput = document.getElementById('quiz-review');
             if (reviewInput) reviewInput.value = '';
@@ -2294,13 +2924,13 @@
         async function submitRecordedAnswer() {
             if (!activeQuizQuestion) return;
             
-            if (!selectedQuizOption) {
+            if (selectedQuizResult !== '⬜' && !selectedQuizOption) {
                 alert("Please select your answer option (A, B, C, or D) first!");
                 return;
             }
             
             if (!selectedQuizResult) {
-                alert("Please verify and mark the result status (Correct, Wrong, or Partial)!");
+                alert("Please verify and mark the result status (Correct, Wrong, Partial, or Unanswered)!");
                 return;
             }
             
@@ -2323,6 +2953,8 @@
                 
                 const result = await response.json();
                 if (result.status === 'success') {
+                    // Set auto-open flag so the modal re-opens this question in its answered state after reload
+                    sessionStorage.setItem('AUTO_OPEN_QUESTION', `S${activeQuizQuestion.sessionNum}-Q${activeQuizQuestion.num}`);
                     // Refresh portal to reload updated stats and question badge colors
                     location.reload();
                 } else {
@@ -2338,7 +2970,14 @@
                         selectedQuizResult
                     );
                     if (simRes.status === 'success') {
-                        location.reload();
+                        // Dynamically update views and re-render the modal without a page reload for instant feedback
+                        renderAllViews();
+                        const updatedQ = findQuestionBySessionAndNum(activeQuizQuestion.sessionNum, activeQuizQuestion.num);
+                        if (updatedQ) {
+                            openQuestionModal(updatedQ);
+                        } else {
+                            closeModal();
+                        }
                     } else {
                         alert(`Simulated error recording answer:\n${simRes.message}`);
                     }
@@ -2410,12 +3049,58 @@
             }
         }
 
-        function resetLiveDemoProgress() {
-            if (confirm("Are you sure you want to reset all simulated live demo sessions and progress?\n\nThis will clear your local simulation and restore the portal to its clean baseline state.")) {
-                localStorage.removeItem('TRACKER_DATA_MOCK');
-                alert("Simulated live demo progress has been reset. Reloading clean baseline...");
-                location.reload();
+        function startInteractiveLiveDemo() {
+            // Count how many non-empty sessions we have, or check the limit
+            const sessionsCount = (TRACKER_DATA.sessions || []).filter(s => s.questions && s.questions.length > 0).length;
+            if (sessionsCount >= 4) {
+                alert("Maximum of 4 simulated live demo sessions has been reached!\n\nPlease click 'Reset Live Demo' in the sidebar to clear existing sessions and start fresh.");
+                return;
             }
+            
+            try {
+                // Start a new interactive session (unanswered, isQuiz = true) with 6 questions
+                const active_sess_num = simulateStartSessionClientSide(6, "", false, true, false);
+                
+                // Set the active session pointer so the system knows this is an active live demo session!
+                sessionStorage.setItem('LIVE_DEMO_ACTIVE_SESSION', active_sess_num);
+                
+                // Set auto-open flag so the modal re-opens this session at Question 1
+                sessionStorage.setItem('AUTO_OPEN_QUESTION', `S${active_sess_num}-Q1`);
+                
+                alert(`🚀 [Live Demo] Started Interactive Session ${active_sess_num} (Bank ${active_sess_num}) with 6 fresh scenario questions!\n\nPlease answer them to see your stats update in real-time.`);
+                
+                // Reload page to re-render everything
+                location.reload();
+            } catch (err) {
+                console.error("Failed to start live demo session:", err);
+                alert("Error starting live demo session: " + err.message);
+            }
+        }
+
+        async function resetLiveDemoProgress() {
+            if (!confirm("Are you sure you want to reset all simulated live demo sessions and progress?\n\nThis will clear your local simulation and restore the portal to its clean baseline state.")) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/reset-demo', { method: 'POST' });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    localStorage.removeItem('TRACKER_DATA_MOCK');
+                    alert("Live demo progress, study sessions, and syllabus stats have been completely reset to baseline! Reloading clean portal...");
+                    location.reload();
+                    return;
+                } else {
+                    console.warn("Backend reset returned an error, falling back to client-only reset:", result.message);
+                }
+            } catch (err) {
+                console.warn("Server offline or static portal mode detected during reset. Performing local storage simulation reset fallback.", err);
+            }
+            
+            // Fallback for static/offline portal
+            localStorage.removeItem('TRACKER_DATA_MOCK');
+            alert("Simulated live demo progress, study sessions, and syllabus stats have been reset locally. Reloading clean portal...");
+            location.reload();
         }
 
         // Lookups

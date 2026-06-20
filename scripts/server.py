@@ -223,6 +223,103 @@ class AetherGuardHandler(http.server.SimpleHTTPRequestHandler):
                 }
                 self.wfile.write(json.dumps(response).encode("utf-8"))
                 print(f"❌ [API Error] Record answer failed: {e}")
+        elif self.path == "/api/reset-demo":
+            try:
+                tracker_path = os.path.join(BASE_DIR, "notes", "question-tracker.md")
+                
+                # Baseline content for question-tracker.md
+                baseline_content = """# SCS-C03 Question Tracker
+
+> Track every question attempted. Review ❌ and ⚠️ items before the exam.
+
+---
+
+## Quick Stats (Cumulative)
+
+| Metric | Value |
+|---|---|
+| **Total Questions** | 0 |
+| **✅ Correct** | 0 (0%) |
+| **⚠️ Partial** | 0 (0%) |
+| **❌ Wrong** | 0 (0%) |
+| **Sessions** | 1 |
+| **Re-tests Passed** | 0 |
+
+## Domain Breakdown
+
+| Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
+|---|---|---|---|---|---|---|---|
+| D1: Detection | 16% | 0 | 0 | 0 | 0 | — | — |
+| D2: Incident Response | 14% | 0 | 0 | 0 | 0 | — | — |
+| D3: Infrastructure Security | 18% | 0 | 0 | 0 | 0 | — | — |
+| D4: Identity & Access Management | 20% | 0 | 0 | 0 | 0 | — | — |
+| D5: Data Protection | 18% | 0 | 0 | 0 | 0 | — | — |
+| D6: Governance | 14% | 0 | 0 | 0 | 0 | — | — |
+
+Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
+
+## Weak Areas to Review
+
+| Priority | Topic | Questions | Domain | Count |
+|---|---|---|---|---|
+
+---
+
+## Session Index
+
+| # | Date | Questions | ✅ | ⚠️ | ❌ | Domains Covered | Link |
+|---|---|---|---|---|---|---|---|
+
+---
+
+## Sessions
+
+### Session 1 — 2026-06-20
+
+**Domains:** D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance
+**Score:** 0 ✅ · 0 ⚠️ · 0 ❌ (0% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Review Topic |
+|---|---|---|---|---|---|---|
+"""
+                with open(tracker_path, "w", encoding="utf-8") as f:
+                    f.write(baseline_content)
+                
+                # Re-run compilation/exports
+                tracker_script = os.path.join(BASE_DIR, "scripts", "update-tracker.py")
+                res1 = subprocess.run([sys.executable, tracker_script], capture_output=True, text=True, cwd=BASE_DIR)
+                if res1.returncode != 0:
+                    raise Exception(f"update-tracker.py failed:\n{res1.stderr}")
+                
+                export_script = os.path.join(BASE_DIR, "scripts", "export_to_json.py")
+                res2 = subprocess.run([sys.executable, export_script], capture_output=True, text=True, cwd=BASE_DIR)
+                if res2.returncode != 0:
+                    raise Exception(f"export_to_json.py failed:\n{res2.stderr}")
+
+                # Success response
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                
+                response = {
+                    "status": "success", 
+                    "message": "Demo tracker and session state reset to clean baseline successfully!"
+                }
+                self.wfile.write(json.dumps(response).encode("utf-8"))
+                print("🔄 [API] Demo tracker reset to clean baseline successfully.")
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                
+                response = {
+                    "status": "error", 
+                    "message": str(e)
+                }
+                self.wfile.write(json.dumps(response).encode("utf-8"))
+                print(f"❌ [API Error] Reset failed: {e}")
         else:
             self.send_error(404, "Endpoint not found")
 
