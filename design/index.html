@@ -1622,6 +1622,13 @@
                 return;
             }
 
+            // Apply Live Demo UI Locking/Blocking immediately on page load, completely isolated
+            try {
+                applyLiveDemoBlocking();
+            } catch (err) {
+                console.error("Failed to apply live demo blocking at page load:", err);
+            }
+
             // Show reset button if local storage simulation is active
             if (localStorage.getItem('TRACKER_DATA_MOCK')) {
                 const resetBtn = document.getElementById('demo-reset-container');
@@ -1645,31 +1652,45 @@
                 console.error("Failed to randomize quote:", e);
             }
 
-            // Initialize views
+            // Initialize views independently so one failure does not halt others
+            const initializers = [
+                { name: "GlobalHeaderStats", fn: initGlobalHeaderStats },
+                { name: "DashboardProgress", fn: initDashboardProgress },
+                { name: "DomainProficiency", fn: initDomainProficiency },
+                { name: "RandomQuestion", fn: loadRandomQuestion },
+                { name: "QuestionsSyllabus", fn: buildQuestionsSyllabus },
+                { name: "RoadmapTimeline", fn: buildRoadmapTimeline },
+                { name: "WeakAreasBoard", fn: buildWeakAreasBoard },
+                { name: "SessionsStats", fn: initSessionsStats },
+                { name: "SessionsView", fn: buildSessionsView },
+                { name: "CheatSheetView", fn: buildCheatSheetView },
+                { name: "Faqs", fn: initFaqs }
+            ];
+
+            initializers.forEach(init => {
+                try {
+                    init.fn();
+                } catch (err) {
+                    console.error(`Failed to initialize view: ${init.name}`, err);
+                }
+            });
+
+            // Re-apply live demo blocking after drawing views to ensure any dynamically-generated buttons are also styled correctly
             try {
-                initGlobalHeaderStats();
-                initDashboardProgress();
-                initDomainProficiency();
-                loadRandomQuestion();
-                buildQuestionsSyllabus();
-                buildRoadmapTimeline();
-                buildWeakAreasBoard();
-                initSessionsStats();
-                buildSessionsView();
-                buildCheatSheetView();
-                initFaqs();
-
-                // Apply Live Demo UI Locking/Blocking if active
                 applyLiveDemoBlocking();
+            } catch (err) {
+                console.error("Failed to re-apply live demo blocking:", err);
+            }
 
-                // Handle auto-opening of question if specified in sessionStorage (useful across reloads)
+            // Handle auto-opening of question if specified in sessionStorage (useful across reloads)
+            try {
                 const autoOpen = sessionStorage.getItem('AUTO_OPEN_QUESTION');
                 if (autoOpen) {
                     sessionStorage.removeItem('AUTO_OPEN_QUESTION');
                     viewQuestionByNum(autoOpen);
                 }
-            } catch (e) {
-                console.error("Failed to initialize views:", e);
+            } catch (err) {
+                console.error("Failed to handle auto-opening of question:", err);
             }
         });
 
@@ -2401,7 +2422,7 @@
                 else if (pct < 70) pctColorClass = "text-error";
                 
                 // Build domain badges
-                const domainParts = s.domains.split('·');
+                const domainParts = s.domains ? s.domains.split('·') : [];
                 const domainBadges = domainParts.map(part => {
                     const trimmed = part.trim();
                     const code = trimmed.substring(0, 2);
@@ -3105,8 +3126,12 @@
         }
 
         function openSessionModal() {
-            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') || isHostedEnvironment()) {
-                alert("🔒 Creating a new custom session is locked during the active isolated Live Demo.\n\nPlease click 'Reset Live Demo' first if you want to generate a custom session using the local Python server.");
+            if (isHostedEnvironment()) {
+                alert("🔒 Creating a custom drill session is locked on the hosted static domain.\n\nPlease click '⚡ LIVEDEMO Quick Start' to start an interactive simulation session with pre-charged AWS scenario questions!");
+                return;
+            }
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Creating a new custom session is locked during the active isolated Live Demo.\n\nPlease complete the active session or click 'Reset Live Demo' first.");
                 return;
             }
             document.getElementById('session-modal').classList.remove('hidden');
@@ -3231,7 +3256,9 @@
                 if (btnSync) {
                     btnSync.classList.add('opacity-40', 'cursor-not-allowed');
                     btnSync.classList.remove('hover:bg-secondary', 'hover:text-on-secondary', 'hover:border-transparent');
-                    btnSync.title = "🔒 Locked during active Live Demo session";
+                    btnSync.title = isHosted 
+                        ? "🔒 Syncing study logs requires a local Python server. Locked on the hosted static domain." 
+                        : "🔒 Locked during active Live Demo session";
                     
                     const syncText = document.getElementById('sync-text');
                     if (syncText) {
@@ -3245,7 +3272,9 @@
                     btnStart.classList.add('opacity-40', 'cursor-not-allowed');
                     btnStart.classList.remove('bg-secondary', 'hover:opacity-90');
                     btnStart.classList.add('bg-surface-container-high', 'text-on-surface-variant/40');
-                    btnStart.title = "🔒 Locked during active Live Demo session";
+                    btnStart.title = isHosted 
+                        ? "🔒 Creating a custom drill session requires a local Python server. Locked on the hosted static domain." 
+                        : "🔒 Locked during active Live Demo session";
                     
                     const startSpan = btnStart.querySelector('span:not(.material-symbols-outlined)');
                     if (startSpan) {
@@ -3330,8 +3359,12 @@
         }
 
         async function triggerSync() {
-            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') || isHostedEnvironment()) {
-                alert("🔒 Sync Study Logs is locked during the active isolated Live Demo.\n\nPlease click 'Reset Live Demo' first if you want to use the local Python server and sync logs.");
+            if (isHostedEnvironment()) {
+                alert("🔒 Syncing study logs requires a running local Python server.\n\nIn this hosted static environment, all simulated sessions and statistics are computed and saved entirely within your browser's local memory.");
+                return;
+            }
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Sync Study Logs is locked during the active isolated Live Demo.\n\nPlease complete the active session or click 'Reset Live Demo' first.");
                 return;
             }
             const btn = document.getElementById('btn-sync');
@@ -3448,11 +3481,13 @@
                 
                 // We will build a filtered version of the subsections
                 const filteredSubsections = [];
+                const subsections = section.subsections || [];
                 
-                section.subsections.forEach(sub => {
+                subsections.forEach(sub => {
                     const filteredItems = [];
+                    const items = sub.items || [];
                     
-                    sub.items.forEach(item => {
+                    items.forEach(item => {
                         let textToSearch = '';
                         if (item.type === 'bullet' || item.type === 'text' || item.type === 'code') {
                             textToSearch = item.text.toLowerCase();
