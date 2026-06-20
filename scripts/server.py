@@ -12,7 +12,7 @@ import os
 import json
 import sys
 
-PORT = 8188
+PORT = int(os.environ.get("PORT", 8188))
 DIRECTORY = "design"
 
 # Get absolute path to the project root directory
