@@ -2,6 +2,16 @@
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
 
+> [!TIP]
+> **Are you a new user starting fresh?** 🚀
+> 
+> Use the clean-slate **[onboarding branch](https://github.com/kiquetal/aws-security-speciality-2026/tree/onboarding)** to start with 0% progress and clean, empty template schedules.
+>
+> To check out the onboarding branch locally:
+> ```bash
+> git checkout onboarding
+> ```
+
 ![SCS-C03 Prep Dashboard](./diagrams/dashboard.png)
 
 ## Table of Contents
