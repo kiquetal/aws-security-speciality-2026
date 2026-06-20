@@ -126,6 +126,7 @@
 - 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Not CreateGrant — Kinesis doesn't delegate via grants.
 - 🧠 **Config org custom rule = central Lambda invoked cross-account.** Fix "Unable to invoke": Lambda resource-based policy granting `config.amazonaws.com` + `SourceAccount` condition for member accounts.
 - 🧠 **State Manager: ONE association supports BOTH OnBoot trigger + rate schedule.** Don't create two associations — one does both.
+- 🧠 **State Manager = "enforce desired state on schedule" (proactive). Session Manager = "connect to instance remotely" (interactive). Config remediation = "detect drift then fix" (reactive, has latency).** "Ensure X applied every 30 min + on launch" = State Manager.
 - 🧠 **Inspector SBOM = on-demand API only (no built-in scheduler).** Schedule with EventBridge + Lambda calling `CreateSbomExport`. Export needs bucket policy for `inspector2.amazonaws.com`.
 
 ### Detect vs Prevent (D5 Trap)
