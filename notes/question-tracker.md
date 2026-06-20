@@ -9,22 +9,22 @@
 | Metric | Value |
 |---|---|
 | **Total Questions** | 1191 |
-| **✅ Correct** | 924 (78%) |
+| **✅ Correct** | 931 (78%) |
 | **⚠️ Partial** | 34 (3%) |
-| **❌ Wrong** | 226 (19%) |
+| **❌ Wrong** | 223 (19%) |
 | **Sessions** | 100 |
-| **Re-tests Passed** | 514 of 626 |
+| **Re-tests Passed** | 544 of 657 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 231 | 10 | 64 | 305 | 76% | 🟡 |
-| D2: Incident Response | 14% | 56 | 2 | 16 | 74 | 76% | 🟡 |
-| D3: Infrastructure Security | 18% | 182 | 8 | 47 | 237 | 77% | 🟡 |
-| D4: Identity & Access Management | 20% | 263 | 10 | 59 | 332 | 79% | 🟡 |
-| D5: Data Protection | 18% | 241 | 8 | 61 | 310 | 78% | 🟡 |
-| D6: Governance | 14% | 172 | 2 | 46 | 220 | 78% | 🟡 |
+| D1: Detection | 16% | 235 | 10 | 64 | 309 | 76% | 🟡 |
+| D2: Incident Response | 14% | 60 | 2 | 16 | 78 | 77% | 🟡 |
+| D3: Infrastructure Security | 18% | 206 | 9 | 48 | 263 | 78% | 🟡 |
+| D4: Identity & Access Management | 20% | 271 | 10 | 59 | 340 | 80% | 🟢 |
+| D5: Data Protection | 18% | 254 | 8 | 61 | 323 | 79% | 🟡 |
+| D6: Governance | 14% | 177 | 2 | 46 | 225 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -220,6 +220,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 186 | Stack Policy = protect resources inside stack | Q1138 | D6 | 1 |
 | 🟡 187 | Federated user ARN = sts:: not iam:: | Q1139 | D4 | 1 |
 | 🟡 188 | SCP = what key, Key policy = who uses it | Q1140 | D4, D5 | 1 |
+| 🟡 189 | mTLS = custom domain + S3 | Q1172 | D3 | 1 |
+| 🟡 190 | Bedrock guardrail condition key | Q1187 | D3 | 1 |
 
 ---
 
@@ -326,7 +328,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 97 | 2026-06-17 | Q1012–Q1011 | 35 | 0 | 13 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
 | 98 | 2026-06-18 | Q1056–Q1115 | 48 | 0 | 12 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
-| 100 | 2026-06-20 | Q1141–Q1191 | 42.5 | 0 | 4.5 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response (Week 2 weekly drill - all Dojo 3 gaps + never-seen topics + recurring failures) | [Jump](#session-100--2026-06-20) |
+| 100 | 2026-06-20 | Q1141–Q1191 | 49 | 1 | 1 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response | [Jump](#session-100--2026-06-20) |
 
 ---
 
