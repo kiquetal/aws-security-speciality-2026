@@ -205,9 +205,27 @@ All policies in this repo follow exam best practices:
 5. Review `notes/flashcards-*.md` for active recall on recurring errors
 6. Follow the weekly rhythm above
 
-## Local Study Portal & Live Sync
+## Interactive Live Demo & Local Study Portal
 
-You can run a local study portal to visualize your progress:
-1. Start the portal with `./run_server.sh`.
-2. Open `http://localhost:8188` in your browser.
-3. Click the **Sync Study Logs** button on the sidebar to instantly synchronize and update statistics (such as the total number of questions or domain breakdown) directly from your markdown logs!
+You can experience the AWS Certified Security - Specialty study portal in two ways: via the **Browser-Isolated Live Demo** or the **Local Study Portal & Live Sync** server.
+
+### 🌐 Option A: Hosted Browser-Isolated Live Demo
+Try the interactive study portal instantly without installing anything locally:
+*   **Live Demo URL**: **[https://kiquetal.dev/aws-security-speciality-2026/](https://kiquetal.dev/aws-security-speciality-2026/)** *(Alternative: [https://kiquetal.github.io/aws-security-speciality-2026/](https://kiquetal.github.io/aws-security-speciality-2026/))*
+*   **Pure Static Sandbox Mode**: In this hosted environment, there is no Python backend server to write files on your disk. To prevent confusion and ensure clear boundaries, non-isolated actions (such as **Start New Session** and **Sync Study Logs**) are **fully blocked and disabled from the start**.
+*   **How to Run the Demo**:
+    1. Click the pulsing **⚡ LIVEDEMO Quick Start** button in the sidebar.
+    2. It will instantly pre-charge an isolated simulation session with **6 realistic scenario questions** in your browser's local memory and open the interactive carousel on Question 1.
+    3. Select your options (A, B, C, D) and click **Record & Save** to see your stats update in real-time!
+    4. Click **Reset Live Demo** in the sidebar at any time to clear the browser memory and start fresh.
+
+### 💻 Option B: Local Study Portal & Live Sync (Recommended for Personal Study)
+For active daily studying, run the portal locally on your machine to save your practice drills and record actual study records directly to disk:
+1. Start the portal server with:
+   ```bash
+   ./run_server.sh
+   ```
+2. Open `http://localhost:8188` in your web browser.
+3. In local study mode, clicking **Start New Session** appends custom study tables directly to your local file [`notes/question-tracker.md`](notes/question-tracker.md).
+4. Select your answer choices dynamically in the browser, click **Record & Save to Disk**, and the local Python server will physically write your selections and results back to your hard drive, instantly updating your dashboard!
+5. Click **Sync Study Logs** on the sidebar to trigger manual statistics recompilation and keep your portal perfectly synced with your markdown records.
