@@ -29,27 +29,27 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 
 | Metric | Value |
 |--------|-------|
-| **Phase** | Maintenance mode (decay prevention until Aug 27) |
-| **Questions Attempted** | 1,115 |
-| **Accuracy** | 78% overall, 85-90% on recent sessions |
-| **Sessions** | 98 |
-| **Study Hours** | 72+ hours |
-| **Dojo Mock Scores** | Test 1: 58% → Test 2: 72% (passing) |
-| **Never-Seen Topics Tested** | 14/18 (all passed or re-locked) |
-| **Weakest Domain** | D1 Detection (75%) — target 80% |
+| **Phase** | Study Mode |
+| **Questions Attempted** | 0 |
+| **Accuracy** | 0% |
+| **Sessions** | 0 |
+| **Study Hours** | 0 hours |
+| **Dojo Mock Scores** | Unstarted |
+| **Never-Seen Topics Tested** | 0/18 |
+| **Weakest Domain** | None |
 
 ## Domain Weights
 
 | Domain | Weight | Status | Score |
 |--------|--------|--------|-------|
-| D4: Identity and Access Management | 20% | ✅ Complete | 79% |
-| D5: Data Protection | 18% | ✅ Complete | 78% |
-| D3: Infrastructure Security | 18% | ✅ Complete | 78% |
-| D1: Detection | 16% | ✅ Complete | 75% |
-| D2: Incident Response | 14% | ✅ Complete | 76% |
-| D6: Governance | 14% | ✅ Complete | 78% |
+| D4: Identity and Access Management | 20% | ⬜ Unstarted | — |
+| D5: Data Protection | 18% | ⬜ Unstarted | — |
+| D3: Infrastructure Security | 18% | ⬜ Unstarted | — |
+| D1: Detection | 16% | ⬜ Unstarted | — |
+| D2: Incident Response | 14% | ⬜ Unstarted | — |
+| D6: Governance | 14% | ⬜ Unstarted | — |
 
-Strategy: All domains covered. Now in maintenance mode — weekly 25-question drills + bi-weekly 65-question Dojo mocks until exam day. See [`notes/maintenance-plan.md`](notes/maintenance-plan.md) for the schedule.
+Strategy: Reset to a clean state. Follow [`study-plan.md`](study-plan.md) to track your progress week-by-week.
 
 ## Repository Structure
 
@@ -201,3 +201,31 @@ You can run a local study portal to visualize your progress:
 1. Start the portal with `./run_server.sh`.
 2. Open `http://localhost:8188` in your browser.
 3. Click the **Sync Study Logs** button on the sidebar to instantly synchronize and update statistics (such as the total number of questions or domain breakdown) directly from your markdown logs!
+
+## How to Reset Your Progress
+
+If you have completed some study logs and want to reset your local changes back to a completely clean 0% progress onboarding template, run the following git commands:
+
+```bash
+# Fetch the latest origin updates
+git fetch origin
+
+# Make sure you are on the onboarding branch
+git checkout onboarding
+
+# Reset your local files to the remote's clean template state
+git reset --hard origin/onboarding
+```
+
+If you wish to re-compile your study data and refresh the dashboard screenshot manually at any time after making changes, run:
+
+```bash
+# Compile statistics in notes/question-tracker.md
+python3 scripts/update-tracker.py
+
+# Recompile design/tracker_data.js for the local portal
+python3 scripts/export_to_json.py
+
+# Capture a fresh dashboard.png screenshot
+python3 scripts/capture_screenshot.py
+```
