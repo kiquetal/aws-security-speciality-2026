@@ -3105,7 +3105,7 @@
         }
 
         function openSessionModal() {
-            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') || isHostedEnvironment()) {
                 alert("🔒 Creating a new custom session is locked during the active isolated Live Demo.\n\nPlease click 'Reset Live Demo' first if you want to generate a custom session using the local Python server.");
                 return;
             }
@@ -3217,9 +3217,15 @@
             location.reload();
         }
 
+        function isHostedEnvironment() {
+            return window.location.hostname.includes('github.io') || window.location.hostname.includes('kiquetal.dev');
+        }
+
         function applyLiveDemoBlocking() {
             const isLiveDemo = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION');
-            if (isLiveDemo) {
+            const isHosted = isHostedEnvironment();
+            
+            if (isLiveDemo || isHosted) {
                 // Block btn-sync (Sync Study Logs)
                 const btnSync = document.getElementById('btn-sync');
                 if (btnSync) {
@@ -3246,7 +3252,9 @@
                         startSpan.innerText = "Start New Session (Locked)";
                     }
                 }
-                
+            }
+            
+            if (isLiveDemo) {
                 // Block btn-live-demo (LIVEDEMO Quick Start)
                 const btnLiveDemo = document.getElementById('btn-live-demo');
                 if (btnLiveDemo) {
@@ -3322,7 +3330,7 @@
         }
 
         async function triggerSync() {
-            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') || isHostedEnvironment()) {
                 alert("🔒 Sync Study Logs is locked during the active isolated Live Demo.\n\nPlease click 'Reset Live Demo' first if you want to use the local Python server and sync logs.");
                 return;
             }
