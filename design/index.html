@@ -1283,10 +1283,18 @@
             const topicCounts = {};
 
             TRACKER_DATA.sessions.forEach(session => {
+                const isActiveLiveDemo = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == session.num;
+                const isEvaluated = session.evaluated !== false;
+                
                 let sCorrect = 0;
                 let sPartial = 0;
                 let sWrong = 0;
                 let sTotal = 0;
+                
+                if (isActiveLiveDemo && !isEvaluated) {
+                    session.score = "⚡ Live Simulating (In Progress...)";
+                    return; // Skip tallying towards global stats and syllabus proficiencies until evaluated from carousel!
+                }
                 
                 session.questions.forEach(q => {
                     const res = q.result;
@@ -1310,11 +1318,16 @@
                     const topic = q.topic;
                     if (topic) {
                         if (!topicCounts[topic]) {
-                            topicCounts[topic] = { correct: 0, total: 0, domain: dom || "D1" };
+                            topicCounts[topic] = { correct: 0, total: 0, domain: dom || "D1", failedQuestions: [], domains: new Set() };
                         }
                         topicCounts[topic].total++;
+                        if (dom) {
+                            topicCounts[topic].domains.add(dom);
+                        }
                         if (res === '✅' || res === 'correct') {
                             topicCounts[topic].correct++;
+                        } else if (res === '❌' || res === 'wrong' || res === '⚠️' || res === 'partial') {
+                            topicCounts[topic].failedQuestions.push(`S${session.num}-Q${q.num}`);
                         }
                     }
                 });
@@ -1370,13 +1383,18 @@
             const weakAreasList = [];
             Object.keys(topicCounts).forEach(topic => {
                 const tc = topicCounts[topic];
-                const failedCount = tc.total - tc.correct;
+                const failedCount = tc.failedQuestions ? tc.failedQuestions.length : (tc.total - tc.correct);
                 if (failedCount > 0) {
+                    const level = failedCount >= 2 ? 'red' : 'yellow';
+                    const listDomains = tc.domains ? Array.from(tc.domains) : [tc.domain || "D1"];
+                    const listFailedQs = tc.failedQuestions || [];
+                    
                     weakAreasList.push({
                         topic: topic,
-                        domainCode: tc.domain,
+                        domains: listDomains,
                         count: failedCount,
-                        questionsStr: `${tc.correct}/${tc.total} correct`
+                        questions: listFailedQs,
+                        level: level
                     });
                 }
             });
@@ -2251,56 +2269,62 @@
 
         // Render weak gaps board card grid
         function buildWeakAreasBoard() {
-            const grid = document.getElementById('weak-areas-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            
-            const weakAreas = TRACKER_DATA.weak_areas || [];
-            
-            weakAreas.forEach((item, index) => {
-                // Apply filter
-                if (currentWeakAreasFilter !== 'all' && item.level !== currentWeakAreasFilter) {
-                    return;
-                }
+            try {
+                const grid = document.getElementById('weak-areas-grid');
+                if (!grid) return;
+                grid.innerHTML = '';
                 
-                const priorityBadge = item.level === 'red' ? "bg-error-container text-error border border-error/20" : "bg-secondary/15 text-secondary border border-secondary/20";
+                const weakAreas = TRACKER_DATA.weak_areas || [];
                 
-                const card = document.createElement('div');
-                card.className = "bg-surface-container border border-outline-variant p-5 rounded hover:border-secondary transition-all flex flex-col justify-between min-h-[160px]";
-                
-                // Format the lists of questions as buttons
-                const qListHtml = item.questions.map(qNum => {
-                    return `<button onclick="viewQuestionByNum('${qNum}')" class="px-2 py-0.5 bg-surface-container-low border border-outline-variant/45 rounded font-code-md text-[10px] text-secondary hover:text-on-surface hover:bg-secondary/20 transition-all font-bold">${qNum}</button>`;
-                }).join(' ');
-
-                // Map domain labels
-                const domainLabels = item.domains.map(d => {
-                    const style = DOMAIN_STYLES[d] || { label: 'Security' };
-                    return `<span class="px-1.5 py-0.5 rounded text-[9px] font-code-md bg-surface-container-highest text-on-surface-variant">${d}: ${style.label}</span>`;
-                }).join(' ');
-                
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-center mb-3">
-                            <div class="flex items-center gap-1.5">
-                                ${domainLabels}
-                            </div>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-code-md ${priorityBadge}">
-                                PRIORITY ${item.priority}
-                            </span>
-                        </div>
-                        <h3 class="font-headline-md text-sm text-on-surface mb-2 font-bold">${item.topic}</h3>
-                    </div>
+                weakAreas.forEach((item, index) => {
+                    if (!item) return;
                     
-                    <div class="border-t border-outline-variant/30 pt-3 mt-3">
-                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Target Questions (${item.count}):</p>
-                        <div class="flex flex-wrap gap-1.5">
-                            ${qListHtml}
+                    // Apply filter
+                    if (currentWeakAreasFilter !== 'all' && item.level !== currentWeakAreasFilter) {
+                        return;
+                    }
+                    
+                    const priorityBadge = item.level === 'red' ? "bg-error-container text-error border border-error/20" : "bg-secondary/15 text-secondary border border-secondary/20";
+                    
+                    const card = document.createElement('div');
+                    card.className = "bg-surface-container border border-outline-variant p-5 rounded hover:border-secondary transition-all flex flex-col justify-between min-h-[160px]";
+                    
+                    // Format the lists of questions as buttons with full safety guards
+                    const qListHtml = (item.questions || []).map(qNum => {
+                        return `<button onclick="viewQuestionByNum('${qNum}')" class="px-2 py-0.5 bg-surface-container-low border border-outline-variant/45 rounded font-code-md text-[10px] text-secondary hover:text-on-surface hover:bg-secondary/20 transition-all font-bold">${qNum}</button>`;
+                    }).join(' ');
+
+                    // Map domain labels with full safety guards
+                    const domainLabels = (item.domains || []).map(d => {
+                        const style = DOMAIN_STYLES[d] || { label: 'Security' };
+                        return `<span class="px-1.5 py-0.5 rounded text-[9px] font-code-md bg-surface-container-highest text-on-surface-variant">${d}: ${style.label}</span>`;
+                    }).join(' ');
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="flex items-center gap-1.5">
+                                    ${domainLabels}
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-code-md ${priorityBadge}">
+                                    PRIORITY ${item.priority}
+                                </span>
+                            </div>
+                            <h3 class="font-headline-md text-sm text-on-surface mb-2 font-bold">${item.topic}</h3>
                         </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+                        
+                        <div class="border-t border-outline-variant/30 pt-3 mt-3">
+                            <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Target Questions (${item.count || 0}):</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${qListHtml}
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Failed to build weak areas board:", err);
+            }
         }
 
         // Filter weak areas board
@@ -2754,16 +2778,27 @@
                 const hasNext = sIndex < session.questions.length - 1;
                 
                 if (isLiveDemoSession && !hasNext) {
-                    // On the last question of a live demo, show "Finish & Evaluate" button!
-                    nextBtn.disabled = false;
-                    nextBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 transition-all font-bold scale-105 shadow-sm";
-                    nextBtn.innerHTML = `
-                        <span>⚡ Finish & Evaluate</span>
-                        <span class="material-symbols-outlined text-base">emoji_events</span>
-                    `;
-                    nextBtn.onclick = () => {
-                        completeLiveDemoSession(sNum);
-                    };
+                    // On the last question of a live demo, only allow evaluating if ALL questions are answered!
+                    const unansweredCount = session.questions.filter(item => !item.your_answer || item.your_answer === "").length;
+                    
+                    if (unansweredCount > 0) {
+                        nextBtn.disabled = true;
+                        nextBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-high border border-outline/30 text-on-surface/40 cursor-not-allowed font-bold text-xs";
+                        nextBtn.innerHTML = `
+                            <span>⚡ Answer All (${unansweredCount} Left)</span>
+                        `;
+                        nextBtn.onclick = null;
+                    } else {
+                        nextBtn.disabled = false;
+                        nextBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 transition-all font-bold scale-105 shadow-md hover:shadow-lg animate-pulse";
+                        nextBtn.innerHTML = `
+                            <span>⚡ Finish & Evaluate</span>
+                            <span class="material-symbols-outlined text-base">emoji_events</span>
+                        `;
+                        nextBtn.onclick = () => {
+                            completeLiveDemoSession(sNum);
+                        };
+                    }
                 } else {
                     // Normal Next button behavior
                     nextBtn.disabled = !hasNext;
@@ -2781,35 +2816,19 @@
             }
         }
 
-        async function completeLiveDemoSession(sNum) {
+        function completeLiveDemoSession(sNum) {
             const nextBtn = document.getElementById('btn-carousel-next');
             if (nextBtn) {
                 nextBtn.disabled = true;
                 nextBtn.innerText = "⚡ Saving & Evaluating...";
             }
             try {
-                // Iterate through questions in completed session and commit sequentially to disk
+                // Mark the session as officially evaluated!
                 const session = TRACKER_DATA.sessions.find(s => s.num === sNum);
-                if (session && session.questions) {
-                    for (const q of session.questions) {
-                        const resultSymbol = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : (q.result === 'partial' || q.result === '⚠️' ? '⚠️' : '⬜'));
-                        try {
-                            await fetch('/api/record-answer', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    session_num: sNum,
-                                    question_num: q.num,
-                                    your_answer: q.your_answer || "",
-                                    result: resultSymbol
-                                })
-                            });
-                        } catch (apiErr) {
-                            console.warn(`[Live Demo Sync] Failed to record Q${q.num} to server:`, apiErr);
-                        }
-                    }
+                if (session) {
+                    session.evaluated = true;
                 }
-
+                
                 // Ensure stats are recompiled based on final memory states
                 recompileStatsClientSide();
                 
@@ -2832,6 +2851,10 @@
             } catch (err) {
                 console.error("Failed to evaluate live demo session:", err);
                 alert("Error completing session evaluation: " + err.message);
+                if (nextBtn) {
+                    nextBtn.disabled = false;
+                    nextBtn.innerText = "⚡ Finish & Evaluate";
+                }
             }
         }
 
@@ -2898,6 +2921,9 @@
                 // Keep answers and explanations hidden so clients can't see correct/incorrect during the demo!
                 document.getElementById('modal-your-answer-container').style.display = 'none';
                 document.getElementById('modal-correct-answer-container').style.display = 'none';
+                
+                // Instantly update carousel navigation button states
+                updateCarouselNav(activeQuizQuestion);
             } else {
                 // Normal Mode: instantly reveal correct answers and explanations for interactive learning!
                 document.getElementById('modal-your-answer-container').style.display = 'block';
@@ -3029,7 +3055,7 @@
             if (feedbackEl) feedbackEl.innerText = '';
         }
 
-        async function submitRecordedAnswer() {
+        function submitRecordedAnswer() {
             if (!activeQuizQuestion) return;
             
             if (selectedQuizResult !== '⬜' && !selectedQuizOption) {
@@ -3048,51 +3074,27 @@
             btn.innerText = "Saving Answer...";
             
             try {
-                const response = await fetch('/api/record-answer', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        session_num: activeQuizQuestion.sessionNum,
-                        question_num: activeQuizQuestion.num,
-                        your_answer: selectedQuizOption,
-                        result: selectedQuizResult
-                    })
-                });
-                
-                const result = await response.json();
-                if (result.status === 'success') {
-                    // Set auto-open flag so the modal re-opens this question in its answered state after reload
-                    sessionStorage.setItem('AUTO_OPEN_QUESTION', `S${activeQuizQuestion.sessionNum}-Q${activeQuizQuestion.num}`);
-                    // Refresh portal to reload updated stats and question badge colors
-                    location.reload();
-                } else {
-                    alert(`Error recording answer:\n${result.message}`);
-                }
-            } catch (err) {
-                console.warn("Server offline or static portal mode detected. Recording answer interactively via local storage fallback.", err);
-                try {
-                    const simRes = simulateRecordAnswerClientSide(
-                        activeQuizQuestion.sessionNum,
-                        activeQuizQuestion.num,
-                        selectedQuizOption,
-                        selectedQuizResult
-                    );
-                    if (simRes.status === 'success') {
-                        // Dynamically update views and re-render the modal without a page reload for instant feedback
-                        renderAllViews();
-                        const updatedQ = findQuestionBySessionAndNum(activeQuizQuestion.sessionNum, activeQuizQuestion.num);
-                        if (updatedQ) {
-                            openQuestionModal(updatedQ);
-                        } else {
-                            closeModal();
-                        }
+                const simRes = simulateRecordAnswerClientSide(
+                    activeQuizQuestion.sessionNum,
+                    activeQuizQuestion.num,
+                    selectedQuizOption,
+                    selectedQuizResult
+                );
+                if (simRes.status === 'success') {
+                    // Dynamically update views and re-render the modal without a page reload for instant feedback
+                    renderAllViews();
+                    const updatedQ = findQuestionBySessionAndNum(activeQuizQuestion.sessionNum, activeQuizQuestion.num);
+                    if (updatedQ) {
+                        openQuestionModal(updatedQ);
                     } else {
-                        alert(`Simulated error recording answer:\n${simRes.message}`);
+                        closeModal();
                     }
-                } catch (simErr) {
-                    console.error("Client-side simulation fallback failed:", simErr);
-                    alert(`Error saving answer client-side: ${simErr.message}`);
+                } else {
+                    alert(`Error recording answer:\n${simRes.message}`);
                 }
+            } catch (simErr) {
+                console.error("Client-side save failed:", simErr);
+                alert(`Error saving answer client-side: ${simErr.message}`);
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = prevText;
@@ -3127,32 +3129,16 @@
             text.innerText = 'Generating Drill...';
             
             try {
-                const response = await fetch('/api/start-session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ questions: qCount, domains: domains, demo: isDemo, quiz: isQuiz, blank: sessType === "blank" })
-                });
-                
-                const result = await response.json();
-                if (result.status === 'success') {
-                    location.reload();
-                } else {
-                    alert(`Error generating session:\n${result.message}`);
-                }
-            } catch (err) {
-                console.warn("Server offline or static portal mode detected. Generating session interactively via local storage fallback.", err);
-                try {
-                    simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, sessType === "blank");
-                    location.reload();
-                } catch (simErr) {
-                    console.error("Client-side simulation fallback failed:", simErr);
-                    alert(`Error starting session client-side: ${simErr.message}`);
-                }
-            } finally {
+                simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, sessType === "blank");
+                location.reload();
+            } catch (simErr) {
+                console.error("Client-side simulation failed:", simErr);
+                alert(`Error starting session client-side: ${simErr.message}`);
                 btn.disabled = false;
                 icon.innerText = 'add_circle';
                 icon.classList.remove('animate-spin');
                 text.innerText = 'Generate Drill';
+            } finally {
                 closeSessionModal();
             }
         }
@@ -3173,32 +3159,17 @@
             }
             
             try {
-                // 1. Start session on python backend first if server is online
-                let active_sess_num = (TRACKER_DATA.sessions ? TRACKER_DATA.sessions.length : 0) + 1;
-                try {
-                    const response = await fetch('/api/start-session', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            questions: 6,
-                            domains: "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance",
-                            demo: false,
-                            quiz: true,
-                            blank: false
-                        })
-                    });
-                    const result = await response.json();
-                    if (result.status !== 'success') {
-                        console.warn("Server failed to start session:", result.message);
-                    } else {
-                        console.log("🚀 [Live Demo] Session started successfully on python server.");
-                    }
-                } catch (apiErr) {
-                    console.warn("Server offline or static portal fallback starting session client-side:", apiErr);
+                // Start new interactive session (unanswered, isQuiz = true) with 6 questions locally
+                const active_sess_num = simulateStartSessionClientSide(6, "", false, true, false);
+                
+                // Explicitly tag as un-evaluated
+                const session = TRACKER_DATA.sessions.find(s => s.num === active_sess_num);
+                if (session) {
+                    session.evaluated = false;
                 }
-
-                // 2. Start new interactive session (unanswered, isQuiz = true) with 6 questions locally
-                active_sess_num = simulateStartSessionClientSide(6, "", false, true, false);
+                
+                // Save updated structure to disk immediately
+                localStorage.setItem('TRACKER_DATA_MOCK', JSON.stringify(TRACKER_DATA));
                 
                 // Set active session pointer so system knows this is an active live demo session!
                 sessionStorage.setItem('LIVE_DEMO_ACTIVE_SESSION', active_sess_num);
@@ -3225,23 +3196,10 @@
                 return;
             }
             
-            try {
-                const response = await fetch('/api/reset-demo', { method: 'POST' });
-                const result = await response.json();
-                if (result.status === 'success') {
-                    localStorage.removeItem('TRACKER_DATA_MOCK');
-                    alert("Live demo progress, study sessions, and syllabus stats have been completely reset to baseline! Reloading clean portal...");
-                    location.reload();
-                    return;
-                } else {
-                    console.warn("Backend reset returned an error, falling back to client-only reset:", result.message);
-                }
-            } catch (err) {
-                console.warn("Server offline or static portal mode detected during reset. Performing local storage simulation reset fallback.", err);
-            }
-            
-            // Fallback for static/offline portal
+            // Pure client-side reset
             localStorage.removeItem('TRACKER_DATA_MOCK');
+            sessionStorage.removeItem('LIVE_DEMO_ACTIVE_SESSION');
+            sessionStorage.removeItem('AUTO_OPEN_QUESTION');
             alert("Simulated live demo progress, study sessions, and syllabus stats have been reset locally. Reloading clean portal...");
             location.reload();
         }
@@ -3318,44 +3276,17 @@
             text.innerText = 'Syncing study logs...';
             btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-on-surface bg-surface-container-high border border-outline/30 opacity-75 cursor-not-allowed font-semibold text-sm";
             
-            try {
-                const response = await fetch('/api/sync', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
-                if (!response.ok) {
-                    const data = await response.json().catch(() => ({}));
-                    throw new Error(data.message || `Server error (${response.status})`);
-                }
-                
-                // Show success state
+            // Premium purely offline sync simulation
+            setTimeout(() => {
                 icon.classList.remove('animate-spin');
                 icon.innerText = 'check_circle';
-                text.innerText = 'Synced! Refreshing...';
+                text.innerText = 'Synced Offline!';
                 btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-white bg-emerald-700 border border-transparent transition-all duration-200 font-semibold text-sm shadow-md";
                 
                 setTimeout(() => {
                     window.location.reload();
-                }, 1200);
-                
-            } catch (err) {
-                console.error("Sync error:", err);
-                
-                icon.classList.remove('animate-spin');
-                icon.innerText = 'error';
-                text.innerText = 'Sync Failed!';
-                btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-white bg-rose-800 border border-transparent transition-all duration-200 font-semibold text-sm shadow-md";
-                
-                alert(`Sync failed: ${err.message}\n\nNote: Live syncing requires starting the portal with "./run_server.sh". Pure static servers or raw file protocol (file:///) cannot execute local scripts.`);
-                
-                setTimeout(() => {
-                    btn.disabled = false;
-                    icon.innerText = origIcon;
-                    text.innerText = origText;
-                    btn.className = origClass;
-                }, 3000);
-            }
+                }, 1000);
+            }, 800);
         }
 
         // Switch Tabs logic
