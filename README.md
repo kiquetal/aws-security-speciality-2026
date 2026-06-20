@@ -2,6 +2,11 @@
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
 
+> [!IMPORTANT]
+> **🚀 Try the Hosted Browser-Isolated Live Demo instantly!**
+> No installation or setup required. Explore the pre-charged, interactive exam study portal here:
+> 👉 **[https://kiquetal.dev/aws-security-speciality-2026/](https://kiquetal.dev/aws-security-speciality-2026/)**
+
 ![SCS-C03 Prep Dashboard](./diagrams/dashboard.png)
 
 ## Table of Contents
