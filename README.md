@@ -68,6 +68,16 @@ You can run a local study portal to visualize your progress:
 
 This repository is designed to track your active-recall progress as you attempt practice questions (e.g., from Tutorials Dojo, Udemy, or AWS official practice exams).
 
+> [!NOTE]
+> ### 💡 Start Session vs. Answering Questions (The Flow Explained)
+> To help you understand how the study portal works, here is a quick analogy:
+> 
+> | Feature | 🆕 **Start Session** (The Setup) | 📝 **Answering Questions** (The Study) |
+> | :--- | :--- | :--- |
+> | **What it is** | Prepares the exam structure and sets up the tracking slot. | Sitting down, reading the questions, and recording your selections. |
+> | **Analogy** | Printing out a blank exam paper, writing the session date at the top, and laying it on your desk. | Reading the exam booklet, marking your choices (A, B, C, D), and checking the answer key. |
+> | **How it works** | Clicking **Start New Session** in the portal sidebar automatically appends a clean, numbered template table to [`notes/question-tracker.md`](notes/question-tracker.md). | **Onboard branch (Automated)**: Keeping *Auto-Populate Demo Answers* checked instantly fills the session with realistic AWS scenarios and pre-grades them so you can see live charts immediately.<br><br>**Active study branch (Manual)**: You attempt questions on external sites (Udemy, Tutorials Dojo), record your answers in [`notes/question-tracker.md`](notes/question-tracker.md), and click **Sync Study Logs** to recompile your live dashboard charts. |
+
 Follow this step-by-step workflow to run a study session:
 
 ### Step 1: Start a New Session / Generate a Practice Drill
