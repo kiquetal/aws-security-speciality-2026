@@ -165,6 +165,7 @@ def parse_tracker_sessions():
                 
             questions.append({
                 "num": q_num,
+                "session_num": num,
                 "domain": domain.split("/")[0].strip(), # Handles e.g., D4/D6 -> D4
                 "domain_raw": domain,
                 "scenario": scenario,
@@ -223,7 +224,7 @@ def parse_tracker_sessions():
     for q in all_q:
         if q["result"] in ("wrong", "partial") and q["review"]:
             t = q["review"]
-            weak_topics_dict[t]["questions"].append(f"Q{q['num']}")
+            weak_topics_dict[t]["questions"].append(f"S{q['session_num']}-Q{q['num']}")
             domains = [d.strip() for d in q["domain_raw"].split("/") if d.strip()]
             for d in domains:
                 if d in DOMAIN_NAMES:

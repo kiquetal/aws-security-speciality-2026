@@ -206,6 +206,30 @@
             </button>
         </div>
 
+        <!-- Live Demo Quick-Start Button -->
+        <div class="px-4 mb-2">
+            <button onclick="startInteractiveLiveDemo()" id="btn-live-demo" class="w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 transition-all duration-300 shadow-lg font-extrabold text-sm border border-orange-400/20 tracking-wider uppercase animate-pulse">
+                <span class="material-symbols-outlined text-xl">bolt</span>
+                <span>⚡ LIVEDEMO Quick Start</span>
+            </button>
+        </div>
+
+        <!-- Start New Session Button -->
+        <div class="px-4 mb-2">
+            <button onclick="openSessionModal()" id="btn-start-session" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-on-secondary bg-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-semibold text-sm">
+                <span class="material-symbols-outlined text-xl">add_circle</span>
+                <span>Start New Session</span>
+            </button>
+        </div>
+
+        <!-- Reset Live Demo Button (Visible only when simulated data exists) -->
+        <div id="demo-reset-container" class="px-4 mb-2" style="display: none;">
+            <button onclick="resetLiveDemoProgress()" class="w-full flex items-center justify-center gap-2 px-4 py-2 rounded text-rose-500 bg-rose-500/10 border border-rose-500/25 hover:bg-rose-500/20 transition-all duration-200 font-semibold text-[10px] uppercase tracking-wider">
+                <span class="material-symbols-outlined text-base">restart_alt</span>
+                <span>Reset Live Demo</span>
+            </button>
+        </div>
+
         <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
             <div class="p-4 bg-surface-container-low border border-outline-variant rounded">
                 <p class="text-xs font-label-sm text-secondary uppercase tracking-wider mb-1">MEMENTO MORI</p>
@@ -697,22 +721,85 @@
             </div>
             
             <div class="space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar text-sm pr-1">
+                <!-- Question Carousel Navigation -->
+                <div id="modal-carousel-nav" class="flex justify-between items-center bg-surface-container-high border border-outline-variant p-2.5 rounded text-[11px] font-code-md hidden transition-all duration-200">
+                    <button id="btn-carousel-prev" class="flex items-center gap-1.5 text-on-surface-variant hover:text-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-all font-bold">
+                        <span class="material-symbols-outlined text-[14px]">arrow_back</span>
+                        <span>PREV QUESTION</span>
+                    </button>
+                    <span id="text-carousel-indicator" class="font-bold text-secondary uppercase tracking-wider text-center">Question 1 of 6</span>
+                    <button id="btn-carousel-next" class="flex items-center gap-1.5 text-on-surface-variant hover:text-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-all font-bold">
+                        <span>NEXT QUESTION</span>
+                        <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                    </button>
+                </div>
+
                 <!-- Question Scenario -->
                 <div class="space-y-1">
                     <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Scenario / Challenge:</p>
                     <p id="modal-scenario" class="p-3 bg-surface border border-outline-variant rounded font-body-md text-on-surface leading-relaxed italic"></p>
                 </div>
                 
+                <!-- Question Options (Visible during Live Demo / Normal Quiz Console) -->
+                <div id="modal-options-container" class="space-y-1.5 hidden">
+                    <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Answer Options:</p>
+                    <div id="modal-options-list" class="space-y-2"></div>
+                </div>
+                
                 <!-- Your Attempt -->
-                <div class="space-y-1">
+                <div class="space-y-1" id="modal-your-answer-container">
                     <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Your Previous Answer:</p>
                     <p id="modal-your-answer" class="p-3 bg-surface border border-outline-variant rounded font-code-md text-xs text-error"></p>
                 </div>
                 
                 <!-- Correct Answer -->
-                <div class="space-y-1">
+                <div class="space-y-1" id="modal-correct-answer-container">
                     <p class="text-[10px] font-label-sm text-secondary uppercase tracking-wider font-bold">Reason & Resolution:</p>
                     <p id="modal-correct-answer" class="p-3 bg-primary-container border-l-2 border-secondary rounded text-xs text-on-surface leading-relaxed"></p>
+                </div>
+
+                <!-- INTERACTIVE ANSWER CONSOLE -->
+                <div id="modal-quiz-console" class="p-4 bg-surface-container-low border border-outline-variant rounded-md space-y-3 hidden transition-all duration-300">
+                    <p class="text-[11px] font-bold text-secondary uppercase tracking-wider">Interactive Answering Console</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Choose Answer -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-semibold text-on-surface-variant uppercase">Select Your Answer Option:</label>
+                            <div class="flex gap-2" id="quiz-options-container">
+                                <button onclick="selectQuizOption('A')" id="btn-option-A" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">A</button>
+                                <button onclick="selectQuizOption('B')" id="btn-option-B" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">B</button>
+                                <button onclick="selectQuizOption('C')" id="btn-option-C" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">C</button>
+                                <button onclick="selectQuizOption('D')" id="btn-option-D" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">D</button>
+                            </div>
+                        </div>
+
+                        <!-- Choose Result -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-semibold text-on-surface-variant uppercase">Verify Result Status:</label>
+                            <div class="flex gap-1.5" id="quiz-results-container">
+                                <button onclick="selectQuizResult('✅')" id="btn-result-correct" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">✅ Correct</button>
+                                <button onclick="selectQuizResult('❌')" id="btn-result-wrong" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">❌ Wrong</button>
+                                <button onclick="selectQuizResult('⚠️')" id="btn-result-partial" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">⚠️ Partial</button>
+                                <button onclick="selectQuizResult('⬜')" id="btn-result-unanswered" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">⬜ Unanswered</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Review Topic Input -->
+                    <div class="space-y-1">
+                        <label for="quiz-review" class="text-[10px] font-semibold text-on-surface-variant uppercase">Review Topic / Key Takeaway:</label>
+                        <input type="text" id="quiz-review" class="w-full bg-surface border border-outline-variant rounded p-2 text-on-surface text-xs font-semibold" placeholder="e.g. GuardDuty remediation via EventBridge" />
+                    </div>
+
+                    <!-- Submit Answer Button -->
+                    <div class="pt-2 border-t border-outline-variant/30 flex flex-col sm:flex-row gap-2 justify-between items-start sm:items-center">
+                        <span id="quiz-evaluation-feedback" class="text-xs font-semibold text-on-surface-variant"></span>
+                        <button onclick="submitRecordedAnswer()" id="btn-submit-answer" class="w-full sm:w-auto bg-primary text-on-primary px-5 py-2 font-bold hover:opacity-90 transition-all rounded text-[11px] uppercase tracking-wider flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-xs">save</span>
+                            <span>Record & Save to Disk</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Review Topic -->
@@ -728,9 +815,68 @@
                 </div>
             </div>
             
-            <div class="border-t border-outline-variant pt-3 flex justify-end">
+            <div class="border-t border-outline-variant pt-3 flex justify-between items-center">
+                <button id="btn-toggle-edit-answer" onclick="toggleEditAnswer()" class="text-secondary hover:text-secondary-container text-xs font-semibold uppercase tracking-wider transition-all">
+                    Edit / Update Record
+                </button>
                 <button onclick="closeModal()" class="bg-secondary text-on-secondary px-5 py-2 font-label-sm text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-opacity rounded">
                     Acknowledged
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING MODAL FOR NEW SESSION CREATOR -->
+    <div id="session-modal" class="fixed inset-0 bg-surface/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-200">
+        <div class="bg-surface-container-high border border-outline-variant p-6 rounded-lg max-w-md w-full shadow-2xl space-y-4">
+            <div class="flex justify-between items-start border-b border-outline-variant pb-3">
+                <div>
+                    <h3 class="font-headline-md text-lg text-on-surface font-bold">Start New Study Session</h3>
+                    <p class="text-xs text-on-surface-variant">Configure a new blank practice drill in your tracker.</p>
+                </div>
+                <button onclick="closeSessionModal()" class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container-highest">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-sm">
+                <!-- Questions count -->
+                <div class="space-y-1">
+                    <label for="session-q-count" class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-bold">Number of Questions:</label>
+                    <select id="session-q-count" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface font-semibold text-sm">
+                        <option value="10">10 Questions (Quick Review)</option>
+                        <option value="25" selected>25 Questions (Standard Practice Drill)</option>
+                        <option value="65">65 Questions (Full Mock Simulation)</option>
+                    </select>
+                </div>
+                
+                <!-- Domains covered -->
+                <div class="space-y-1">
+                    <label for="session-domains" class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-bold">Domains to Cover:</label>
+                    <input type="text" id="session-domains" value="D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface text-xs font-semibold leading-relaxed" />
+                </div>
+
+                <!-- Onboarding Mode Selector -->
+                <div class="space-y-1">
+                    <label for="session-type" class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-bold">Session Type / Mode:</label>
+                    <select id="session-type" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface font-semibold text-sm">
+                        <option value="quiz" selected>Interactive Practice Quiz (For New Users & Saving Progress)</option>
+                        <option value="demo">Pre-Answered Local Demo (For Quick Dashboard Preview)</option>
+                        <option value="blank">Empty Blank Session (For Manual/External Logging)</option>
+                    </select>
+                    <p class="text-[10px] text-on-surface-variant leading-normal pt-1">
+                        Select **Interactive Practice Quiz** to answer scenarios directly inside this portal and record progress locally. Select **Pre-Answered Demo** to instantly populate correct/wrong entries for the local dashboard demo.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="border-t border-outline-variant pt-3 flex justify-end gap-3">
+                <button onclick="closeSessionModal()" class="px-4 py-2 border border-outline-variant rounded font-semibold hover:bg-surface-container-highest text-on-surface text-xs uppercase tracking-wider transition-all">
+                    Cancel
+                </button>
+                <button onclick="submitNewSession()" id="btn-create-session" class="bg-secondary text-on-secondary px-5 py-2 font-bold hover:opacity-90 transition-all rounded text-xs uppercase tracking-wider flex items-center gap-2">
+                    <span id="create-session-icon" class="material-symbols-outlined text-sm">add_circle</span>
+                    <span id="create-session-text">Generate Drill</span>
                 </button>
             </div>
         </div>
@@ -744,6 +890,652 @@
         let activeQcQuestion = null;
         let currentRoadmapType = 'domains';
         let currentWeakAreasFilter = 'all';
+
+        // --- CLIENT-SIDE INTERACTIVE SIMULATION ENGINE FOR LIVE DEMO ---
+        const DEMO_QUESTIONS_POOL = [
+            {
+                "domain": "D1",
+                "scenario": "Amazon GuardDuty has detected an active SSH brute-force attack against an EC2 instance in a public subnet. The security team requires immediate, automated blocking of the attacking source IP address at the network level. Which architecture meets this requirement with the least disruption?",
+                "options": [
+                    "Create an AWS WAF rule to block the source IP and associate it with the VPC's main subnet router.",
+                    "Configure a GuardDuty finding to trigger an EventBridge rule, which invokes an AWS Lambda function to add an entry in the VPC Network ACL (NACL) denying the attacking IP.",
+                    "Configure a GuardDuty finding to trigger an AWS Lambda function that stops the target EC2 instance and terminates its network interface.",
+                    "Configure GuardDuty to directly update the target EC2 instance's security group to deny the attacker's port."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "GuardDuty remediation via EventBridge"
+            },
+            {
+                "domain": "D1",
+                "scenario": "You are auditing a web application VPC and need to analyze rejected TCP connection attempts on port 3389. The data should be filtered and logged only for rejected packets, sending them to a centralized CloudWatch Logs log group. How should you configure this?",
+                "options": [
+                    "Enable VPC Flow Logs for the entire VPC, filter for 'REJECT' traffic, and set the destination to CloudWatch Logs.",
+                    "Deploy Amazon Kinesis Firehose on all EC2 instances to filter out and stream TCP rejected packets.",
+                    "Enable AWS CloudTrail data events logging on all Elastic Network Interfaces (ENIs) with log level set to Reject.",
+                    "Install the CloudWatch agent on each instance and configure custom iptables logging rules to capture rejected RDP requests."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "VPC Flow Logs Rejected Traffic Filtering"
+            },
+            {
+                "domain": "D1",
+                "scenario": "Your enterprise uses standard AWS security services and a third-party container vulnerability scanner. You need to configure AWS Security Hub to automatically import findings from the third-party container scanner so that all security alerts are aggregated in a single dashboard. What is the correct approach?",
+                "options": [
+                    "Configure the third-party scanner to drop JSON files directly into an S3 bucket with Security Hub S3-Sync enabled.",
+                    "Create an IAM role for the third-party scanner and assign it the AmazonSecurityHubFullAccess managed policy to let it directly update DB tables.",
+                    "Set up AWS Systems Manager Explorer to pull data from the scanner's API endpoint every 15 minutes.",
+                    "Enable Security Hub and use the Security Hub standard integration with the vendor, or write a custom Lambda script that formats findings into the AWS Security Finding Format (ASFF) and imports them using the BatchImportFindings API."
+                ],
+                "your_answer": "C",
+                "result": "❌",
+                "correct": "D",
+                "topic": "Security Hub Custom Finder Integration"
+            },
+            {
+                "domain": "D1",
+                "scenario": "A company wants to log all read and write object-level API operations for a highly sensitive S3 bucket containing customer financial data. They need to ensure that these activities are captured in AWS CloudTrail for auditing. What configuration should be implemented?",
+                "options": [
+                    "Configure an AWS CloudTrail trail to include Data Events for S3, selecting the specific bucket and logging both Read and Write options.",
+                    "Enable CloudTrail management events on the bucket and set up an S3 Event Notification to trigger a Lambda logging function.",
+                    "Enable S3 Server Access Logging on the bucket, and point the destination to CloudWatch Logs directly.",
+                    "Activate AWS Systems Manager State Manager to track the bucket configuration and notify when read/write calls happen."
+                ],
+                "your_answer": "B",
+                "result": "⚠️",
+                "correct": "A",
+                "topic": "CloudTrail S3 Data Event Logging"
+            },
+            {
+                "domain": "D2",
+                "scenario": "During an active security incident, an EC2 instance in a private subnet is suspected of communicating with a command-and-control server. You need to immediately isolate the instance from all network traffic while preserving its current memory state for forensic analysis. Which action is the fastest and safest?",
+                "options": [
+                    "Terminate the EC2 instance immediately to prevent further outbound data exfiltration.",
+                    "Modify the main Route Table of the subnet to point 0.0.0.0/0 to a blackhole.",
+                    "Disassociate the Elastic Network Interface (ENI) from the EC2 instance.",
+                    "Modify the EC2 instance's security group to remove all existing inbound and outbound rules, and add an outbound rule allowing only a security forensics subnet."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "Incident Response - EC2 Security Group Isolation"
+            },
+            {
+                "domain": "D2",
+                "scenario": "A compromised EC2 instance has an encrypted EBS volume. You need to capture a forensic disk image of this volume and securely share it with a separate, dedicated Security Forensics AWS Account for analysis. How can this be done securely?",
+                "options": [
+                    "Take an unencrypted snapshot of the volume and copy it directly to an S3 bucket in the Forensics Account using public read-write ACLs.",
+                    "Use rsync to copy files from the volume to an EC2 instance in the Forensics Account over a public elastic IP.",
+                    "Take an EBS snapshot of the volume. Ensure the snapshot is encrypted with a custom KMS customer managed key, grant the Forensics Account permission to the KMS key, and share the snapshot directly with the Forensics Account.",
+                    "Export the EBS volume as an OVA image, upload it to S3, and make the S3 bucket public."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "Forensic EBS Snapshot Sharing"
+            },
+            {
+                "domain": "D2",
+                "scenario": "You are designing secure administrative access to a fleet of private EC2 instances without using bastion hosts. The instances must not have public IP addresses or route through an Internet Gateway. You decide to use Systems Manager Session Manager. How do you establish connectivity?",
+                "options": [
+                    "Configure VPC endpoints (Interface Endpoints) for Systems Manager, SSM Messages, and EC2 Messages in the VPC, and attach an IAM role with SSM agent permissions to the instances.",
+                    "Configure a NAT Gateway in a public subnet, add a route to the private route tables, and enable port 22 in the security groups.",
+                    "Deploy a Route 53 Resolver endpoint and establish an IPsec VPN tunnel between your on-premises router and the EC2 instances.",
+                    "Enable SSH in the security groups and assign an Elastic IP to each private network interface."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "Session Manager Private Endpoints"
+            },
+            {
+                "domain": "D3",
+                "scenario": "A public-facing Application Load Balancer (ALB) is receiving a high volume of SQL Injection (SQLi) and Cross-Site Scripting (XSS) attack payloads. You need to protect the backend web application with the least operational overhead. What should you do?",
+                "options": [
+                    "Deploy a network inspection appliance on an EC2 instance in front of the ALB and configure custom regular expressions for SQLi.",
+                    "Modify the Application Load Balancer listener configuration to block requests containing special characters like quotes or brackets.",
+                    "Associate an AWS WAF Web ACL with the ALB, and enable the AWSManagedRulesSQLiRuleSet and AWSManagedRulesCommonRuleSet managed rule groups.",
+                    "Implement custom application-level validation filters inside backend container code for every HTTP request header."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "AWS WAF SQLi and XSS Protection Rules"
+            },
+            {
+                "domain": "D3",
+                "scenario": "Your organization wants to inspect all inbound and outbound traffic across multiple public and private subnets in a VPC. You decide to use AWS Network Firewall. To ensure that traffic from all subnets is properly routed through the firewall endpoints, which topology should you deploy?",
+                "options": [
+                    "Deploy a single firewall endpoint in the public subnet and enable proxy protocol on the Application Load Balancers.",
+                    "Deploy AWS Network Firewall endpoints in dedicated firewall subnets in each Availability Zone, and update subnet route tables to route all traffic to the firewall endpoints before hitting the Internet Gateway or NAT Gateway.",
+                    "Attach the Network Firewall directly to the Transit Gateway route table and set up VPC peering with the firewall account.",
+                    "Install the Network Firewall agent on all EC2 instances and set their default gateway to the virtual private gateway."
+                ],
+                "your_answer": "A",
+                "result": "❌",
+                "correct": "B",
+                "topic": "AWS Network Firewall Topologies"
+            },
+            {
+                "domain": "D3",
+                "scenario": "You suspect malware inside your VPC is exfiltrating data via DNS queries (DNS tunneling) to malicious external domains. You need to inspect and block outbound DNS resolution requests to known malicious domain lists. What should you configure?",
+                "options": [
+                    "Configure an AWS Network Firewall rule to block UDP port 53 traffic to all external IP addresses.",
+                    "Create an Amazon Route 53 Resolver DNS Firewall rule group with domain list rules set to BLOCK, and associate it with your VPC.",
+                    "Modify the VPC DHCP options set to point to an on-premises Active Directory DNS server over a Direct Connect connection.",
+                    "Configure an outbound security group rule on the EC2 instances blocking UDP port 53."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "Route 53 DNS Firewall Domain Blocking"
+            },
+            {
+                "domain": "D4",
+                "scenario": "A company wants to delegate IAM role creation to DevOps leads in a development account. However, DevOps leads must not be able to create roles with administrative privileges or elevate their own privileges. How do you enforce this restriction?",
+                "options": [
+                    "Use AWS Organizations SCPs to block all Role Creation actions except those originating from AWS Control Tower.",
+                    "Set up a resource-based policy on the DevOps roles that blocks the AssumeRole API for administrative roles.",
+                    "Configure an AWS Config rule to automatically delete any newly created role that has AdministratorAccess attached.",
+                    "Create an IAM Permission Boundary that allows only limited services, and require that all newly created roles include this Permission Boundary using an explicit IAM policy Condition."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "IAM Permission Boundaries"
+            },
+            {
+                "domain": "D4",
+                "scenario": "A third-party SaaS company wants to monitor your AWS resources using their software. They require access to assume an IAM role in your account. To prevent the 'Confused Deputy' problem where another customer of the SaaS company could access your account, which measure must be implemented?",
+                "options": [
+                    "Configure the third-party IAM role to use an administrative boundary that restricts actions to S3 read-only access.",
+                    "Implement VPC Peering between your account and the third-party SaaS provider's AWS infrastructure.",
+                    "In the trust policy of the IAM role in your account, require a unique, secret ExternalID string generated by the SaaS provider as a condition.",
+                    "Create an IAM User in your account, generate access keys, and share them via encrypted email with the third-party vendor."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "Cross-Account IAM AssumeRole with ExternalID"
+            },
+            {
+                "domain": "D4",
+                "scenario": "You are preparing for a security audit and need a complete list of all IAM users in your AWS account, showing the status of their passwords, access keys, and multi-factor authentication (MFA) devices. Which AWS feature provides this capability in a downloadable format?",
+                "options": [
+                    "Generate an IAM Credential Report from the IAM console or via the AWS CLI, and download the resulting CSV file.",
+                    "Use AWS Systems Manager Inventory to scan the IAM service databases and export a PDF report to S3.",
+                    "Configure an Amazon Athena query against the CloudTrail logs to list all users who logged in within 90 days.",
+                    "Retrieve the IAM Account Summary dashboard and take screenshots of the user list."
+                ],
+                "your_answer": "A",
+                "result": "⚠️",
+                "correct": "D",
+                "topic": "IAM Credential Report"
+            },
+            {
+                "domain": "D4",
+                "scenario": "A security standard requires that all traffic to and from a highly sensitive S3 bucket containing compliance files be encrypted in transit using TLS. Which configuration will block any non-encrypted HTTP requests to the bucket?",
+                "options": [
+                    "Enable Default Encryption with SSE-KMS on the S3 bucket configuration tab.",
+                    "Add an S3 bucket policy with a Deny effect for all principal actions where the condition 'aws:SecureTransport' evaluates to false.",
+                    "Add a Network ACL inbound rule to block port 80 traffic for all S3 endpoint IP prefixes.",
+                    "Use AWS WAF to filter out HTTP traffic going to the bucket's public website endpoint."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "S3 Bucket Policy Secure Transport"
+            },
+            {
+                "domain": "D5",
+                "scenario": "You need to share S3 bucket objects encrypted with a customer managed KMS key in Account A with an IAM role in Account B. What configuration is required on the KMS key and S3 bucket?",
+                "options": [
+                    "Change the S3 bucket encryption to SSE-S3 so that KMS permissions are not evaluated across accounts.",
+                    "Import the Account B IAM role's public certificate directly into the Account A KMS key store.",
+                    "Enable cross-account access in the KMS key policy in Account A allowing Account B, and grant the Account B IAM role permissions to both the S3 bucket and the KMS key.",
+                    "Deploy a Lambda function in Account B to copy the unencrypted files to a temporary S3 bucket."
+                ],
+                "your_answer": "A",
+                "result": "❌",
+                "correct": "C",
+                "topic": "Cross-Account KMS Key Grants"
+            },
+            {
+                "domain": "D5",
+                "scenario": "A financial corporation wants to protect their historical audit logs stored in an S3 bucket from being deleted or overwritten, even by the AWS Account root user or administrative users, for a fixed retention period. Which S3 feature satisfies this?",
+                "options": [
+                    "Enable S3 Object Lock on the bucket and configure it in Compliance Mode with the desired retention period.",
+                    "Enable S3 Object Lock and configure it in Governance Mode with an explicit IAM deny policy on delete actions.",
+                    "Deploy a Service Control Policy (SCP) blocking s3:DeleteObject on all buckets with 'audit-logs' in the name.",
+                    "Use S3 Glacier Vault Lock and enable multi-factor authentication (MFA) delete on the primary bucket."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "S3 Object Lock Compliance Mode"
+            },
+            {
+                "domain": "D5",
+                "scenario": "A database password must be rotated automatically every 30 days. The application retrieves the credentials dynamically from AWS Secrets Manager. How should you implement this rotation with the least operational overhead?",
+                "options": [
+                    "Create a cron job on an EC2 instance that runs a python script to change the database password and update the secret.",
+                    "Configure automatic rotation in AWS Secrets Manager, selecting the RDS database type and letting Secrets Manager deploy and manage the rotation Lambda function.",
+                    "Write a custom Lambda function triggered by an EventBridge schedule to modify the database security group and secret.",
+                    "Enable AWS Config automated remediation to rotate the credentials when a non-compliant credential is found."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "Secrets Manager Credentials Rotation"
+            },
+            {
+                "domain": "D5",
+                "scenario": "You want to encrypt a 10 GB file on-premises before uploading it to an S3 bucket. You decide to use envelope encryption. What is the correct sequence of steps to encrypt this file using AWS KMS?",
+                "options": [
+                    "Call KMS GenerateDataKey to receive a plaintext data key and an encrypted data key. Encrypt the file locally with the plaintext key, delete the plaintext key, and store the encrypted data key alongside the encrypted file.",
+                    "Send the entire 10 GB file directly to the KMS Encrypt API and store the returned encrypted ciphertext.",
+                    "Use the KMS key directly in S3 SSE-KMS, letting S3 stream-encrypt the file as it is being uploaded.",
+                    "Call KMS GenerateRandom to get an encryption password, hash it with SHA-256, and encrypt the file with openSSL."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "KMS Envelope Encryption and Data Keys"
+            },
+            {
+                "domain": "D6",
+                "scenario": "A multinational company wants to ensure that no developer can create or launch resources in any AWS Region other than us-east-1 and us-west-2 across all member accounts in their AWS Organization. How can this be centrally enforced?",
+                "options": [
+                    "Configure AWS Config rules in every region to terminate resources that are not in us-east-1 or us-west-2.",
+                    "Modify all IAM group policies across member accounts to block access to regional endpoint APIs.",
+                    "Apply a Service Control Policy (SCP) at the Organization Root with a Deny effect on all actions if the condition 'aws:RequestedRegion' is not us-east-1 or us-west-2.",
+                    "Deploy AWS Control Tower and set up a Service Catalog portfolio that only lists products in the approved regions."
+                ],
+                "your_answer": "C",
+                "result": "✅",
+                "correct": "C",
+                "topic": "Organizations SCPs Region Lock"
+            },
+            {
+                "domain": "D6",
+                "scenario": "You want to ensure that all EBS volumes across your accounts are always encrypted. If an unencrypted EBS volume is created, a security notification should be sent, and the volume should be flagged for remediation. Which AWS service is designed for this?",
+                "options": [
+                    "Create a CloudTrail trail and use Athena to scan logs for the CreateVolume API and inspect the Encrypted parameter.",
+                    "Configure Amazon Inspector to run a continuous network vulnerability scan of all block storage volumes.",
+                    "Use AWS Systems Manager OpsCenter to monitor EBS disk sector encryption status on active instances.",
+                    "Enable AWS Config, activate the 'encrypted-volumes' managed rule, and set up an Amazon EventBridge notification for non-compliant compliance changes."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "AWS Config Managed Rules Compliance"
+            },
+            {
+                "domain": "D6",
+                "scenario": "You want to implement policy-as-code in your CI/CD pipeline to scan CloudFormation templates for security compliance violations (like public S3 buckets) before any resources are deployed. Which AWS open-source CLI tool is best suited for this?",
+                "options": [
+                    "Use CloudFormation Guard (cfn-guard) to write rules and scan templates during the build stage of the pipeline.",
+                    "Use the CloudFormation Linter (cfn-lint) to validate JSON/YAML syntax and schema conformance.",
+                    "Run the AWS CLI cloudformation validate-template command to check the resource definitions.",
+                    "Deploy AWS Systems Manager Change Manager to approve templates before they are executed."
+                ],
+                "your_answer": "B",
+                "result": "❌",
+                "correct": "A",
+                "topic": "CloudFormation Guard Infrastructure Scan"
+            },
+            {
+                "domain": "D2",
+                "scenario": "An IAM User's access keys are leaked on a public repository. You need to immediately revoke all of the user's active sessions and block any further API access. What is the most thorough incident response step?",
+                "options": [
+                    "Reset the user's console password and send them an MFA verification request.",
+                    "Delete the IAM User and recreate a new one with a different username.",
+                    "Run the Systems Manager Run Command to scan the developer's laptop for the leaked keys.",
+                    "Delete or deactivate the active access keys, and attach an explicit Deny policy to the user denying all actions."
+                ],
+                "your_answer": "D",
+                "result": "✅",
+                "correct": "D",
+                "topic": "Incident Response - IAM User Revocation"
+            },
+            {
+                "domain": "D3",
+                "scenario": "A corporate website is hosted on AWS behind Amazon CloudFront and Route 53. To protect the site from sophisticated Layer 3, 4, and 7 DDoS attacks, and to get access to 24/7 AWS Shield Response Team (SRT) support, which service should you subscribe to?",
+                "options": [
+                    "Deploy AWS WAF with rate-based rules across all regional Application Load Balancers.",
+                    "Subscribe to AWS Shield Advanced and associate your CloudFront distributions and Route 53 hosted zones.",
+                    "Enable AWS Firewall Manager and set up a VPC security group policy.",
+                    "Configure Amazon Route 53 Resolver DNS Firewall with custom rule groups."
+                ],
+                "your_answer": "B",
+                "result": "✅",
+                "correct": "B",
+                "topic": "Infrastructure Security - DDoS Protection"
+            },
+            {
+                "domain": "D6",
+                "scenario": "An enterprise uses AWS Control Tower to govern a multi-account structure. You need to ensure that any newly created AWS account is automatically enrolled in an Organizational Unit (OU) with all required security guardrails and baseline configurations. How is this achieved?",
+                "options": [
+                    "Create new accounts using the AWS Control Tower Account Factory, which automatically provisions them with the standard baselines.",
+                    "Write a custom CloudFormation StackSet that deploys resources when a new account is added to AWS Organizations.",
+                    "Manually copy the AWS Control Tower baseline templates and execute them in the newly created account.",
+                    "Set up a Systems Manager Automation runbook that runs a bootstrap script when a new account joins the organization."
+                ],
+                "your_answer": "A",
+                "result": "✅",
+                "correct": "A",
+                "topic": "Governance - AWS Control Tower Enrollment"
+            }
+        ];
+
+        // Load mock tracker data from localStorage if saved in previous client-side actions
+        if (localStorage.getItem('TRACKER_DATA_MOCK')) {
+            try {
+                const parsed = JSON.parse(localStorage.getItem('TRACKER_DATA_MOCK'));
+                for (let key in TRACKER_DATA) {
+                    delete TRACKER_DATA[key];
+                }
+                Object.assign(TRACKER_DATA, parsed);
+                console.log("⚡ [Live Demo] Loaded simulated session state from localStorage.");
+            } catch (e) {
+                console.error("Failed to parse TRACKER_DATA_MOCK:", e);
+            }
+        }
+
+        function renderAllViews() {
+            try {
+                initGlobalHeaderStats();
+                initDashboardProgress();
+                initDomainProficiency();
+                loadRandomQuestion();
+                buildQuestionsSyllabus();
+                buildRoadmapTimeline();
+                buildWeakAreasBoard();
+                initSessionsStats();
+                buildSessionsView();
+                buildCheatSheetView();
+                initFaqs();
+            } catch (e) {
+                console.error("Failed to update dashboard views client-side:", e);
+            }
+        }
+
+        function recompileStatsClientSide() {
+            let totalQuestions = 0;
+            let correct = 0;
+            let partial = 0;
+            let wrong = 0;
+            let retestsPassed = 0;
+            let retestsTotal = 0;
+            
+            const domainProficiency = {
+                "D1": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D2": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D3": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D4": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D5": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D6": { total: 0, correct: 0, partial: 0, wrong: 0 }
+            };
+            
+            const topicCounts = {};
+
+            TRACKER_DATA.sessions.forEach(session => {
+                const isActiveLiveDemo = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == session.num;
+                const isEvaluated = session.evaluated !== false;
+                
+                let sCorrect = 0;
+                let sPartial = 0;
+                let sWrong = 0;
+                let sTotal = 0;
+                
+                if (isActiveLiveDemo && !isEvaluated) {
+                    session.score = "⚡ Live Simulating (In Progress...)";
+                    return; // Skip tallying towards global stats and syllabus proficiencies until evaluated from carousel!
+                }
+                
+                session.questions.forEach(q => {
+                    const res = q.result;
+                    if (res === 'unknown' || !res || res === '⬜') return;
+                    
+                    sTotal++;
+                    totalQuestions++;
+                    
+                    if (res === '✅' || res === 'correct') { sCorrect++; correct++; }
+                    else if (res === '⚠️' || res === 'partial') { sPartial++; partial++; }
+                    else if (res === '❌' || res === 'wrong') { sWrong++; wrong++; }
+                    
+                    const dom = q.domain;
+                    if (domainProficiency[dom]) {
+                        domainProficiency[dom].total++;
+                        if (res === '✅' || res === 'correct') domainProficiency[dom].correct++;
+                        else if (res === '⚠️' || res === 'partial') domainProficiency[dom].partial++;
+                        else if (res === '❌' || res === 'wrong') domainProficiency[dom].wrong++;
+                    }
+                    
+                    const topic = q.topic;
+                    if (topic) {
+                        if (!topicCounts[topic]) {
+                            topicCounts[topic] = { correct: 0, total: 0, domain: dom || "D1", failedQuestions: [], domains: new Set() };
+                        }
+                        topicCounts[topic].total++;
+                        if (dom) {
+                            topicCounts[topic].domains.add(dom);
+                        }
+                        if (res === '✅' || res === 'correct') {
+                            topicCounts[topic].correct++;
+                        } else if (res === '❌' || res === 'wrong' || res === '⚠️' || res === 'partial') {
+                            topicCounts[topic].failedQuestions.push(`S${session.num}-Q${q.num}`);
+                        }
+                    }
+                });
+                
+                const sPct = sTotal > 0 ? Math.round((sCorrect / sTotal) * 100) : 0;
+                session.score = `${sCorrect} ✅ · ${sPartial} ⚠️ · ${sWrong} ❌ (${sPct}% correct)`;
+            });
+            
+            const DOMAIN_NAMES = {
+                "D1": "D1: Detection",
+                "D2": "D2: Incident Response",
+                "D3": "D3: Infrastructure Security",
+                "D4": "D4: Identity & Access Management",
+                "D5": "D5: Data Protection",
+                "D6": "D6: Governance"
+            };
+            
+            Object.keys(domainProficiency).forEach(code => {
+                const item = domainProficiency[code];
+                const score = item.total > 0 ? Math.round((item.correct / item.total) * 100) : 0;
+                let status = "🟢 ≥ 80%";
+                let statusLabel = "Strong";
+                let statusColor = "text-secondary";
+                if (item.total === 0) {
+                    status = "—";
+                    statusLabel = "No Data";
+                    statusColor = "text-outline";
+                } else if (score < 50) {
+                    status = "🔴 < 50%";
+                    statusLabel = "Critical Weakness";
+                    statusColor = "text-error";
+                } else if (score < 80) {
+                    status = "🟡 50–79%";
+                    statusLabel = "Needs Review";
+                    statusColor = "text-primary";
+                }
+                
+                TRACKER_DATA.domain_proficiency[code] = {
+                    code: code,
+                    name: DOMAIN_NAMES[code],
+                    total: item.total,
+                    correct: item.correct,
+                    partial: item.partial,
+                    wrong: item.wrong,
+                    score_pct: score,
+                    status: status,
+                    statusLabel: statusLabel,
+                    statusColor: statusColor,
+                    isWeak: item.total > 0 && score < 80
+                };
+            });
+            
+            const weakAreasList = [];
+            Object.keys(topicCounts).forEach(topic => {
+                const tc = topicCounts[topic];
+                const failedCount = tc.failedQuestions ? tc.failedQuestions.length : (tc.total - tc.correct);
+                if (failedCount > 0) {
+                    const level = failedCount >= 2 ? 'red' : 'yellow';
+                    const listDomains = tc.domains ? Array.from(tc.domains) : [tc.domain || "D1"];
+                    const listFailedQs = tc.failedQuestions || [];
+                    
+                    weakAreasList.push({
+                        topic: topic,
+                        domains: listDomains,
+                        count: failedCount,
+                        questions: listFailedQs,
+                        level: level
+                    });
+                }
+            });
+            
+            weakAreasList.sort((a, b) => b.count - a.count);
+            weakAreasList.forEach((wa, idx) => {
+                wa.priority = idx === 0 ? "🔴 High" : (idx < 3 ? "🟡 Medium" : "🟢 Low");
+            });
+            TRACKER_DATA.weak_areas = weakAreasList;
+            
+            const totalSess = TRACKER_DATA.sessions.length;
+            const accuracy = totalQuestions > 0 ? Math.round((correct / totalQuestions) * 100) : 0;
+            
+            TRACKER_DATA.stats = {
+                total_questions: totalQuestions,
+                correct: correct,
+                partial: partial,
+                wrong: wrong,
+                accuracy_pct: accuracy,
+                sessions_count: totalSess,
+                retests_passed: retestsPassed,
+                retests_total: retestsTotal
+            };
+            
+            localStorage.setItem('TRACKER_DATA_MOCK', JSON.stringify(TRACKER_DATA));
+            renderAllViews();
+        }
+
+        function simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, isBlank) {
+            let session;
+            let next_num;
+            const today = new Date().toISOString().split('T')[0];
+            
+            // If we have exactly one session and it is completely empty (0 questions), reuse it!
+            if (TRACKER_DATA.sessions && TRACKER_DATA.sessions.length === 1 && (!TRACKER_DATA.sessions[0].questions || TRACKER_DATA.sessions[0].questions.length === 0)) {
+                session = TRACKER_DATA.sessions[0];
+                session.domains = domains || "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance";
+                session.questions = [];
+                next_num = 1;
+            } else {
+                next_num = (TRACKER_DATA.sessions ? TRACKER_DATA.sessions.length : 0) + 1;
+                session = {
+                    num: next_num,
+                    date: today,
+                    domains: domains || "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance",
+                    score: "0 ✅ · 0 ⚠️ · 0 ❌ (0% correct)",
+                    questions: []
+                };
+                if (!TRACKER_DATA.sessions) TRACKER_DATA.sessions = [];
+                TRACKER_DATA.sessions.push(session);
+            }
+            
+            let chosen_qs = [];
+            if (isDemo || isQuiz) {
+                // Modulo rotation over 4 unique banks: Session 1 -> Bank 1, Session 2 -> Bank 2, Session 3 -> Bank 3, Session 4 -> Bank 4
+                const bank_index = (next_num - 1) % 4;
+                const bank_size = Math.floor(DEMO_QUESTIONS_POOL.length / 4);
+                const active_bank_qs = DEMO_QUESTIONS_POOL.slice(bank_index * bank_size, (bank_index + 1) * bank_size);
+                
+                // Enforce exact bank size of 6 questions
+                qCount = active_bank_qs.length;
+                chosen_qs = [...active_bank_qs];
+            }
+            
+            for (let i = 1; i <= qCount; i++) {
+                if (isDemo) {
+                    const q = chosen_qs[i - 1];
+                    let textResult = q.result;
+                    if (q.result === '✅') textResult = 'correct';
+                    else if (q.result === '❌') textResult = 'wrong';
+                    else if (q.result === '⚠️') textResult = 'partial';
+                    
+                    session.questions.push({
+                        num: i,
+                        domain: q.domain,
+                        scenario: q.scenario,
+                        options: q.options || null,
+                        your_answer: q.your_answer,
+                        result: textResult,
+                        correct: q.correct,
+                        correct_answer: q.correct,
+                        topic: q.topic,
+                        review: q.topic
+                    });
+                } else if (isQuiz) {
+                    const q = chosen_qs[i - 1];
+                    session.questions.push({
+                        num: i,
+                        domain: q.domain,
+                        scenario: q.scenario,
+                        options: q.options || null,
+                        your_answer: "",
+                        result: "unknown",
+                        correct: q.correct,
+                        correct_answer: q.correct,
+                        topic: q.topic,
+                        review: q.topic
+                    });
+                } else {
+                    session.questions.push({
+                        num: i,
+                        domain: "",
+                        scenario: "",
+                        options: null,
+                        your_answer: "",
+                        result: "unknown",
+                        correct: "",
+                        correct_answer: "",
+                        topic: "",
+                        review: ""
+                    });
+                }
+            }
+            
+            recompileStatsClientSide();
+            console.log(`🚀 [Client Sync] Simulated Session ${next_num} locally in memory.`);
+            return next_num;
+        }
+
+        function simulateRecordAnswerClientSide(sessionNum, questionNum, yourAnswer, result) {
+            const session = TRACKER_DATA.sessions.find(s => s.num === sessionNum);
+            if (!session) return { status: 'error', message: `Session ${sessionNum} not found` };
+            
+            const question = session.questions.find(q => q.num === questionNum);
+            if (!question) return { status: 'error', message: `Question ${questionNum} not found` };
+            
+            question.your_answer = yourAnswer;
+            
+            // Map icon results from the UI console to standardized text states
+            let textResult = result;
+            if (result === '✅') textResult = 'correct';
+            else if (result === '❌') textResult = 'wrong';
+            else if (result === '⚠️') textResult = 'partial';
+            else if (result === '⬜') textResult = 'unknown';
+            
+            question.result = textResult;
+            
+            recompileStatsClientSide();
+            console.log(`✅ [Client Sync] Recorded Q${questionNum} = ${yourAnswer} (${textResult}) in Session ${sessionNum}.`);
+            return { status: 'success' };
+        }
 
         const EXAM_DOMAINS_TIMELINE = [
             {
@@ -829,23 +1621,77 @@
                 console.error("Tracker data was not found. Please run scripts/export_to_json.py first.");
                 return;
             }
+
+            // Apply Live Demo UI Locking/Blocking immediately on page load, completely isolated
+            try {
+                applyLiveDemoBlocking();
+            } catch (err) {
+                console.error("Failed to apply live demo blocking at page load:", err);
+            }
+
+            // Show reset button if local storage simulation is active
+            if (localStorage.getItem('TRACKER_DATA_MOCK')) {
+                const resetBtn = document.getElementById('demo-reset-container');
+                if (resetBtn) resetBtn.style.display = 'block';
+            }
+
+            // Handle URL parameters for screenshot automation ASAP
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('modal') === 'session') {
+                openSessionModal();
+            }
+            if (params.get('tab')) {
+                switchTab(params.get('tab'));
+            }
             
             // Randomize sidebar quote
-            const randQuote = STOIC_QUOTES[Math.floor(Math.random() * STOIC_QUOTES.length)];
-            document.getElementById('sidebar-quote').innerHTML = `"${randQuote.text}" — ${randQuote.author}`;
+            try {
+                const randQuote = STOIC_QUOTES[Math.floor(Math.random() * STOIC_QUOTES.length)];
+                document.getElementById('sidebar-quote').innerHTML = `"${randQuote.text}" — ${randQuote.author}`;
+            } catch (e) {
+                console.error("Failed to randomize quote:", e);
+            }
 
-            // Initialize views
-            initGlobalHeaderStats();
-            initDashboardProgress();
-            initDomainProficiency();
-            loadRandomQuestion();
-            buildQuestionsSyllabus();
-            buildRoadmapTimeline();
-            buildWeakAreasBoard();
-            initSessionsStats();
-            buildSessionsView();
-            buildCheatSheetView();
-            initFaqs();
+            // Initialize views independently so one failure does not halt others
+            const initializers = [
+                { name: "GlobalHeaderStats", fn: initGlobalHeaderStats },
+                { name: "DashboardProgress", fn: initDashboardProgress },
+                { name: "DomainProficiency", fn: initDomainProficiency },
+                { name: "RandomQuestion", fn: loadRandomQuestion },
+                { name: "QuestionsSyllabus", fn: buildQuestionsSyllabus },
+                { name: "RoadmapTimeline", fn: buildRoadmapTimeline },
+                { name: "WeakAreasBoard", fn: buildWeakAreasBoard },
+                { name: "SessionsStats", fn: initSessionsStats },
+                { name: "SessionsView", fn: buildSessionsView },
+                { name: "CheatSheetView", fn: buildCheatSheetView },
+                { name: "Faqs", fn: initFaqs }
+            ];
+
+            initializers.forEach(init => {
+                try {
+                    init.fn();
+                } catch (err) {
+                    console.error(`Failed to initialize view: ${init.name}`, err);
+                }
+            });
+
+            // Re-apply live demo blocking after drawing views to ensure any dynamically-generated buttons are also styled correctly
+            try {
+                applyLiveDemoBlocking();
+            } catch (err) {
+                console.error("Failed to re-apply live demo blocking:", err);
+            }
+
+            // Handle auto-opening of question if specified in sessionStorage (useful across reloads)
+            try {
+                const autoOpen = sessionStorage.getItem('AUTO_OPEN_QUESTION');
+                if (autoOpen) {
+                    sessionStorage.removeItem('AUTO_OPEN_QUESTION');
+                    viewQuestionByNum(autoOpen);
+                }
+            } catch (err) {
+                console.error("Failed to handle auto-opening of question:", err);
+            }
         });
 
         // Initialize top header and general stats
@@ -1159,13 +2005,24 @@
                 });
             });
             
-            // Expand the first domain default
-            toggleDomainBlock('D4');
+            // Expand the first domain default (or first available with questions)
+            const availableDomains = Object.keys(DOMAIN_STYLES).filter(code => {
+                const list = questionsByDomain[code];
+                return list && list.length > 0;
+            });
+            if (availableDomains.length > 0) {
+                if (availableDomains.includes('D4')) {
+                    toggleDomainBlock('D4');
+                } else {
+                    toggleDomainBlock(availableDomains[0]);
+                }
+            }
         }
 
         function toggleDomainBlock(code) {
             const listBlock = document.getElementById(`list-${code}`);
             const arrow = document.getElementById(`arrow-${code}`);
+            if (!listBlock || !arrow) return;
             if (listBlock.classList.contains('hidden')) {
                 listBlock.classList.remove('hidden');
                 arrow.style.transform = 'rotate(180deg)';
@@ -1436,56 +2293,62 @@
 
         // Render weak gaps board card grid
         function buildWeakAreasBoard() {
-            const grid = document.getElementById('weak-areas-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            
-            const weakAreas = TRACKER_DATA.weak_areas || [];
-            
-            weakAreas.forEach((item, index) => {
-                // Apply filter
-                if (currentWeakAreasFilter !== 'all' && item.level !== currentWeakAreasFilter) {
-                    return;
-                }
+            try {
+                const grid = document.getElementById('weak-areas-grid');
+                if (!grid) return;
+                grid.innerHTML = '';
                 
-                const priorityBadge = item.level === 'red' ? "bg-error-container text-error border border-error/20" : "bg-secondary/15 text-secondary border border-secondary/20";
+                const weakAreas = TRACKER_DATA.weak_areas || [];
                 
-                const card = document.createElement('div');
-                card.className = "bg-surface-container border border-outline-variant p-5 rounded hover:border-secondary transition-all flex flex-col justify-between min-h-[160px]";
-                
-                // Format the lists of questions as buttons
-                const qListHtml = item.questions.map(qNum => {
-                    return `<button onclick="viewQuestionByNum('${qNum}')" class="px-2 py-0.5 bg-surface-container-low border border-outline-variant/45 rounded font-code-md text-[10px] text-secondary hover:text-on-surface hover:bg-secondary/20 transition-all font-bold">${qNum}</button>`;
-                }).join(' ');
-
-                // Map domain labels
-                const domainLabels = item.domains.map(d => {
-                    const style = DOMAIN_STYLES[d] || { label: 'Security' };
-                    return `<span class="px-1.5 py-0.5 rounded text-[9px] font-code-md bg-surface-container-highest text-on-surface-variant">${d}: ${style.label}</span>`;
-                }).join(' ');
-                
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-center mb-3">
-                            <div class="flex items-center gap-1.5">
-                                ${domainLabels}
-                            </div>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-code-md ${priorityBadge}">
-                                PRIORITY ${item.priority}
-                            </span>
-                        </div>
-                        <h3 class="font-headline-md text-sm text-on-surface mb-2 font-bold">${item.topic}</h3>
-                    </div>
+                weakAreas.forEach((item, index) => {
+                    if (!item) return;
                     
-                    <div class="border-t border-outline-variant/30 pt-3 mt-3">
-                        <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Target Questions (${item.count}):</p>
-                        <div class="flex flex-wrap gap-1.5">
-                            ${qListHtml}
+                    // Apply filter
+                    if (currentWeakAreasFilter !== 'all' && item.level !== currentWeakAreasFilter) {
+                        return;
+                    }
+                    
+                    const priorityBadge = item.level === 'red' ? "bg-error-container text-error border border-error/20" : "bg-secondary/15 text-secondary border border-secondary/20";
+                    
+                    const card = document.createElement('div');
+                    card.className = "bg-surface-container border border-outline-variant p-5 rounded hover:border-secondary transition-all flex flex-col justify-between min-h-[160px]";
+                    
+                    // Format the lists of questions as buttons with full safety guards
+                    const qListHtml = (item.questions || []).map(qNum => {
+                        return `<button onclick="viewQuestionByNum('${qNum}')" class="px-2 py-0.5 bg-surface-container-low border border-outline-variant/45 rounded font-code-md text-[10px] text-secondary hover:text-on-surface hover:bg-secondary/20 transition-all font-bold">${qNum}</button>`;
+                    }).join(' ');
+
+                    // Map domain labels with full safety guards
+                    const domainLabels = (item.domains || []).map(d => {
+                        const style = DOMAIN_STYLES[d] || { label: 'Security' };
+                        return `<span class="px-1.5 py-0.5 rounded text-[9px] font-code-md bg-surface-container-highest text-on-surface-variant">${d}: ${style.label}</span>`;
+                    }).join(' ');
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="flex items-center gap-1.5">
+                                    ${domainLabels}
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-code-md ${priorityBadge}">
+                                    PRIORITY ${item.priority}
+                                </span>
+                            </div>
+                            <h3 class="font-headline-md text-sm text-on-surface mb-2 font-bold">${item.topic}</h3>
                         </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+                        
+                        <div class="border-t border-outline-variant/30 pt-3 mt-3">
+                            <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Target Questions (${item.count || 0}):</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${qListHtml}
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Failed to build weak areas board:", err);
+            }
         }
 
         // Filter weak areas board
@@ -1559,7 +2422,7 @@
                 else if (pct < 70) pctColorClass = "text-error";
                 
                 // Build domain badges
-                const domainParts = s.domains.split('·');
+                const domainParts = s.domains ? s.domains.split('·') : [];
                 const domainBadges = domainParts.map(part => {
                     const trimmed = part.trim();
                     const code = trimmed.substring(0, 2);
@@ -1574,7 +2437,7 @@
                     else if (q.result === 'partial') badgeClass = "bg-secondary/20 text-secondary hover:bg-secondary/30 border border-secondary/20";
                     else if (q.result === 'wrong') badgeClass = "bg-error-container text-error hover:bg-error/20 border border-error/20";
                     
-                    return `<button onclick="viewQuestionByNum('Q${q.num}')" 
+                    return `<button onclick="viewQuestionByNum('S${s.num}-Q${q.num}')" 
                                     title="Q${q.num}: ${q.scenario.replace(/"/g, '&quot;')}"
                                     class="${badgeClass} px-3 py-1 rounded font-code-md text-xs font-bold transition-all duration-200 hover:scale-105">
                                 Q${q.num}
@@ -1644,8 +2507,39 @@
             });
         }
 
+        // Interactive Answering Console State
+        let activeQuizQuestion = null;
+        let selectedQuizOption = '';
+        let selectedQuizResult = '';
+
         // Modal Question Viewer
         function openQuestionModal(q) {
+            activeQuizQuestion = q;
+            selectedQuizOption = '';
+            selectedQuizResult = '';
+            
+            // Find which session this question belongs to
+            let sNum = q.sessionNum;
+            if (!sNum) {
+                if (TRACKER_DATA && TRACKER_DATA.sessions) {
+                    TRACKER_DATA.sessions.forEach(s => {
+                        if (s.questions && s.questions.some(item => item.num === q.num)) {
+                            sNum = s.num;
+                        }
+                    });
+                }
+            }
+            activeQuizQuestion.sessionNum = sNum || 1;
+            
+            // If the question belongs to an active/unanswered session,
+            // make sure it is marked as the active live demo session so they can answer interactively!
+            if (activeQuizQuestion.sessionNum) {
+                const session = TRACKER_DATA.sessions.find(s => s.num === activeQuizQuestion.sessionNum);
+                if (session && session.questions.some(item => item.result === 'unknown' || !item.your_answer)) {
+                    sessionStorage.setItem('LIVE_DEMO_ACTIVE_SESSION', activeQuizQuestion.sessionNum);
+                }
+            }
+
             const domainStyle = DOMAIN_STYLES[q.domain] || { label: 'Security', badgeBg: 'bg-surface-container-highest' };
             
             document.getElementById('modal-domain').className = `px-2 py-0.5 text-[9px] font-code-md rounded uppercase tracking-wider font-bold ${domainStyle.badgeBg}`;
@@ -1653,9 +2547,106 @@
             document.getElementById('modal-title').innerText = `Question Challenge Q${q.num}`;
             
             document.getElementById('modal-scenario').innerText = q.scenario;
-            document.getElementById('modal-your-answer').innerText = q.your_answer || "N/A (No previous answer recorded)";
-            document.getElementById('modal-correct-answer').innerHTML = q.correct_answer;
+            
+            // Format Your Answer container dynamically with correctness color codes
+            const isCorrect = q.result === 'correct' || q.result === '✅' || q.your_answer === q.correct_answer;
+            const yourAnsEl = document.getElementById('modal-your-answer');
+            if (q.your_answer) {
+                if (isCorrect) {
+                    yourAnsEl.className = "p-3 bg-d5-data/10 border border-d5-data/30 rounded font-code-md text-xs text-d5-data font-bold";
+                    yourAnsEl.innerHTML = `Option ${q.your_answer} (CORRECT) <span class="ml-1 font-sans">✅</span>`;
+                } else {
+                    yourAnsEl.className = "p-3 bg-error/10 border border-error/30 rounded font-code-md text-xs text-error font-bold";
+                    yourAnsEl.innerHTML = `Option ${q.your_answer} (INCORRECT) <span class="ml-1 font-sans">❌</span>`;
+                }
+            } else {
+                yourAnsEl.className = "p-3 bg-surface border border-outline-variant rounded font-code-md text-xs text-on-surface-variant";
+                yourAnsEl.innerText = "N/A (No previous answer recorded)";
+            }
+            
+            // Format Correct Answer (Reason & Resolution) container dynamically with option text
+            const correctOptionIndex = ['A', 'B', 'C', 'D'].indexOf(q.correct_answer ? q.correct_answer.trim() : '');
+            let correctOptionText = '';
+            if (q.options && correctOptionIndex !== -1 && q.options[correctOptionIndex]) {
+                correctOptionText = q.options[correctOptionIndex];
+            }
+            
+            const correctAnsEl = document.getElementById('modal-correct-answer');
+            if (q.correct_answer) {
+                correctAnsEl.innerHTML = `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-d5-data text-primary text-xs font-bold font-code-md mr-2">Option ${q.correct_answer}</span> <span class="font-semibold text-d5-data">${correctOptionText}</span>`;
+            } else {
+                correctAnsEl.innerText = "N/A";
+            }
+            
             document.getElementById('modal-review').innerText = q.review || "General Practice Review";
+            
+            // Render multiple-choice options if they exist
+            const optionsContainer = document.getElementById('modal-options-container');
+            const optionsList = document.getElementById('modal-options-list');
+            if (optionsContainer && optionsList) {
+                if (q.options && q.options.length > 0) {
+                    optionsContainer.classList.remove('hidden');
+                    optionsList.innerHTML = '';
+                    const optionLabels = ['A', 'B', 'C', 'D'];
+                    q.options.forEach((opt, idx) => {
+                        const label = optionLabels[idx] || '';
+                        const div = document.createElement('div');
+                        
+                        let cardClass = "p-3 bg-surface border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 transition-all";
+                        let badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all";
+                        let badgeText = label;
+                        let isClickable = true;
+
+                        const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+                        const isUnanswered = q.result === 'unknown' || !q.your_answer;
+                        const correctAns = q.correct_answer ? q.correct_answer.trim() : "";
+                        const yourAns = q.your_answer ? q.your_answer.trim() : "";
+
+                        if (isLiveDemoSession) {
+                            // During active live demo: highlight selected option in neutral yellow/secondary
+                            if (yourAns === label) {
+                                cardClass = "p-3 bg-secondary/15 border-2 border-secondary rounded font-body-sm text-on-surface leading-relaxed flex gap-3 transition-all scale-[1.01]";
+                                badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-primary text-xs font-bold font-code-md transition-all";
+                            } else {
+                                cardClass += " hover:bg-surface-container-high cursor-pointer";
+                            }
+                        } else if (!isUnanswered) {
+                            // Review Mode (Completed / Answered)
+                            isClickable = false; // Disable clicks during review mode
+                            if (label === correctAns) {
+                                // Correct option is highlighted in premium green
+                                cardClass = "p-3 bg-d5-data/10 border-2 border-d5-data text-on-surface rounded font-body-sm leading-relaxed flex gap-3 transition-all scale-[1.01]";
+                                badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-d5-data text-primary text-xs font-bold font-code-md transition-all";
+                                badgeText = "✓";
+                            } else if (label === yourAns) {
+                                // Incorrect chosen option is highlighted in red
+                                cardClass = "p-3 bg-error/10 border-2 border-error text-on-surface rounded font-body-sm leading-relaxed flex gap-3 transition-all scale-[1.01]";
+                                badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-error text-white text-xs font-bold font-code-md transition-all";
+                                badgeText = "✗";
+                            } else {
+                                cardClass += " opacity-60"; // Demote other options slightly for better visual contrast
+                            }
+                        } else {
+                            // Normal unanswered question
+                            cardClass += " hover:bg-surface-container-high cursor-pointer";
+                        }
+
+                        if (isClickable) {
+                            div.onclick = () => selectQuizOption(label);
+                        }
+                        
+                        div.className = cardClass;
+                        div.setAttribute('id', `modal-opt-card-${label}`);
+                        div.innerHTML = `
+                            <span class="${badgeClass}">${badgeText}</span>
+                            <span class="flex-1">${opt}</span>
+                        `;
+                        optionsList.appendChild(div);
+                    });
+                } else {
+                    optionsContainer.classList.add('hidden');
+                }
+            }
             
             if (q.retest) {
                 document.getElementById('modal-retest-container').style.display = "block";
@@ -1664,6 +2655,93 @@
                 document.getElementById('modal-retest-container').style.display = "none";
             }
             
+            // Reset console UI
+            resetQuizConsoleUI();
+            
+            const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+            const isUnanswered = q.result === 'unknown' || !q.your_answer;
+            
+            // Hide "Verify Result Status" column in Live Demo Mode to focus strictly on A/B/C/D choices
+            const resultsCol = document.getElementById('quiz-results-container') ? document.getElementById('quiz-results-container').parentElement : null;
+            if (resultsCol) {
+                if (isLiveDemoSession) {
+                    resultsCol.style.display = 'none';
+                } else {
+                    resultsCol.style.display = 'block';
+                }
+            }
+            
+            if (isLiveDemoSession) {
+                // Live Demo mode: Always keep console visible for fluid interaction
+                document.getElementById('modal-quiz-console').classList.remove('hidden');
+                document.getElementById('quiz-review').value = q.review || '';
+                
+                // CRITICAL: Keep answers and explanations hidden so clients can't see correct/incorrect during the demo!
+                document.getElementById('modal-your-answer-container').style.display = 'none';
+                document.getElementById('modal-correct-answer-container').style.display = 'none';
+                
+                if (isUnanswered) {
+                    // Unanswered question in live demo
+                    selectedQuizOption = '';
+                    selectedQuizResult = '⬜';
+                    highlightOptionButton('');
+                    highlightResultButton('⬜');
+                    document.getElementById('quiz-evaluation-feedback').innerText = 'Ready to answer. Select option A, B, C, or D.';
+                } else {
+                    // Answered question in live demo (allows editing / reviewing previous answer without showing correctness)
+                    selectedQuizOption = q.your_answer;
+                    selectedQuizResult = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : (q.result === 'partial' || q.result === '⚠️' ? '⚠️' : '⬜'));
+                    highlightOptionButton(selectedQuizOption);
+                    highlightResultButton(selectedQuizResult);
+                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold font-sans">Option ${selectedQuizOption} selected.</span>`;
+                }
+            } else if (isUnanswered) {
+                // Normal Mode - Unanswered question state: show console, hide answers (no cheating!)
+                document.getElementById('modal-your-answer-container').style.display = 'none';
+                document.getElementById('modal-correct-answer-container').style.display = 'none';
+                document.getElementById('modal-quiz-console').classList.remove('hidden');
+                document.getElementById('quiz-review').value = q.review || '';
+                document.getElementById('quiz-evaluation-feedback').innerText = 'Ready to answer. Select options below.';
+                selectedQuizResult = '⬜';
+                highlightResultButton('⬜');
+            } else {
+                // Normal Mode - Answered question state: show previous result, hide console by default
+                document.getElementById('modal-your-answer-container').style.display = 'block';
+                document.getElementById('modal-correct-answer-container').style.display = 'block';
+                document.getElementById('modal-quiz-console').classList.add('hidden');
+                
+                // Pre-populate console if they want to edit
+                document.getElementById('quiz-review').value = q.review || '';
+                selectedQuizOption = q.your_answer;
+                selectedQuizResult = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : (q.result === 'partial' || q.result === '⚠️' ? '⚠️' : '⬜'));
+                highlightOptionButton(selectedQuizOption);
+                highlightResultButton(selectedQuizResult);
+            }
+            
+            // Toggle edit button visibility
+            const editBtn = document.getElementById('btn-toggle-edit-answer');
+            if (editBtn) {
+                if (isUnanswered || isLiveDemoSession) {
+                    editBtn.style.display = 'none';
+                } else {
+                    editBtn.style.display = 'inline-block';
+                    editBtn.innerText = "Edit / Update Record";
+                }
+            }
+
+            // Hide the individual save button in Live Demo since completion happens via the carousel end card
+            const submitBtn = document.getElementById('btn-submit-answer');
+            if (submitBtn) {
+                if (isLiveDemoSession) {
+                    submitBtn.style.display = 'none';
+                } else {
+                    submitBtn.style.display = 'inline-flex';
+                }
+            }
+
+            // Update Carousel Navigation controls
+            updateCarouselNav(q);
+
             // Show modal
             const modal = document.getElementById('question-modal');
             modal.classList.remove('hidden');
@@ -1673,23 +2751,607 @@
             document.getElementById('question-modal').classList.add('hidden');
         }
 
+        function updateCarouselNav(q) {
+            const carouselNav = document.getElementById('modal-carousel-nav');
+            if (!carouselNav) return;
+
+            const sNum = q.sessionNum || q.session_num;
+            if (!sNum || !TRACKER_DATA || !TRACKER_DATA.sessions) {
+                carouselNav.classList.add('hidden');
+                return;
+            }
+
+            const session = TRACKER_DATA.sessions.find(s => s.num === sNum);
+            if (!session || !session.questions || session.questions.length <= 1) {
+                carouselNav.classList.add('hidden');
+                return;
+            }
+
+            const sIndex = session.questions.findIndex(item => item.num === q.num);
+            if (sIndex === -1) {
+                carouselNav.classList.add('hidden');
+                return;
+            }
+
+            // Show carousel navigation block
+            carouselNav.classList.remove('hidden');
+
+            // Update indicator
+            const indicator = document.getElementById('text-carousel-indicator');
+            if (indicator) {
+                indicator.innerText = `Question ${sIndex + 1} of ${session.questions.length}`;
+            }
+
+            // Set up Prev button
+            const prevBtn = document.getElementById('btn-carousel-prev');
+            if (prevBtn) {
+                const hasPrev = sIndex > 0;
+                prevBtn.disabled = !hasPrev;
+                // Clear and assign click handler
+                prevBtn.onclick = hasPrev ? () => {
+                    const prevQ = session.questions[sIndex - 1];
+                    prevQ.sessionNum = sNum;
+                    openQuestionModal(prevQ);
+                } : null;
+            }
+
+            // Set up Next button
+            const nextBtn = document.getElementById('btn-carousel-next');
+            if (nextBtn) {
+                const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == sNum;
+                const hasNext = sIndex < session.questions.length - 1;
+                
+                if (isLiveDemoSession && !hasNext) {
+                    // On the last question of a live demo, only allow evaluating if ALL questions are answered!
+                    const unansweredCount = session.questions.filter(item => !item.your_answer || item.your_answer === "").length;
+                    
+                    if (unansweredCount > 0) {
+                        nextBtn.disabled = true;
+                        nextBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-container-high border border-outline/30 text-on-surface/40 cursor-not-allowed font-bold text-xs";
+                        nextBtn.innerHTML = `
+                            <span>⚡ Answer All (${unansweredCount} Left)</span>
+                        `;
+                        nextBtn.onclick = null;
+                    } else {
+                        nextBtn.disabled = false;
+                        nextBtn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 transition-all font-bold scale-105 shadow-md hover:shadow-lg animate-pulse";
+                        nextBtn.innerHTML = `
+                            <span>⚡ Finish & Evaluate</span>
+                            <span class="material-symbols-outlined text-base">emoji_events</span>
+                        `;
+                        nextBtn.onclick = () => {
+                            completeLiveDemoSession(sNum);
+                        };
+                    }
+                } else {
+                    // Normal Next button behavior
+                    nextBtn.disabled = !hasNext;
+                    nextBtn.className = "flex items-center gap-1.5 text-on-surface-variant hover:text-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-all font-bold";
+                    nextBtn.innerHTML = `
+                        <span>Next</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    `;
+                    nextBtn.onclick = hasNext ? () => {
+                        const nextQ = session.questions[sIndex + 1];
+                        nextQ.sessionNum = sNum;
+                        openQuestionModal(nextQ);
+                    } : null;
+                }
+            }
+        }
+
+        function completeLiveDemoSession(sNum) {
+            const nextBtn = document.getElementById('btn-carousel-next');
+            if (nextBtn) {
+                nextBtn.disabled = true;
+                nextBtn.innerText = "⚡ Saving & Evaluating...";
+            }
+            try {
+                // Mark the session as officially evaluated!
+                const session = TRACKER_DATA.sessions.find(s => s.num === sNum);
+                if (session) {
+                    session.evaluated = true;
+                }
+                
+                // Ensure stats are recompiled based on final memory states
+                recompileStatsClientSide();
+                
+                // Ensure final mock state is cleanly serialized to disk
+                localStorage.setItem('TRACKER_DATA_MOCK', JSON.stringify(TRACKER_DATA));
+                
+                // Clear active live demo session pointer
+                sessionStorage.removeItem('LIVE_DEMO_ACTIVE_SESSION');
+                
+                // Close Modal
+                closeModal();
+                
+                // Switch back to Dashboard view to watch it update in real time
+                switchTab('dashboard');
+                
+                alert(`🎉 [Live Demo Completed] Congratulations! Session ${sNum} has been completed and evaluated.\n\nYour stats, Study Roadmap progress, and Syllabus domains have filled up in real time!`);
+                
+                // Reload page to re-render everything cleanly from updated file
+                location.reload();
+            } catch (err) {
+                console.error("Failed to evaluate live demo session:", err);
+                alert("Error completing session evaluation: " + err.message);
+                if (nextBtn) {
+                    nextBtn.disabled = false;
+                    nextBtn.innerText = "⚡ Finish & Evaluate";
+                }
+            }
+        }
+
+        function toggleEditAnswer() {
+            const consoleEl = document.getElementById('modal-quiz-console');
+            const editBtn = document.getElementById('btn-toggle-edit-answer');
+            if (consoleEl.classList.contains('hidden')) {
+                consoleEl.classList.remove('hidden');
+                if (editBtn) editBtn.innerText = "Hide Edit Console";
+                document.getElementById('quiz-evaluation-feedback').innerText = 'Modify answer details below.';
+            } else {
+                consoleEl.classList.add('hidden');
+                if (editBtn) editBtn.innerText = "Edit / Update Record";
+            }
+        }
+
+        function selectQuizOption(opt) {
+            selectedQuizOption = opt;
+            highlightOptionButton(opt);
+            
+            // Auto-evaluate if correct answer exists
+            const correctAns = activeQuizQuestion.correct_answer ? activeQuizQuestion.correct_answer.trim() : "";
+            const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+            
+            if (correctAns && correctAns !== "" && ["A", "B", "C", "D"].includes(correctAns)) {
+                if (opt === correctAns) {
+                    selectedQuizResult = '✅';
+                } else {
+                    selectedQuizResult = '❌';
+                }
+                
+                if (isLiveDemoSession) {
+                    // Do NOT show correctness feedback during the live demo quiz
+                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold font-sans">Option ${opt} selected.</span>`;
+                } else {
+                    // Normal Mode: Show correct/incorrect instantly
+                    if (opt === correctAns) {
+                        document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold font-sans">Correct! Option ${opt} is correct. 🎉</span>`;
+                    } else {
+                        document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-error font-bold font-sans">Incorrect. You selected ${opt}, correct is ${correctAns}.</span>`;
+                    }
+                    highlightResultButton(selectedQuizResult);
+                }
+            } else {
+                document.getElementById('quiz-evaluation-feedback').innerText = `Selected Option ${opt}.`;
+            }
+
+            // Live Demo auto-save state directly in-memory for zero-delay fluid carousel interaction
+            if (isLiveDemoSession) {
+                const session = TRACKER_DATA.sessions.find(s => s.num === activeQuizQuestion.sessionNum);
+                if (session) {
+                    const question = session.questions.find(item => item.num === activeQuizQuestion.num);
+                    if (question) {
+                        question.your_answer = opt;
+                        let textResult = selectedQuizResult;
+                        if (selectedQuizResult === '✅') textResult = 'correct';
+                        else if (selectedQuizResult === '❌') textResult = 'wrong';
+                        else if (selectedQuizResult === '⚠️') textResult = 'partial';
+                        else if (selectedQuizResult === '⬜') textResult = 'unknown';
+                        question.result = textResult;
+                    }
+                }
+                
+                // Keep answers and explanations hidden so clients can't see correct/incorrect during the demo!
+                document.getElementById('modal-your-answer-container').style.display = 'none';
+                document.getElementById('modal-correct-answer-container').style.display = 'none';
+                
+                // Instantly update carousel navigation button states
+                updateCarouselNav(activeQuizQuestion);
+            } else {
+                // Normal Mode: instantly reveal correct answers and explanations for interactive learning!
+                document.getElementById('modal-your-answer-container').style.display = 'block';
+                document.getElementById('modal-correct-answer-container').style.display = 'block';
+                document.getElementById('modal-your-answer').innerText = opt;
+            }
+        }
+
+        function highlightOptionButton(opt) {
+            const isLiveDemoSession = activeQuizQuestion && sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+            const isUnanswered = activeQuizQuestion && (activeQuizQuestion.result === 'unknown' || !activeQuizQuestion.your_answer);
+            const isReviewMode = activeQuizQuestion && !isLiveDemoSession && !isUnanswered;
+
+            ["A", "B", "C", "D"].forEach(letter => {
+                const btn = document.getElementById(`btn-option-${letter}`);
+                if (btn) {
+                    if (letter === opt) {
+                        btn.className = "flex-1 py-2 text-center rounded border-2 border-secondary bg-secondary/15 text-secondary font-bold font-code-md transition-all scale-105";
+                    } else {
+                        btn.className = "flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all";
+                    }
+                }
+                
+                // Highlight option list card if present - skip in review mode to preserve correct green / chosen red borders!
+                if (!isReviewMode) {
+                    const optCard = document.getElementById(`modal-opt-card-${letter}`);
+                    if (optCard) {
+                        if (letter === opt) {
+                            optCard.className = "p-3 bg-secondary/15 border-2 border-secondary rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all scale-[1.01]";
+                            const circle = optCard.querySelector('span');
+                            if (circle) {
+                                circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-on-secondary text-xs font-bold font-code-md transition-all";
+                            }
+                        } else {
+                            optCard.className = "p-3 bg-surface hover:bg-surface-container-high border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all";
+                            const circle = optCard.querySelector('span');
+                            if (circle) {
+                                circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all";
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function selectQuizResult(res) {
+            selectedQuizResult = res;
+            if (res === '⬜') {
+                selectedQuizOption = "";
+                highlightOptionButton("");
+            }
+            highlightResultButton(res);
+            document.getElementById('quiz-evaluation-feedback').innerHTML = `Result manually set to: <span class="font-bold">${res}</span>`;
+
+            // Live Demo auto-save manually selected result states in memory
+            const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+            if (isLiveDemoSession) {
+                const session = TRACKER_DATA.sessions.find(s => s.num === activeQuizQuestion.sessionNum);
+                if (session) {
+                    const question = session.questions.find(item => item.num === activeQuizQuestion.num);
+                    if (question) {
+                        question.your_answer = selectedQuizOption;
+                        let textResult = res;
+                        if (res === '✅') textResult = 'correct';
+                        else if (res === '❌') textResult = 'wrong';
+                        else if (res === '⚠️') textResult = 'partial';
+                        else if (res === '⬜') textResult = 'unknown';
+                        question.result = textResult;
+                    }
+                }
+            }
+        }
+
+        function highlightResultButton(res) {
+            const btnCorrect = document.getElementById('btn-result-correct');
+            const btnWrong = document.getElementById('btn-result-wrong');
+            const btnPartial = document.getElementById('btn-result-partial');
+            const btnUnanswered = document.getElementById('btn-result-unanswered');
+            
+            if (btnCorrect) {
+                if (res === '✅') {
+                    btnCorrect.className = "flex-1 py-1.5 rounded border-2 border-secondary bg-secondary/15 text-secondary text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnCorrect.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
+            if (btnWrong) {
+                if (res === '❌') {
+                    btnWrong.className = "flex-1 py-1.5 rounded border-2 border-error bg-error/10 text-error text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnWrong.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
+            if (btnPartial) {
+                if (res === '⚠️') {
+                    btnPartial.className = "flex-1 py-1.5 rounded border-2 border-primary bg-primary/10 text-primary text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnPartial.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
+            if (btnUnanswered) {
+                if (res === '⬜') {
+                    btnUnanswered.className = "flex-1 py-1.5 rounded border-2 border-outline bg-outline/15 text-on-surface text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnUnanswered.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
+        }
+
+        function resetQuizConsoleUI() {
+            ["A", "B", "C", "D"].forEach(letter => {
+                const btn = document.getElementById(`btn-option-${letter}`);
+                if (btn) btn.className = "flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all";
+            });
+            
+            const btnCorrect = document.getElementById('btn-result-correct');
+            const btnWrong = document.getElementById('btn-result-wrong');
+            const btnPartial = document.getElementById('btn-result-partial');
+            const btnUnanswered = document.getElementById('btn-result-unanswered');
+            if (btnCorrect) btnCorrect.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            if (btnWrong) btnWrong.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            if (btnPartial) btnPartial.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            if (btnUnanswered) btnUnanswered.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            
+            const reviewInput = document.getElementById('quiz-review');
+            if (reviewInput) reviewInput.value = '';
+            
+            const feedbackEl = document.getElementById('quiz-evaluation-feedback');
+            if (feedbackEl) feedbackEl.innerText = '';
+        }
+
+        function submitRecordedAnswer() {
+            if (!activeQuizQuestion) return;
+            
+            if (selectedQuizResult !== '⬜' && !selectedQuizOption) {
+                alert("Please select your answer option (A, B, C, or D) first!");
+                return;
+            }
+            
+            if (!selectedQuizResult) {
+                alert("Please verify and mark the result status (Correct, Wrong, Partial, or Unanswered)!");
+                return;
+            }
+            
+            const btn = document.getElementById('btn-submit-answer');
+            const prevText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerText = "Saving Answer...";
+            
+            try {
+                const simRes = simulateRecordAnswerClientSide(
+                    activeQuizQuestion.sessionNum,
+                    activeQuizQuestion.num,
+                    selectedQuizOption,
+                    selectedQuizResult
+                );
+                if (simRes.status === 'success') {
+                    // Dynamically update views and re-render the modal without a page reload for instant feedback
+                    renderAllViews();
+                    const updatedQ = findQuestionBySessionAndNum(activeQuizQuestion.sessionNum, activeQuizQuestion.num);
+                    if (updatedQ) {
+                        openQuestionModal(updatedQ);
+                    } else {
+                        closeModal();
+                    }
+                } else {
+                    alert(`Error recording answer:\n${simRes.message}`);
+                }
+            } catch (simErr) {
+                console.error("Client-side save failed:", simErr);
+                alert(`Error saving answer client-side: ${simErr.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = prevText;
+            }
+        }
+
+        function openSessionModal() {
+            if (isHostedEnvironment()) {
+                alert("🔒 Creating a custom drill session is locked on the hosted static domain.\n\nPlease click '⚡ LIVEDEMO Quick Start' to start an interactive simulation session with pre-charged AWS scenario questions!");
+                return;
+            }
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Creating a new custom session is locked during the active isolated Live Demo.\n\nPlease complete the active session or click 'Reset Live Demo' first.");
+                return;
+            }
+            document.getElementById('session-modal').classList.remove('hidden');
+        }
+
+        function closeSessionModal() {
+            document.getElementById('session-modal').classList.add('hidden');
+        }
+
+        async function submitNewSession() {
+            const btn = document.getElementById('btn-create-session');
+            const icon = document.getElementById('create-session-icon');
+            const text = document.getElementById('create-session-text');
+            
+            if (!btn || btn.disabled) return;
+            
+            const qCount = parseInt(document.getElementById('session-q-count').value) || 25;
+            const domains = document.getElementById('session-domains').value || "";
+            const sessType = document.getElementById('session-type').value || "quiz";
+            
+            const isDemo = sessType === "demo";
+            const isQuiz = sessType === "quiz";
+            
+            btn.disabled = true;
+            icon.innerText = 'autorenew';
+            icon.classList.add('animate-spin');
+            text.innerText = 'Generating Drill...';
+            
+            try {
+                const active_sess_num = simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, sessType === "blank");
+                // Set auto-open flag so modal automatically re-opens this generated drill session at Question 1
+                sessionStorage.setItem('AUTO_OPEN_QUESTION', `S${active_sess_num}-Q1`);
+                location.reload();
+            } catch (simErr) {
+                console.error("Client-side simulation failed:", simErr);
+                alert(`Error starting session client-side: ${simErr.message}`);
+                btn.disabled = false;
+                icon.innerText = 'add_circle';
+                icon.classList.remove('animate-spin');
+                text.innerText = 'Generate Drill';
+            } finally {
+                closeSessionModal();
+            }
+        }
+
+        async function startInteractiveLiveDemo() {
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Live Demo is already active.\n\nPlease complete the current active session in the carousel, or click 'Reset Live Demo' to clear and start fresh.");
+                return;
+            }
+            // Count how many non-empty sessions we have, or check the limit
+            const sessionsCount = (TRACKER_DATA.sessions || []).filter(s => s.questions && s.questions.length > 0).length;
+            if (sessionsCount >= 4) {
+                alert("Maximum of 4 simulated live demo sessions has been reached!\n\nPlease click 'Reset Live Demo' in the sidebar to clear existing sessions and start fresh.");
+                return;
+            }
+            
+            const btn = document.getElementById('btn-live-demo');
+            const origText = btn ? btn.innerHTML : "";
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = "⚡ Initializing Demo...";
+            }
+            
+            try {
+                // Start new interactive session (unanswered, isQuiz = true) with 6 questions locally
+                const active_sess_num = simulateStartSessionClientSide(6, "", false, true, false);
+                
+                // Explicitly tag as un-evaluated
+                const session = TRACKER_DATA.sessions.find(s => s.num === active_sess_num);
+                if (session) {
+                    session.evaluated = false;
+                }
+                
+                // Save updated structure to disk immediately
+                localStorage.setItem('TRACKER_DATA_MOCK', JSON.stringify(TRACKER_DATA));
+                
+                // Set active session pointer so system knows this is an active live demo session!
+                sessionStorage.setItem('LIVE_DEMO_ACTIVE_SESSION', active_sess_num);
+                
+                // Set auto-open flag so modal re-opens this session at Question 1
+                sessionStorage.setItem('AUTO_OPEN_QUESTION', `S${active_sess_num}-Q1`);
+                
+                alert(`🚀 [Live Demo] Started Interactive Session ${active_sess_num} (Bank ${active_sess_num}) with 6 fresh scenario questions!\n\nPlease answer them to see your stats update in real-time.`);
+                
+                // Reload page to re-render everything
+                location.reload();
+            } catch (err) {
+                console.error("Failed to start live demo session:", err);
+                alert("Error starting live demo session: " + err.message);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origText;
+                }
+            }
+        }
+
+        async function resetLiveDemoProgress() {
+            if (!confirm("Are you sure you want to reset all simulated live demo sessions and progress?\n\nThis will clear your local simulation and restore the portal to its clean baseline state.")) {
+                return;
+            }
+            
+            // Pure client-side reset
+            localStorage.removeItem('TRACKER_DATA_MOCK');
+            sessionStorage.removeItem('LIVE_DEMO_ACTIVE_SESSION');
+            sessionStorage.removeItem('AUTO_OPEN_QUESTION');
+            alert("Simulated live demo progress, study sessions, and syllabus stats have been reset locally. Reloading clean portal...");
+            location.reload();
+        }
+
+        function isHostedEnvironment() {
+            return window.location.hostname.includes('github.io') || window.location.hostname.includes('kiquetal.dev');
+        }
+
+        function applyLiveDemoBlocking() {
+            const isLiveDemo = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION');
+            const isHosted = isHostedEnvironment();
+            
+            if (isLiveDemo || isHosted) {
+                // Block btn-sync (Sync Study Logs)
+                const btnSync = document.getElementById('btn-sync');
+                if (btnSync) {
+                    btnSync.classList.add('opacity-40', 'cursor-not-allowed');
+                    btnSync.classList.remove('hover:bg-secondary', 'hover:text-on-secondary', 'hover:border-transparent');
+                    btnSync.title = isHosted 
+                        ? "🔒 Syncing study logs requires a local Python server. Locked on the hosted static domain." 
+                        : "🔒 Locked during active Live Demo session";
+                    
+                    const syncText = document.getElementById('sync-text');
+                    if (syncText) {
+                        syncText.innerText = "Sync Logs (Locked)";
+                    }
+                }
+                
+                // Block btn-start-session (Start New Session)
+                const btnStart = document.getElementById('btn-start-session');
+                if (btnStart) {
+                    btnStart.classList.add('opacity-40', 'cursor-not-allowed');
+                    btnStart.classList.remove('bg-secondary', 'hover:opacity-90');
+                    btnStart.classList.add('bg-surface-container-high', 'text-on-surface-variant/40');
+                    btnStart.title = isHosted 
+                        ? "🔒 Creating a custom drill session requires a local Python server. Locked on the hosted static domain." 
+                        : "🔒 Locked during active Live Demo session";
+                    
+                    const startSpan = btnStart.querySelector('span:not(.material-symbols-outlined)');
+                    if (startSpan) {
+                        startSpan.innerText = "Start New Session (Locked)";
+                    }
+                }
+            }
+            
+            if (isLiveDemo) {
+                // Block btn-live-demo (LIVEDEMO Quick Start)
+                const btnLiveDemo = document.getElementById('btn-live-demo');
+                if (btnLiveDemo) {
+                    btnLiveDemo.classList.add('opacity-60', 'cursor-not-allowed');
+                    btnLiveDemo.classList.remove('animate-pulse', 'hover:from-amber-600', 'hover:to-rose-600');
+                    btnLiveDemo.title = "🔒 Live Demo is already active";
+                    
+                    const liveSpan = btnLiveDemo.querySelector('span:not(.material-symbols-outlined)');
+                    if (liveSpan) {
+                        liveSpan.innerText = "⚡ Live Demo Active";
+                    }
+                    const liveIcon = btnLiveDemo.querySelector('span.material-symbols-outlined');
+                    if (liveIcon) {
+                        liveIcon.innerText = "lock";
+                    }
+                }
+            }
+        }
+
         // Lookups
+        function findQuestionBySessionAndNum(sessionNum, num) {
+            let found = null;
+            if (TRACKER_DATA && TRACKER_DATA.sessions) {
+                const s = TRACKER_DATA.sessions.find(item => item.num === sessionNum);
+                if (s && s.questions) {
+                    found = s.questions.find(q => q.num === num) || null;
+                }
+            }
+            return found;
+        }
+
         function findQuestionByNum(num) {
             let found = null;
-            TRACKER_DATA.sessions.forEach(s => {
-                s.questions.forEach(q => {
-                    if (q.num == num) {
-                        found = q;
-                    }
+            if (TRACKER_DATA && TRACKER_DATA.sessions) {
+                TRACKER_DATA.sessions.forEach(s => {
+                    s.questions.forEach(q => {
+                        if (q.num == num) {
+                            found = q;
+                        }
+                    });
                 });
-            });
+            }
             return found;
         }
 
         function viewQuestionByNum(qNumStr) {
-            const num = qNumStr.replace('Q', '').trim();
-            const q = findQuestionByNum(num);
+            let sessionNum = null;
+            let qNum = qNumStr;
+            
+            // Check if format is S<num>-Q<num> or similar
+            const sqMatch = qNumStr.match(/S(\d+)-?Q(\d+)/i);
+            if (sqMatch) {
+                sessionNum = parseInt(sqMatch[1]);
+                qNum = "Q" + sqMatch[2];
+            }
+            
+            const num = qNum.replace('Q', '').trim();
+            let q = null;
+            if (sessionNum) {
+                q = findQuestionBySessionAndNum(sessionNum, parseInt(num));
+            } else {
+                q = findQuestionByNum(num);
+            }
+            
             if (q) {
+                if (sessionNum) {
+                    q.sessionNum = sessionNum;
+                }
                 openQuestionModal(q);
             } else {
                 console.error(`Question ${qNumStr} not found.`);
@@ -1697,6 +3359,14 @@
         }
 
         async function triggerSync() {
+            if (isHostedEnvironment()) {
+                alert("🔒 Syncing study logs requires a running local Python server.\n\nIn this hosted static environment, all simulated sessions and statistics are computed and saved entirely within your browser's local memory.");
+                return;
+            }
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Sync Study Logs is locked during the active isolated Live Demo.\n\nPlease complete the active session or click 'Reset Live Demo' first.");
+                return;
+            }
             const btn = document.getElementById('btn-sync');
             const icon = document.getElementById('sync-icon');
             const text = document.getElementById('sync-text');
@@ -1713,44 +3383,17 @@
             text.innerText = 'Syncing study logs...';
             btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-on-surface bg-surface-container-high border border-outline/30 opacity-75 cursor-not-allowed font-semibold text-sm";
             
-            try {
-                const response = await fetch('/api/sync', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
-                if (!response.ok) {
-                    const data = await response.json().catch(() => ({}));
-                    throw new Error(data.message || `Server error (${response.status})`);
-                }
-                
-                // Show success state
+            // Premium purely offline sync simulation
+            setTimeout(() => {
                 icon.classList.remove('animate-spin');
                 icon.innerText = 'check_circle';
-                text.innerText = 'Synced! Refreshing...';
+                text.innerText = 'Synced Offline!';
                 btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-white bg-emerald-700 border border-transparent transition-all duration-200 font-semibold text-sm shadow-md";
                 
                 setTimeout(() => {
                     window.location.reload();
-                }, 1200);
-                
-            } catch (err) {
-                console.error("Sync error:", err);
-                
-                icon.classList.remove('animate-spin');
-                icon.innerText = 'error';
-                text.innerText = 'Sync Failed!';
-                btn.className = "w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-white bg-rose-800 border border-transparent transition-all duration-200 font-semibold text-sm shadow-md";
-                
-                alert(`Sync failed: ${err.message}\n\nNote: Live syncing requires starting the portal with "./run_server.sh". Pure static servers or raw file protocol (file:///) cannot execute local scripts.`);
-                
-                setTimeout(() => {
-                    btn.disabled = false;
-                    icon.innerText = origIcon;
-                    text.innerText = origText;
-                    btn.className = origClass;
-                }, 3000);
-            }
+                }, 1000);
+            }, 800);
         }
 
         // Switch Tabs logic
@@ -1838,11 +3481,13 @@
                 
                 // We will build a filtered version of the subsections
                 const filteredSubsections = [];
+                const subsections = section.subsections || [];
                 
-                section.subsections.forEach(sub => {
+                subsections.forEach(sub => {
                     const filteredItems = [];
+                    const items = sub.items || [];
                     
-                    sub.items.forEach(item => {
+                    items.forEach(item => {
                         let textToSearch = '';
                         if (item.type === 'bullet' || item.type === 'text' || item.type === 'code') {
                             textToSearch = item.text.toLowerCase();
