@@ -46,16 +46,21 @@ def get_next_session_num():
     session_nums = [int(n) for n in re.findall(r"^### Session (\d+)", text, re.MULTILINE)]
     return max(session_nums) + 1 if session_nums else 1
 
-def start_session(questions_count, domains=DEFAULT_DOMAINS, demo_mode=False):
+def start_session(questions_count, domains=DEFAULT_DOMAINS, demo_mode=False, quiz_mode=False, blank_mode=False):
     next_num = get_next_session_num()
     today = date.today().strftime("%Y-%m-%d")
     
+    # If neither demo_mode nor blank_mode is explicitly requested, default to quiz_mode
+    if not demo_mode and not blank_mode:
+        quiz_mode = True
+        
     # Select question sets
     chosen_qs = []
-    if demo_mode:
+    if demo_mode or quiz_mode:
         # Pull random samples from the demo pool with replacement if count > pool size
         chosen_qs = random.choices(DEMO_QUESTIONS, k=questions_count)
         
+    if demo_mode:
         # Calculate summary scores for the demo session
         correct_count = sum(1 for q in chosen_qs if q["result"] == "✅")
         partial_count = sum(1 for q in chosen_qs if q["result"] == "⚠️")
@@ -82,6 +87,9 @@ def start_session(questions_count, domains=DEFAULT_DOMAINS, demo_mode=False):
         if demo_mode:
             q = chosen_qs[i - 1]
             lines.append(f"| {i} | {q['domain']} | {q['scenario']} | {q['your_answer']} | {q['result']} | {q['correct']} | {q['topic']} |")
+        elif quiz_mode:
+            q = chosen_qs[i - 1]
+            lines.append(f"| {i} | {q['domain']} | {q['scenario']} | | ⬜ | {q['correct']} | {q['topic']} |")
         else:
             lines.append(f"| {i} | | | | ⬜ | | |")
         
@@ -99,7 +107,12 @@ def start_session(questions_count, domains=DEFAULT_DOMAINS, demo_mode=False):
     text = text.rstrip() + "\n" + session_md
     TRACKER_PATH.write_text(text, encoding="utf-8")
     
-    mode_text = "Demo/Onboarding" if demo_mode else "Blank"
+    if demo_mode:
+        mode_text = "Demo/Onboarding (Pre-answered)"
+    elif quiz_mode:
+        mode_text = "Interactive Quiz (Unanswered)"
+    else:
+        mode_text = "Blank"
     print(f"✅ Successfully appended {mode_text} Session {next_num} ({questions_count} questions) to question-tracker.md")
     return next_num
 
@@ -107,11 +120,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Create a new empty or demo practice session/drill.")
     parser.add_argument("-q", "--questions", type=int, default=25, help="Number of questions in this drill (default: 25)")
     parser.add_argument("-d", "--domains", type=str, default=DEFAULT_DOMAINS, help="Domains covered in this drill")
-    parser.add_argument("--demo", action="store_true", help="Auto-populate with realistic demo questions & answers (perfect for onboarding)")
+    parser.add_argument("--demo", action="store_true", help="Run in Pre-Answered Demo Local mode (pre-loaded answers, perfect for quick stats review)")
+    parser.add_argument("--blank", action="store_true", help="Generate a completely blank/empty session for manual external logging")
+    parser.add_argument("--quiz", action="store_true", help="Generate an interactive quiz with realistic scenarios but blank answers (default)")
     args = parser.parse_args()
     
     try:
-        start_session(args.questions, args.domains, args.demo)
+        # Default to quiz mode if no mode is selected
+        demo_mode = args.demo
+        blank_mode = args.blank
+        quiz_mode = args.quiz or (not args.demo and not args.blank)
+        
+        start_session(args.questions, args.domains, demo_mode=demo_mode, quiz_mode=quiz_mode, blank_mode=blank_mode)
     except Exception as e:
         print(f"❌ Error starting session: {e}", file=sys.stderr)
         sys.exit(1)

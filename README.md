@@ -76,37 +76,52 @@ This repository is designed to track your active-recall progress as you attempt 
 > | :--- | :--- | :--- |
 > | **What it is** | Prepares the exam structure and sets up the tracking slot. | Sitting down, reading the questions, and recording your selections. |
 > | **Analogy** | Printing out a blank exam paper, writing the session date at the top, and laying it on your desk. | Reading the exam booklet, marking your choices (A, B, C, D), and checking the answer key. |
-> | **How it works** | Clicking **Start New Session** in the portal sidebar automatically appends a clean, numbered template table to [`notes/question-tracker.md`](notes/question-tracker.md). | **Onboard branch (Automated)**: Keeping *Auto-Populate Demo Answers* checked instantly fills the session with realistic AWS scenarios and pre-grades them so you can see live charts immediately.<br><br>**Active study branch (Manual)**: You attempt questions on external sites (Udemy, Tutorials Dojo), record your answers in [`notes/question-tracker.md`](notes/question-tracker.md), and click **Sync Study Logs** to recompile your live dashboard charts. |
+> | **How it works** | Clicking **Start New Session** in the portal sidebar automatically appends a clean, numbered template table to [`notes/question-tracker.md`](notes/question-tracker.md). | **Interactive Quiz Mode (Default Onboarding)**: Generates random AWS scenarios from the pool and leaves your answers blank. Click any question badge in the portal and select your option (A/B/C/D); clicking **Record & Save to Disk** physically writes it to your hard drive, updating metrics instantly!<br><br>**Demo Local Mode**: Perfect for a frictionless visual preview. It instantly pre-populates realistic scenarios and simulated answers so you can see live charts immediately. |
 
 Follow this step-by-step workflow to run a study session:
 
 ### Step 1: Start a New Session / Generate a Practice Drill
 You have two options to prepare a session:
-- **Interactive Portal**: If the local study portal is running, click the **Start New Session** button in the sidebar. Select your target number of questions (e.g., 10 for a mini-drill, 25 for standard practice, or 65 for a full mock) and click **Generate Drill**. This automatically appends a new empty session template with pre-numbered tables to `notes/question-tracker.md` and reloads the portal.
-
-  *(Onboarding Tip: Keep **Auto-Populate Demo Answers** checked to instantly fill the drill with realistic AWS security questions, answers, and scores, letting you explore the live stats dashboard and audit logs immediately without manual logging!)*
+- **Interactive Portal**: Click the **Start New Session** button in the sidebar. Select your target number of questions (e.g., 10, 25, or 65) and choose your **Session Type / Mode**. 
+  
+  *(Onboarding Tip: The default mode is **Interactive Practice Quiz**. This generates realistic AWS security scenarios with blank answers so you can solve them yourself and record your actual progress! If you just want a quick, frictionless look at how the entire dashboard behaves when fully populated with simulated results, select **Pre-Answered Local Demo**.)*
 
   *The interactive session configuration modal:*
   ![Start New Study Session Modal](diagrams/start_session_modal.png)
 
-- **Command Line**: Alternatively, run the generator script directly:
+- **Command Line**: Alternatively, run the generator script directly. On this branch, running without arguments defaults to generating an **Interactive Practice Quiz** (realistic AWS scenarios with blank answers ready to be solved):
   ```bash
+  # Generates an Interactive Practice Quiz with 25 realistic scenarios (default)
   python3 scripts/start-session.py --questions 25
+  
+  # Or generate a Pre-Answered Local Demo (for quick dashboard preview)
+  python3 scripts/start-session.py --questions 25 --demo
+  
+  # Or generate a completely blank session (for manual external logging)
+  python3 scripts/start-session.py --questions 25 --blank
   ```
 
-### Step 2: Answer the Practice Questions (Automated for Onboarding!)
-On this onboarding branch, **you do not need to manually edit files or log questions**. 
+### Step 2: Choose Your Mode and Attempt Practice Questions
+On this onboarding branch, you have three powerful options when clicking **Start New Session** in the local web portal:
 
-Since the **Auto-Populate Demo Answers** option in Step 1 is enabled by default, the system instantly generates realistic, pre-answered questions with correct/wrong marks and review topics. 
+1. **Interactive Practice Quiz (Default Onboarding / Active Practice)**:
+   - **How it works**: Generates a custom drill containing realistic AWS Certified Security - Specialty scenarios from our premium question pool, but **leaves the user's answers blank**.
+   - **Interactive Player**: Go to the **Study Sessions** tab, click any question badge (labeled grey `Q1`, `Q2`, etc.), and use the **Interactive Answering Console** to select your option (A/B/C/D).
+   - **Automatic Checking & Disk Recording**: The system immediately checks if your answer is correct. When you click **Record & Save to Disk**, the local Python server physically writes your answer and correctness status directly into [`notes/question-tracker.md`](notes/question-tracker.md) on your hard drive!
+   - **Automatic Sync**: The portal instantly recompiles metrics and reloads, saving your progress and turning your question badge green (✅ Correct) or red (❌ Incorrect).
 
-*(Note: On your active study branch, this is where you would attempt real questions from Tutorials Dojo, Udemy, or AWS Skills Builder, and log each result in the markdown file [`notes/question-tracker.md`](notes/question-tracker.md).)*
+2. **Pre-Answered Local Demo (Demo Local)**:
+   - **How it works**: Generates a set of realistic AWS security scenarios pre-loaded with simulated correct and wrong answers.
+   - **Frictionless Demo**: Perfect for experiencing the dashboard immediately. This acts as a read-only viewer showing how finished study logs look, how metrics scale, and how weak areas are highlighted on the dashboard without having to take a test.
 
-### Step 3: Recompile Your Metrics (Automated for Onboarding!)
-Once the session is generated with demo answers, the local server **instantly recompiles all statistics automatically**.
+3. **Empty Blank Session (For Manual Study Logging)**:
+   - **How it works**: Appends an empty table to record real-world questions from external resources (such as Tutorials Dojo, Udemy, or AWS Skills Builder).
+   - **Visual Markdown Recorder**: Instead of manually editing tables in VS Code, you can click on any question in the portal, click **Edit / Update Record**, and use the Interactive Console to enter your answers, select the result, and click **Record & Save to Disk** to easily write them to [`notes/question-tracker.md`](notes/question-tracker.md)!
 
-The portal immediately reloads, showing your updated scores, cumulative accuracy dials, domain proficiency levels, and priority weak areas on the dashboard—with zero manual compile steps!
+### Step 3: Watch Metrics Recompile Automatically
+Whenever you record a new answer or generate a pre-answered session, the local server **instantly recompiles all statistics automatically** on your machine.
 
-*(Note: On your active study branch, after manually logging questions, you would click **Sync Study Logs** on the sidebar or run `python3 scripts/update-tracker.py` and `python3 scripts/export_to_json.py` to recompile your live metrics.)*
+The portal immediately reloads to display your updated cumulative accuracy dials, domain proficiency status, and priority weak areas on your live dashboard—providing a premium feedback loop!
 
 ## How to Reset Your Progress
 

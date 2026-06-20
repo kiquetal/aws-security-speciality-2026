@@ -712,15 +712,58 @@
                 </div>
                 
                 <!-- Your Attempt -->
-                <div class="space-y-1">
+                <div class="space-y-1" id="modal-your-answer-container">
                     <p class="text-[10px] font-label-sm text-on-surface-variant uppercase tracking-wider">Your Previous Answer:</p>
                     <p id="modal-your-answer" class="p-3 bg-surface border border-outline-variant rounded font-code-md text-xs text-error"></p>
                 </div>
                 
                 <!-- Correct Answer -->
-                <div class="space-y-1">
+                <div class="space-y-1" id="modal-correct-answer-container">
                     <p class="text-[10px] font-label-sm text-secondary uppercase tracking-wider font-bold">Reason & Resolution:</p>
                     <p id="modal-correct-answer" class="p-3 bg-primary-container border-l-2 border-secondary rounded text-xs text-on-surface leading-relaxed"></p>
+                </div>
+
+                <!-- INTERACTIVE ANSWER CONSOLE -->
+                <div id="modal-quiz-console" class="p-4 bg-surface-container-low border border-outline-variant rounded-md space-y-3 hidden transition-all duration-300">
+                    <p class="text-[11px] font-bold text-secondary uppercase tracking-wider">Interactive Answering Console</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Choose Answer -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-semibold text-on-surface-variant uppercase">Select Your Answer Option:</label>
+                            <div class="flex gap-2" id="quiz-options-container">
+                                <button onclick="selectQuizOption('A')" id="btn-option-A" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">A</button>
+                                <button onclick="selectQuizOption('B')" id="btn-option-B" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">B</button>
+                                <button onclick="selectQuizOption('C')" id="btn-option-C" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">C</button>
+                                <button onclick="selectQuizOption('D')" id="btn-option-D" class="flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all">D</button>
+                            </div>
+                        </div>
+
+                        <!-- Choose Result -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-semibold text-on-surface-variant uppercase">Verify Result Status:</label>
+                            <div class="flex gap-1.5" id="quiz-results-container">
+                                <button onclick="selectQuizResult('✅')" id="btn-result-correct" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">✅ Correct</button>
+                                <button onclick="selectQuizResult('❌')" id="btn-result-wrong" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">❌ Wrong</button>
+                                <button onclick="selectQuizResult('⚠️')" id="btn-result-partial" class="flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1">⚠️ Partial</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Review Topic Input -->
+                    <div class="space-y-1">
+                        <label for="quiz-review" class="text-[10px] font-semibold text-on-surface-variant uppercase">Review Topic / Key Takeaway:</label>
+                        <input type="text" id="quiz-review" class="w-full bg-surface border border-outline-variant rounded p-2 text-on-surface text-xs font-semibold" placeholder="e.g. GuardDuty remediation via EventBridge" />
+                    </div>
+
+                    <!-- Submit Answer Button -->
+                    <div class="pt-2 border-t border-outline-variant/30 flex flex-col sm:flex-row gap-2 justify-between items-start sm:items-center">
+                        <span id="quiz-evaluation-feedback" class="text-xs font-semibold text-on-surface-variant"></span>
+                        <button onclick="submitRecordedAnswer()" id="btn-submit-answer" class="w-full sm:w-auto bg-primary text-on-primary px-5 py-2 font-bold hover:opacity-90 transition-all rounded text-[11px] uppercase tracking-wider flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-xs">save</span>
+                            <span>Record & Save to Disk</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Review Topic -->
@@ -736,7 +779,10 @@
                 </div>
             </div>
             
-            <div class="border-t border-outline-variant pt-3 flex justify-end">
+            <div class="border-t border-outline-variant pt-3 flex justify-between items-center">
+                <button id="btn-toggle-edit-answer" onclick="toggleEditAnswer()" class="text-secondary hover:text-secondary-container text-xs font-semibold uppercase tracking-wider transition-all">
+                    Edit / Update Record
+                </button>
                 <button onclick="closeModal()" class="bg-secondary text-on-secondary px-5 py-2 font-label-sm text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-opacity rounded">
                     Acknowledged
                 </button>
@@ -774,13 +820,17 @@
                     <input type="text" id="session-domains" value="D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface text-xs font-semibold leading-relaxed" />
                 </div>
 
-                <!-- Onboarding Demo Option -->
-                <div class="flex items-center gap-3 p-3 bg-surface-container-low border border-outline-variant rounded-md">
-                    <input type="checkbox" id="session-demo" checked class="w-4 h-4 rounded accent-secondary cursor-pointer" />
-                    <div class="flex-1 cursor-pointer" onclick="const cb = document.getElementById('session-demo'); cb.checked = !cb.checked;">
-                        <p class="text-xs font-bold text-on-surface">Auto-Populate Demo Answers</p>
-                        <p class="text-[10px] text-on-surface-variant leading-normal">Fills the drill with realistic AWS security scenarios. Perfect for onboarding!</p>
-                    </div>
+                <!-- Onboarding Mode Selector -->
+                <div class="space-y-1">
+                    <label for="session-type" class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-bold">Session Type / Mode:</label>
+                    <select id="session-type" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface font-semibold text-sm">
+                        <option value="quiz" selected>Interactive Practice Quiz (For New Users & Saving Progress)</option>
+                        <option value="demo">Pre-Answered Local Demo (For Quick Dashboard Preview)</option>
+                        <option value="blank">Empty Blank Session (For Manual/External Logging)</option>
+                    </select>
+                    <p class="text-[10px] text-on-surface-variant leading-normal pt-1">
+                        Select **Interactive Practice Quiz** to answer scenarios directly inside this portal and record progress locally. Select **Pre-Answered Demo** to instantly populate correct/wrong entries for the local dashboard demo.
+                    </p>
                 </div>
             </div>
             
@@ -1721,8 +1771,28 @@
             });
         }
 
+        // Interactive Answering Console State
+        let activeQuizQuestion = null;
+        let selectedQuizOption = '';
+        let selectedQuizResult = '';
+
         // Modal Question Viewer
         function openQuestionModal(q) {
+            activeQuizQuestion = q;
+            selectedQuizOption = '';
+            selectedQuizResult = '';
+            
+            // Find which session this question belongs to
+            let sNum = null;
+            if (TRACKER_DATA && TRACKER_DATA.sessions) {
+                TRACKER_DATA.sessions.forEach(s => {
+                    if (s.questions && s.questions.some(item => item.num === q.num)) {
+                        sNum = s.num;
+                    }
+                });
+            }
+            activeQuizQuestion.sessionNum = sNum || 1;
+
             const domainStyle = DOMAIN_STYLES[q.domain] || { label: 'Security', badgeBg: 'bg-surface-container-highest' };
             
             document.getElementById('modal-domain').className = `px-2 py-0.5 text-[9px] font-code-md rounded uppercase tracking-wider font-bold ${domainStyle.badgeBg}`;
@@ -1731,7 +1801,7 @@
             
             document.getElementById('modal-scenario').innerText = q.scenario;
             document.getElementById('modal-your-answer').innerText = q.your_answer || "N/A (No previous answer recorded)";
-            document.getElementById('modal-correct-answer').innerHTML = q.correct_answer;
+            document.getElementById('modal-correct-answer').innerHTML = q.correct_answer || "N/A";
             document.getElementById('modal-review').innerText = q.review || "General Practice Review";
             
             if (q.retest) {
@@ -1741,6 +1811,43 @@
                 document.getElementById('modal-retest-container').style.display = "none";
             }
             
+            // Reset console UI
+            resetQuizConsoleUI();
+            
+            const isUnanswered = q.result === 'unknown' || !q.your_answer;
+            
+            if (isUnanswered) {
+                // Unanswered question state: show console, hide answers (no cheating!)
+                document.getElementById('modal-your-answer-container').style.display = 'none';
+                document.getElementById('modal-correct-answer-container').style.display = 'none';
+                document.getElementById('modal-quiz-console').classList.remove('hidden');
+                document.getElementById('quiz-review').value = q.review || '';
+                document.getElementById('quiz-evaluation-feedback').innerText = 'Ready to answer. Select options below.';
+            } else {
+                // Answered question state: show previous result, hide console by default
+                document.getElementById('modal-your-answer-container').style.display = 'block';
+                document.getElementById('modal-correct-answer-container').style.display = 'block';
+                document.getElementById('modal-quiz-console').classList.add('hidden');
+                
+                // Pre-populate console if they want to edit
+                document.getElementById('quiz-review').value = q.review || '';
+                selectedQuizOption = q.your_answer;
+                selectedQuizResult = q.result === 'correct' ? '✅' : (q.result === 'wrong' ? '❌' : '⚠️');
+                highlightOptionButton(selectedQuizOption);
+                highlightResultButton(selectedQuizResult);
+            }
+            
+            // Toggle edit button visibility
+            const editBtn = document.getElementById('btn-toggle-edit-answer');
+            if (editBtn) {
+                if (isUnanswered) {
+                    editBtn.style.display = 'none';
+                } else {
+                    editBtn.style.display = 'inline-block';
+                    editBtn.innerText = "Edit / Update Record";
+                }
+            }
+
             // Show modal
             const modal = document.getElementById('question-modal');
             modal.classList.remove('hidden');
@@ -1748,6 +1855,153 @@
 
         function closeModal() {
             document.getElementById('question-modal').classList.add('hidden');
+        }
+
+        function toggleEditAnswer() {
+            const consoleEl = document.getElementById('modal-quiz-console');
+            const editBtn = document.getElementById('btn-toggle-edit-answer');
+            if (consoleEl.classList.contains('hidden')) {
+                consoleEl.classList.remove('hidden');
+                if (editBtn) editBtn.innerText = "Hide Edit Console";
+                document.getElementById('quiz-evaluation-feedback').innerText = 'Modify answer details below.';
+            } else {
+                consoleEl.classList.add('hidden');
+                if (editBtn) editBtn.innerText = "Edit / Update Record";
+            }
+        }
+
+        function selectQuizOption(opt) {
+            selectedQuizOption = opt;
+            highlightOptionButton(opt);
+            
+            // Auto-evaluate if correct answer exists
+            const correctAns = activeQuizQuestion.correct_answer ? activeQuizQuestion.correct_answer.trim() : "";
+            
+            if (correctAns && correctAns !== "" && ["A", "B", "C", "D"].includes(correctAns)) {
+                if (opt === correctAns) {
+                    selectedQuizResult = '✅';
+                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-secondary font-bold">Correct! Option ${opt} is correct. 🎉</span>`;
+                } else {
+                    selectedQuizResult = '❌';
+                    document.getElementById('quiz-evaluation-feedback').innerHTML = `<span class="text-error font-bold">Incorrect. You selected ${opt}, correct is ${correctAns}.</span>`;
+                }
+                highlightResultButton(selectedQuizResult);
+            } else {
+                document.getElementById('quiz-evaluation-feedback').innerText = `Selected Option ${opt}. Please verify result status.`;
+            }
+        }
+
+        function highlightOptionButton(opt) {
+            ["A", "B", "C", "D"].forEach(letter => {
+                const btn = document.getElementById(`btn-option-${letter}`);
+                if (btn) {
+                    if (letter === opt) {
+                        btn.className = "flex-1 py-2 text-center rounded border-2 border-secondary bg-secondary/15 text-secondary font-bold font-code-md transition-all scale-105";
+                    } else {
+                        btn.className = "flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all";
+                    }
+                }
+            });
+        }
+
+        function selectQuizResult(res) {
+            selectedQuizResult = res;
+            highlightResultButton(res);
+            document.getElementById('quiz-evaluation-feedback').innerHTML = `Result manually set to: <span class="font-bold">${res}</span>`;
+        }
+
+        function highlightResultButton(res) {
+            const btnCorrect = document.getElementById('btn-result-correct');
+            const btnWrong = document.getElementById('btn-result-wrong');
+            const btnPartial = document.getElementById('btn-result-partial');
+            
+            if (btnCorrect) {
+                if (res === '✅') {
+                    btnCorrect.className = "flex-1 py-1.5 rounded border-2 border-secondary bg-secondary/15 text-secondary text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnCorrect.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
+            if (btnWrong) {
+                if (res === '❌') {
+                    btnWrong.className = "flex-1 py-1.5 rounded border-2 border-error bg-error/10 text-error text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnWrong.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
+            if (btnPartial) {
+                if (res === '⚠️') {
+                    btnPartial.className = "flex-1 py-1.5 rounded border-2 border-primary bg-primary/10 text-primary text-xs font-bold transition-all scale-105 flex items-center justify-center gap-1";
+                } else {
+                    btnPartial.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+                }
+            }
+        }
+
+        function resetQuizConsoleUI() {
+            ["A", "B", "C", "D"].forEach(letter => {
+                const btn = document.getElementById(`btn-option-${letter}`);
+                if (btn) btn.className = "flex-1 py-2 text-center rounded border border-outline bg-surface text-on-surface hover:bg-surface-container-highest font-bold font-code-md transition-all";
+            });
+            
+            const btnCorrect = document.getElementById('btn-result-correct');
+            const btnWrong = document.getElementById('btn-result-wrong');
+            const btnPartial = document.getElementById('btn-result-partial');
+            if (btnCorrect) btnCorrect.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            if (btnWrong) btnWrong.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            if (btnPartial) btnPartial.className = "flex-1 py-1.5 rounded border border-outline bg-surface hover:bg-surface-container-highest text-xs transition-all flex items-center justify-center gap-1";
+            
+            const reviewInput = document.getElementById('quiz-review');
+            if (reviewInput) reviewInput.value = '';
+            
+            const feedbackEl = document.getElementById('quiz-evaluation-feedback');
+            if (feedbackEl) feedbackEl.innerText = '';
+        }
+
+        async function submitRecordedAnswer() {
+            if (!activeQuizQuestion) return;
+            
+            if (!selectedQuizOption) {
+                alert("Please select your answer option (A, B, C, or D) first!");
+                return;
+            }
+            
+            if (!selectedQuizResult) {
+                alert("Please verify and mark the result status (Correct, Wrong, or Partial)!");
+                return;
+            }
+            
+            const btn = document.getElementById('btn-submit-answer');
+            const prevText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerText = "Saving Answer...";
+            
+            try {
+                const response = await fetch('/api/record-answer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_num: activeQuizQuestion.sessionNum,
+                        question_num: activeQuizQuestion.num,
+                        your_answer: selectedQuizOption,
+                        result: selectedQuizResult
+                    })
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    // Refresh portal to reload updated stats and question badge colors
+                    location.reload();
+                } else {
+                    alert(`Error recording answer:\n${result.message}`);
+                }
+            } catch (err) {
+                console.error(err);
+                alert(`Error saving answer: ${err.message}`);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = prevText;
+            }
         }
 
         function openSessionModal() {
@@ -1767,8 +2021,10 @@
             
             const qCount = parseInt(document.getElementById('session-q-count').value) || 25;
             const domains = document.getElementById('session-domains').value || "";
-            const demoCheckbox = document.getElementById('session-demo');
-            const isDemo = demoCheckbox ? demoCheckbox.checked : false;
+            const sessType = document.getElementById('session-type').value || "quiz";
+            
+            const isDemo = sessType === "demo";
+            const isQuiz = sessType === "quiz";
             
             btn.disabled = true;
             icon.innerText = 'autorenew';
@@ -1779,7 +2035,7 @@
                 const response = await fetch('/api/start-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ questions: qCount, domains: domains, demo: isDemo })
+                    body: JSON.stringify({ questions: qCount, domains: domains, demo: isDemo, quiz: isQuiz, blank: sessType === "blank" })
                 });
                 
                 const result = await response.json();
