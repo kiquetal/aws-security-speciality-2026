@@ -214,6 +214,14 @@
             </button>
         </div>
 
+        <!-- Reset Live Demo Button (Visible only when simulated data exists) -->
+        <div id="demo-reset-container" class="px-4 mb-2" style="display: none;">
+            <button onclick="resetLiveDemoProgress()" class="w-full flex items-center justify-center gap-2 px-4 py-2 rounded text-rose-500 bg-rose-500/10 border border-rose-500/25 hover:bg-rose-500/20 transition-all duration-200 font-semibold text-[10px] uppercase tracking-wider">
+                <span class="material-symbols-outlined text-base">restart_alt</span>
+                <span>Reset Live Demo</span>
+            </button>
+        </div>
+
         <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
             <div class="p-4 bg-surface-container-low border border-outline-variant rounded">
                 <p class="text-xs font-label-sm text-secondary uppercase tracking-wider mb-1">MEMENTO MORI</p>
@@ -855,6 +863,323 @@
         let currentRoadmapType = 'domains';
         let currentWeakAreasFilter = 'all';
 
+        // --- CLIENT-SIDE INTERACTIVE SIMULATION ENGINE FOR LIVE DEMO ---
+        const DEMO_QUESTIONS_POOL = [
+            {"domain": "D1", "scenario": "GuardDuty detects SSH brute-force attacks against EC2 instances. You need to block source IPs automatically.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "GuardDuty remediation via EventBridge"},
+            {"domain": "D1", "scenario": "Analyze Amazon VPC Flow Logs for rejected TCP traffic on port 3389. Filter and log only rejected packets to CloudWatch Logs.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "VPC Flow Logs Rejected Traffic Filtering"},
+            {"domain": "D1", "scenario": "Configure AWS Security Hub to automatically import findings from external vulnerability scanners and standard AWS services.", "your_answer": "C", "result": "❌", "correct": "D", "topic": "Security Hub Custom Finder Integration"},
+            {"domain": "D1", "scenario": "Set up a CloudTrail trail to log S3 data events for a highly sensitive bucket containing financial transactions.", "your_answer": "B", "result": "⚠️", "correct": "A", "topic": "CloudTrail S3 Data Event Logging"},
+            {"domain": "D2", "scenario": "An EC2 instance is suspected of being compromised. Isolate the instance immediately in the VPC without rebooting.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "Incident Response - EC2 Security Group Isolation"},
+            {"domain": "D2", "scenario": "Automate forensic disk capture of a compromised EC2 instance EBS volume by taking a snapshot and sharing it with a security account.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "Forensic EBS Snapshot Sharing"},
+            {"domain": "D2", "scenario": "Establish AWS Systems Manager Session Manager access to EC2 instances in private subnets, logging all SSH-like sessions to encrypted S3.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "Session Manager Private Endpoints"},
+            {"domain": "D3", "scenario": "Protect a public-facing Application Load Balancer from Layer 7 SQL injection and cross-site scripting (XSS) attacks.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "AWS WAF SQLi and XSS Protection Rules"},
+            {"domain": "D3", "scenario": "Deploy AWS Network Firewall to inspect all inbound and outbound traffic across multiple public/private subnets in a VPC.", "your_answer": "A", "result": "❌", "correct": "B", "topic": "AWS Network Firewall Topologies"},
+            {"domain": "D3", "scenario": "Establish a Route 53 Resolver DNS Firewall rule to block DNS exfiltration queries to known malicious domains.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "Route 53 DNS Firewall Domain Blocking"},
+            {"domain": "D4", "scenario": "Implement an IAM Permission Boundary to restrict administrative role privilege escalation on member accounts.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "IAM Permission Boundaries"},
+            {"domain": "D4", "scenario": "Configure cross-account IAM role assumption with external ID to prevent the 'confused deputy' security issue.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "Cross-Account IAM AssumeRole with ExternalID"},
+            {"domain": "D4", "scenario": "Audit unused IAM credentials, access keys older than 90 days, and console passwords without MFA across the organization.", "your_answer": "A", "result": "⚠️", "correct": "D", "topic": "IAM Credential Report"},
+            {"domain": "D4", "scenario": "Set up a resource-based IAM policy on an S3 bucket to enforce TLS-only connections and block HTTP access.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "S3 Bucket Policy Secure Transport"},
+            {"domain": "D5", "scenario": "Configure cross-account S3 bucket access where objects are encrypted with a Customer Managed KMS key in the source account.", "your_answer": "A", "result": "❌", "correct": "C", "topic": "Cross-Account KMS Key Grants"},
+            {"domain": "D5", "scenario": "Enable S3 Object Lock in Compliance mode to protect backups from deletion or modification by any user, including root.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "S3 Object Lock Compliance Mode"},
+            {"domain": "D5", "scenario": "Configure automatic rotation of database credentials stored in AWS Secrets Manager every 30 days using a Lambda template.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "Secrets Manager Credentials Rotation"},
+            {"domain": "D5", "scenario": "Implement envelope encryption of large files locally using KMS GenerateDataKey and local AES encryption.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "KMS Envelope Encryption and Data Keys"},
+            {"domain": "D6", "scenario": "Implement AWS Organizations Service Control Policies (SCPs) to restrict regions where resources can be created.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "Organizations SCPs Region Lock"},
+            {"domain": "D6", "scenario": "Set up AWS Config to automatically monitor and alert when S3 buckets are public or EBS volumes are unencrypted.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "AWS Config Managed Rules Compliance"},
+            {"domain": "D6", "scenario": "Deploy AWS CloudFormation Guard rules in your CI/CD pipeline to scan templates for security policy violations before deployment.", "your_answer": "B", "result": "❌", "correct": "A", "topic": "CloudFormation Guard Infrastructure Scan"},
+            {"domain": "D2", "scenario": "During an active incident, isolate a compromised IAM User credential by applying an explicit deny policy and revoking active sessions.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "Incident Response - IAM User Revocation"},
+            {"domain": "D3", "scenario": "Deploy AWS Shield Advanced to protect a fleet of Route 53 hosted zones and CloudFront distributions from DDoS attacks.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "Infrastructure Security - DDoS Protection"},
+            {"domain": "D6", "scenario": "Configure AWS Control Tower lifecycle events to automatically enroll new accounts into organizational units with security baselines.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "Governance - AWS Control Tower Enrollment"}
+        ];
+
+        // Load mock tracker data from localStorage if saved in previous client-side actions
+        if (localStorage.getItem('TRACKER_DATA_MOCK')) {
+            try {
+                const parsed = JSON.parse(localStorage.getItem('TRACKER_DATA_MOCK'));
+                for (let key in TRACKER_DATA) {
+                    delete TRACKER_DATA[key];
+                }
+                Object.assign(TRACKER_DATA, parsed);
+                console.log("⚡ [Live Demo] Loaded simulated session state from localStorage.");
+            } catch (e) {
+                console.error("Failed to parse TRACKER_DATA_MOCK:", e);
+            }
+        }
+
+        function renderAllViews() {
+            try {
+                initGlobalHeaderStats();
+                initDashboardProgress();
+                initDomainProficiency();
+                loadRandomQuestion();
+                buildQuestionsSyllabus();
+                buildRoadmapTimeline();
+                buildWeakAreasBoard();
+                initSessionsStats();
+                buildSessionsView();
+                buildCheatSheetView();
+                initFaqs();
+            } catch (e) {
+                console.error("Failed to update dashboard views client-side:", e);
+            }
+        }
+
+        function recompileStatsClientSide() {
+            let totalQuestions = 0;
+            let correct = 0;
+            let partial = 0;
+            let wrong = 0;
+            let retestsPassed = 0;
+            let retestsTotal = 0;
+            
+            const domainProficiency = {
+                "D1": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D2": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D3": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D4": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D5": { total: 0, correct: 0, partial: 0, wrong: 0 },
+                "D6": { total: 0, correct: 0, partial: 0, wrong: 0 }
+            };
+            
+            const topicCounts = {};
+
+            TRACKER_DATA.sessions.forEach(session => {
+                let sCorrect = 0;
+                let sPartial = 0;
+                let sWrong = 0;
+                let sTotal = 0;
+                
+                session.questions.forEach(q => {
+                    const res = q.result;
+                    if (res === 'unknown' || !res || res === '⬜') return;
+                    
+                    sTotal++;
+                    totalQuestions++;
+                    
+                    if (res === '✅') { sCorrect++; correct++; }
+                    else if (res === '⚠️') { sPartial++; partial++; }
+                    else if (res === '❌') { sWrong++; wrong++; }
+                    
+                    const dom = q.domain;
+                    if (domainProficiency[dom]) {
+                        domainProficiency[dom].total++;
+                        if (res === '✅') domainProficiency[dom].correct++;
+                        else if (res === '⚠️') domainProficiency[dom].partial++;
+                        else if (res === '❌') domainProficiency[dom].wrong++;
+                    }
+                    
+                    const topic = q.topic;
+                    if (topic) {
+                        if (!topicCounts[topic]) {
+                            topicCounts[topic] = { correct: 0, total: 0, domain: dom || "D1" };
+                        }
+                        topicCounts[topic].total++;
+                        if (res === '✅') {
+                            topicCounts[topic].correct++;
+                        }
+                    }
+                });
+                
+                const sPct = sTotal > 0 ? Math.round((sCorrect / sTotal) * 100) : 0;
+                session.score = `${sCorrect} ✅ · ${sPartial} ⚠️ · ${sWrong} ❌ (${sPct}% correct)`;
+            });
+            
+            const DOMAIN_NAMES = {
+                "D1": "D1: Detection",
+                "D2": "D2: Incident Response",
+                "D3": "D3: Infrastructure Security",
+                "D4": "D4: Identity & Access Management",
+                "D5": "D5: Data Protection",
+                "D6": "D6: Governance"
+            };
+            
+            Object.keys(domainProficiency).forEach(code => {
+                const item = domainProficiency[code];
+                const score = item.total > 0 ? Math.round((item.correct / item.total) * 100) : 0;
+                let status = "🟢 ≥ 80%";
+                let statusLabel = "Strong";
+                let statusColor = "text-secondary";
+                if (item.total === 0) {
+                    status = "—";
+                    statusLabel = "No Data";
+                    statusColor = "text-outline";
+                } else if (score < 50) {
+                    status = "🔴 < 50%";
+                    statusLabel = "Critical Weakness";
+                    statusColor = "text-error";
+                } else if (score < 80) {
+                    status = "🟡 50–79%";
+                    statusLabel = "Needs Review";
+                    statusColor = "text-primary";
+                }
+                
+                TRACKER_DATA.domain_proficiency[code] = {
+                    code: code,
+                    name: DOMAIN_NAMES[code],
+                    total: item.total,
+                    correct: item.correct,
+                    partial: item.partial,
+                    wrong: item.wrong,
+                    score_pct: score,
+                    status: status,
+                    statusLabel: statusLabel,
+                    statusColor: statusColor,
+                    isWeak: item.total > 0 && score < 80
+                };
+            });
+            
+            const weakAreasList = [];
+            Object.keys(topicCounts).forEach(topic => {
+                const tc = topicCounts[topic];
+                const failedCount = tc.total - tc.correct;
+                if (failedCount > 0) {
+                    weakAreasList.push({
+                        topic: topic,
+                        domainCode: tc.domain,
+                        count: failedCount,
+                        questionsStr: `${tc.correct}/${tc.total} correct`
+                    });
+                }
+            });
+            
+            weakAreasList.sort((a, b) => b.count - a.count);
+            weakAreasList.forEach((wa, idx) => {
+                wa.priority = idx === 0 ? "🔴 High" : (idx < 3 ? "🟡 Medium" : "🟢 Low");
+            });
+            TRACKER_DATA.weak_areas = weakAreasList;
+            
+            const totalSess = TRACKER_DATA.sessions.length;
+            const accuracy = totalQuestions > 0 ? Math.round((correct / totalQuestions) * 100) : 0;
+            
+            TRACKER_DATA.stats = {
+                total_questions: totalQuestions,
+                correct: correct,
+                partial: partial,
+                wrong: wrong,
+                accuracy_pct: accuracy,
+                sessions_count: totalSess,
+                retests_passed: retestsPassed,
+                retests_total: retestsTotal
+            };
+            
+            localStorage.setItem('TRACKER_DATA_MOCK', JSON.stringify(TRACKER_DATA));
+            renderAllViews();
+        }
+
+        function simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, isBlank) {
+            let session;
+            let next_num;
+            const today = new Date().toISOString().split('T')[0];
+            
+            // If we have exactly one session and it is completely empty (0 questions), reuse it!
+            if (TRACKER_DATA.sessions && TRACKER_DATA.sessions.length === 1 && (!TRACKER_DATA.sessions[0].questions || TRACKER_DATA.sessions[0].questions.length === 0)) {
+                session = TRACKER_DATA.sessions[0];
+                session.domains = domains || "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance";
+                session.questions = [];
+                next_num = 1;
+            } else {
+                next_num = (TRACKER_DATA.sessions ? TRACKER_DATA.sessions.length : 0) + 1;
+                session = {
+                    num: next_num,
+                    date: today,
+                    domains: domains || "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance",
+                    score: "0 ✅ · 0 ⚠️ · 0 ❌ (0% correct)",
+                    questions: []
+                };
+                if (!TRACKER_DATA.sessions) TRACKER_DATA.sessions = [];
+                TRACKER_DATA.sessions.push(session);
+            }
+            
+            let chosen_qs = [];
+            if (isDemo || isQuiz) {
+                // Modulo rotation over 4 unique banks: Session 1 -> Bank 1, Session 2 -> Bank 2, Session 3 -> Bank 3, Session 4 -> Bank 4
+                const bank_index = (next_num - 1) % 4;
+                const bank_size = Math.floor(DEMO_QUESTIONS_POOL.length / 4);
+                const active_bank_qs = DEMO_QUESTIONS_POOL.slice(bank_index * bank_size, (bank_index + 1) * bank_size);
+                
+                // Shuffle bank questions
+                const shuffled = [...active_bank_qs].sort(() => 0.5 - Math.random());
+                if (qCount <= shuffled.length) {
+                    chosen_qs = shuffled.slice(0, qCount);
+                } else {
+                    for (let i = 0; i < qCount; i++) {
+                        chosen_qs.push(shuffled[i % shuffled.length]);
+                    }
+                }
+            }
+            
+            for (let i = 1; i <= qCount; i++) {
+                if (isDemo) {
+                    const q = chosen_qs[i - 1];
+                    let textResult = q.result;
+                    if (q.result === '✅') textResult = 'correct';
+                    else if (q.result === '❌') textResult = 'wrong';
+                    else if (q.result === '⚠️') textResult = 'partial';
+                    
+                    session.questions.push({
+                        num: i,
+                        domain: q.domain,
+                        scenario: q.scenario,
+                        your_answer: q.your_answer,
+                        result: textResult,
+                        correct: q.correct,
+                        correct_answer: q.correct,
+                        topic: q.topic,
+                        review: q.topic
+                    });
+                } else if (isQuiz) {
+                    const q = chosen_qs[i - 1];
+                    session.questions.push({
+                        num: i,
+                        domain: q.domain,
+                        scenario: q.scenario,
+                        your_answer: "",
+                        result: "unknown",
+                        correct: q.correct,
+                        correct_answer: q.correct,
+                        topic: q.topic,
+                        review: q.topic
+                    });
+                } else {
+                    session.questions.push({
+                        num: i,
+                        domain: "",
+                        scenario: "",
+                        your_answer: "",
+                        result: "unknown",
+                        correct: "",
+                        correct_answer: "",
+                        topic: "",
+                        review: ""
+                    });
+                }
+            }
+            
+            recompileStatsClientSide();
+            console.log(`🚀 [Client Sync] Simulated Session ${next_num} locally in memory.`);
+        }
+
+        function simulateRecordAnswerClientSide(sessionNum, questionNum, yourAnswer, result) {
+            const session = TRACKER_DATA.sessions.find(s => s.num === sessionNum);
+            if (!session) return { status: 'error', message: `Session ${sessionNum} not found` };
+            
+            const question = session.questions.find(q => q.num === questionNum);
+            if (!question) return { status: 'error', message: `Question ${questionNum} not found` };
+            
+            question.your_answer = yourAnswer;
+            
+            // Map icon results from the UI console to standardized text states
+            let textResult = result;
+            if (result === '✅') textResult = 'correct';
+            else if (result === '❌') textResult = 'wrong';
+            else if (result === '⚠️') textResult = 'partial';
+            
+            question.result = textResult;
+            
+            recompileStatsClientSide();
+            console.log(`✅ [Client Sync] Recorded Q${questionNum} = ${yourAnswer} (${textResult}) in Session ${sessionNum}.`);
+            return { status: 'success' };
+        }
+
         const EXAM_DOMAINS_TIMELINE = [
             {
                 phase: "I",
@@ -938,6 +1263,12 @@
             if (typeof TRACKER_DATA === 'undefined') {
                 console.error("Tracker data was not found. Please run scripts/export_to_json.py first.");
                 return;
+            }
+
+            // Show reset button if local storage simulation is active
+            if (localStorage.getItem('TRACKER_DATA_MOCK')) {
+                const resetBtn = document.getElementById('demo-reset-container');
+                if (resetBtn) resetBtn.style.display = 'block';
             }
 
             // Handle URL parameters for screenshot automation ASAP
@@ -1832,7 +2163,7 @@
                 // Pre-populate console if they want to edit
                 document.getElementById('quiz-review').value = q.review || '';
                 selectedQuizOption = q.your_answer;
-                selectedQuizResult = q.result === 'correct' ? '✅' : (q.result === 'wrong' ? '❌' : '⚠️');
+                selectedQuizResult = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : '⚠️');
                 highlightOptionButton(selectedQuizOption);
                 highlightResultButton(selectedQuizResult);
             }
@@ -1996,8 +2327,23 @@
                     alert(`Error recording answer:\n${result.message}`);
                 }
             } catch (err) {
-                console.error(err);
-                alert(`Error saving answer: ${err.message}`);
+                console.warn("Server offline or static portal mode detected. Recording answer interactively via local storage fallback.", err);
+                try {
+                    const simRes = simulateRecordAnswerClientSide(
+                        activeQuizQuestion.sessionNum,
+                        activeQuizQuestion.num,
+                        selectedQuizOption,
+                        selectedQuizResult
+                    );
+                    if (simRes.status === 'success') {
+                        location.reload();
+                    } else {
+                        alert(`Simulated error recording answer:\n${simRes.message}`);
+                    }
+                } catch (simErr) {
+                    console.error("Client-side simulation fallback failed:", simErr);
+                    alert(`Error saving answer client-side: ${simErr.message}`);
+                }
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = prevText;
@@ -2045,14 +2391,28 @@
                     alert(`Error generating session:\n${result.message}`);
                 }
             } catch (err) {
-                console.error(err);
-                alert(`Error starting session: ${err.message}`);
+                console.warn("Server offline or static portal mode detected. Generating session interactively via local storage fallback.", err);
+                try {
+                    simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, sessType === "blank");
+                    location.reload();
+                } catch (simErr) {
+                    console.error("Client-side simulation fallback failed:", simErr);
+                    alert(`Error starting session client-side: ${simErr.message}`);
+                }
             } finally {
                 btn.disabled = false;
                 icon.innerText = 'add_circle';
                 icon.classList.remove('animate-spin');
                 text.innerText = 'Generate Drill';
                 closeSessionModal();
+            }
+        }
+
+        function resetLiveDemoProgress() {
+            if (confirm("Are you sure you want to reset all simulated live demo sessions and progress?\n\nThis will clear your local simulation and restore the portal to its clean baseline state.")) {
+                localStorage.removeItem('TRACKER_DATA_MOCK');
+                alert("Simulated live demo progress has been reset. Reloading clean baseline...");
+                location.reload();
             }
         }
 

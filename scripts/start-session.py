@@ -36,7 +36,10 @@ DEMO_QUESTIONS = [
     {"domain": "D5", "scenario": "Implement envelope encryption of large files locally using KMS GenerateDataKey and local AES encryption.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "KMS Envelope Encryption and Data Keys"},
     {"domain": "D6", "scenario": "Implement AWS Organizations Service Control Policies (SCPs) to restrict regions where resources can be created.", "your_answer": "C", "result": "✅", "correct": "C", "topic": "Organizations SCPs Region Lock"},
     {"domain": "D6", "scenario": "Set up AWS Config to automatically monitor and alert when S3 buckets are public or EBS volumes are unencrypted.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "AWS Config Managed Rules Compliance"},
-    {"domain": "D6", "scenario": "Deploy AWS CloudFormation Guard rules in your CI/CD pipeline to scan templates for security policy violations before deployment.", "your_answer": "B", "result": "❌", "correct": "A", "topic": "CloudFormation Guard Infrastructure Scan"}
+    {"domain": "D6", "scenario": "Deploy AWS CloudFormation Guard rules in your CI/CD pipeline to scan templates for security policy violations before deployment.", "your_answer": "B", "result": "❌", "correct": "A", "topic": "CloudFormation Guard Infrastructure Scan"},
+    {"domain": "D2", "scenario": "During an active incident, isolate a compromised IAM User credential by applying an explicit deny policy and revoking active sessions.", "your_answer": "D", "result": "✅", "correct": "D", "topic": "Incident Response - IAM User Revocation"},
+    {"domain": "D3", "scenario": "Deploy AWS Shield Advanced to protect a fleet of Route 53 hosted zones and CloudFront distributions from DDoS attacks.", "your_answer": "B", "result": "✅", "correct": "B", "topic": "Infrastructure Security - DDoS Protection"},
+    {"domain": "D6", "scenario": "Configure AWS Control Tower lifecycle events to automatically enroll new accounts into organizational units with security baselines.", "your_answer": "A", "result": "✅", "correct": "A", "topic": "Governance - AWS Control Tower Enrollment"}
 ]
 
 def get_next_session_num():
@@ -57,8 +60,17 @@ def start_session(questions_count, domains=DEFAULT_DOMAINS, demo_mode=False, qui
     # Select question sets
     chosen_qs = []
     if demo_mode or quiz_mode:
-        # Pull random samples from the demo pool with replacement if count > pool size
-        chosen_qs = random.choices(DEMO_QUESTIONS, k=questions_count)
+        # Determine active bank index based on session number (0, 1, 2, or 3)
+        bank_index = (next_num - 1) % 4
+        bank_size = len(DEMO_QUESTIONS) // 4
+        active_bank_qs = DEMO_QUESTIONS[bank_index * bank_size : (bank_index + 1) * bank_size]
+        
+        # If questions requested is <= bank size, sample without replacement to avoid duplicates inside the same session
+        if questions_count <= len(active_bank_qs):
+            chosen_qs = random.sample(active_bank_qs, k=questions_count)
+        else:
+            # If they request more than the bank size, sample with replacement
+            chosen_qs = random.choices(active_bank_qs, k=questions_count)
         
     if demo_mode:
         # Calculate summary scores for the demo session
