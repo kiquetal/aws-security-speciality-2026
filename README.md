@@ -205,6 +205,8 @@ Follow this step-by-step workflow to run a study session:
 You have two options to prepare a session:
 - **Interactive Portal**: If the local study portal is running, click the **Start New Session** button in the sidebar. Select your target number of questions (e.g., 10 for a mini-drill, 25 for standard practice, or 65 for a full mock) and click **Generate Drill**. This automatically appends a new empty session template with pre-numbered tables to `notes/question-tracker.md` and reloads the portal.
 
+  *(Onboarding Tip: Keep **Auto-Populate Demo Answers** checked to instantly fill the drill with realistic AWS security questions, answers, and scores, letting you explore the live stats dashboard and audit logs immediately without manual logging!)*
+
   *The interactive session configuration modal:*
   ![Start New Study Session Modal](diagrams/start_session_modal.png)
 

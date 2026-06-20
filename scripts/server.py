@@ -72,10 +72,15 @@ class AetherGuardHandler(http.server.SimpleHTTPRequestHandler):
                 
                 questions = data.get("questions", 25)
                 domains = data.get("domains", "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance")
+                demo = data.get("demo", False)
                 
                 # Execute start-session.py
                 start_script = os.path.join(BASE_DIR, "scripts", "start-session.py")
-                res_start = subprocess.run([sys.executable, start_script, "--questions", str(questions), "--domains", domains], capture_output=True, text=True, cwd=BASE_DIR)
+                cmd_args = [sys.executable, start_script, "--questions", str(questions), "--domains", domains]
+                if demo:
+                    cmd_args.append("--demo")
+                
+                res_start = subprocess.run(cmd_args, capture_output=True, text=True, cwd=BASE_DIR)
                 if res_start.returncode != 0:
                     raise Exception(f"start-session.py failed:\n{res_start.stderr}")
                 

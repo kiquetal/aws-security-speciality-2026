@@ -773,6 +773,15 @@
                     <label for="session-domains" class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-bold">Domains to Cover:</label>
                     <input type="text" id="session-domains" value="D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface text-xs font-semibold leading-relaxed" />
                 </div>
+
+                <!-- Onboarding Demo Option -->
+                <div class="flex items-center gap-3 p-3 bg-surface-container-low border border-outline-variant rounded-md">
+                    <input type="checkbox" id="session-demo" checked class="w-4 h-4 rounded accent-secondary cursor-pointer" />
+                    <div class="flex-1 cursor-pointer" onclick="const cb = document.getElementById('session-demo'); cb.checked = !cb.checked;">
+                        <p class="text-xs font-bold text-on-surface">Auto-Populate Demo Answers</p>
+                        <p class="text-[10px] text-on-surface-variant leading-normal">Fills the drill with realistic AWS security scenarios. Perfect for onboarding!</p>
+                    </div>
+                </div>
             </div>
             
             <div class="border-t border-outline-variant pt-3 flex justify-end gap-3">
@@ -1758,6 +1767,8 @@
             
             const qCount = parseInt(document.getElementById('session-q-count').value) || 25;
             const domains = document.getElementById('session-domains').value || "";
+            const demoCheckbox = document.getElementById('session-demo');
+            const isDemo = demoCheckbox ? demoCheckbox.checked : false;
             
             btn.disabled = true;
             icon.innerText = 'autorenew';
@@ -1768,7 +1779,7 @@
                 const response = await fetch('/api/start-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ questions: qCount, domains: domains })
+                    body: JSON.stringify({ questions: qCount, domains: domains, demo: isDemo })
                 });
                 
                 const result = await response.json();
