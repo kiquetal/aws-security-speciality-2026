@@ -275,6 +275,7 @@
 - 🧠 **Config proactive evaluation = evaluates resources BEFORE CloudFormation creates them.** "Before provisioned" = proactive. "After exists" = detective. Config supports both modes.
 - 🧠 **EFS encryption = creation-time ONLY.** Cannot enable on existing file system. Must create new EFS + migrate.
 - 🧠 **DNSSEC "broken trust chain" = DS record missing in parent zone.** Always.
+- 🧠 **DNSSEC trust chain:** Root → `.com` (DS) → `example.com` (DS) → `api.example.com` (KSK→ZSK→records). Each parent holds a DS record pointing to child's KSK. Missing DS = validating resolvers return SERVFAIL, non-validating work fine. Fix: add DS record in parent zone manually after enabling DNSSEC signing.
 - 🧠 **Network Firewall = inline IDS/IPS (inspect + block). Traffic Mirroring = passive copy (doesn't block).** "IDS" in question = Network Firewall.
 - 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance.
 
