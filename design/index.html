@@ -2499,8 +2499,37 @@
             document.getElementById('modal-title').innerText = `Question Challenge Q${q.num}`;
             
             document.getElementById('modal-scenario').innerText = q.scenario;
-            document.getElementById('modal-your-answer').innerText = q.your_answer || "N/A (No previous answer recorded)";
-            document.getElementById('modal-correct-answer').innerHTML = q.correct_answer || "N/A";
+            
+            // Format Your Answer container dynamically with correctness color codes
+            const isCorrect = q.result === 'correct' || q.result === '✅' || q.your_answer === q.correct_answer;
+            const yourAnsEl = document.getElementById('modal-your-answer');
+            if (q.your_answer) {
+                if (isCorrect) {
+                    yourAnsEl.className = "p-3 bg-d5-data/10 border border-d5-data/30 rounded font-code-md text-xs text-d5-data font-bold";
+                    yourAnsEl.innerHTML = `Option ${q.your_answer} (CORRECT) <span class="ml-1 font-sans">✅</span>`;
+                } else {
+                    yourAnsEl.className = "p-3 bg-error/10 border border-error/30 rounded font-code-md text-xs text-error font-bold";
+                    yourAnsEl.innerHTML = `Option ${q.your_answer} (INCORRECT) <span class="ml-1 font-sans">❌</span>`;
+                }
+            } else {
+                yourAnsEl.className = "p-3 bg-surface border border-outline-variant rounded font-code-md text-xs text-on-surface-variant";
+                yourAnsEl.innerText = "N/A (No previous answer recorded)";
+            }
+            
+            // Format Correct Answer (Reason & Resolution) container dynamically with option text
+            const correctOptionIndex = ['A', 'B', 'C', 'D'].indexOf(q.correct_answer ? q.correct_answer.trim() : '');
+            let correctOptionText = '';
+            if (q.options && correctOptionIndex !== -1 && q.options[correctOptionIndex]) {
+                correctOptionText = q.options[correctOptionIndex];
+            }
+            
+            const correctAnsEl = document.getElementById('modal-correct-answer');
+            if (q.correct_answer) {
+                correctAnsEl.innerHTML = `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-d5-data text-primary text-xs font-bold font-code-md mr-2">Option ${q.correct_answer}</span> <span class="font-semibold text-d5-data">${correctOptionText}</span>`;
+            } else {
+                correctAnsEl.innerText = "N/A";
+            }
+            
             document.getElementById('modal-review').innerText = q.review || "General Practice Review";
             
             // Render multiple-choice options if they exist
@@ -2514,11 +2543,54 @@
                     q.options.forEach((opt, idx) => {
                         const label = optionLabels[idx] || '';
                         const div = document.createElement('div');
-                        div.className = "p-3 bg-surface hover:bg-surface-container-high border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all";
-                        div.onclick = () => selectQuizOption(label);
+                        
+                        let cardClass = "p-3 bg-surface border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 transition-all";
+                        let badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all";
+                        let badgeText = label;
+                        let isClickable = true;
+
+                        const isLiveDemoSession = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+                        const isUnanswered = q.result === 'unknown' || !q.your_answer;
+                        const correctAns = q.correct_answer ? q.correct_answer.trim() : "";
+                        const yourAns = q.your_answer ? q.your_answer.trim() : "";
+
+                        if (isLiveDemoSession) {
+                            // During active live demo: highlight selected option in neutral yellow/secondary
+                            if (yourAns === label) {
+                                cardClass = "p-3 bg-secondary/15 border-2 border-secondary rounded font-body-sm text-on-surface leading-relaxed flex gap-3 transition-all scale-[1.01]";
+                                badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-primary text-xs font-bold font-code-md transition-all";
+                            } else {
+                                cardClass += " hover:bg-surface-container-high cursor-pointer";
+                            }
+                        } else if (!isUnanswered) {
+                            // Review Mode (Completed / Answered)
+                            isClickable = false; // Disable clicks during review mode
+                            if (label === correctAns) {
+                                // Correct option is highlighted in premium green
+                                cardClass = "p-3 bg-d5-data/10 border-2 border-d5-data text-on-surface rounded font-body-sm leading-relaxed flex gap-3 transition-all scale-[1.01]";
+                                badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-d5-data text-primary text-xs font-bold font-code-md transition-all";
+                                badgeText = "✓";
+                            } else if (label === yourAns) {
+                                // Incorrect chosen option is highlighted in red
+                                cardClass = "p-3 bg-error/10 border-2 border-error text-on-surface rounded font-body-sm leading-relaxed flex gap-3 transition-all scale-[1.01]";
+                                badgeClass = "flex items-center justify-center w-6 h-6 rounded-full bg-error text-white text-xs font-bold font-code-md transition-all";
+                                badgeText = "✗";
+                            } else {
+                                cardClass += " opacity-60"; // Demote other options slightly for better visual contrast
+                            }
+                        } else {
+                            // Normal unanswered question
+                            cardClass += " hover:bg-surface-container-high cursor-pointer";
+                        }
+
+                        if (isClickable) {
+                            div.onclick = () => selectQuizOption(label);
+                        }
+                        
+                        div.className = cardClass;
                         div.setAttribute('id', `modal-opt-card-${label}`);
                         div.innerHTML = `
-                            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all">${label}</span>
+                            <span class="${badgeClass}">${badgeText}</span>
                             <span class="flex-1">${opt}</span>
                         `;
                         optionsList.appendChild(div);
@@ -2709,8 +2781,35 @@
             }
         }
 
-        function completeLiveDemoSession(sNum) {
+        async function completeLiveDemoSession(sNum) {
+            const nextBtn = document.getElementById('btn-carousel-next');
+            if (nextBtn) {
+                nextBtn.disabled = true;
+                nextBtn.innerText = "⚡ Saving & Evaluating...";
+            }
             try {
+                // Iterate through questions in completed session and commit sequentially to disk
+                const session = TRACKER_DATA.sessions.find(s => s.num === sNum);
+                if (session && session.questions) {
+                    for (const q of session.questions) {
+                        const resultSymbol = (q.result === 'correct' || q.result === '✅') ? '✅' : ((q.result === 'wrong' || q.result === '❌') ? '❌' : (q.result === 'partial' || q.result === '⚠️' ? '⚠️' : '⬜'));
+                        try {
+                            await fetch('/api/record-answer', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    session_num: sNum,
+                                    question_num: q.num,
+                                    your_answer: q.your_answer || "",
+                                    result: resultSymbol
+                                })
+                            });
+                        } catch (apiErr) {
+                            console.warn(`[Live Demo Sync] Failed to record Q${q.num} to server:`, apiErr);
+                        }
+                    }
+                }
+
                 // Ensure stats are recompiled based on final memory states
                 recompileStatsClientSide();
                 
@@ -2727,6 +2826,9 @@
                 switchTab('dashboard');
                 
                 alert(`🎉 [Live Demo Completed] Congratulations! Session ${sNum} has been completed and evaluated.\n\nYour stats, Study Roadmap progress, and Syllabus domains have filled up in real time!`);
+                
+                // Reload page to re-render everything cleanly from updated file
+                location.reload();
             } catch (err) {
                 console.error("Failed to evaluate live demo session:", err);
                 alert("Error completing session evaluation: " + err.message);
@@ -2805,6 +2907,10 @@
         }
 
         function highlightOptionButton(opt) {
+            const isLiveDemoSession = activeQuizQuestion && sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION') == activeQuizQuestion.sessionNum;
+            const isUnanswered = activeQuizQuestion && (activeQuizQuestion.result === 'unknown' || !activeQuizQuestion.your_answer);
+            const isReviewMode = activeQuizQuestion && !isLiveDemoSession && !isUnanswered;
+
             ["A", "B", "C", "D"].forEach(letter => {
                 const btn = document.getElementById(`btn-option-${letter}`);
                 if (btn) {
@@ -2815,20 +2921,22 @@
                     }
                 }
                 
-                // Highlight option list card if present
-                const optCard = document.getElementById(`modal-opt-card-${letter}`);
-                if (optCard) {
-                    if (letter === opt) {
-                        optCard.className = "p-3 bg-secondary/15 border-2 border-secondary rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all scale-[1.01]";
-                        const circle = optCard.querySelector('span');
-                        if (circle) {
-                            circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-on-secondary text-xs font-bold font-code-md transition-all";
-                        }
-                    } else {
-                        optCard.className = "p-3 bg-surface hover:bg-surface-container-high border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all";
-                        const circle = optCard.querySelector('span');
-                        if (circle) {
-                            circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all";
+                // Highlight option list card if present - skip in review mode to preserve correct green / chosen red borders!
+                if (!isReviewMode) {
+                    const optCard = document.getElementById(`modal-opt-card-${letter}`);
+                    if (optCard) {
+                        if (letter === opt) {
+                            optCard.className = "p-3 bg-secondary/15 border-2 border-secondary rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all scale-[1.01]";
+                            const circle = optCard.querySelector('span');
+                            if (circle) {
+                                circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-secondary text-on-secondary text-xs font-bold font-code-md transition-all";
+                            }
+                        } else {
+                            optCard.className = "p-3 bg-surface hover:bg-surface-container-high border border-outline-variant rounded font-body-sm text-on-surface leading-relaxed flex gap-3 cursor-pointer transition-all";
+                            const circle = optCard.querySelector('span');
+                            if (circle) {
+                                circle.className = "flex items-center justify-center w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant text-xs font-bold font-code-md transition-all";
+                            }
                         }
                     }
                 }
