@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1140 |
-| **✅ Correct** | 882 (77%) |
-| **⚠️ Partial** | 33 (3%) |
-| **❌ Wrong** | 222 (19%) |
-| **Sessions** | 99 |
+| **Total Questions** | 1191 |
+| **✅ Correct** | 924 (78%) |
+| **⚠️ Partial** | 34 (3%) |
+| **❌ Wrong** | 226 (19%) |
+| **Sessions** | 100 |
 | **Re-tests Passed** | 514 of 626 |
 
 ## Domain Breakdown
@@ -326,6 +326,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 97 | 2026-06-17 | Q1012–Q1011 | 35 | 0 | 13 | D3 Infrastructure + D5 Data Protection + D1 Detection + D6 Governance (Week 2-5 never-seen blitz — API GW mTLS, authorizers, FLE, Inspector SBOM, Macie, S3 Access Grants, VPC Lattice, State Manager, cfn-guard, DLM, DataSync, EMR, WAF Bot Control, CodeGuru) | [Jump](#session-97--2026-06-17) |
 | 98 | 2026-06-18 | Q1056–Q1115 | 48 | 0 | 12 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
+| 100 | 2026-06-20 | Q1141–Q1191 | 42.5 | 0 | 4.5 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response (Week 2 weekly drill - all Dojo 3 gaps + never-seen topics + recurring failures) | [Jump](#session-100--2026-06-20) |
 
 ---
 
@@ -2432,4 +2433,65 @@ After adding a session:
 | 1138 | D6 | Protect CF stack resources from modification + prevent deletion — which TWO? | D+E | ❌ | A+B: Stack Policy Update:* + termination protection | — | Stack Policy = protect resources inside stack |
 | 1139 | D4 | Deny federated user Bill in bucket policy — ARN format? | D (iam::) | ❌ | C: arn:aws:sts::account:federated-user/Bill | — | Federated user ARN = sts:: not iam:: |
 | 1140 | D4/D5 | Org-wide enforce specific KMS key + least privilege on key — which TWO? | B+E | ❌ | B+C: SCP (enforce key) + Key policy (who uses it) | — | SCP = what key, Key policy = who uses it |
+
+---
+
+### Session 100 — 2026-06-20
+
+**Domains:** D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response
+**Score:** 42.5 ✅ · 0 ⚠️ · 4.5 ❌ (90% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1141 | D6 | CF service role, dev has cloudformation:* only, create-stack fails — cause? | B | ✅ | iam:PassRole missing on CFDeployRole | — | CF service role + PassRole |
+| 1142 | D6 | Stack Policy Deny Update:* + termination protection, dev deletes RDS via console — result? | C | ✅ | RDS deleted — neither protects manual actions | Q1138 | Stack Policy ≠ manual actions |
+| 1143 | D4/D6 | SCP restrict PassRole to platform team for Lambda+ECS — which statement? | B | ✅ | Deny iam:PassRole + StringNotLike PrincipalARN + PassedToService | — | SCP + PassRole restriction |
+| 1144 | D3 | IDS full packets, passive, no production impact — architecture? | C | ✅ | Traffic Mirroring → NLB → IDS EC2 | Q1126 | Traffic Mirroring = passive |
+| 1145 | D3 | Suricata rules, drop malicious egress — architecture? | B | ✅ | Network Firewall stateful DROP rules | Q1126 | Network Firewall = inline IPS |
+| 1146 | D3 | Third-party Palo Alto, inline, transparent, scale, health-check — architecture? | C | ✅ | GWLB with Palo Alto targets | Q1126 | GWLB = third-party inline |
+| 1147 | D3 | EC2 public IP to another EC2 public IP, SG ref sg-aaa, times out — cause? | C | ✅ | Public IP traffic via IGW = source is public IP, not SG ref | — | Public IP via IGW |
+| 1148 | D3 | IPv6 outbound only, block inbound — component? | B | ✅ | Egress-Only Internet Gateway | — | Egress-Only IGW (IPv6) |
+| 1149 | D3 | Lambda private subnet, SQS Interface endpoint exists, timeout — missing? | A | ✅ | Lambda SG missing outbound 443 | — | Interface endpoint dual SGs |
+| 1150 | D5/D3 | Gateway endpoint allows Get+List, Lambda calls PutObject — error? | B | ✅ | Access Denied (endpoint policy allowlist) | Q535 | Gateway endpoint policy |
+| 1151 | D3 | Network Firewall proposed for passive IDS — why incorrect? | B | ✅ | NF is inline — failure stops traffic | Q1126 | NF inline vs Traffic Mirroring passive |
+| 1152 | D5 | CRR SSE-KMS, has Encrypt dest + GetObjectVersionForReplication, fails — missing? | B | ✅ | kms:Decrypt on source key (CMK-A) | Q883 | CRR D-G-F permissions |
+| 1153 | D5 | Key material must auto-expire after 30 days — config? | B | ✅ | Imported key material with 30-day expiration | — | Imported key expiration |
+| 1154 | D5 | CancelKeyDeletion called, key shows Disabled — why? | B | ✅ | CancelKeyDeletion → Disabled (must re-enable) | — | KMS key lifecycle |
+| 1155 | D4/D5 | SCP Deny kms:Decrypt unless ViaService, dev calls from CLI — result? | B | ✅ | Denied — no ViaService context on direct call | Q488 | kms:ViaService + SCP |
+| 1156 | D5 | Auto-rotation + full control + old data decryptable — key type? | C | ✅ | Customer-managed + AWS-generated material | — | KMS key type selection |
+| 1157 | D1/D3 | State Manager CW agent on boot + every 30min — config? | B | ✅ | ONE association with OnBoot + rate(30min) | Q1048 | State Manager dual triggers |
+| 1158 | D3 | DNSSEC subdomain, SERVFAIL for validating resolvers — cause? | C | ✅ | DS record missing in parent zone | Q1135 | DNSSEC broken chain |
+| 1159 | D1 | Public DNS queries to hosted zone — which logging? | B | ✅ | Route 53 DNS query logging (not Resolver) | — | DNS query vs Resolver logging |
+| 1160 | D1/D6 | Detect unversioned buckets + prevent via CF — which combo? | B | ✅ | Config detective + Config proactive evaluation | — | Config proactive vs detective |
+| 1161 | D3 | Inspector via StackSets, 8 new accounts missing — cause? | B | ✅ | Inspector has native delegated admin + auto-enable | Q483 | Native org-wide deployment |
+| 1162 | D2 | Windows EC2 won't boot, collect memory dump — tool? | C | ✅ | EC2Rescue for Windows Server | — | EC2Rescue Windows |
+| 1163 | D2 | Session Manager record all keystrokes encrypted — config? | B | ✅ | Session Manager logging → encrypted CW Logs | Q1132 | Session Manager logging |
+| 1164 | D4 | JWT tampered, most secure verification — method? | B | ✅ | aws-jwt-verify (RSA signature verification) | — | JWT verify vs decode |
+| 1165 | D4 | Lambda Access Denied PutObject, analyst works in console — cause? | B | ✅ | Lambda execution role missing permission | — | Lambda execution role |
+| 1166 | D2 | Capture volatile memory, instance stays running — action? | C | ✅ | No-reboot AMI | Q810 | No-reboot AMI |
+| 1167 | D3 | ALB + HIDS + PFS — config? | B | ✅ | ECDHE end-to-end to EC2, HIDS inspects after decrypt | — | ALB+HIDS+PFS |
+| 1168 | D1 | GuardDuty CryptoCurrency, ASG replaces instances — suppression approach? | B | ✅ | Tag + finding type filter (not instance ID) | — | Suppression by tag |
+| 1169 | D4 | Deny federated user Bill in bucket policy — ARN format? | C | ✅ | arn:aws:sts::account:federated-user/Bill | Q1139 | Federated user ARN |
+| 1170 | D4/D5 | Enforce specific KMS key org-wide + least privilege on key — which TWO? | B+C | ✅ | SCP (enforce key) + Key policy (who uses it) | Q1140 | SCP + key policy |
+| 1171 | D3 | mTLS 403, same CA, new 16th partner — check first? | B | ✅ | Partner's cert expired | Q967 | mTLS cert expiry |
+| 1172 | D3 | mTLS uploaded PEM to ACM, enabled on default endpoint — TWO problems? | B (partial) | ⚠️ | A+B: custom domain required + S3 not ACM. Missed A. | Q967 | mTLS = custom domain + S3 |
+| 1173 | D3 | mTLS revoke ONE compromised cert — action? | B | ✅ | Add CRL to S3 truststore | Q1032 | mTLS CRL revocation |
+| 1174 | D5 | CRR custom encryption context fails, no-context objects work — cause? | B | ✅ | CRR preserves context, dest key policy rejects it | Q923 | CRR custom context |
+| 1175 | D5/D4 | DynamoDB CMK, has Decrypt+GenerateDataKey, PutItem fails — missing? | B | ✅ | kms:CreateGrant + kms:DescribeKey | Q899 | DynamoDB + CMK |
+| 1176 | D5/D3 | Kinesis consumer, has GetRecords + kms:Decrypt, fails — missing? | B | ✅ | kms:DescribeKey | Q879 | Kinesis consumer perms |
+| 1177 | D3 | IoT cert revoked, attacker connects 5s later — result? | B | ✅ | Fails immediately (registry check at TLS) | Q892 | IoT instant revocation |
+| 1178 | D3 | mTLS remove CA from truststore — what happens? | B | ✅ | ALL partners using that CA blocked | — | mTLS remove CA |
+| 1179 | D5 | Backup on 10th+20th monthly — schedule type? | B | ✅ | cron expression | Q1124 | Cron vs Rate |
+| 1180 | D3 | Flow Logs inbound ACCEPT, outbound REJECT — cause? | B | ✅ | NACL missing outbound ephemeral rule | Q707 | NACLs stateless |
+| 1181 | D6 | Stack Policy: Aurora locked, Lambda modify-only, SQS full — which? | A | ✅ | Deny Update:* on *, Allow Modify Lambda, Allow * SQS | Q1138 | Stack Policy default deny |
+| 1182 | D3 | Inspector SBOM via SSM+Lambda — what's wrong? | B | ✅ | Inspector has native SBOM export (unnecessary custom) | Q1059 | Inspector SBOM native |
+| 1183 | D5 | EMR inter-node encryption, engineer picks Nitro — why wrong? | B | ✅ | EMR = security config + PEM certs (not Nitro) | Q1030 | EMR in-transit |
+| 1184 | D5/D3 | Gateway endpoint allows Get+Put, Lambda calls ListBucket — result? | B | ✅ | Access Denied (not in endpoint policy) | Q535 | Gateway endpoint allowlist |
+| 1185 | D4 | MFA session max 3 hours — condition key? | B | ✅ | aws:MultiFactorAuthAge NumericLessThan 10800 | — | MFA condition keys |
+| 1186 | D2 | SageMaker: custom viz + reusable template + query Lake — tool? | B | ✅ | SageMaker notebooks | Q996 | SageMaker vs Detective |
+| 1187 | D3 | Bedrock mandatory guardrail enforcement — how? | D | ❌ | B: IAM condition bedrock:GuardrailIdentifier | — | Bedrock guardrail condition key |
+| 1188 | D3 | Q Business user sees HR docs, ACLs enabled — cause? | B | ✅ | ACL identity mapping failed | Q1010 | Q Business ACL |
+| 1189 | D3 | VPC Lattice: only Service A can call B, deny C — where enforce? | B | ✅ | Auth policy on Service B (resource-based) | — | VPC Lattice auth policy |
+| 1190 | D3 | WAF Bot Control blocks mobile app (no JS) — fix? | B | ✅ | Scope-down statement excluding mobile header | — | WAF scope-down |
+| 1191 | D3 | Bedrock SCP enforce guardrail — which statement? | A | ✅ | Deny InvokeModel + StringNotEquals GuardrailIdentifier | Q1187 | Bedrock guardrail condition key |
 
