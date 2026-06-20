@@ -1659,6 +1659,9 @@
                 buildCheatSheetView();
                 initFaqs();
 
+                // Apply Live Demo UI Locking/Blocking if active
+                applyLiveDemoBlocking();
+
                 // Handle auto-opening of question if specified in sessionStorage (useful across reloads)
                 const autoOpen = sessionStorage.getItem('AUTO_OPEN_QUESTION');
                 if (autoOpen) {
@@ -3102,6 +3105,10 @@
         }
 
         function openSessionModal() {
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Creating a new custom session is locked during the active isolated Live Demo.\n\nPlease click 'Reset Live Demo' first if you want to generate a custom session using the local Python server.");
+                return;
+            }
             document.getElementById('session-modal').classList.remove('hidden');
         }
 
@@ -3146,6 +3153,10 @@
         }
 
         async function startInteractiveLiveDemo() {
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Live Demo is already active.\n\nPlease complete the current active session in the carousel, or click 'Reset Live Demo' to clear and start fresh.");
+                return;
+            }
             // Count how many non-empty sessions we have, or check the limit
             const sessionsCount = (TRACKER_DATA.sessions || []).filter(s => s.questions && s.questions.length > 0).length;
             if (sessionsCount >= 4) {
@@ -3206,6 +3217,55 @@
             location.reload();
         }
 
+        function applyLiveDemoBlocking() {
+            const isLiveDemo = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION');
+            if (isLiveDemo) {
+                // Block btn-sync (Sync Study Logs)
+                const btnSync = document.getElementById('btn-sync');
+                if (btnSync) {
+                    btnSync.classList.add('opacity-40', 'cursor-not-allowed');
+                    btnSync.classList.remove('hover:bg-secondary', 'hover:text-on-secondary', 'hover:border-transparent');
+                    btnSync.title = "🔒 Locked during active Live Demo session";
+                    
+                    const syncText = document.getElementById('sync-text');
+                    if (syncText) {
+                        syncText.innerText = "Sync Logs (Locked)";
+                    }
+                }
+                
+                // Block btn-start-session (Start New Session)
+                const btnStart = document.getElementById('btn-start-session');
+                if (btnStart) {
+                    btnStart.classList.add('opacity-40', 'cursor-not-allowed');
+                    btnStart.classList.remove('bg-secondary', 'hover:opacity-90');
+                    btnStart.classList.add('bg-surface-container-high', 'text-on-surface-variant/40');
+                    btnStart.title = "🔒 Locked during active Live Demo session";
+                    
+                    const startSpan = btnStart.querySelector('span:not(.material-symbols-outlined)');
+                    if (startSpan) {
+                        startSpan.innerText = "Start New Session (Locked)";
+                    }
+                }
+                
+                // Block btn-live-demo (LIVEDEMO Quick Start)
+                const btnLiveDemo = document.getElementById('btn-live-demo');
+                if (btnLiveDemo) {
+                    btnLiveDemo.classList.add('opacity-60', 'cursor-not-allowed');
+                    btnLiveDemo.classList.remove('animate-pulse', 'hover:from-amber-600', 'hover:to-rose-600');
+                    btnLiveDemo.title = "🔒 Live Demo is already active";
+                    
+                    const liveSpan = btnLiveDemo.querySelector('span:not(.material-symbols-outlined)');
+                    if (liveSpan) {
+                        liveSpan.innerText = "⚡ Live Demo Active";
+                    }
+                    const liveIcon = btnLiveDemo.querySelector('span.material-symbols-outlined');
+                    if (liveIcon) {
+                        liveIcon.innerText = "lock";
+                    }
+                }
+            }
+        }
+
         // Lookups
         function findQuestionBySessionAndNum(sessionNum, num) {
             let found = null;
@@ -3262,6 +3322,10 @@
         }
 
         async function triggerSync() {
+            if (sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION')) {
+                alert("🔒 Sync Study Logs is locked during the active isolated Live Demo.\n\nPlease click 'Reset Live Demo' first if you want to use the local Python server and sync logs.");
+                return;
+            }
             const btn = document.getElementById('btn-sync');
             const icon = document.getElementById('sync-icon');
             const text = document.getElementById('sync-text');
