@@ -162,6 +162,7 @@
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
 - WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.
 - 🧠 **"Add security headers (HSTS, CSP, X-Content-Type-Options) to CloudFront, least overhead" = CloudFront response headers policy (managed, zero code).** Lambda@Edge = only if you need dynamic/conditional logic.
+- 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance. HIDS inspects AFTER decryption at the host. ECDHE = ephemeral keys = PFS (past sessions safe even if key leaks later). Static RSA = no PFS.
 - Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
 
