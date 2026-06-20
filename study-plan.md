@@ -13,18 +13,18 @@
 
 | Week | Domain / Focus | Status | Notes |
 |------|---------------|--------|-------|
-| 1 | D4: IAM fundamentals, policy evaluation logic | ✅ | 90% on final quiz, all FAQs + diagrams done |
-| 2 | D4: IAM advanced (ABAC, boundaries, cross-account, Verified Permissions) | ✅ | 80% final quiz, lab via Cybr.com course |
-| 3 | D5: KMS (key types, grants, policies, multi-region) | ✅ | 80% mini-exam, key stores + MRK + deletion solid, detect vs prevent gap found |
-| 4 | D5: Data protection (S3 encryption, CloudHSM, Secrets Manager, ACM) | ✅ | 100% closing quiz, ACM Private CA FAQ created, Nitro covered, detect-vs-prevent drills passed |
-| 5 | D3: Network security (SGs, NACLs, Network Firewall, VPC endpoints) | ✅ | 80% closing quiz, VPC endpoints + Verified Access + MACsec covered |
-| 6 | D3: Edge security (WAF, Shield, CloudFront) + Compute (Inspector, SSM) | ✅ | 100% closing quiz, OAC/OAI, Inspector, Bedrock Guardrails, WAF limits covered |
-| 7 | D1: Detection (GuardDuty, Security Hub, Macie, Config) | ✅ | 100% closing quiz, service selection + dependencies + integration patterns solid |
-| 8 | D1: Logging (CloudTrail, CloudWatch, Security Lake, Athena) | ✅ | 80% closing quiz, Security Lake/OCSF, advanced selectors, org trail immutability covered |
-| 9 | D2: Incident Response (Detective, forensics, remediation, Step Functions) | ✅ | 100% closing quiz, IR sequence, forensic workflow, FIS, validate findings covered |
-| 10 | D6: Governance (Organizations, Control Tower, SCPs, RCPs, Firewall Manager) | ✅ | 60%→pass after re-test, delegated admin + Control Tower vs FM vs SH distinction solid |
-| 11 | Full practice exams + weak-area deep dives | ✅ | Session 100 complete: 90% on weekly drill with all Dojo 3 gaps and recurring failures resolved |
-| 12 | Final review, exam simulations, confidence check | ✅ | Merged into maintenance-plan.md (Weeks 3-10). Study plan COMPLETE. |
+| 1 | D4: IAM fundamentals, policy evaluation logic | ⬜ | |
+| 2 | D4: IAM advanced (ABAC, boundaries, cross-account, Verified Permissions) | ⬜ | |
+| 3 | D5: KMS (key types, grants, policies, multi-region) | ⬜ | |
+| 4 | D5: Data protection (S3 encryption, CloudHSM, Secrets Manager, ACM) | ⬜ | |
+| 5 | D3: Network security (SGs, NACLs, Network Firewall, VPC endpoints) | ⬜ | |
+| 6 | D3: Edge security (WAF, Shield, CloudFront) + Compute (Inspector, SSM) | ⬜ | |
+| 7 | D1: Detection (GuardDuty, Security Hub, Macie, Config) | ⬜ | |
+| 8 | D1: Logging (CloudTrail, CloudWatch, Security Lake, Athena) | ⬜ | |
+| 9 | D2: Incident Response (Detective, forensics, remediation, Step Functions) | ⬜ | |
+| 10 | D6: Governance (Organizations, Control Tower, SCPs, RCPs, Firewall Manager) | ⬜ | |
+| 11 | Full practice exams + weak-area deep dives | ⬜ | |
+| 12 | Final review, exam simulations, confidence check | ⬜ | |
 
 ## Weekly Rhythm
 

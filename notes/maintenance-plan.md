@@ -20,8 +20,8 @@ Read section → close eyes → recall 3 rules.
 
 | Week | Date | Focus | Never-Seen Included | Status |
 |------|------|-------|---------------------|--------|
-| 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ✅ 86% (S94) |
-| 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | 4 new topics | ✅ 90% (Session 100) |
+| 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ⬜ |
+| 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | 4 new topics | ⬜ |
 | 3 | Jun 30 - Jul 6 | D1 weak areas + CloudFormation Guard, SSM State Manager | 2 new topics | ⬜ |
 | 4 | Jul 7-13 | **NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced | 3 new topics | ⬜ |
 | 5 | Jul 14-20 | Cross-domain killer + Data Lifecycle Manager, DataSync, Well-Architected Tool, EMR inter-node | 4 new topics | ⬜ |
@@ -55,24 +55,24 @@ Each mock MUST include 5-8 questions from never-seen topics to guarantee coverag
 
 | # | Topic | Blueprint Task | Week | Mock | Tested? |
 |---|---|---|---|---|---|
-| 1 | API Gateway security (authorizers, resource policies, mutual TLS) | Task 3.1 | W2 | M1 | ⚠️ S97 (5 Qs, 2 wrong) |
-| 2 | VPC Lattice (service-to-service auth, auth policies) | Task 3.3 | W4 | M2 | ✅ S97 (2 Qs, 100%) |
-| 3 | CloudFront Field-Level Encryption | Task 3.1 | W2 | M1 | ✅ S97 (2 Qs, 100%) |
-| 4 | Inspector SBOM export | Task 3.2 | W2 | M1 | ⚠️ S97 (2 Qs, 1 wrong) |
-| 5 | WAF Bot Control (token challenges, CAPTCHA) | Task 3.1 | W4 | M1 | ✅ S97 (2 Qs, 100%) |
-| 6 | CloudFormation Guard (policy-as-code) | Task 6.2 | W3 | M2 | ✅ S97 (1 Q, 100%) |
-| 7 | Systems Manager State Manager (desired-state) | Task 1.1 | W3 | M2 | ⚠️ S97 (1 Q, wrong) |
-| 8 | Amazon Data Lifecycle Manager (EBS snapshots) | Task 5.2 | W5 | M2 | ✅ S97 (2 Qs, 100%) |
-| 9 | AWS DataSync (secure data transfer) | Task 5.2 | W5 | M2 | ✅ S97 (1 Q, 100%) |
-| 10 | Macie custom data identifiers (regex, keywords) | Task 1.1 | W2 | M1 | ✅ S97 (1 Q, 100%) |
-| 11 | Resilience Hub (RTO/RPO assessment) | Task 2.1 | W7 | M3 | ✅ S94 (100%) |
-| 12 | FIS (chaos engineering for IR testing) | Task 2.1 | W7 | M3 | ✅ S94 (100%) |
-| 13 | Application Recovery Controller (zonal shift) | Task 2.1 | W7 | M3 | ✅ S94 (100%) |
-| 14 | Amazon Q Developer / CodeGuru Security | Task 3.2 | W4 | M3 | ✅ S97 (1 Q, 100%) |
-| 15 | Well-Architected Tool (security pillar) | Task 6.3 | W5 | M3 | ✅ S97 (2 Qs, 1 wrong then fixed) |
-| 16 | Automated Forensics Orchestrator for EC2 | Task 2.1 | W7 | M4 | ✅ S95 (100%) |
-| 17 | SageMaker AI notebooks for IR | Task 2.1 | W7 | M4 | ✅ S96 (1 wrong, then fixed S97) |
-| 18 | EMR / EKS inter-node encryption | Task 5.1 | W5 | M4 | ⚠️ S97 (1 Q, wrong then fixed) |
+| 1 | API Gateway security (authorizers, resource policies, mutual TLS) | Task 3.1 | W2 | M1 | ⬜ |
+| 2 | VPC Lattice (service-to-service auth, auth policies) | Task 3.3 | W4 | M2 | ⬜ |
+| 3 | CloudFront Field-Level Encryption | Task 3.1 | W2 | M1 | ⬜ |
+| 4 | Inspector SBOM export | Task 3.2 | W2 | M1 | ⬜ |
+| 5 | WAF Bot Control (token challenges, CAPTCHA) | Task 3.1 | W4 | M1 | ⬜ |
+| 6 | CloudFormation Guard (policy-as-code) | Task 6.2 | W3 | M2 | ⬜ |
+| 7 | Systems Manager State Manager (desired-state) | Task 1.1 | W3 | M2 | ⬜ |
+| 8 | Amazon Data Lifecycle Manager (EBS snapshots) | Task 5.2 | W5 | M2 | ⬜ |
+| 9 | AWS DataSync (secure data transfer) | Task 5.2 | W5 | M2 | ⬜ |
+| 10 | Macie custom data identifiers (regex, keywords) | Task 1.1 | W2 | M1 | ⬜ |
+| 11 | Resilience Hub (RTO/RPO assessment) | Task 2.1 | W7 | M3 | ⬜ |
+| 12 | FIS (chaos engineering for IR testing) | Task 2.1 | W7 | M3 | ⬜ |
+| 13 | Application Recovery Controller (zonal shift) | Task 2.1 | W7 | M3 | ⬜ |
+| 14 | Amazon Q Developer / CodeGuru Security | Task 3.2 | W4 | M3 | ⬜ |
+| 15 | Well-Architected Tool (security pillar) | Task 6.3 | W5 | M3 | ⬜ |
+| 16 | Automated Forensics Orchestrator for EC2 | Task 2.1 | W7 | M4 | ⬜ |
+| 17 | SageMaker AI notebooks for IR | Task 2.1 | W7 | M4 | ⬜ |
+| 18 | EMR / EKS inter-node encryption | Task 5.1 | W5 | M4 | ⬜ |
 
 ---
 
