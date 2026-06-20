@@ -328,8 +328,8 @@ const TRACKER_DATA = {
         "S93-Q933"
       ],
       "domains": [
-        "D1",
-        "D2"
+        "D2",
+        "D1"
       ],
       "count": 4,
       "level": "red"
@@ -537,8 +537,8 @@ const TRACKER_DATA = {
         "S48-Q413"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -647,8 +647,8 @@ const TRACKER_DATA = {
       "domains": [
         "D1",
         "D5",
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 2,
       "level": "yellow"
@@ -661,8 +661,8 @@ const TRACKER_DATA = {
         "S98-Q1080"
       ],
       "domains": [
-        "D4",
         "D3",
+        "D4",
         "D5"
       ],
       "count": 2,
@@ -826,8 +826,8 @@ const TRACKER_DATA = {
         "S98-Q1071"
       ],
       "domains": [
-        "D1",
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 2,
       "level": "yellow"
@@ -1440,8 +1440,8 @@ const TRACKER_DATA = {
         "S42-Q336"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1466,8 +1466,8 @@ const TRACKER_DATA = {
         "S42-Q341"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1503,8 +1503,8 @@ const TRACKER_DATA = {
         "S47-Q395"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1699,8 +1699,8 @@ const TRACKER_DATA = {
         "S54-Q526"
       ],
       "domains": [
-        "D1",
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
@@ -1712,8 +1712,8 @@ const TRACKER_DATA = {
         "S55-Q532"
       ],
       "domains": [
-        "D1",
         "D3",
+        "D1",
         "D6"
       ],
       "count": 1,
@@ -1727,8 +1727,8 @@ const TRACKER_DATA = {
       ],
       "domains": [
         "D1",
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -1777,8 +1777,8 @@ const TRACKER_DATA = {
         "S69-Q690"
       ],
       "domains": [
-        "D1",
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
@@ -1923,8 +1923,8 @@ const TRACKER_DATA = {
         "S77-Q761"
       ],
       "domains": [
-        "D4",
-        "D2"
+        "D2",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1972,8 +1972,8 @@ const TRACKER_DATA = {
         "S81-Q797"
       ],
       "domains": [
-        "D1",
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
@@ -2009,8 +2009,8 @@ const TRACKER_DATA = {
         "S82-Q820"
       ],
       "domains": [
-        "D1",
         "D2",
+        "D1",
         "D4"
       ],
       "count": 1,
@@ -2566,8 +2566,8 @@ const TRACKER_DATA = {
         "S99-Q1127"
       ],
       "domains": [
-        "D1",
-        "D3"
+        "D3",
+        "D1"
       ],
       "count": 1,
       "level": "yellow"
