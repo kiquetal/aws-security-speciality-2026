@@ -301,6 +301,7 @@
 - 🧠 **If the service has delegated admin + auto-enable → use native, not StackSets.** GuardDuty, Inspector, Security Hub, Macie, Detective, Config, Access Analyzer.
 - 🧠 **No single governance service does everything.** CT doesn't share (RAM), deploy WAF (FM), or remediate (Config).
 - 🧠 **Declarative policy = "this state is impossible to violate" (EC2/VPC/EBS only).** SCP = "this API call is blocked." Different layers. "Regardless of which API" = declarative.
+- 🧠 **Stack Policy = protect resources inside stack (preventive, blocks CF updates). Termination protection = prevent stack deletion.** Drift detection = detective only (reports manual changes, doesn't prevent). Change sets = preview before deploy.
 ---
 
 ## Quotas That Trick You (4-5-8-32-5120)
