@@ -63,6 +63,58 @@ class AetherGuardHandler(http.server.SimpleHTTPRequestHandler):
                 }
                 self.wfile.write(json.dumps(response).encode("utf-8"))
                 print(f"❌ [API Error] Sync failed: {e}")
+        elif self.path == "/api/start-session":
+            try:
+                # Read content length and load JSON body
+                content_length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(content_length).decode('utf-8')
+                data = json.loads(body) if body else {}
+                
+                questions = data.get("questions", 25)
+                domains = data.get("domains", "D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance")
+                
+                # Execute start-session.py
+                start_script = os.path.join(BASE_DIR, "scripts", "start-session.py")
+                res_start = subprocess.run([sys.executable, start_script, "--questions", str(questions), "--domains", domains], capture_output=True, text=True, cwd=BASE_DIR)
+                if res_start.returncode != 0:
+                    raise Exception(f"start-session.py failed:\n{res_start.stderr}")
+                
+                # After starting session, compile trackers
+                tracker_script = os.path.join(BASE_DIR, "scripts", "update-tracker.py")
+                res1 = subprocess.run([sys.executable, tracker_script], capture_output=True, text=True, cwd=BASE_DIR)
+                if res1.returncode != 0:
+                    raise Exception(f"update-tracker.py failed:\n{res1.stderr}")
+                
+                export_script = os.path.join(BASE_DIR, "scripts", "export_to_json.py")
+                res2 = subprocess.run([sys.executable, export_script], capture_output=True, text=True, cwd=BASE_DIR)
+                if res2.returncode != 0:
+                    raise Exception(f"export_to_json.py failed:\n{res2.stderr}")
+
+                # Success response
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                
+                response = {
+                    "status": "success", 
+                    "message": "Practice session generated successfully!"
+                }
+                self.wfile.write(json.dumps(response).encode("utf-8"))
+                print(f"🚀 [API] New session ({questions} questions) generated successfully.")
+                
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                
+                response = {
+                    "status": "error", 
+                    "message": str(e)
+                }
+                self.wfile.write(json.dumps(response).encode("utf-8"))
+                print(f"❌ [API Error] Start session failed: {e}")
         else:
             self.send_error(404, "Endpoint not found")
 

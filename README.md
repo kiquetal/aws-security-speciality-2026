@@ -195,6 +195,39 @@ All policies in this repo follow exam best practices:
 5. Review `notes/flashcards-*.md` for active recall on recurring errors
 6. Follow the weekly rhythm above
 
+## How to Conduct and Log a Study Session
+
+This repository is designed to track your active-recall progress as you attempt practice questions (e.g., from Tutorials Dojo, Udemy, or AWS official practice exams).
+
+Follow this step-by-step workflow to run a study session:
+
+### Step 1: Start a New Session / Generate a Practice Drill
+You have two options to prepare a session:
+- **Interactive Portal**: If the local study portal is running, click the **Start New Session** button in the sidebar. Select your target number of questions (e.g., 10 for a mini-drill, 25 for standard practice, or 65 for a full mock) and click **Generate Drill**. This automatically appends a new empty session template with pre-numbered tables to `notes/question-tracker.md` and reloads the portal.
+- **Command Line**: Alternatively, run the generator script directly:
+  ```bash
+  python3 scripts/start-session.py --questions 25
+  ```
+
+### Step 2: Answer the Practice Questions
+Attempt the questions from your external practice source, and log each result inside [`notes/question-tracker.md`](notes/question-tracker.md) under your newly created session section:
+- Update the **Domain** column (e.g., `D4` for IAM, `D5` for Data Protection).
+- Write a short, keyword-dense description in **Question / Scenario**.
+- Log your choice in **Your Answer**.
+- Change the pending status (`⬜`) in the **Result** column to `✅` (Correct), `❌` (Wrong), or `⚠️` (Partial).
+- Note down the **Correct Answer** and list the core concept in **Review Topic** to auto-track your weak areas.
+
+### Step 3: Recompile Your Metrics
+Once you finish logging, update your dashboard statistics:
+- **Interactive Portal**: Click **Sync Study Logs** in the sidebar.
+- **Command Line**: Run the compilation scripts:
+  ```bash
+  python3 scripts/update-tracker.py
+  python3 scripts/export_to_json.py
+  ```
+
+The portal will automatically reload, displaying your updated scores, accuracy, domain breakdown, and priority weak areas!
+
 ## Local Study Portal & Live Sync
 
 You can run a local study portal to visualize your progress:

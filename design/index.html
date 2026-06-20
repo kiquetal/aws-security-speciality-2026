@@ -206,6 +206,14 @@
             </button>
         </div>
 
+        <!-- Start New Session Button -->
+        <div class="px-4 mb-2">
+            <button onclick="openSessionModal()" id="btn-start-session" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded text-on-secondary bg-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-semibold text-sm">
+                <span class="material-symbols-outlined text-xl">add_circle</span>
+                <span>Start New Session</span>
+            </button>
+        </div>
+
         <div class="px-4 mt-auto pt-6 border-t border-outline-variant hidden md:block">
             <div class="p-4 bg-surface-container-low border border-outline-variant rounded">
                 <p class="text-xs font-label-sm text-secondary uppercase tracking-wider mb-1">MEMENTO MORI</p>
@@ -731,6 +739,49 @@
             <div class="border-t border-outline-variant pt-3 flex justify-end">
                 <button onclick="closeModal()" class="bg-secondary text-on-secondary px-5 py-2 font-label-sm text-[11px] uppercase font-bold tracking-widest hover:opacity-90 transition-opacity rounded">
                     Acknowledged
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING MODAL FOR NEW SESSION CREATOR -->
+    <div id="session-modal" class="fixed inset-0 bg-surface/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-200">
+        <div class="bg-surface-container-high border border-outline-variant p-6 rounded-lg max-w-md w-full shadow-2xl space-y-4">
+            <div class="flex justify-between items-start border-b border-outline-variant pb-3">
+                <div>
+                    <h3 class="font-headline-md text-lg text-on-surface font-bold">Start New Study Session</h3>
+                    <p class="text-xs text-on-surface-variant">Configure a new blank practice drill in your tracker.</p>
+                </div>
+                <button onclick="closeSessionModal()" class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container-highest">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-sm">
+                <!-- Questions count -->
+                <div class="space-y-1">
+                    <label for="session-q-count" class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-bold">Number of Questions:</label>
+                    <select id="session-q-count" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface font-semibold text-sm">
+                        <option value="10">10 Questions (Quick Review)</option>
+                        <option value="25" selected>25 Questions (Standard Practice Drill)</option>
+                        <option value="65">65 Questions (Full Mock Simulation)</option>
+                    </select>
+                </div>
+                
+                <!-- Domains covered -->
+                <div class="space-y-1">
+                    <label for="session-domains" class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-bold">Domains to Cover:</label>
+                    <input type="text" id="session-domains" value="D1 Detection · D2 Incident Response · D3 Infrastructure Security · D4 Identity & Access Management · D5 Data Protection · D6 Governance" class="w-full bg-surface border border-outline-variant rounded p-2.5 text-on-surface text-xs font-semibold leading-relaxed" />
+                </div>
+            </div>
+            
+            <div class="border-t border-outline-variant pt-3 flex justify-end gap-3">
+                <button onclick="closeSessionModal()" class="px-4 py-2 border border-outline-variant rounded font-semibold hover:bg-surface-container-highest text-on-surface text-xs uppercase tracking-wider transition-all">
+                    Cancel
+                </button>
+                <button onclick="submitNewSession()" id="btn-create-session" class="bg-secondary text-on-secondary px-5 py-2 font-bold hover:opacity-90 transition-all rounded text-xs uppercase tracking-wider flex items-center gap-2">
+                    <span id="create-session-icon" class="material-symbols-outlined text-sm">add_circle</span>
+                    <span id="create-session-text">Generate Drill</span>
                 </button>
             </div>
         </div>
@@ -1671,6 +1722,54 @@
 
         function closeModal() {
             document.getElementById('question-modal').classList.add('hidden');
+        }
+
+        function openSessionModal() {
+            document.getElementById('session-modal').classList.remove('hidden');
+        }
+
+        function closeSessionModal() {
+            document.getElementById('session-modal').classList.add('hidden');
+        }
+
+        async function submitNewSession() {
+            const btn = document.getElementById('btn-create-session');
+            const icon = document.getElementById('create-session-icon');
+            const text = document.getElementById('create-session-text');
+            
+            if (!btn || btn.disabled) return;
+            
+            const qCount = parseInt(document.getElementById('session-q-count').value) || 25;
+            const domains = document.getElementById('session-domains').value || "";
+            
+            btn.disabled = true;
+            icon.innerText = 'autorenew';
+            icon.classList.add('animate-spin');
+            text.innerText = 'Generating Drill...';
+            
+            try {
+                const response = await fetch('/api/start-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ questions: qCount, domains: domains })
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    location.reload();
+                } else {
+                    alert(`Error generating session:\n${result.message}`);
+                }
+            } catch (err) {
+                console.error(err);
+                alert(`Error starting session: ${err.message}`);
+            } finally {
+                btn.disabled = false;
+                icon.innerText = 'add_circle';
+                icon.classList.remove('animate-spin');
+                text.innerText = 'Generate Drill';
+                closeSessionModal();
+            }
         }
 
         // Lookups
