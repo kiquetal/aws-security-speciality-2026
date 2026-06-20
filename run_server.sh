@@ -20,7 +20,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # 2. Determine available web servers
-PORT=8281
+PORT=8288
 echo ""
 echo "🌐 Starting local web server on port $PORT..."
 
