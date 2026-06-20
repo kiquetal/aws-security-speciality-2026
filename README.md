@@ -2,6 +2,8 @@
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
 
+![SCS-C03 Prep Dashboard](./diagrams/dashboard.png)
+
 ## Table of Contents
 
 - [Exam Snapshot](#exam-snapshot)
