@@ -3129,7 +3129,9 @@
             text.innerText = 'Generating Drill...';
             
             try {
-                simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, sessType === "blank");
+                const active_sess_num = simulateStartSessionClientSide(qCount, domains, isDemo, isQuiz, sessType === "blank");
+                // Set auto-open flag so modal automatically re-opens this generated drill session at Question 1
+                sessionStorage.setItem('AUTO_OPEN_QUESTION', `S${active_sess_num}-Q1`);
                 location.reload();
             } catch (simErr) {
                 console.error("Client-side simulation failed:", simErr);
