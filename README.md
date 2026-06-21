@@ -40,10 +40,10 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | Metric | Value |
 |--------|-------|
 | **Phase** | Maintenance mode (decay prevention until Aug 27) |
-| **Questions Attempted** | 1,115 |
+| **Questions Attempted** | 1,191 |
 | **Accuracy** | 78% overall, 85-90% on recent sessions |
-| **Sessions** | 98 |
-| **Study Hours** | 72+ hours |
+| **Sessions** | 100 |
+| **Study Hours** | 89+ hours |
 | **Dojo Mock Scores** | Test 1: 58% → Test 2: 72% (passing) |
 | **Never-Seen Topics Tested** | 14/18 (all passed or re-locked) |
 | **Weakest Domain** | D1 Detection (75%) — target 80% |
@@ -52,12 +52,12 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 
 | Domain | Weight | Status | Score |
 |--------|--------|--------|-------|
-| D4: Identity and Access Management | 20% | ✅ Complete | 79% |
-| D5: Data Protection | 18% | ✅ Complete | 78% |
+| D4: Identity and Access Management | 20% | ✅ Complete | 80% |
+| D5: Data Protection | 18% | ✅ Complete | 79% |
 | D3: Infrastructure Security | 18% | ✅ Complete | 78% |
 | D1: Detection | 16% | ✅ Complete | 75% |
-| D2: Incident Response | 14% | ✅ Complete | 76% |
-| D6: Governance | 14% | ✅ Complete | 78% |
+| D2: Incident Response | 14% | ✅ Complete | 77% |
+| D6: Governance | 14% | ✅ Complete | 79% |
 
 Strategy: All domains covered. Now in maintenance mode — weekly 25-question drills + bi-weekly 65-question Dojo mocks until exam day. See [`notes/maintenance-plan.md`](notes/maintenance-plan.md) for the schedule.
 
