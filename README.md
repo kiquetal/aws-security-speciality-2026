@@ -1,6 +1,6 @@
 # AWS Certified Security - Specialty (SCS-C03) Study Repository
 
-[![Questions Attempted](https://img.shields.io/badge/Questions-1,206-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-78%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-89_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-101-purple)](#current-progress)
+[![Questions Attempted](https://img.shields.io/badge/Questions-1,216-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-78%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-92_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-102-purple)](#current-progress)
 
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
@@ -43,10 +43,10 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | Metric | Value |
 |--------|-------|
 | **Phase** | Maintenance mode (decay prevention until Aug 27) |
-| **Questions Attempted** | 1,206 |
+| **Questions Attempted** | 1,216 |
 | **Accuracy** | 78% overall, 85-90% on recent sessions |
-| **Sessions** | 101 |
-| **Study Hours** | 89+ hours |
+| **Sessions** | 102 |
+| **Study Hours** | 92+ hours |
 | **Dojo Mock Scores** | Test 1: 58% → Test 2: 72% (passing) |
 | **Never-Seen Topics Tested** | 14/18 (all passed or re-locked) |
 | **Weakest Domain** | D1 Detection (75%) — target 80% |
@@ -59,7 +59,7 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | D5: Data Protection | 18% | ✅ Complete | 79% |
 | D3: Infrastructure Security | 18% | ✅ Complete | 79% |
 | D1: Detection | 16% | ✅ Complete | 75% |
-| D2: Incident Response | 14% | ✅ Complete | 77% |
+| D2: Incident Response | 14% | ✅ Complete | 78% |
 | D6: Governance | 14% | ✅ Complete | 79% |
 
 Strategy: All domains covered. Now in maintenance mode — weekly 25-question drills + bi-weekly 65-question Dojo mocks until exam day. See [`notes/maintenance-plan.md`](notes/maintenance-plan.md) for the schedule.
