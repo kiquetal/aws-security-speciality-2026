@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1191 |
-| **✅ Correct** | 931 (78%) |
+| **Total Questions** | 1201 |
+| **✅ Correct** | 940 (78%) |
 | **⚠️ Partial** | 34 (3%) |
 | **❌ Wrong** | 223 (19%) |
 | **Sessions** | 100 |
@@ -2497,3 +2497,21 @@ After adding a session:
 | 1190 | D3 | WAF Bot Control blocks mobile app (no JS) — fix? | B | ✅ | Scope-down statement excluding mobile header | — | WAF scope-down |
 | 1191 | D3 | Bedrock SCP enforce guardrail — which statement? | A | ✅ | Deny InvokeModel + StringNotEquals GuardrailIdentifier | Q1187 | Bedrock guardrail condition key |
 
+
+### Session 100b — 2026-06-20 (night)
+
+**Domains:** D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM
+**Score:** 8.5 ✅ · 0 ⚠️ · 1.5 ❌ (85% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1192 | D6 | cfn-guard rule SSEAlgorithm=aws:kms, dev sends AES256 — result? | B | ✅ | Pipeline FAIL, blocks before reaching CF | — | cfn-guard shift-left |
+| 1193 | D5 | 10TB nightly NFS→S3, TLS + throttle + modified-only — service? | B | ✅ | DataSync (built-in TLS + bandwidth + filter) | — | DataSync features |
+| 1194 | D5 | EBS snapshots 12hr + 7d retain + cross-region + DR KMS — service? | B | ✅ | Data Lifecycle Manager policy | — | DLM automation |
+| 1195 | D6 | Assess workloads vs WA Security Pillar, track improvements — service? | C | ✅ | Well-Architected Tool | — | WAT vs Audit Manager |
+| 1196 | D1 | StopLogging called, CW metric filter on log group — alerted? | B | ✅ | No — StopLogging kills CW delivery | Q860 | StopLogging blinds CW |
+| 1197 | D3 | Lattice: add C to network, B auth policy allows only A — fixed? | B | ✅ | No — network = reachability, auth policy = authorization | — | Lattice auth vs network |
+| 1198 | D3 | SAST pre-deploy: hardcoded keys + SQLi + insecure SDK — service? | B | ✅ | CodeGuru Security | — | CodeGuru = SAST |
+| 1199 | D3 | Bot Control Challenge blocks server-to-server API clients — fix? | B | ✅ | Scope-down excluding X-Client-Type: api | — | WAF scope-down |
+| 1200 | D4/D6 | RCP deny s3:* non-org, Lambda writes own bucket + partner bucket — result? | C | ✅ | Both succeed: own (org match) + partner (not your resource) | — | RCP scope = your resources only |
+| 1201 | D1 | StopLogging: which of CW filter / EventBridge / Config fire? | B only | ⚠️ | B+C: EventBridge (seconds) + Config (minutes). CW = never | Q860 | Config also detects StopLogging |
