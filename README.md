@@ -1,6 +1,6 @@
 # AWS Certified Security - Specialty (SCS-C03) Study Repository
 
-[![Questions Attempted](https://img.shields.io/badge/Questions-1,201-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-78%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-89_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-101-purple)](#current-progress)
+[![Questions Attempted](https://img.shields.io/badge/Questions-1,206-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-78%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-89_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-101-purple)](#current-progress)
 
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
@@ -43,7 +43,7 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | Metric | Value |
 |--------|-------|
 | **Phase** | Maintenance mode (decay prevention until Aug 27) |
-| **Questions Attempted** | 1,201 |
+| **Questions Attempted** | 1,206 |
 | **Accuracy** | 78% overall, 85-90% on recent sessions |
 | **Sessions** | 101 |
 | **Study Hours** | 89+ hours |
