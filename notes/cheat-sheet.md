@@ -230,6 +230,17 @@
 - 🧠 **ELB access logs → S3 ONLY (never CW Logs directly).** Search = Athena. Metrics = Athena query → PutMetricData to CloudWatch. CW metric filters only work on CW Logs log groups, not S3 files.
 - **"Which domain was queried?" = Resolver Query Logs.** VPC Flow Logs only show IP:port — domain name is gone after DNS resolves.
 - GuardDuty reads BOTH: DNS logs (domain) + VPC Flow Logs (traffic volume/destination). That's why it catches C2 that other services miss.
+- 🧠 **Log delivery destinations (exam-critical table):**
+
+| Log Source | S3 | CW Logs | Firehose | EventBridge |
+|---|---|---|---|---|
+| **VPC Flow Logs** | ✅ | ✅ | ✅ | ❌ |
+| **ELB Access Logs** | ✅ | ❌ | ❌ | ❌ |
+| **CloudTrail** | ✅ | ✅ | ❌ | ✅ (automatic) |
+| **WAF Logs** | ✅ | ✅ | ✅ | ❌ |
+| **R53 DNS query logging (public)** | ❌ | ✅ only | ❌ | ❌ |
+| **R53 Resolver query logging (VPC)** | ✅ | ✅ | ✅ | ❌ |
+
 - 🧠 **VPC Flow Logs = only service using IAM role for ALL delivery targets (S3, CloudWatch Logs, Kinesis Firehose).** CloudTrail uses bucket policy for S3, not an IAM role.
 - 🧠 **Log delivery mechanisms:**
   - VPC Flow Logs → S3/CW Logs/Firehose = **IAM role** (all three)
