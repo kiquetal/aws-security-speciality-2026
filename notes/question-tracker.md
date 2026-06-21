@@ -10,21 +10,21 @@
 |---|---|
 | **Total Questions** | 1201 |
 | **✅ Correct** | 940 (78%) |
-| **⚠️ Partial** | 34 (3%) |
+| **⚠️ Partial** | 35 (3%) |
 | **❌ Wrong** | 223 (19%) |
-| **Sessions** | 100 |
-| **Re-tests Passed** | 544 of 657 |
+| **Sessions** | 101 |
+| **Re-tests Passed** | 545 of 659 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 235 | 10 | 64 | 309 | 76% | 🟡 |
+| D1: Detection | 16% | 236 | 11 | 64 | 311 | 76% | 🟡 |
 | D2: Incident Response | 14% | 60 | 2 | 16 | 78 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 206 | 9 | 48 | 263 | 78% | 🟡 |
-| D4: Identity & Access Management | 20% | 271 | 10 | 59 | 340 | 80% | 🟢 |
-| D5: Data Protection | 18% | 254 | 8 | 61 | 323 | 79% | 🟡 |
-| D6: Governance | 14% | 177 | 2 | 46 | 225 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 209 | 9 | 48 | 266 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 272 | 10 | 59 | 341 | 80% | 🟢 |
+| D5: Data Protection | 18% | 256 | 8 | 61 | 325 | 79% | 🟡 |
+| D6: Governance | 14% | 180 | 2 | 46 | 228 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -222,6 +222,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 188 | SCP = what key, Key policy = who uses it | Q1140 | D4, D5 | 1 |
 | 🟡 189 | mTLS = custom domain + S3 | Q1172 | D3 | 1 |
 | 🟡 190 | Bedrock guardrail condition key | Q1187 | D3 | 1 |
+| 🟡 191 | Config also detects StopLogging | Q1201 | D1 | 1 |
 
 ---
 
@@ -329,6 +330,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 98 | 2026-06-18 | Q1056–Q1115 | 48 | 0 | 12 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
 | 100 | 2026-06-20 | Q1141–Q1191 | 49 | 1 | 1 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response | [Jump](#session-100--2026-06-20) |
+| 101 | 2026-06-20 | Q1192–Q1201 | 9 | 1 | 0 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
 
 ---
 
