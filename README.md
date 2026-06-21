@@ -1,5 +1,8 @@
 # AWS Certified Security - Specialty (SCS-C03) Study Repository
 
+[![Questions Attempted](https://img.shields.io/badge/Questions-1,191-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-78%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-89_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-100-purple)](#current-progress)
+
+
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
 
 > [!TIP]

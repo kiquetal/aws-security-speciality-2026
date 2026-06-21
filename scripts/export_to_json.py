@@ -220,6 +220,41 @@ def update_readme_progress(base_dir, total_q, accuracy_pct, sessions_count, tota
         
     text = readme_path.read_text(encoding="utf-8")
     
+    # 1. Update/Insert Shields.io badges at the very top of README.md below the title
+    if "https://img.shields.io/badge/Questions-" not in text:
+        # Insert them right after the first line (the H1 title)
+        lines = text.splitlines()
+        badges_line = f"\n[![Questions Attempted](https://img.shields.io/badge/Questions-{total_q:,}-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-{accuracy_pct}%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-{int(round(total_hours))}_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-{sessions_count}-purple)](#current-progress)\n"
+        h1_idx = 0
+        for i, l in enumerate(lines):
+            if l.startswith("# "):
+                h1_idx = i
+                break
+        lines.insert(h1_idx + 1, badges_line)
+        text = "\n".join(lines) + "\n"
+    else:
+        # Replace existing badges using regex
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Questions-[\d,]+-blue",
+            f"https://img.shields.io/badge/Questions-{total_q:,}-blue",
+            text
+        )
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Accuracy-\d+%25-green",
+            f"https://img.shields.io/badge/Accuracy-{accuracy_pct}%25-green",
+            text
+        )
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Study_Hours-\d+_hrs-orange",
+            f"https://img.shields.io/badge/Study_Hours-{int(round(total_hours))}_hrs-orange",
+            text
+        )
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Sessions-\d+-purple",
+            f"https://img.shields.io/badge/Sessions-{sessions_count}-purple",
+            text
+        )
+    
     # Replace Questions Attempted
     text, count1 = re.subn(
         r"\|\s*\*\*Questions Attempted\*\*\s*\|\s*[\d,]+\s*\|",
