@@ -2564,3 +2564,5 @@ After adding a session:
 | 1229 | D1 | CryptoCurrency:EC2/BitcoinTool.B — detection method? | B | ✅ | Active TCP to mining pool (not DNS) | — | GD finding type = detection method |
 | 1230 | D5 | CRR SSE-KMS replication role — three permissions? | B | ✅ | Decrypt source + GenerateDataKey dest + GetObjectVersionForReplication | — | CRR D-G-F |
 | 1231 | D2 | IAM user creds on GitHub, 2 keys + console + STS — first containment? | B | ❌ | A: Deactivate key + inline Deny * on user (covers ALL paths) | — | User = Deny *. Role = TokenIssueTime. |
+| 1232 | D6 | Stack Policy Allow * + Deny Replace/Delete on Aurora, dev changes engine (requires replacement) — result? | B | ✅ | Fails — explicit Deny Update:Replace blocks | Q1225 | Stack Policy explicit Deny wins |
+| 1233 | D6 | WAT Jan milestone 4 HRIs, June milestone 1 HRI — what does CISO see? | A | ❌ | B: Per-question risk changes (self-reported). NO automated evidence. | Q1221 | WAT = self-reported, no automation |
