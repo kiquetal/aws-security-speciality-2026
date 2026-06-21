@@ -249,6 +249,7 @@
 - 🧠 **CloudTrail management events: Write-only trail = ConsoleLogin (Read event) won't trigger EventBridge.** Must be "All" or "Read-only/Read+Write" for login events. Event History always shows all events regardless.
 - 🧠 **CW metric filter: metric value must be 1 (not 0).** Value=0 means every match publishes nothing — alarm threshold >= 1 never fires. Common troubleshooting trap.
 - 🧠 **StopLogging kills its own CW Logs delivery.** Metric filter on the log group can never detect StopLogging — use EventBridge instead (receives from CloudTrail's management event stream directly).
+- 🧠 **CloudTrail data events (GetObject, PutObject, Decrypt, Invoke) are NOT logged by default.** Only management events are. If a question says "CloudTrail recorded X" where X is a data operation — check if data events are explicitly enabled. Not stated = not logged.
 
 ---
 
