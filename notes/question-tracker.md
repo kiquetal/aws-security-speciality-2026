@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1201 |
-| **✅ Correct** | 940 (78%) |
+| **Total Questions** | 1211 |
+| **✅ Correct** | 944 (78%) |
 | **⚠️ Partial** | 34 (3%) |
-| **❌ Wrong** | 223 (19%) |
-| **Sessions** | 100 |
-| **Re-tests Passed** | 544 of 657 |
+| **❌ Wrong** | 230 (19%) |
+| **Sessions** | 101 |
+| **Re-tests Passed** | 555 of 673 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 235 | 10 | 64 | 309 | 76% | 🟡 |
-| D2: Incident Response | 14% | 60 | 2 | 16 | 78 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 206 | 9 | 48 | 263 | 78% | 🟡 |
-| D4: Identity & Access Management | 20% | 271 | 10 | 59 | 340 | 80% | 🟢 |
-| D5: Data Protection | 18% | 254 | 8 | 61 | 323 | 79% | 🟡 |
-| D6: Governance | 14% | 177 | 2 | 46 | 225 | 79% | 🟡 |
+| D1: Detection | 16% | 239 | 10 | 64 | 313 | 76% | 🟡 |
+| D2: Incident Response | 14% | 61 | 2 | 16 | 79 | 77% | 🟡 |
+| D3: Infrastructure Security | 18% | 213 | 9 | 49 | 271 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 272 | 10 | 59 | 341 | 80% | 🟢 |
+| D5: Data Protection | 18% | 256 | 8 | 61 | 325 | 79% | 🟡 |
+| D6: Governance | 14% | 180 | 2 | 52 | 234 | 77% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -222,6 +222,13 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 188 | SCP = what key, Key policy = who uses it | Q1140 | D4, D5 | 1 |
 | 🟡 189 | mTLS = custom domain + S3 | Q1172 | D3 | 1 |
 | 🟡 190 | Bedrock guardrail condition key | Q1187 | D3 | 1 |
+| 🟡 191 | mTLS S3 versioning required | Q1202 | D3 | 1 |
+| 🟡 192 | Well-Architected Tool milestones | Q1206 | D6 | 1 |
+| 🟡 193 | cfn-guard vs Config proactive (template validation) | Q1208 | D6 | 1 |
+| 🟡 194 | cfn-guard bypassable vs Config proactive service-level | Q1215 | D6 | 1 |
+| 🟡 195 | WAT milestones = no automation | Q1216 | D6 | 1 |
+| 🟡 196 | Stack Policy default deny + selective Deny | Q1220 | D6 | 1 |
+| 🟡 197 | WAT milestones = no automated evidence | Q1221 | D6 | 1 |
 
 ---
 
@@ -329,6 +336,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 98 | 2026-06-18 | Q1056–Q1115 | 48 | 0 | 12 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
 | 100 | 2026-06-20 | Q1141–Q1191 | 49 | 1 | 1 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response | [Jump](#session-100--2026-06-20) |
+| 102 | 2026-06-21 | Q1202–Q1221 | 13 | 0 | 7 | D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response · D4 IAM | [Jump](#session-102--2026-06-21) |
 
 ---
 
@@ -2515,3 +2523,32 @@ After adding a session:
 | 1199 | D3 | Bot Control Challenge blocks server-to-server API clients — fix? | B | ✅ | Scope-down excluding X-Client-Type: api | — | WAF scope-down |
 | 1200 | D4/D6 | RCP deny s3:* non-org, Lambda writes own bucket + partner bucket — result? | C | ✅ | Both succeed: own (org match) + partner (not your resource) | — | RCP scope = your resources only |
 | 1201 | D1 | StopLogging: which of CW filter / EventBridge / Config fire? | B only | ⚠️ | B+C: EventBridge (seconds) + Config (minutes). CW = never | Q860 | Config also detects StopLogging |
+
+
+### Session 102 — 2026-06-21
+
+**Domains:** D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response · D4 IAM
+**Score:** 14 ✅ · 0 ⚠️ · 6 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1202 | D3 | mTLS setup, S3 bucket NO versioning enabled — what happens? | A | ❌ | B: Domain creation fails — versioning required for object version reference | Q967 | mTLS S3 versioning required |
+| 1203 | D3 | Inspector SBOM export fails cross-account AccessDenied on PutObject — fix? | B | ✅ | Bucket policy for inspector2.amazonaws.com service principal | Q1059 | Inspector SBOM = native export + bucket policy |
+| 1204 | D1/D3 | State Manager CIS on boot + every 2hr — minimum associations? | B | ✅ | ONE association with OnBoot + rate(2 hours) | Q1048 | State Manager OnBoot + schedule (dual triggers) |
+| 1205 | D1/D3 | Config 8-12min gap on new instances, eliminate gap — approach? | B | ✅ | State Manager OnBoot + rate (proactive, zero gap) | Q1127 | State Manager = proactive vs Config = reactive |
+| 1206 | D6 | WAT 4 HRIs + 7 MRIs, track improvement over 3 quarters — feature? | C | ❌ | A: Milestones — snapshot current state, compare across quarters | Q1031 | Well-Architected Tool milestones |
+| 1207 | D2 | Multi-account breach, custom Python + interactive graph + reusable notebook — tool? | B | ✅ | SageMaker AI notebooks (custom code + reusable + arbitrary queries) | Q996 | SageMaker notebooks vs Detective (custom vs built-in) |
+| 1208 | D6 | Reject CF template without mTLS before any resource exists — mechanism? | B | ❌ | C: cfn-guard in CI/CD (validates template content, shift-left) | — | cfn-guard vs Config proactive (template validation) |
+| 1209 | D5 | EMR inter-node encryption, engineer proposes Nitro on C5 — why wrong? | B | ✅ | EMR = security config + PEM certs (not Nitro) | Q1030 | EMR in-transit = security config + PEM certs |
+| 1210 | D6 | cfn-guard passes, dev disables DeletionProtection via Console — limitation + fix? | A | ✅ | cfn-guard = template only. SCP blocks runtime API call. | — | cfn-guard limitation (shift-left only) |
+| 1211 | D6/D3/D1 | Match: template validation + boot enforcement + API block — three mechanisms? | B | ✅ | cfn-guard + State Manager (OnBoot+rate) + SCP | — | Three enforcement moments |
+| 1212 | D3 | Inspector SBOM — no scheduling option in console — explanation? | B | ✅ | On-demand API only. EventBridge + Lambda for scheduling. | Q1051 | Inspector SBOM = on-demand API (no built-in scheduler) |
+| 1213 | D1/D3 | State Manager OnBoot + rate(4hr), instance reboots at 14:30 — what happens? | A | ✅ | OnBoot fires immediately, next rate run still at 17:00 (independent triggers) | Q1048 | State Manager dual triggers independent |
+| 1214 | D5 | EMR cluster TLS fails between nodes, security config enabled — missing? | B | ✅ | PEM certificates (Private CA or custom) | Q1030 | EMR in-transit = security config + PEM certs |
+| 1215 | D6 | cfn-guard in CI/CD, dev deploys non-compliant via Console — what catches it? | C | ❌ | B: Config proactive evaluation (service-level, can't bypass) | — | cfn-guard bypassable vs Config proactive service-level |
+| 1216 | D6 | WAT milestones NOT show — which is correct? | B | ❌ | C: Automated evidence (Config/CloudTrail). Milestones DO show per-question changes. | Q1031 | WAT milestones = no automation |
+| 1217 | D6 | Both CI/CD and Console CF deploys must be validated — architecture? | B | ✅ | Config proactive evaluation (service-level, catches all paths) | Q1215 | Config proactive = service-level, can't bypass |
+| 1218 | D3 | mTLS S3 URI without specifying object version — result? | B | ✅ | Domain creation fails — explicit truststoreVersion required | Q1202 | mTLS S3 versioning + object version required |
+| 1219 | D4 | Bucket policy Deny with StringNotEquals federated-user ARN — what happens? | B | ✅ | Allowed — federated user ARN matches, condition FALSE, Deny doesn't fire | Q1139 | Federated user ARN = sts:: not iam:: |
+| 1220 | D6 | Stack Policy: Aurora no replace/delete, Lambda no delete, SQS unrestricted — config? | A | ❌ | B: Allow Update:* all, then Deny Replace+Delete on Aurora, Deny Delete on Lambda | Q1138 | Stack Policy default deny + selective Deny |
+| 1221 | D6 | WAT milestone comparison — what does it NOT show? | B | ❌ | C: Automated evidence. Milestones DO show per-question risk changes. | Q1206 | WAT milestones = no automated evidence |
