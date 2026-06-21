@@ -624,6 +624,9 @@ def parse_all_faqs():
     return faqs
 
 def main():
+    import sys
+    is_blank = any(flag in sys.argv for flag in ["--blank", "--onboarding", "--live-demo"])
+    
     print("Parsing study-plan.md...")
     weeks = parse_study_plan()
     
@@ -639,6 +642,33 @@ def main():
     print("Parsing notes/faq-*.md files...")
     faqs = parse_all_faqs()
     
+    if is_blank:
+        print("Override: Compiling clean slate for Live Demo (0 sessions, 0 hours, 0% stats)...")
+        sessions = []
+        weak_areas = []
+        stats = {
+            "total_questions": 0,
+            "correct": 0,
+            "partial": 0,
+            "wrong": 0,
+            "sessions_count": 0,
+            "retests_total": 0,
+            "retests_passed": 0,
+            "accuracy_pct": 0
+        }
+        domain_proficiency = {}
+        for d_code, name in DOMAIN_NAMES.items():
+            domain_proficiency[d_code] = {
+                "code": d_code,
+                "name": name,
+                "correct": 0,
+                "partial": 0,
+                "wrong": 0,
+                "total": 0,
+                "score_pct": 0,
+                "status": "Critical"
+            }
+            
     tracker_data = {
         "stats": stats,
         "weeks": weeks,
