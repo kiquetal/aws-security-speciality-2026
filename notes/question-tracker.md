@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1216 |
-| **✅ Correct** | 952 (78%) |
+| **Total Questions** | 1226 |
+| **✅ Correct** | 958 (78%) |
 | **⚠️ Partial** | 35 (3%) |
-| **❌ Wrong** | 226 (19%) |
+| **❌ Wrong** | 230 (19%) |
 | **Sessions** | 102 |
-| **Re-tests Passed** | 554 of 670 |
+| **Re-tests Passed** | 560 of 679 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 240 | 11 | 64 | 315 | 76% | 🟡 |
+| D1: Detection | 16% | 241 | 11 | 64 | 316 | 76% | 🟡 |
 | D2: Incident Response | 14% | 62 | 2 | 16 | 80 | 78% | 🟡 |
-| D3: Infrastructure Security | 18% | 214 | 9 | 49 | 272 | 79% | 🟡 |
-| D4: Identity & Access Management | 20% | 275 | 10 | 59 | 344 | 80% | 🟢 |
-| D5: Data Protection | 18% | 260 | 8 | 61 | 329 | 79% | 🟡 |
-| D6: Governance | 14% | 183 | 2 | 48 | 233 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 217 | 9 | 49 | 275 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 276 | 10 | 59 | 345 | 80% | 🟢 |
+| D5: Data Protection | 18% | 261 | 8 | 61 | 330 | 79% | 🟡 |
+| D6: Governance | 14% | 184 | 2 | 52 | 238 | 77% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -226,6 +226,10 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 192 | mTLS S3 versioning required | Q1207 | D3 | 1 |
 | 🟡 193 | Well-Architected Tool milestones | Q1211 | D6 | 1 |
 | 🟡 194 | cfn-guard vs Config proactive (template validation) | Q1213 | D6 | 1 |
+| 🟡 195 | cfn-guard bypassable vs Config proactive service-level | Q1220 | D6 | 1 |
+| 🟡 196 | WAT milestones = no automation | Q1221 | D6 | 1 |
+| 🟡 197 | Stack Policy default deny + selective Deny | Q1225 | D6 | 1 |
+| 🟡 198 | WAT milestones = no automated evidence | Q1226 | D6 | 1 |
 
 ---
 
@@ -334,7 +338,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
 | 100 | 2026-06-20 | Q1141–Q1191 | 49 | 1 | 1 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response | [Jump](#session-100--2026-06-20) |
 | 101 | 2026-06-20 | Q1192–Q1206 | 14 | 1 | 0 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
-| 102 | 2026-06-21 | Q1207–Q1216 | 7 | 0 | 3 | D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response | [Jump](#session-102--2026-06-21) |
+| 102 | 2026-06-21 | Q1207–Q1226 | 13 | 0 | 7 | D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response | [Jump](#session-102--2026-06-21) |
 
 ---
 
@@ -2545,3 +2549,13 @@ After adding a session:
 | 1214 | D5 | EMR inter-node encryption, engineer proposes Nitro on C5 — why wrong? | B | ✅ | EMR = security config + PEM certs (not Nitro) | Q1030 | EMR in-transit = security config + PEM certs |
 | 1215 | D6 | cfn-guard passes, dev disables DeletionProtection via Console — limitation + fix? | A | ✅ | cfn-guard = template only. SCP blocks runtime API call. | — | cfn-guard limitation (shift-left only) |
 | 1216 | D6/D3/D1 | Match: template validation + boot enforcement + API block — three mechanisms? | B | ✅ | cfn-guard + State Manager (OnBoot+rate) + SCP | — | Three enforcement moments |
+| 1217 | D3 | Inspector SBOM — no scheduling option in console — explanation? | B | ✅ | On-demand API only. EventBridge + Lambda for scheduling. | Q1051 | Inspector SBOM = on-demand API (no built-in scheduler) |
+| 1218 | D1/D3 | State Manager OnBoot + rate(4hr), instance reboots at 14:30 — what happens? | A | ✅ | OnBoot fires immediately, next rate run still at 17:00 (independent triggers) | Q1048 | State Manager dual triggers independent |
+| 1219 | D5 | EMR cluster TLS fails between nodes, security config enabled — missing? | B | ✅ | PEM certificates (Private CA or custom) | Q1030 | EMR in-transit = security config + PEM certs |
+| 1220 | D6 | cfn-guard in CI/CD, dev deploys non-compliant via Console — what catches it? | C | ❌ | B: Config proactive evaluation (service-level, can't bypass) | — | cfn-guard bypassable vs Config proactive service-level |
+| 1221 | D6 | WAT milestones NOT show — which is correct? | B | ❌ | C: Automated evidence (Config/CloudTrail). Milestones DO show per-question changes. | Q1031 | WAT milestones = no automation |
+| 1222 | D6 | Both CI/CD and Console CF deploys must be validated — architecture? | B | ✅ | Config proactive evaluation (service-level, catches all paths) | Q1220 | Config proactive = service-level, can't bypass |
+| 1223 | D3 | mTLS S3 URI without specifying object version — result? | B | ✅ | Domain creation fails — explicit truststoreVersion required | Q1207 | mTLS S3 versioning + object version required |
+| 1224 | D4 | Bucket policy Deny with StringNotEquals federated-user ARN — what happens? | B | ✅ | Allowed — federated user ARN matches, condition FALSE, Deny doesn't fire | Q1139 | Federated user ARN = sts:: not iam:: |
+| 1225 | D6 | Stack Policy: Aurora no replace/delete, Lambda no delete, SQS unrestricted — config? | A | ❌ | B: Allow Update:* all, then Deny Replace+Delete on Aurora, Deny Delete on Lambda | Q1138 | Stack Policy default deny + selective Deny |
+| 1226 | D6 | WAT milestone comparison — what does it NOT show? | B | ❌ | C: Automated evidence. Milestones DO show per-question risk changes. | Q1206 | WAT milestones = no automated evidence |
