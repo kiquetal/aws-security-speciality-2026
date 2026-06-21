@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1201 |
-| **✅ Correct** | 940 (78%) |
+| **Total Questions** | 1206 |
+| **✅ Correct** | 945 (78%) |
 | **⚠️ Partial** | 35 (3%) |
 | **❌ Wrong** | 223 (19%) |
 | **Sessions** | 101 |
@@ -330,6 +330,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 98 | 2026-06-18 | Q1056–Q1115 | 48 | 0 | 12 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
 | 100 | 2026-06-20 | Q1141–Q1191 | 49 | 1 | 1 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response | [Jump](#session-100--2026-06-20) |
+| 101 | 2026-06-20 | Q1192–Q1206 | 13.5 | 1 | 0.5 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
 | 101 | 2026-06-20 | Q1192–Q1201 | 9 | 1 | 0 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
 
 ---
@@ -2503,7 +2504,7 @@ After adding a session:
 ### Session 101 — 2026-06-20
 
 **Domains:** D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM
-**Score:** 8.5 ✅ · 0 ⚠️ · 1.5 ❌ (85% correct)
+**Score:** 13.5 ✅ · 1 ⚠️ · 0.5 ❌ (90% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -2517,3 +2518,8 @@ After adding a session:
 | 1199 | D3 | Bot Control Challenge blocks server-to-server API clients — fix? | B | ✅ | Scope-down excluding X-Client-Type: api | — | WAF scope-down |
 | 1200 | D4/D6 | RCP deny s3:* non-org, Lambda writes own bucket + partner bucket — result? | C | ✅ | Both succeed: own (org match) + partner (not your resource) | — | RCP scope = your resources only |
 | 1201 | D1 | StopLogging: which of CW filter / EventBridge / Config fire? | B only | ⚠️ | B+C: EventBridge (seconds) + Config (minutes). CW = never | Q860 | Config also detects StopLogging |
+| 1202 | D3 | Private API: Lambda A works, Lambda B timeout, same VPC/endpoint — cause? | B | ✅ | Lambda B SG missing outbound 443 | Q1025 | Interface endpoint dual SGs |
+| 1203 | D4/D5 | KMS key policy grants only Account A root, Account B (same org) calls Decrypt directly — result? | B | ✅ | Fails — key policy must name external account | Q541 | Cross-account KMS key policy must name external account |
+| 1204 | D5 | Bucket policy Deny if KMS key header missing, upload without flags, default encryption set — result? | B | ✅ | Denied — policy evaluates before default encryption | Q426 | Default encryption vs bucket policy Deny |
+| 1205 | D2/D4 | InsideAWS, attacker on Instance B, shared role, both production — containment? | B | ✅ | Deny-all SG on Instance B only | Q761 | InsideAWS = SG isolation |
+| 1206 | D1/D4/D5/D6 | Static analysis + 60s API alert + block external + anomalous downloads — match 4 services? | A | ✅ | Access Analyzer + EventBridge + RCP + GuardDuty S3 Protection | — | Full detect/prevent architecture |
