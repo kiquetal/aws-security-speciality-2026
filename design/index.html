@@ -3250,6 +3250,14 @@
             const isLiveDemo = sessionStorage.getItem('LIVE_DEMO_ACTIVE_SESSION');
             const isHosted = isHostedEnvironment();
             
+            // Hide the flashing Live Demo button entirely in local/cloned environments
+            const btnLiveDemo = document.getElementById('btn-live-demo');
+            if (btnLiveDemo) {
+                if (!isHosted) {
+                    btnLiveDemo.parentElement.style.display = 'none';
+                }
+            }
+            
             if (isLiveDemo || isHosted) {
                 // Block btn-sync (Sync Study Logs)
                 const btnSync = document.getElementById('btn-sync');
@@ -3285,7 +3293,6 @@
             
             if (isLiveDemo) {
                 // Block btn-live-demo (LIVEDEMO Quick Start)
-                const btnLiveDemo = document.getElementById('btn-live-demo');
                 if (btnLiveDemo) {
                     btnLiveDemo.classList.add('opacity-60', 'cursor-not-allowed');
                     btnLiveDemo.classList.remove('animate-pulse', 'hover:from-amber-600', 'hover:to-rose-600');
