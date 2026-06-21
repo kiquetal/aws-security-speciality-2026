@@ -5,6 +5,7 @@ on:
     branches: ["main"]
     paths:
       - "notes/question-tracker.md"
+      - "notes/study-time-log.md"
   workflow_dispatch:
 
 permissions:
