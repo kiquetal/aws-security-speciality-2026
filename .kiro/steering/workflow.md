@@ -1,5 +1,10 @@
 # Workflow Rules
 
+## Branch Policy
+- **ALWAYS** work on the `main` branch. Never checkout, commit to, or push to any other branch.
+- Before any git operation, verify you are on `main`: `git checkout main` if not.
+- Push ONLY to `origin main`. Never push to `onboarding` or any other branch.
+
 ## Git Commit Policy
 - **ALWAYS** wait for explicit user approval before executing any `git commit` command.
 - When changes are ready to commit:

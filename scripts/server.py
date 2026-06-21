@@ -148,14 +148,20 @@ class AetherGuardHandler(http.server.SimpleHTTPRequestHandler):
                 content = Path(tracker_path).read_text(encoding="utf-8")
                 
                 # Split content by sessions to find the target session
-                sessions = re.split(r"(?=^### Session \d+)", content, flags=re.MULTILINE)
+                sessions = re.split(r"(?=^### Session \w+)", content, flags=re.MULTILINE)
                 
                 updated_sessions = []
                 session_found = False
                 for session_part in sessions:
-                    header = re.match(r"### Session (\d+)", session_part)
-                    if header and int(header.group(1)) == session_num:
-                        session_found = True
+                    header = re.match(r"### Session (\w+)", session_part)
+                    if header:
+                        h_num_str = header.group(1)
+                        try:
+                            h_num = int(h_num_str)
+                        except ValueError:
+                            h_num = h_num_str
+                        if str(h_num) == str(session_num):
+                            session_found = True
                         # This is our target session block. Let's find the question row.
                         lines = session_part.splitlines()
                         for i, line in enumerate(lines):

@@ -19,6 +19,8 @@ def capture():
     cmd = [
         "google-chrome",
         "--headless",
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
         "--disable-gpu",
         f"--screenshot={OUTPUT_PATH}",
         "--window-size=1440,900",

@@ -1072,6 +1072,12 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**mTLS S3 bucket MUST have versioning enabled.** API Gateway requires an explicit object version reference. No versioning = domain creation fails at setup.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**mTLS troubleshooting: ALL fail = truststore/CA problem. ONE fails (same CA) = that partner's cert expired.** Same CA = truststore already trusts all certs from it. Individual cert issue only.",
               "is_insight": true,
               "is_warning": false
@@ -1864,6 +1870,24 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**No single governance service does everything.** CT doesn't share (RAM), deploy WAF (FM), or remediate (Config).",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Well-Architected Tool = architecture review + improvement plan + milestones (snapshot + compare over time).** No Config/SH integration for auto-resolution.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**cfn-guard = validate template content in CI/CD (shift-left, cheapest). Config proactive = validate at CF service level (heavier). CF Hook = same as Config proactive but Control Tower managed.** All three = \"before deploy\" but different weight.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**cfn-guard = bypassable (CI/CD only, Console deploy skips it). Config proactive = service-level (can't bypass, catches ALL CF deploys including Console).** \"Developer bypasses pipeline\" = Config proactive catches, cfn-guard misses.",
               "is_insight": true,
               "is_warning": false
             },
@@ -23133,6 +23157,342 @@ const TRACKER_DATA = {
                 {
                   "type": "code",
                   "text": "Internet \u2192 CloudFront \u2192 WAF \u2192 ALB \u2192 EC2\n           \u2502              \u2502\n           \u2502              \u251c\u2500\u2500 SQLi/XSS blocked\n           \u2502              \u251c\u2500\u2500 Rate limiting\n           \u2502              \u2514\u2500\u2500 Geo-blocking\n           \u2502\n           \u2514\u2500\u2500 Shield Advanced\n               \u251c\u2500\u2500 DDoS protection (L3/4/7)\n               \u251c\u2500\u2500 Cost protection\n               \u2514\u2500\u2500 DRT on standby"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-well-architected-tool.md",
+      "title": "AWS Well-Architected Tool",
+      "sections": [
+        {
+          "title": "What It Does (One Sentence)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Manual architecture review against AWS best practices \u2192 generates prioritized improvement plan \u2192 tracks progress via milestones."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Milestones \u2014 The Exam-Critical Feature",
+          "subsections": [
+            {
+              "title": "What a Milestone IS",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "A **snapshot** of your workload review at a point in time",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Captures: all answers, risk levels (HRI/MRI/NRI), notes, improvement plan status",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Immutable once saved \u2014 represents \"state at this date\"",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Created manually (no auto-creation)",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "What Milestone Comparison SHOWS",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Visible in comparison",
+                    "Example"
+                  ],
+                  "rows": [
+                    [
+                      "\u2705 HRI/MRI/NRI count per milestone",
+                      "8 HRI \u2192 3 HRI"
+                    ],
+                    [
+                      "\u2705 Per-question risk level changes",
+                      "Q7 moved from High Risk to No Risk"
+                    ],
+                    [
+                      "\u2705 Pillar-level risk summary",
+                      "Security Pillar: 4 HRI \u2192 1 HRI"
+                    ],
+                    [
+                      "\u2705 Date/time of each milestone",
+                      "Jan 15 vs Apr 15"
+                    ],
+                    [
+                      "\u2705 Improvement plan items (open/resolved)",
+                      "12 items \u2192 5 items"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "What Milestone Comparison DOES NOT SHOW",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "NOT available",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "\u274c Automated evidence (Config, CloudTrail)",
+                      "WAT is self-reported, not verified"
+                    ],
+                    [
+                      "\u274c Compliance scores",
+                      "No numerical scoring system"
+                    ],
+                    [
+                      "\u274c Auto-resolution of items",
+                      "Manual review only"
+                    ],
+                    [
+                      "\u274c Integration with Security Hub findings",
+                      "Separate tools, no link"
+                    ],
+                    [
+                      "\u274c Root cause of improvement",
+                      "Just shows state changed, not how"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "WAT vs Audit Manager vs Security Hub",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Question",
+                    "Answer",
+                    "NOT this"
+                  ],
+                  "rows": [
+                    [
+                      "\"Architectural gaps + improvement plan + track progress\"",
+                      "**Well-Architected Tool**",
+                      "\u274c Audit Manager (evidence collection)"
+                    ],
+                    [
+                      "\"Collect evidence for SOC 2 audit\"",
+                      "**Audit Manager**",
+                      "\u274c WAT (no evidence)"
+                    ],
+                    [
+                      "\"CIS compliance dashboard + aggregate findings\"",
+                      "**Security Hub**",
+                      "\u274c WAT (no automation)"
+                    ],
+                    [
+                      "\"Prove to auditor we improved over 3 quarters\"",
+                      "**WAT milestones**",
+                      "\u274c Audit Manager (framework evidence, not architectural review)"
+                    ],
+                    [
+                      "\"Download AWS's ISO 27001 report\"",
+                      "**Artifact**",
+                      "\u274c Everything else"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Operational Details (Exam Gotchas)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Gotcha",
+                    "Detail"
+                  ],
+                  "rows": [
+                    [
+                      "**No automation**",
+                      "WAT doesn't connect to Config, SH, or any service for auto-updates"
+                    ],
+                    [
+                      "**Self-reported**",
+                      "Answers are YOUR assessment \u2014 no verification"
+                    ],
+                    [
+                      "**Pillars**",
+                      "Operational Excellence, Security, Reliability, Performance, Cost, Sustainability"
+                    ],
+                    [
+                      "**Lenses**",
+                      "Custom lenses available (SaaS, Serverless, etc.)"
+                    ],
+                    [
+                      "**Sharing**",
+                      "Workloads can be shared with other accounts (for consulting)"
+                    ],
+                    [
+                      "**Free**",
+                      "No cost for the tool itself"
+                    ],
+                    [
+                      "**Milestones are immutable**",
+                      "Can't edit a saved milestone \u2014 create a new one"
+                    ],
+                    [
+                      "**Max milestones**",
+                      "No practical limit documented"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Stack Policy (Related \u2014 Same Session Trap)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Since Stack Policy also came up in the same session:"
+                },
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "Stack Policy",
+                    "Termination Protection"
+                  ],
+                  "rows": [
+                    [
+                      "**Protects against**",
+                      "Resource modification/replacement/deletion INSIDE stack",
+                      "Stack deletion"
+                    ],
+                    [
+                      "**Default**",
+                      "Implicit deny on all Update actions",
+                      "Disabled"
+                    ],
+                    [
+                      "**Override**",
+                      "Temporary override with `--stack-policy-during-update-body`",
+                      "Must disable explicitly"
+                    ],
+                    [
+                      "**Scope**",
+                      "Per-resource within the stack",
+                      "Entire stack"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "**Stack Policy evaluation:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "No explicit Allow = implicitly denied (like SCP)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Pattern: Allow `Update:*` on all \u2192 Deny specific dangerous actions on sensitive resources",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`Update:Modify` = in-place change (no new physical ID)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`Update:Replace` = new physical resource created (new ID)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "`Update:Delete` = resource removed from stack",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "WAT = manual architecture review + improvement plan + milestones for tracking progress. NO automation.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "WAT milestones = immutable snapshots. Compare = see risk reduction. NO evidence, NO Config, NO auto-fix.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Track architectural improvement over time\" = WAT milestones. \"Collect compliance evidence\" = Audit Manager.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "WAT is FREE. Audit Manager costs money (evidence collection).",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Stack Policy default = implicit deny. Start with Allow *, then Deny dangerous actions on sensitive resources.",
+                  "is_insight": false,
+                  "is_warning": false
                 }
               ]
             }

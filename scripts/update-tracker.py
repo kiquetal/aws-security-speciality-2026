@@ -23,12 +23,17 @@ def parse_sessions(text):
     """Parse all session blocks, return list of session metadata + question rows."""
     sessions = []
     # Split on session headers
-    parts = re.split(r"(?=^### Session \d+)", text, flags=re.MULTILINE)
+    parts = re.split(r"(?=^### Session \w+)", text, flags=re.MULTILINE)
     for part in parts:
-        header = re.match(r"### Session (\d+) — (\d{4}-\d{2}-\d{2})", part)
+        header = re.match(r"### Session (\w+) — (\d{4}-\d{2}-\d{2})", part)
         if not header:
             continue
-        num, date = int(header.group(1)), header.group(2)
+        num_str = header.group(1)
+        try:
+            num = int(num_str)
+        except ValueError:
+            num = num_str
+        date = header.group(2)
         # Extract domains line
         domains_match = re.search(r"\*\*Domains:\*\*\s*(.+)", part)
         domains_str = domains_match.group(1).strip() if domains_match else ""

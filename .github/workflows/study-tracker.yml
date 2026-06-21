@@ -1,0 +1,44 @@
+name: Compile Study Progress & Auto-Screenshot
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "notes/question-tracker.md"
+      - "notes/study-time-log.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "study-tracker"
+  cancel-in-progress: true
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Compile progress stats & export JSON
+        run: |
+          python3 scripts/update-tracker.py
+          python3 scripts/export_to_json.py
+
+      - name: Capture fresh dashboard screenshot
+        run: |
+          python3 scripts/capture_screenshot.py
+
+      - name: Commit and push updated assets
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "chore(tracker): auto-recompile study metrics and refresh dashboard screenshot [skip ci]"
+          file_pattern: "README.md design/tracker_data.js diagrams/dashboard.png"

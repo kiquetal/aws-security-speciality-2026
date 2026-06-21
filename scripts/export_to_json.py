@@ -102,6 +102,198 @@ def parse_maintenance_plan():
                 })
     return weeks
 
+def calculate_study_time(base_dir):
+    """Parse notes/study-time-log.md to sum total study minutes and hours, inferring open session time."""
+    time_log_path = base_dir / "notes" / "study-time-log.md"
+    if not time_log_path.exists():
+        return 0, 0, None
+        
+    text = time_log_path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    
+    total_minutes = 0
+    open_session = None
+    
+    for line in lines:
+        line = line.strip()
+        if not line.startswith("|"):
+            continue
+        parts = [p.strip() for p in line.split("|")[1:-1]]
+        if len(parts) < 5:
+            continue
+        if parts[0].startswith("-") or parts[0] == "#" or "Date" in parts[1]:
+            continue
+            
+        minutes_str = parts[4]
+        if minutes_str.isdigit():
+            total_minutes += int(minutes_str)
+        else:
+            open_session = {
+                "num": parts[0],
+                "date": parts[1],
+                "start": parts[2],
+                "notes": parts[5] if len(parts) > 5 else ""
+            }
+            
+    inferred_minutes = 0
+    if open_session:
+        try:
+            import datetime
+            date_str = open_session["date"]
+            start_str = open_session["start"]
+            start_dt = datetime.datetime.strptime(f"{date_str} {start_str}", "%Y-%m-%d %H:%M")
+            
+            latest_mtime = None
+            # Scan only user-edited markdown files (cheat-sheet, question-tracker, etc.)
+            for filepath in base_dir.glob("notes/**/*.md"):
+                if filepath.name == "study-time-log.md":
+                    continue
+                if any(p.startswith('.') for p in filepath.parts):
+                    continue
+                
+                mtime = datetime.datetime.fromtimestamp(filepath.stat().st_mtime)
+                # Ensure it's on the same day and after/equal to session start
+                if mtime.date() == start_dt.date() and mtime >= start_dt:
+                    if latest_mtime is None or mtime > latest_mtime:
+                        latest_mtime = mtime
+                        
+            # Also check root level study-plan.md and blueprint.md
+            for name in ["study-plan.md", "blueprint.md"]:
+                filepath = base_dir / name
+                if filepath.exists():
+                    mtime = datetime.datetime.fromtimestamp(filepath.stat().st_mtime)
+                    if mtime.date() == start_dt.date() and mtime >= start_dt:
+                        if latest_mtime is None or mtime > latest_mtime:
+                            latest_mtime = mtime
+
+            if latest_mtime:
+                diff_minutes = int((latest_mtime - start_dt).total_seconds() / 60)
+                inferred_minutes = min(max(diff_minutes, 0), 180)
+            else:
+                now = datetime.datetime.now()
+                if now.date() == start_dt.date() and now >= start_dt:
+                    diff_minutes = int((now - start_dt).total_seconds() / 60)
+                    inferred_minutes = min(max(diff_minutes, 0), 180)
+                    
+            if inferred_minutes > 0:
+                total_minutes += inferred_minutes
+                open_session["minutes"] = inferred_minutes
+                open_session["inferred"] = True
+        except Exception as e:
+            print(f"Error inferring open session time: {e}")
+            
+    total_hours = total_minutes / 60.0
+    return total_minutes, total_hours, open_session
+
+def update_study_time_log_header(base_dir, total_minutes, total_hours):
+    """Update notes/study-time-log.md total header with the latest calculated minutes and hours."""
+    time_log_path = base_dir / "notes" / "study-time-log.md"
+    if not time_log_path.exists():
+        return
+    
+    text = time_log_path.read_text(encoding="utf-8")
+    pattern = r"## Total:\s*~?[\d,]+\s*minutes\s*\(~?\d+\s*hours\)"
+    replacement = f"## Total: ~{total_minutes:,} minutes (~{int(round(total_hours))} hours)"
+    
+    new_text, count = re.subn(pattern, replacement, text)
+    if count > 0:
+        time_log_path.write_text(new_text, encoding="utf-8")
+        print(f"Updated study-time-log.md header: {replacement}")
+    else:
+        # Fallback
+        lines = text.splitlines()
+        updated = False
+        for i, line in enumerate(lines):
+            if line.strip().startswith("## Total:"):
+                lines[i] = f"## Total: ~{total_minutes:,} minutes (~{int(round(total_hours))} hours)"
+                updated = True
+                break
+        if updated:
+            time_log_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            print(f"Updated study-time-log.md header via fallback: {lines[i]}")
+
+def update_readme_progress(base_dir, total_q, accuracy_pct, sessions_count, total_hours, domain_proficiency):
+    """Update README.md with the latest cumulative metrics and domain score updates."""
+    readme_path = base_dir / "README.md"
+    if not readme_path.exists():
+        return
+        
+    text = readme_path.read_text(encoding="utf-8")
+    
+    # 1. Update/Insert Shields.io badges at the very top of README.md below the title
+    if "https://img.shields.io/badge/Questions-" not in text:
+        # Insert them right after the first line (the H1 title)
+        lines = text.splitlines()
+        badges_line = f"\n[![Questions Attempted](https://img.shields.io/badge/Questions-{total_q:,}-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-{accuracy_pct}%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-{int(round(total_hours))}_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-{sessions_count}-purple)](#current-progress)\n"
+        h1_idx = 0
+        for i, l in enumerate(lines):
+            if l.startswith("# "):
+                h1_idx = i
+                break
+        lines.insert(h1_idx + 1, badges_line)
+        text = "\n".join(lines) + "\n"
+    else:
+        # Replace existing badges using regex
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Questions-[\d,]+-blue",
+            f"https://img.shields.io/badge/Questions-{total_q:,}-blue",
+            text
+        )
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Accuracy-\d+%25-green",
+            f"https://img.shields.io/badge/Accuracy-{accuracy_pct}%25-green",
+            text
+        )
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Study_Hours-\d+_hrs-orange",
+            f"https://img.shields.io/badge/Study_Hours-{int(round(total_hours))}_hrs-orange",
+            text
+        )
+        text, count = re.subn(
+            r"https://img.shields.io/badge/Sessions-\d+-purple",
+            f"https://img.shields.io/badge/Sessions-{sessions_count}-purple",
+            text
+        )
+    
+    # Replace Questions Attempted
+    text, count1 = re.subn(
+        r"\|\s*\*\*Questions Attempted\*\*\s*\|\s*[\d,]+\s*\|",
+        f"| **Questions Attempted** | {total_q:,} |",
+        text
+    )
+    
+    # Replace Accuracy
+    text, count2 = re.subn(
+        r"\|\s*\*\*Accuracy\*\*\s*\|\s*\d+%\s*overall",
+        f"| **Accuracy** | {accuracy_pct}% overall",
+        text
+    )
+    
+    # Replace Sessions
+    text, count3 = re.subn(
+        r"\|\s*\*\*Sessions\*\*\s*\|\s*\d+\s*\|",
+        f"| **Sessions** | {sessions_count} |",
+        text
+    )
+    
+    # Replace Study Hours
+    text, count4 = re.subn(
+        r"\|\s*\*\*Study Hours\*\*\s*\|\s*\d+\+?\s*hours\s*\|",
+        f"| **Study Hours** | {int(round(total_hours))}+ hours |",
+        text
+    )
+    
+    # Update Domain score columns
+    for d_code, d_info in domain_proficiency.items():
+        pct = d_info["score_pct"]
+        # Match e.g., | D4: Identity and Access Management | 20% | ✅ Complete | 79% |
+        pattern = rf"(\|\s*{d_code}:[^\n|]+\|\s*\d+%\s*\|\s*[^|]+\s*\|\s*)\d+%\s*\|"
+        replacement = rf"\g<1>{pct}% |"
+        text, count = re.subn(pattern, replacement, text)
+        
+    readme_path.write_text(text, encoding="utf-8")
+    print(f"Updated README.md metrics: Questions={total_q}, Accuracy={accuracy_pct}%, Sessions={sessions_count}, Hours={int(round(total_hours))}")
+
 def parse_tracker_sessions():
     """Parse sessions and questions from question-tracker.md."""
     if not TRACKER_PATH.exists():
@@ -111,13 +303,18 @@ def parse_tracker_sessions():
     
     # Split sessions
     sessions = []
-    parts = re.split(r"(?=^### Session \d+)", text, flags=re.MULTILINE)
+    parts = re.split(r"(?=^### Session \w+)", text, flags=re.MULTILINE)
     
     for part in parts:
-        header = re.match(r"### Session (\d+) — (\d{4}-\d{2}-\d{2})", part)
+        header = re.match(r"### Session (\w+) — (\d{4}-\d{2}-\d{2})", part)
         if not header:
             continue
-        num, date = int(header.group(1)), header.group(2)
+        num_str = header.group(1)
+        try:
+            num = int(num_str)
+        except ValueError:
+            num = num_str
+        date = header.group(2)
         
         # Extract domains line
         domains_match = re.search(r"\*\*Domains:\*\*\s*(.+)", part)
@@ -242,6 +439,8 @@ def parse_tracker_sessions():
             "level": "red" if len(data["questions"]) >= 3 else "yellow"
         })
         
+    total_minutes, total_hours, _ = calculate_study_time(BASE_DIR)
+
     stats = {
         "total_questions": total_q,
         "correct": correct,
@@ -250,7 +449,9 @@ def parse_tracker_sessions():
         "sessions_count": len(sessions),
         "retests_total": retests_total,
         "retests_passed": retests_passed,
-        "accuracy_pct": int(round(correct / total_q * 100)) if total_q > 0 else 0
+        "accuracy_pct": int(round(correct / total_q * 100)) if total_q > 0 else 0,
+        "study_hours": int(round(total_hours)),
+        "study_minutes": total_minutes
     }
     
     return sessions, domain_proficiency, weak_areas, stats
@@ -680,6 +881,11 @@ def main():
         "faqs": faqs
     }
     
+    # Update notes/study-time-log.md header and README.md progress when not building a blank live-demo slate
+    if not is_blank:
+        update_study_time_log_header(BASE_DIR, stats["study_minutes"], stats["study_hours"])
+        update_readme_progress(BASE_DIR, stats["total_questions"], stats["accuracy_pct"], stats["sessions_count"], stats["study_hours"], domain_proficiency)
+
     # Ensure export directory exists
     EXPORT_JS_PATH.parent.mkdir(parents=True, exist_ok=True)
     
