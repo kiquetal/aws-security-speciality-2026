@@ -62,4 +62,4 @@
 | 12 | 2026-06-18 | 17:53 | 18:53 | 60 | Session 98 - Week 2 NEVER-SEEN + extended (50 Qs, 85-90% on extensions) |
 | 100a | 2026-06-20 | 12:37 | 13:54 | 77 | Session 100: CF Stack Policy + PassRole + Traffic Mirroring + mTLS + 25-question weekly drill + rapid-fire (42.5/47, 90%) |
 | 101 | 2026-06-20 | 23:10 | 23:45 | 35 | Session 101: low-rep topic drill (cfn-guard, DataSync, DLM, Well-Architected, StopLogging, Lattice) |
-| 102 | 2026-06-21 | 11:49 | | | Session 102: ⚠️ never-seen re-test drill (mTLS, SBOM, State Manager, WAT, SageMaker) |
+| 102 | 2026-06-21 | 11:49 | 13:14 | 85 | Session 102: ⚠️ never-seen re-test drill (mTLS, SBOM, State Manager, WAT, SageMaker) + 3 FAQs created |
