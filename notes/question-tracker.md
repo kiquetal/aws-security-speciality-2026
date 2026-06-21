@@ -2498,7 +2498,7 @@ After adding a session:
 | 1191 | D3 | Bedrock SCP enforce guardrail — which statement? | A | ✅ | Deny InvokeModel + StringNotEquals GuardrailIdentifier | Q1187 | Bedrock guardrail condition key |
 
 
-### Session 100b — 2026-06-20 (night)
+### Session 101 — 2026-06-20
 
 **Domains:** D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM
 **Score:** 8.5 ✅ · 0 ⚠️ · 1.5 ❌ (85% correct)
