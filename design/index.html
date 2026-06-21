@@ -3182,8 +3182,17 @@
                 alert("🔒 Live Demo is already active.\n\nPlease complete the current active session in the carousel, or click 'Reset Live Demo' to clear and start fresh.");
                 return;
             }
-            // Count how many non-empty sessions we have, or check the limit
-            const sessionsCount = (TRACKER_DATA.sessions || []).filter(s => s.questions && s.questions.length > 0).length;
+            
+            // Set baseline sessions count if not already set, to support branches that already have baseline study data
+            if (!localStorage.getItem('LIVE_DEMO_BASELINE_COUNT')) {
+                const baseline = (TRACKER_DATA.sessions || []).length;
+                localStorage.setItem('LIVE_DEMO_BASELINE_COUNT', baseline);
+            }
+            
+            const baselineCount = parseInt(localStorage.getItem('LIVE_DEMO_BASELINE_COUNT') || '0');
+            // Count how many simulated sessions we have added since starting the demo
+            const sessionsCount = (TRACKER_DATA.sessions || []).filter(s => s.questions && s.questions.length > 0 && s.num > baselineCount).length;
+            
             if (sessionsCount >= 4) {
                 alert("Maximum of 4 simulated live demo sessions has been reached!\n\nPlease click 'Reset Live Demo' in the sidebar to clear existing sessions and start fresh.");
                 return;
@@ -3236,6 +3245,7 @@
             
             // Pure client-side reset
             localStorage.removeItem('TRACKER_DATA_MOCK');
+            localStorage.removeItem('LIVE_DEMO_BASELINE_COUNT');
             sessionStorage.removeItem('LIVE_DEMO_ACTIVE_SESSION');
             sessionStorage.removeItem('AUTO_OPEN_QUESTION');
             alert("Simulated live demo progress, study sessions, and syllabus stats have been reset locally. Reloading clean portal...");
