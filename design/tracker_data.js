@@ -4268,6 +4268,244 @@ const TRACKER_DATA = {
       ]
     },
     {
+      "filename": "faq-cloudformation-stack-policy.md",
+      "title": "CloudFormation Stack Policy",
+      "sections": [
+        {
+          "title": "What Stack Policy Does (One Sentence)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "text",
+                  "text": "Prevents CloudFormation from modifying, replacing, or deleting specific resources INSIDE a stack during updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Evaluation Logic (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "DEFAULT = IMPLICIT DENY ON ALL UPDATE ACTIONS\n\nIf no Allow statement for a resource \u2192 that resource CANNOT be updated.\nExplicit Deny always wins over Allow (same as IAM)."
+                }
+              ]
+            },
+            {
+              "title": "The Correct Pattern",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"Update:*\",\n      \"Principal\": \"*\",\n      \"Resource\": \"*\"\n    },\n    {\n      \"Effect\": \"Deny\",\n      \"Action\": [\"Update:Replace\", \"Update:Delete\"],\n      \"Principal\": \"*\",\n      \"Resource\": \"LogicalResourceId/AuroraCluster\"\n    },\n    {\n      \"Effect\": \"Deny\",\n      \"Action\": \"Update:Delete\",\n      \"Principal\": \"*\",\n      \"Resource\": \"LogicalResourceId/MyLambda\"\n    }\n  ]\n}"
+                },
+                {
+                  "type": "text",
+                  "text": "**Translation:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Everything can be updated (Allow * baseline)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Aurora: can be modified in-place, but NEVER replaced or deleted",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Lambda: can be modified or replaced, but NEVER deleted",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "SQS (no Deny): unrestricted",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
+              "title": "Update Action Types",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Action",
+                    "What It Means",
+                    "Physical ID Changes?"
+                  ],
+                  "rows": [
+                    [
+                      "`Update:Modify`",
+                      "In-place property change",
+                      "No"
+                    ],
+                    [
+                      "`Update:Replace`",
+                      "New resource created, old deleted",
+                      "YES \u2014 new physical ID"
+                    ],
+                    [
+                      "`Update:Delete`",
+                      "Resource removed from template",
+                      "N/A \u2014 gone"
+                    ],
+                    [
+                      "`Update:*`",
+                      "All of the above",
+                      "\u2014"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Stack Policy vs Other Protections",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Mechanism",
+                    "Protects Against",
+                    "Scope"
+                  ],
+                  "rows": [
+                    [
+                      "**Stack Policy**",
+                      "CF updating/replacing/deleting resources INSIDE stack",
+                      "Per-resource within stack"
+                    ],
+                    [
+                      "**Termination Protection**",
+                      "Deleting the ENTIRE stack",
+                      "Whole stack"
+                    ],
+                    [
+                      "**DeletionPolicy: Retain**",
+                      "Resource NOT deleted when removed from template",
+                      "Per-resource (CF attribute)"
+                    ],
+                    [
+                      "**SCP**",
+                      "ANY API call org-wide",
+                      "Org/OU/Account"
+                    ],
+                    [
+                      "**cfn-guard**",
+                      "Non-compliant template content at deploy",
+                      "Template validation"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Traps",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Trap",
+                    "Truth"
+                  ],
+                  "rows": [
+                    [
+                      "\"Stack Policy prevents Console changes\"",
+                      "\u274c NO \u2014 only CF updates. Console/CLI direct changes bypass it."
+                    ],
+                    [
+                      "\"Default is Allow all\"",
+                      "\u274c NO \u2014 default is implicit DENY all. Must start with Allow."
+                    ],
+                    [
+                      "\"Deny only Replace+Delete is enough\"",
+                      "\u274c Depends \u2014 if no Allow exists, Modify is also blocked by default."
+                    ],
+                    [
+                      "\"Stack Policy can be updated\"",
+                      "\u2705 Yes \u2014 but requires temporary override for the update."
+                    ],
+                    [
+                      "\"Termination protection prevents resource deletion\"",
+                      "\u274c NO \u2014 only prevents `DeleteStack`. Resources inside can still be removed via template update."
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Pattern for Exam",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\"Protect resources inside stack from CF updates\" \u2192 Stack Policy\n\"Prevent stack deletion\" \u2192 Termination Protection\n\"Prevent API calls org-wide\" \u2192 SCP\n\"Validate template before deploy\" \u2192 cfn-guard / Config proactive\n\"Keep resource even if removed from template\" \u2192 DeletionPolicy: Retain"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Stack Policy default = implicit deny. Start with Allow Update:* on all, then Deny dangerous actions on sensitive resources.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Stack Policy only protects against CF updates \u2014 NOT Console/CLI direct changes.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Termination protection = prevent stack deletion. Stack Policy = prevent resource modification inside stack. Different layers.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Update:Replace = new physical ID (dangerous). Update:Modify = in-place (usually safe).",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "filename": "faq-cloudfront-auth-patterns.md",
       "title": "CloudFront Authentication & Security Patterns",
       "sections": [
@@ -10000,6 +10238,271 @@ const TRACKER_DATA = {
                 {
                   "type": "bullet",
                   "text": "**CodeGuru = SAST (pre-deploy). Inspector = CVE (post-deploy).**",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-glacier-vault-lock-vs-object-lock.md",
+      "title": "Glacier Vault Lock vs S3 Object Lock",
+      "sections": [
+        {
+          "title": "One-Sentence Definitions",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "**S3 Object Lock** = Per-OBJECT retention period. Auto-expires. Applied per object or as bucket default.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "**Glacier Vault Lock** = Per-VAULT immutable POLICY. Permanent once confirmed. Applied to entire vault.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Decision Matrix",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Exam Signal",
+                    "Answer"
+                  ],
+                  "rows": [
+                    [
+                      "\"Fixed retention period (3yr/5yr/7yr), auto-expires after\"",
+                      "**S3 Object Lock Compliance**"
+                    ],
+                    [
+                      "\"Root can't delete during retention\"",
+                      "**S3 Object Lock Compliance**"
+                    ],
+                    [
+                      "\"24-hour confirm window, then permanently irreversible\"",
+                      "**Glacier Vault Lock**"
+                    ],
+                    [
+                      "\"Even AWS Support can't modify after confirmation\"",
+                      "**Glacier Vault Lock**"
+                    ],
+                    [
+                      "\"Policy-level WORM (applies to entire vault)\"",
+                      "**Glacier Vault Lock**"
+                    ],
+                    [
+                      "\"Per-object, different retention per object\"",
+                      "**S3 Object Lock**"
+                    ],
+                    [
+                      "\"Indefinite hold for litigation, no expiry\"",
+                      "**S3 Object Lock Legal Hold**"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Side-by-Side Comparison",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "S3 Object Lock (Compliance)",
+                    "S3 Object Lock (Governance)",
+                    "Glacier Vault Lock"
+                  ],
+                  "rows": [
+                    [
+                      "**Scope**",
+                      "Per-object",
+                      "Per-object",
+                      "Per-vault (policy)"
+                    ],
+                    [
+                      "**Retention**",
+                      "Fixed period, auto-expires",
+                      "Fixed period, overridable",
+                      "N/A \u2014 policy is permanent"
+                    ],
+                    [
+                      "**Root can delete?**",
+                      "\u274c No",
+                      "\u2705 With permission",
+                      "\u274c No (after confirm)"
+                    ],
+                    [
+                      "**AWS Support can override?**",
+                      "\u274c No",
+                      "\u2705 Yes",
+                      "\u274c No"
+                    ],
+                    [
+                      "**Reversible?**",
+                      "After expiry",
+                      "Anytime with permission",
+                      "\u274c NEVER (once confirmed)"
+                    ],
+                    [
+                      "**Confirm window?**",
+                      "No",
+                      "No",
+                      "\u2705 24 hours to test"
+                    ],
+                    [
+                      "**Use case**",
+                      "Compliance retention (SEC 17a-4)",
+                      "Soft protection (dev teams)",
+                      "Audit vault policies forever"
+                    ],
+                    [
+                      "**Requires versioning?**",
+                      "\u2705 Yes",
+                      "\u2705 Yes",
+                      "N/A (Glacier)"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Vault Lock Lifecycle",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "1. Initiate Lock \u2192 Policy enters \"InProgress\" state\n2. 24-hour window \u2192 TEST the policy (validate it works)\n3. Complete Lock \u2192 Policy is PERMANENT. Cannot be:\n   - Modified\n   - Deleted\n   - Overridden by root\n   - Changed by AWS Support\n   Forever. No undo. Period."
+                },
+                {
+                  "type": "text",
+                  "text": "If you DON'T complete within 24 hours \u2192 lock expires, start over."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Legal Hold (Third Option)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Dimension",
+                    "Legal Hold",
+                    "Compliance Mode"
+                  ],
+                  "rows": [
+                    [
+                      "**Expiry**",
+                      "NONE \u2014 indefinite until manually removed",
+                      "Fixed period"
+                    ],
+                    [
+                      "**Who removes?**",
+                      "User with `s3:PutObjectLegalHold` permission",
+                      "Nobody (waits for expiry)"
+                    ],
+                    [
+                      "**Use case**",
+                      "Litigation preservation",
+                      "Regulatory retention"
+                    ],
+                    [
+                      "**Combines with retention?**",
+                      "\u2705 Yes (both can be active)",
+                      "N/A"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Exam Traps",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Trap",
+                    "Truth"
+                  ],
+                  "rows": [
+                    [
+                      "\"WORM for 7 years\" \u2192 Vault Lock",
+                      "\u274c Probably Object Lock Compliance (has expiry). Vault Lock = permanent POLICY, no retention period."
+                    ],
+                    [
+                      "\"Permanently irreversible after confirm\"",
+                      "\u2705 Vault Lock (the 24hr confirm is the giveaway)"
+                    ],
+                    [
+                      "\"Root can't delete\"",
+                      "Could be EITHER \u2014 Compliance mode OR Vault Lock. Read for \"confirm window\" or \"policy-level\" to differentiate."
+                    ],
+                    [
+                      "\"Auto-delete after retention\"",
+                      "\u2705 Object Lock (has lifecycle). Vault Lock policies don't auto-delete."
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "\"24hr confirm + permanently irreversible POLICY\" = Glacier Vault Lock. \"Fixed retention per OBJECT, auto-expires\" = Object Lock Compliance.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Vault Lock = policy forever. Object Lock = object with expiry. Legal Hold = object without expiry.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Root can't delete\" alone isn't enough \u2014 both Compliance mode AND Vault Lock satisfy this. Look for \"confirm window\" (Vault Lock) or \"auto-expire after X years\" (Object Lock).",
                   "is_insight": false,
                   "is_warning": false
                 }
@@ -17828,6 +18331,222 @@ const TRACKER_DATA = {
                 {
                   "type": "bullet",
                   "text": "**Access Grants \u2260 KMS Grants.** Different services, different problems. Don't confuse them.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "faq-s3-encryption-enforcement.md",
+      "title": "S3 Encryption Enforcement Patterns",
+      "sections": [
+        {
+          "title": "Three Mechanisms, Three Purposes",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Mechanism",
+                    "What It Does",
+                    "When It Evaluates"
+                  ],
+                  "rows": [
+                    [
+                      "**Default Encryption**",
+                      "Silently encrypts if caller sends NO encryption header",
+                      "AFTER policy evaluation passes"
+                    ],
+                    [
+                      "**Bucket Policy Deny**",
+                      "Rejects upload if header missing/wrong",
+                      "BEFORE default encryption applies"
+                    ],
+                    [
+                      "**SCP Deny**",
+                      "Rejects API call if header missing/wrong",
+                      "BEFORE default encryption applies"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Critical Rule",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  POLICY EVALUATES THE REQUEST AS-RECEIVED               \u2502\n\u2502  (headers the caller actually sent)                     \u2502\n\u2502                                                         \u2502\n\u2502  Default encryption applies AFTER policy passes         \u2502\n\u2502  (fills in missing headers silently)                    \u2502\n\u2502                                                         \u2502\n\u2502  If policy checks for a header and caller didn't        \u2502\n\u2502  send it \u2192 DENIED. Default encryption never fires.      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Scenario Matrix (Exam-Critical)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Scenario",
+                    "Result",
+                    "Why"
+                  ],
+                  "rows": [
+                    [
+                      "Default encryption SSE-KMS + NO bucket policy + upload without header",
+                      "\u2705 Succeeds (encrypted by default)",
+                      "No policy to check, default applies"
+                    ],
+                    [
+                      "Default encryption SSE-KMS + bucket policy Deny if header \u2260 aws:kms + upload WITHOUT header",
+                      "\u274c DENIED",
+                      "Policy sees no header \u2192 Deny fires \u2192 default never runs"
+                    ],
+                    [
+                      "Default encryption SSE-KMS + bucket policy Deny if header \u2260 aws:kms + upload WITH `x-amz-server-side-encryption: aws:kms`",
+                      "\u2705 Succeeds",
+                      "Header present and matches \u2192 Deny condition FALSE"
+                    ],
+                    [
+                      "SCP Deny PutObject if KMS key header \u2260 specific ARN + upload without header + default set",
+                      "\u274c DENIED",
+                      "SCP evaluates before default encryption"
+                    ],
+                    [
+                      "SCP Deny if header \u2260 specific ARN + upload WITH correct ARN header",
+                      "\u2705 Succeeds",
+                      "Header matches \u2192 StringNotEquals FALSE \u2192 Deny doesn't fire"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Common Bucket Policy Pattern",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "code",
+                  "text": "{\n  \"Sid\": \"DenyUnencryptedUploads\",\n  \"Effect\": \"Deny\",\n  \"Principal\": \"*\",\n  \"Action\": \"s3:PutObject\",\n  \"Resource\": \"arn:aws:s3:::my-bucket/*\",\n  \"Condition\": {\n    \"StringNotEquals\": {\n      \"s3:x-amz-server-side-encryption\": \"aws:kms\"\n    }\n  }\n}"
+                },
+                {
+                  "type": "text",
+                  "text": "\u26a0\ufe0f **This WILL reject uploads that rely on default encryption** (no header sent). Callers must explicitly include the header."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "When to Use Which",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Goal",
+                    "Solution"
+                  ],
+                  "rows": [
+                    [
+                      "\"Safety net \u2014 encrypt everything even if caller forgets\"",
+                      "Default encryption alone (no policy)"
+                    ],
+                    [
+                      "\"ENFORCE \u2014 reject non-compliant uploads\"",
+                      "Bucket policy Deny + default encryption together"
+                    ],
+                    [
+                      "\"ORG-WIDE enforcement\"",
+                      "SCP Deny + account-level default encryption"
+                    ],
+                    [
+                      "\"Specific CMK only, no other key allowed\"",
+                      "SCP/bucket policy with `StringNotEquals` on key ARN"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Header Names (Exact)",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Header",
+                    "Purpose"
+                  ],
+                  "rows": [
+                    [
+                      "`x-amz-server-side-encryption`",
+                      "Algorithm: `aws:kms` or `AES256`"
+                    ],
+                    [
+                      "`x-amz-server-side-encryption-aws-kms-key-id`",
+                      "Specific KMS key ARN"
+                    ],
+                    [
+                      "`x-amz-server-side-encryption-context`",
+                      "Base64 encryption context"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "\u26a0\ufe0f NOT `x-amz-meta-*` (that's custom metadata, not encryption)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "\ud83e\udde0 Cheat-Sheet One-Liners",
+          "subsections": [
+            {
+              "title": "",
+              "items": [
+                {
+                  "type": "bullet",
+                  "text": "Default encryption = safety net (silent). Bucket policy Deny = enforcement (rejects). SCP = org-wide enforcement.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Policy evaluates request AS-RECEIVED. Default encryption applies AFTER. Missing header + policy check = DENIED always.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Must use specific key\" = StringNotEquals on key ARN in SCP or bucket policy. Caller MUST send the header explicitly.",
                   "is_insight": false,
                   "is_warning": false
                 }
