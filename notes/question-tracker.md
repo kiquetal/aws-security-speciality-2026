@@ -2559,3 +2559,8 @@ After adding a session:
 | 1224 | D4 | Bucket policy Deny with StringNotEquals federated-user ARN — what happens? | B | ✅ | Allowed — federated user ARN matches, condition FALSE, Deny doesn't fire | Q1139 | Federated user ARN = sts:: not iam:: |
 | 1225 | D6 | Stack Policy: Aurora no replace/delete, Lambda no delete, SQS unrestricted — config? | A | ❌ | B: Allow Update:* all, then Deny Replace+Delete on Aurora, Deny Delete on Lambda | Q1138 | Stack Policy default deny + selective Deny |
 | 1226 | D6 | WAT milestone comparison — what does it NOT show? | B | ❌ | C: Automated evidence. Milestones DO show per-question risk changes. | Q1206 | WAT milestones = no automated evidence |
+| 1227 | D4/D6 | RCP on S3, ELB SLR writes access logs — succeeds or fails? | B | ✅ | Succeeds — SLRs exempt from RCPs | — | RCP SLR exemption |
+| 1228 | D5 | EC2 encrypted EBS won't start, role has kms:Decrypt — missing? | B | ✅ | kms:CreateGrant | — | EC2 EBS always needs CreateGrant |
+| 1229 | D1 | CryptoCurrency:EC2/BitcoinTool.B — detection method? | B | ✅ | Active TCP to mining pool (not DNS) | — | GD finding type = detection method |
+| 1230 | D5 | CRR SSE-KMS replication role — three permissions? | B | ✅ | Decrypt source + GenerateDataKey dest + GetObjectVersionForReplication | — | CRR D-G-F |
+| 1231 | D2 | IAM user creds on GitHub, 2 keys + console + STS — first containment? | B | ❌ | A: Deactivate key + inline Deny * on user (covers ALL paths) | — | User = Deny *. Role = TokenIssueTime. |
