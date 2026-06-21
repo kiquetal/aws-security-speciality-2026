@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1206 |
-| **✅ Correct** | 945 (78%) |
+| **Total Questions** | 1216 |
+| **✅ Correct** | 952 (78%) |
 | **⚠️ Partial** | 35 (3%) |
-| **❌ Wrong** | 223 (19%) |
-| **Sessions** | 101 |
-| **Re-tests Passed** | 545 of 659 |
+| **❌ Wrong** | 226 (19%) |
+| **Sessions** | 102 |
+| **Re-tests Passed** | 554 of 670 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 236 | 11 | 64 | 311 | 76% | 🟡 |
-| D2: Incident Response | 14% | 60 | 2 | 16 | 78 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 209 | 9 | 48 | 266 | 79% | 🟡 |
-| D4: Identity & Access Management | 20% | 272 | 10 | 59 | 341 | 80% | 🟢 |
-| D5: Data Protection | 18% | 256 | 8 | 61 | 325 | 79% | 🟡 |
-| D6: Governance | 14% | 180 | 2 | 46 | 228 | 79% | 🟡 |
+| D1: Detection | 16% | 240 | 11 | 64 | 315 | 76% | 🟡 |
+| D2: Incident Response | 14% | 62 | 2 | 16 | 80 | 78% | 🟡 |
+| D3: Infrastructure Security | 18% | 214 | 9 | 49 | 272 | 79% | 🟡 |
+| D4: Identity & Access Management | 20% | 275 | 10 | 59 | 344 | 80% | 🟢 |
+| D5: Data Protection | 18% | 260 | 8 | 61 | 329 | 79% | 🟡 |
+| D6: Governance | 14% | 183 | 2 | 48 | 233 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -223,6 +223,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 189 | mTLS = custom domain + S3 | Q1172 | D3 | 1 |
 | 🟡 190 | Bedrock guardrail condition key | Q1187 | D3 | 1 |
 | 🟡 191 | Config also detects StopLogging | Q1201 | D1 | 1 |
+| 🟡 192 | mTLS S3 versioning required | Q1207 | D3 | 1 |
+| 🟡 193 | Well-Architected Tool milestones | Q1211 | D6 | 1 |
+| 🟡 194 | cfn-guard vs Config proactive (template validation) | Q1213 | D6 | 1 |
 
 ---
 
@@ -330,8 +333,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 98 | 2026-06-18 | Q1056–Q1115 | 48 | 0 | 12 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D6 Governance (Week 2 NEVER-SEEN validation — mTLS, FLE, SBOM, Macie, Access Grants, Session 97 re-tests, cross-domain killers) | [Jump](#session-98--2026-06-18) |
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
 | 100 | 2026-06-20 | Q1141–Q1191 | 49 | 1 | 1 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response | [Jump](#session-100--2026-06-20) |
-| 101 | 2026-06-20 | Q1192–Q1206 | 13.5 | 1 | 0.5 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
-| 101 | 2026-06-20 | Q1192–Q1201 | 9 | 1 | 0 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
+| 101 | 2026-06-20 | Q1192–Q1206 | 14 | 1 | 0 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
+| 102 | 2026-06-21 | Q1207–Q1216 | 7 | 0 | 3 | D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response | [Jump](#session-102--2026-06-21) |
 
 ---
 
@@ -2523,3 +2526,22 @@ After adding a session:
 | 1204 | D5 | Bucket policy Deny if KMS key header missing, upload without flags, default encryption set — result? | B | ✅ | Denied — policy evaluates before default encryption | Q426 | Default encryption vs bucket policy Deny |
 | 1205 | D2/D4 | InsideAWS, attacker on Instance B, shared role, both production — containment? | B | ✅ | Deny-all SG on Instance B only | Q761 | InsideAWS = SG isolation |
 | 1206 | D1/D4/D5/D6 | Static analysis + 60s API alert + block external + anomalous downloads — match 4 services? | A | ✅ | Access Analyzer + EventBridge + RCP + GuardDuty S3 Protection | — | Full detect/prevent architecture |
+
+
+### Session 102 — 2026-06-21
+
+**Domains:** D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response
+**Score:** 7 ✅ · 0 ⚠️ · 3 ❌ (70% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1207 | D3 | mTLS setup, S3 bucket NO versioning enabled — what happens? | A | ❌ | B: Custom domain creation fails — versioning required for object version reference | Q967 | mTLS S3 versioning required |
+| 1208 | D3 | Inspector SBOM export fails cross-account AccessDenied on PutObject — fix? | B | ✅ | Bucket policy for inspector2.amazonaws.com service principal | Q1059 | Inspector SBOM = native export + bucket policy |
+| 1209 | D1/D3 | State Manager CIS on boot + every 2hr — minimum associations? | B | ✅ | ONE association with OnBoot + rate(2 hours) | Q1048 | State Manager OnBoot + schedule (dual triggers) |
+| 1210 | D1/D3 | Config 8-12min gap on new instances, eliminate gap — approach? | B | ✅ | State Manager OnBoot + rate (proactive, zero gap) | Q1127 | State Manager = proactive vs Config = reactive |
+| 1211 | D6 | WAT 4 HRIs + 7 MRIs, track improvement over 3 quarters — feature? | C | ❌ | A: Milestones — snapshot current state, compare across quarters | Q1031 | Well-Architected Tool milestones |
+| 1212 | D2 | Multi-account breach, custom Python + interactive graph + reusable notebook — tool? | B | ✅ | SageMaker AI notebooks (custom code + reusable + arbitrary queries) | Q996 | SageMaker notebooks vs Detective (custom vs built-in) |
+| 1213 | D6 | Reject CF template without mTLS before any resource exists — mechanism? | B | ❌ | C: cfn-guard in CI/CD (validates template content, shift-left) | — | cfn-guard vs Config proactive (template validation) |
+| 1214 | D5 | EMR inter-node encryption, engineer proposes Nitro on C5 — why wrong? | B | ✅ | EMR = security config + PEM certs (not Nitro) | Q1030 | EMR in-transit = security config + PEM certs |
+| 1215 | D6 | cfn-guard passes, dev disables DeletionProtection via Console — limitation + fix? | A | ✅ | cfn-guard = template only. SCP blocks runtime API call. | — | cfn-guard limitation (shift-left only) |
+| 1216 | D6/D3/D1 | Match: template validation + boot enforcement + API block — three mechanisms? | B | ✅ | cfn-guard + State Manager (OnBoot+rate) + SCP | — | Three enforcement moments |

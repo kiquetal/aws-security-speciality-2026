@@ -169,6 +169,7 @@
 
 ### API Gateway Security
 - 🧠 **API Gateway mTLS = custom domain name + S3 truststore (PEM file + object version).** Not ACM. Not Lambda authorizer. mTLS only works on custom domains, never on default execute-api endpoint.
+- 🧠 **mTLS S3 bucket MUST have versioning enabled.** API Gateway requires an explicit object version reference. No versioning = domain creation fails at setup.
 - 🧠 **mTLS troubleshooting: ALL fail = truststore/CA problem. ONE fails (same CA) = that partner's cert expired.** Same CA = truststore already trusts all certs from it. Individual cert issue only.
 - 🧠 **mTLS revoke ONE cert = add CRL to S3 truststore.** Remove CA = blocks ALL partners using that CA.
 - 🧠 **API Gateway authorizer types:** Cognito Authorizer (JWT tokens) vs Lambda Authorizer TOKEN (header value) vs Lambda Authorizer REQUEST (headers + query + context + IP). Use REQUEST type when you need to validate custom headers or IP addresses.
@@ -316,6 +317,8 @@
 - 🧠 **"Detect specific API call fast" = EventBridge on CloudTrail. "Detect malicious behavior" = GuardDuty.** GuardDuty doesn't alert on policy changes.
 - 🧠 **If the service has delegated admin + auto-enable → use native, not StackSets.** GuardDuty, Inspector, Security Hub, Macie, Detective, Config, Access Analyzer.
 - 🧠 **No single governance service does everything.** CT doesn't share (RAM), deploy WAF (FM), or remediate (Config).
+- 🧠 **Well-Architected Tool = architecture review + improvement plan + milestones (snapshot + compare over time).** No Config/SH integration for auto-resolution.
+- 🧠 **cfn-guard = validate template content in CI/CD (shift-left, cheapest). Config proactive = validate at CF service level (heavier). CF Hook = same as Config proactive but Control Tower managed.** All three = "before deploy" but different weight.
 - 🧠 **Declarative policy = "this state is impossible to violate" (EC2/VPC/EBS only).** SCP = "this API call is blocked." Different layers. "Regardless of which API" = declarative.
 - 🧠 **Stack Policy = protect resources inside stack (preventive, blocks CF updates). Termination protection = prevent stack deletion.** Drift detection = detective only (reports manual changes, doesn't prevent). Change sets = preview before deploy.
 ---
