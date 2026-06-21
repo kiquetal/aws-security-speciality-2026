@@ -34,3 +34,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 |---|---|---|---|---|
 
 ---
+
+| 1227 | D4/D6 | RCP on S3, ELB SLR writes access logs — succeeds or fails? | B | ✅ | Succeeds — SLRs exempt from RCPs | — | RCP SLR exemption |
+| 1228 | D5 | EC2 encrypted EBS won't start, role has kms:Decrypt — missing? | B | ✅ | kms:CreateGrant | — | EC2 EBS always needs CreateGrant |
+| 1229 | D1 | CryptoCurrency:EC2/BitcoinTool.B — detection method? | B | ✅ | Active TCP to mining pool (not DNS) | — | GD finding type = detection method |
+| 1230 | D5 | CRR SSE-KMS replication role — three permissions? | B | ✅ | Decrypt source + GenerateDataKey dest + GetObjectVersionForReplication | — | CRR D-G-F |
+| 1231 | D2 | IAM user creds on GitHub, 2 keys + console + STS — first containment? | B | ❌ | A: Deactivate key + inline Deny * on user (covers ALL paths) | — | User = Deny *. Role = TokenIssueTime. |
