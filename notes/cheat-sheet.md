@@ -236,6 +236,17 @@
 - 🧠 **ELB access logs → S3 ONLY (never CW Logs directly).** Search = Athena. Metrics = Athena query → PutMetricData to CloudWatch. CW metric filters only work on CW Logs log groups, not S3 files.
 - **"Which domain was queried?" = Resolver Query Logs.** VPC Flow Logs only show IP:port — domain name is gone after DNS resolves.
 - GuardDuty reads BOTH: DNS logs (domain) + VPC Flow Logs (traffic volume/destination). That's why it catches C2 that other services miss.
+- 🧠 **Log source SCOPE (what each sees):**
+
+| Log Source | Sees What | Key Exam Signal |
+|---|---|---|
+| **VPC Flow Logs** | IP/port per ENI (intra-subnet, intra-VPC) | "lateral movement", "same subnet" |
+| **TGW Flow Logs** | Traffic crossing Transit Gateway (VPC↔VPC) | "hub-and-spoke", "cross-VPC" |
+| **ELB Access Logs** | HTTP details (URL, status, latency, cipher) | "request patterns", "HTTP" |
+| **R53 DNS Query Logging** | Queries TO your public zone (external) | "public DNS queries" |
+| **R53 Resolver Query Logging** | Queries FROM your VPC (internal lookups) | "C2 domains", "VPC DNS" |
+| **CloudTrail** | AWS API calls | "who changed", "API call" |
+
 - 🧠 **Log delivery destinations (exam-critical table):**
 
 | Log Source | S3 | CW Logs | Firehose | EventBridge |
