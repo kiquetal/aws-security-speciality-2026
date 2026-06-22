@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1226 |
-| **✅ Correct** | 958 (78%) |
+| **Total Questions** | 1244 |
+| **✅ Correct** | 963 (77%) |
 | **⚠️ Partial** | 35 (3%) |
-| **❌ Wrong** | 230 (19%) |
-| **Sessions** | 102 |
-| **Re-tests Passed** | 560 of 679 |
+| **❌ Wrong** | 243 (20%) |
+| **Sessions** | 103 |
+| **Re-tests Passed** | 561 of 681 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 241 | 11 | 64 | 316 | 76% | 🟡 |
-| D2: Incident Response | 14% | 62 | 2 | 16 | 80 | 78% | 🟡 |
-| D3: Infrastructure Security | 18% | 217 | 9 | 49 | 275 | 79% | 🟡 |
-| D4: Identity & Access Management | 20% | 276 | 10 | 59 | 345 | 80% | 🟢 |
-| D5: Data Protection | 18% | 261 | 8 | 61 | 330 | 79% | 🟡 |
-| D6: Governance | 14% | 184 | 2 | 52 | 238 | 77% | 🟡 |
+| D1: Detection | 16% | 242 | 11 | 67 | 320 | 76% | 🟡 |
+| D2: Incident Response | 14% | 62 | 2 | 17 | 81 | 77% | 🟡 |
+| D3: Infrastructure Security | 18% | 217 | 9 | 52 | 278 | 78% | 🟡 |
+| D4: Identity & Access Management | 20% | 277 | 10 | 62 | 349 | 79% | 🟡 |
+| D5: Data Protection | 18% | 263 | 8 | 64 | 335 | 79% | 🟡 |
+| D6: Governance | 14% | 186 | 2 | 56 | 244 | 76% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -230,6 +230,19 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 196 | WAT milestones = no automation | Q1221 | D6 | 1 |
 | 🟡 197 | Stack Policy default deny + selective Deny | Q1225 | D6 | 1 |
 | 🟡 198 | WAT milestones = no automated evidence | Q1226 | D6 | 1 |
+| 🟡 199 | User = Deny *. Role = TokenIssueTime. | Q1231 | D2 | 1 |
+| 🟡 200 | WAT = self-reported, no automation | Q1233 | D6 | 1 |
+| 🟡 201 | IAM Credential Report 4-hour cache | Q1234 | D1 | 1 |
+| 🟡 202 | Permission boundary delegation vs Service Catalog | Q1235 | D4 | 1 |
+| 🟡 203 | SCP attachment OU vs accounts | Q1236 | D4, D6 | 1 |
+| 🟡 204 | EBS snapshot sharing (copy with CMK, no volume needed) | Q1237 | D5 | 1 |
+| 🟡 205 | SCP block root (containment vs hygiene) | Q1238 | D4, D6 | 1 |
+| 🟡 206 | Public-facing = 0.0.0.0/0 on 443 | Q1239 | D3 | 1 |
+| 🟡 207 | CW agent ships logs (not SSM agent) | Q1240 | D1 | 1 |
+| 🟡 208 | Boot-time retrieval vs deploy-time injection | Q1241 | D5 | 1 |
+| 🟡 209 | Rotation Lambda can't reach DB = SG issue | Q1242 | D3, D5 | 1 |
+| 🟡 210 | VPC Flow vs TGW Flow Logs scope | Q1243 | D1, D3 | 1 |
+| 🟡 211 | Security Hub setup ordering (E-D-M-A) | Q1244 | D6 | 1 |
 
 ---
 
@@ -338,7 +351,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 99 | 2026-06-20 | Q1116–Q1140 | 16 | 0 | 9 | D3 Infrastructure + D5 Data Protection + D1 Detection + D4 IAM + D2 Incident Response + D6 Governance (Week 2 DOJO GAP DRILL - Udemy + Dojo 3 operational gaps) | [Jump](#session-99--2026-06-20) |
 | 100 | 2026-06-20 | Q1141–Q1191 | 49 | 1 | 1 | D3 Infrastructure · D5 Data Protection · D4 IAM · D1 Detection · D6 Governance · D2 Incident Response | [Jump](#session-100--2026-06-20) |
 | 101 | 2026-06-20 | Q1192–Q1206 | 14 | 1 | 0 | D6 Governance · D5 Data Protection · D1 Detection · D3 Infrastructure · D4 IAM | [Jump](#session-101--2026-06-20) |
-| 102 | 2026-06-21 | Q1207–Q1226 | 13 | 0 | 7 | D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response | [Jump](#session-102--2026-06-21) |
+| 102 | 2026-06-21 | Q1207–Q1233 | 18 | 0 | 9 | D3 Infrastructure · D1 Detection · D5 Data Protection · D6 Governance · D2 Incident Response | [Jump](#session-102--2026-06-21) |
+| 103 | 2026-06-22 | Q1234–Q1244 | 0 | 0 | 11 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Dojo Practice Exam Set 4) | [Jump](#session-103--2026-06-22) |
 
 ---
 
@@ -2566,3 +2580,23 @@ After adding a session:
 | 1231 | D2 | IAM user creds on GitHub, 2 keys + console + STS — first containment? | B | ❌ | A: Deactivate key + inline Deny * on user (covers ALL paths) | — | User = Deny *. Role = TokenIssueTime. |
 | 1232 | D6 | Stack Policy Allow * + Deny Replace/Delete on Aurora, dev changes engine (requires replacement) — result? | B | ✅ | Fails — explicit Deny Update:Replace blocks | Q1225 | Stack Policy explicit Deny wins |
 | 1233 | D6 | WAT Jan milestone 4 HRIs, June milestone 1 HRI — what does CISO see? | A | ❌ | B: Per-question risk changes (self-reported). NO automated evidence. | Q1221 | WAT = self-reported, no automation |
+
+
+### Session 103 — 2026-06-22
+
+**Domains:** D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Dojo Practice Exam Set 4)
+**Score:** 22 ✅ · 0 ⚠️ · 11 ❌ (67% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1234 | D1 | Config rules enabled, GenerateCredentialReport shows noncompliant — cause? | C: MaximumExecutionFrequency 3hr | ❌ | D: Credential report cached 4hrs, recent changes not reflected yet | — | IAM Credential Report 4-hour cache |
+| 1235 | D4 | 1200 accounts, backlog, teams independently provision roles with limited scope — approach? | A: Service Catalog templates | ❌ | C: SCP + permissions boundary delegation (teams create within guardrails) | — | Permission boundary delegation vs Service Catalog |
+| 1236 | D4/D6 | Restrict to ap-southeast-1, existing + future accounts in Development OU — SCP attachment? | A: Attach to individual accounts | ❌ | C: Attach to Development OU (auto-applies to future accounts) | — | SCP attachment OU vs accounts |
+| 1237 | D5 | EBS snapshot default key can't share, need to share with security account — steps? (THREE) | A+B+E (create volume) | ❌ | A+C+E: Create CMK + copy snapshot with CMK + share snapshot + grant key access | — | EBS snapshot sharing (copy with CMK, no volume needed) |
+| 1238 | D4/D6 | Minimize risk if root compromised across member accounts — approach? | A: Deactivate root access key | ❌ | D: SCP to block service access for root user (blocks ALL paths) | — | SCP block root (containment vs hygiene) |
+| 1239 | D3 | Public-facing HTTPS + SSH via bastion only — EC2 SG rules? (TWO) | A+D (443 from internal subnet) | ❌ | B+D: 443 from 0.0.0.0/0 (public-facing) + 22 from security team | — | Public-facing = 0.0.0.0/0 on 443 |
+| 1240 | D1 | Custom logs on EC2, available within 30min, no interactive sessions — approach? (TWO) | D+E (SSM agent ships logs) | ❌ | A+E: CloudWatch agent ships logs + EventBridge schedule with SendCommand | — | CW agent ships logs (not SSM agent) |
+| 1241 | D5 | EC2 needs secrets during bootstrapping, strict permissions — approach? | B: Secrets Manager + CF ValueFrom | ❌ | D: Parameter Store + IAM role + ssm:GetParameters at runtime (boot time) | — | Boot-time retrieval vs deploy-time injection |
+| 1242 | D5/D3 | Rotation Lambda "Unable to log into database", SM VPC endpoint works — cause? | C: Force rotation via CLI | ❌ | D: Lambda SG egress + EC2 SG ingress rules missing (network issue) | — | Rotation Lambda can't reach DB = SG issue |
+| 1243 | D1/D3 | Match log sources: intra-subnet, DNS, hub-and-spoke, HTTP patterns — ordering? | Swapped VPC Flow and TGW Flow | ❌ | VPC Flow=intra-subnet, Resolver=DNS, TGW Flow=hub-and-spoke, ELB=HTTP | — | VPC Flow vs TGW Flow Logs scope |
+| 1244 | D6 | Security Hub setup ordering (4 steps) | Wrong order | ❌ | Enable SH in admin → Designate admin → Enable in members → Cross-account access | — | Security Hub setup ordering (E-D-M-A) |
