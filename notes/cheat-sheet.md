@@ -155,6 +155,7 @@
 - Network Access Analyzer = find unintended network paths (reachable from internet when shouldn't be).
 - VPC Reachability Analyzer = "why can't A reach B?" (specific pair, troubleshooting one connection).
 - 🧠 **"What's exposed?" = Network Access Analyzer (auditor). "Why can't A reach B?" = Reachability Analyzer (debugger).** Different tools, different questions.
+- 🧠 **"Find all exposed paths" = Network Access Analyzer. "Explain WHY this specific path works (hop-by-hop)" = Reachability Analyzer.** NAA finds. RA explains.
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
 - 🧠 **IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only Internet Gateway.** NAT doesn't exist for IPv6 — all IPv6 is globally routable. Egress-only IGW = one-way gate (outbound yes, inbound no).
 - 🧠 **"Individual remote users (home)" = Client VPN (SSL). "Two fixed networks (office↔AWS)" = Site-to-Site VPN (IPsec). "Physical dedicated link" = Direct Connect.**
@@ -293,6 +294,7 @@
 - Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.
 - 🧠 **OutsideAWS = TokenIssueTime (creds used externally, instance gets fresh ones). InsideAWS = deny-all SG on attacker's instance (TokenIssueTime would break both instances sharing same role).**
 - 🧠 **OutsideAWS + can't stop instance: TokenIssueTime (stop attacker) + EBS snapshot (forensics) + IMDSv2 hop limit 1 (prevent future SSRF). Deny-all SG kills legitimate traffic — wrong choice if API must stay up.**
+- 🧠 **C2Activity + API must stay up: Network Firewall DROP on C2 IP (surgical). Deny-all SG = nuclear (kills all traffic). "Preserve evidence" in same question = MUST include EBS snapshot.**
 - 🧠 **Credential leak IR (keys on GitHub): Deactivate exposed keys + attach inline Deny-all to user (covers second key/console/sessions).** Contain ALL access paths BEFORE investigating. Detective comes after containment.
 - 🧠 **Compromised ROLE = TokenIssueTime (only temp creds exist). Compromised IAM USER = Deny * on user (keys + console + sessions = persistent creds).** TokenIssueTime only kills STS tokens, not access keys or console passwords.
 - 🧠 **S3 Access Grants scope access by prefix (location). Overlapping prefixes = unintended cross-department access.** This is the #1 operational misconfiguration — not IAM bypass.
