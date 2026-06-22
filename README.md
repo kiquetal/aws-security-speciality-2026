@@ -1,6 +1,6 @@
 # AWS Certified Security - Specialty (SCS-C03) Study Repository
 
-[![Questions Attempted](https://img.shields.io/badge/Questions-1,274-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-77%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-91_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-106-purple)](#current-progress)
+[![Questions Attempted](https://img.shields.io/badge/Questions-1,299-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-77%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-91_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-107-purple)](#current-progress)
 
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
@@ -43,9 +43,9 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | Metric | Value |
 |--------|-------|
 | **Phase** | Maintenance mode (decay prevention until Aug 27) |
-| **Questions Attempted** | 1,274 |
+| **Questions Attempted** | 1,299 |
 | **Accuracy** | 77% overall, 85-90% on recent sessions |
-| **Sessions** | 106 |
+| **Sessions** | 107 |
 | **Study Hours** | 91+ hours |
 | **Dojo Mock Scores** | Test 1: 58% → Test 2: 72% (passing) |
 | **Never-Seen Topics Tested** | 14/18 (all passed or re-locked) |
@@ -57,7 +57,7 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 |--------|--------|--------|-------|
 | D4: Identity and Access Management | 20% | ✅ Complete | 79% |
 | D5: Data Protection | 18% | ✅ Complete | 79% |
-| D3: Infrastructure Security | 18% | ✅ Complete | 78% |
+| D3: Infrastructure Security | 18% | ✅ Complete | 77% |
 | D1: Detection | 16% | ✅ Complete | 75% |
 | D2: Incident Response | 14% | ✅ Complete | 77% |
 | D6: Governance | 14% | ✅ Complete | 76% |
