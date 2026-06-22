@@ -1,0 +1,30 @@
+---
+title: Log Source Coverage - What Each Sees
+---
+flowchart TB
+    subgraph VPC_A["VPC A"]
+        subgraph SUBNET["Same Subnet"]
+            EC2_1["EC2-1"] <-->|"VPC Flow Logs sees this"| EC2_2["EC2-2"]
+        end
+        ALB["ALB"] -->|"ELB Access Logs sees this"| EC2_1
+    end
+
+    subgraph VPC_B["VPC B"]
+        EC2_3["EC2-3"]
+    end
+
+    subgraph TGW_BOX["Transit Gateway (Hub)"]
+        TGW["TGW Flow Logs sees this"]
+    end
+
+    subgraph DNS["DNS Layer"]
+        R53["Resolver Query Logs sees this"]
+    end
+
+    EC2_1 -->|"crosses hub"| TGW
+    TGW -->|"crosses hub"| EC2_3
+    EC2_1 -.->|"DNS query"| R53
+
+    style SUBNET fill:#ccffcc,stroke:#00aa00
+    style TGW_BOX fill:#cce5ff,stroke:#0066cc
+    style DNS fill:#fff3cc,stroke:#cc9900

@@ -12,6 +12,7 @@
 - 🧠 **SLRs escape the RESOURCE gate (RCP), not the PRINCIPAL gate (SCP).** SLRs are exempt from RCPs only. SCPs still apply to SLRs because they live in your account. AWS service principals are a different thing — exempt via `PrincipalIsAWSService` condition.
 - Boundary = ceiling on ONE role. Identity ∩ boundary = effective. Never grants.
 - Delegation pattern: Deny CreateRole without boundary + Deny remove/swap boundary = safe self-service IAM.
+- 🧠 **SCP questions: read the ATTACHMENT TARGET first (OU vs account), not the JSON.** "Existing + future accounts" = attach to OU. Attach to individual accounts = new accounts miss it.
 
 ### Data Perimeter
 - 🧠 **RCP blocks outsiders IN. SCP blocks insiders OUT.** Full data perimeter = both together. Bucket policy per-bucket doesn't scale org-wide.
@@ -109,6 +110,7 @@
 - 🧠 **DynamoDB + customer-managed KMS = needs `kms:CreateGrant` + `kms:DescribeKey`.** DynamoDB delegates via grants internally (like EBS). Never uses kms:Encrypt.
 
 ### Secrets Manager
+- 🧠 **"Retrieve secrets at boot/initialization" = instance role + runtime API call (SSM or SM). CF `ValueFrom` = deploy-time injection (secret visible in stack, wrong timing).** Exam says "during bootstrapping" = boot time, not deploy time.
 - Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
 - Secrets Manager = built-in rotation (RDS, Aurora, DocumentDB, Redshift). Parameter Store = no native rotation.
 - Deletion has 7–30 day recovery window. Cannot delete immediately.
@@ -163,6 +165,8 @@
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
 - WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.
 - 🧠 **"Add security headers (HSTS, CSP, X-Content-Type-Options) to CloudFront, least overhead" = CloudFront response headers policy (managed, zero code).** Lambda@Edge = only if you need dynamic/conditional logic.
+- 🧠 **CW agent ships logs (not SSM agent).** SSM agent = execute commands, sessions, patching. CW agent = ship custom log files + metrics. SSM can INSTALL CW agent but can't replace it.
+- 🧠 **"Public-facing + HTTPS to customers" = inbound 0.0.0.0/0 on 443.** "Highest security" doesn't override the requirement of being publicly accessible.
 - 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance. HIDS inspects AFTER decryption at the host. ECDHE = ephemeral keys = PFS (past sessions safe even if key leaks later). Static RSA = no PFS.
 - Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
@@ -189,6 +193,7 @@
 - 🧠 **IoT ThingName = bound to certificate, not physical hardware.** Stolen cert = full impersonation. Mitigation = revoke cert in IoT Core.
 - 🧠 **IoT Core cert revocation = instant.** Registry status checked at TLS handshake — no CRL propagation delay.
 - 🧠 **Flow Log: inbound ACCEPT + outbound REJECT = always NACL.** SGs are stateful — accepted inbound = auto-allowed return. NACLs are stateless — need explicit outbound ephemeral port rule.
+- 🧠 **VPC Flow Logs = intra-VPC (ENI-level, sees same-subnet traffic). TGW Flow Logs = cross-VPC (sees traffic traversing the transit gateway hub).** Each log sees traffic at ITS layer only.
 
 ---
 
@@ -338,6 +343,8 @@
 
 - 🧠 **`GetCallerIdentity` cannot be denied by anything.** Not IAM, not SCP, not boundary, not session policy.
 - 🧠 **`aws:TokenIssueTime` = revoke sessions.** Inline Deny with DateLessThan. Only way to kill active STS tokens.
+- 🧠 **IAM Credential Report cached 4 hours.** Recent changes won't appear until cache expires. Not a Config frequency issue.
+- 🧠 **SCP block root (containment vs hygiene):** Deactivate key = one path (programmatic). SCP deny root = ALL paths (API + Console). "If compromised" = SCP.
 
 ---
 
