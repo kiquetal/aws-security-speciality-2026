@@ -1,0 +1,24 @@
+---
+title: Hub-and-Spoke (Transit Gateway)
+---
+flowchart TD
+    TGW["Transit Gateway\n(HUB)\nTGW Flow Logs sees ALL cross-VPC traffic"]
+
+    VPCA["VPC-A\n(spoke)"] --> TGW
+    VPCB["VPC-B\n(spoke)"] --> TGW
+    VPCC["VPC-C\n(spoke)"] --> TGW
+    ONPREM["On-Prem\n(spoke)"] --> TGW
+
+    TGW --> VPCA
+    TGW --> VPCB
+    TGW --> VPCC
+    TGW --> ONPREM
+
+    subgraph INSIDE_VPC["Inside VPC-A (VPC Flow Logs sees this)"]
+        EC2A1["EC2-1"] <--> EC2A2["EC2-2"]
+    end
+
+    VPCA ~~~ INSIDE_VPC
+
+    style TGW fill:#cce5ff,stroke:#0066cc,stroke-width:3px
+    style INSIDE_VPC fill:#ccffcc,stroke:#00aa00
