@@ -8,20 +8,20 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1274 |
-| **✅ Correct** | 987 (77%) |
+| **Total Questions** | 1299 |
+| **✅ Correct** | 1006 (77%) |
 | **⚠️ Partial** | 35 (3%) |
-| **❌ Wrong** | 249 (20%) |
-| **Sessions** | 106 |
-| **Re-tests Passed** | 582 of 708 |
+| **❌ Wrong** | 255 (20%) |
+| **Sessions** | 107 |
+| **Re-tests Passed** | 589 of 715 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 252 | 11 | 69 | 332 | 76% | 🟡 |
-| D2: Incident Response | 14% | 63 | 2 | 17 | 82 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 221 | 9 | 54 | 284 | 78% | 🟡 |
+| D1: Detection | 16% | 267 | 11 | 73 | 351 | 76% | 🟡 |
+| D2: Incident Response | 14% | 66 | 2 | 18 | 86 | 77% | 🟡 |
+| D3: Infrastructure Security | 18% | 222 | 9 | 56 | 287 | 77% | 🟡 |
 | D4: Identity & Access Management | 20% | 282 | 10 | 63 | 355 | 79% | 🟡 |
 | D5: Data Protection | 18% | 268 | 8 | 65 | 341 | 79% | 🟡 |
 | D6: Governance | 14% | 191 | 2 | 58 | 251 | 76% | 🟡 |
@@ -243,6 +243,12 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 209 | CW agent ships logs (not SSM agent) | Q1240 | D1 | 1 |
 | 🟡 210 | Boot-time retrieval vs deploy-time injection | Q1241 | D5 | 1 |
 | 🟡 211 | VPC Flow vs TGW Flow Logs scope | Q1243 | D1, D3 | 1 |
+| 🟡 212 | Resolver vs DNS query logging direction | Q1276 | D1 | 1 |
+| 🟡 213 | Detective needs finding. No finding = CW Logs Insights | Q1277 | D1 | 1 |
+| 🟡 214 | Remediation succeeds but returns = re-creation | Q1287 | D1 | 1 |
+| 🟡 215 | Macie enabled ≠ Macie scanning | Q1293 | D1 | 1 |
+| 🟡 216 | Preserve evidence = EBS snapshot | Q1295 | D2, D3 | 1 |
+| 🟡 217 | NAA finds, RA explains | Q1296 | D3 | 1 |
 
 ---
 
@@ -356,6 +362,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 104 | 2026-06-22 | Q1245–Q1254 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Dojo 4 re-test drill) | [Jump](#session-104--2026-06-22) |
 | 105 | 2026-06-22 | Q1255–Q1264 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Killer difficulty cross-domain drill) | [Jump](#session-105--2026-06-22) |
 | 106 | 2026-06-22 | Q1265–Q1274 | 8 | 0 | 2 | D1 Detection · D2 Incident Response · D6 Governance (D1+D6 targeted push — killer difficulty) | [Jump](#session-106--2026-06-22) |
+| 107 | 2026-06-22 | Q1275–Q1299 | 19 | 0 | 6 | D1 Detection · D3 Infrastructure · D5 Data Protection · D6 Governance (D1+D6 uplift drill + D2/D3 cross-domain) | [Jump](#session-107--2026-06-22) |
 
 ---
 
@@ -2660,3 +2667,37 @@ After adding a session:
 | 1272 | D6 | All paths must have DeletionProtection — which catches Console+CLI+CF+Terraform? | C: SCP | ✅ | SCP blocks API regardless of deployment method | — | SCP = catches ALL deployment paths |
 | 1273 | D6 | Security Hub setup order? | A: Designate → Enable → Members → Access | ❌ | B: Enable SH in admin → Designate → Members → Access (E-D-M-A) | Q1244 | Security Hub setup ordering (E-D-M-A) |
 | 1274 | D1 | RCP blocks external, 100 denied, then RCP removed, 50 successful downloads — when GD fires? | B: Week 2 (successful access) | ✅ | GD fires on successful anomalous access only | Q534 | GuardDuty ≠ failed attempts |
+
+
+### Session 107 — 2026-06-22
+
+**Domains:** D1 Detection · D3 Infrastructure · D5 Data Protection · D6 Governance (D1+D6 uplift drill + D2/D3 cross-domain)
+**Score:** 18 ✅ · 0 ⚠️ · 7 ❌ (72% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1275 | D1 | CloudTrail Insights 10x RunInstances, GD silent — which true? | B: Complementary (Insights=volume, GD=behavior) | ✅ | Legit spike triggers Insights not GD | — | CloudTrail Insights vs GuardDuty (complementary) |
+| 1276 | D1 | Resolver query logging vs DNS query logging — which captures what? | C: Swapped them | ❌ | B: Resolver=FROM VPC (outbound), DNS query=TO your zone (inbound) | — | Resolver vs DNS query logging direction |
+| 1277 | D1 | VPC Flow spike same subnet port 445, "what else did IP talk to 24hr" — tool? | B: Detective | ❌ | A: CW Logs Insights (no finding = no Detective entry point, raw log query) | — | Detective needs finding. No finding = CW Logs Insights |
+| 1278 | D1 | Write-only trail, ConsoleLogin EventBridge rule doesn't fire — why? | B: ConsoleLogin is Read event | ✅ | Write-only doesn't deliver Read events to EB | Q710 | CloudTrail management events Read/Write |
+| 1279 | D1 | Security Lake: which THREE true? | A+B+E: Your S3 + subscriber + OCSF | ✅ | Correct | — | Security Lake (OCSF + your S3 + subscriber) |
+| 1280 | D1 | 200GB/hr WAF logs, full-text, sub-second, dashboards, 90d — arch? | C: Firehose + OpenSearch + UltraWarm | ✅ | Full-text + sub-second = OpenSearch | — | Kinesis + OpenSearch architecture |
+| 1281 | D1 | Suppressed findings after removing suppression rule — visible? | B: Yes, archived not deleted | ✅ | Suppression = archive, remove filter = reappear | — | GuardDuty suppression = archive |
+| 1282 | D1 | Metric filter value=1, alarm never fires despite ERRORs — cause? | A: Metric value set to 0 | ✅ | Value=0 publishes nothing useful | Q724 | CW metric filter value |
+| 1283 | D1 | ELB access logs spike 403s, query for patterns — where + how? | B: S3 + Athena | ✅ | ELB logs = S3 only, query with Athena | — | ELB access logs = S3 only |
+| 1284 | D1 | EC2 DNS to C2 beacon then TLS TCP — findings + ThreatPurpose? | B: Impact then Trojan | ✅ | DNS=Impact, TCP to C2=Trojan | Q655 | GuardDuty finding types (C2 = Trojan) |
+| 1285 | D2 | OutsideAWS, investigate HOW creds exfiltrated — tool? | A: Detective | ✅ | Finding exists, investigate = Detective | — | Detective for investigation |
+| 1286 | D1 | CW Logs agent stopped, instances healthy — first file? | B: /var/log/awslogs.log | ✅ | Runtime log for "was working, stopped" | Q708 | CW Logs agent troubleshooting |
+| 1287 | D1 | Config remediation succeeds but SG re-opens 5min later — why? | A: Config frequency | ❌ | B: Something re-added the rule (check CloudTrail for WHO) | — | Remediation succeeds but returns = re-creation |
+| 1288 | D1 | Security Lake query — built-in SQL engine? | B: No, use Athena | ✅ | Security Lake = your S3, no built-in engine | — | Security Lake vs CloudTrail Lake |
+| 1289 | D1 | StopLogging metric filter works in test, fails in prod attack — why? | A: StartLogging re-enables delivery in test | ✅ | Test = quick restart. Prod = no restart = blind | Q860 | StopLogging kills own CW Logs delivery |
+| 1290 | D1 | AA flags SQS queue, RCP deployed, AA still shows finding — why? | B: AA reads policy text, not runtime | ✅ | AA static, doesn't know about RCP | Q534 | Access Analyzer static |
+| 1291 | D1 | Recon finding, every IP that probed port 22 in 7 days — tool? | A: Detective | ✅ | Finding exists + entity investigation | — | Detective for investigation |
+| 1292 | D1 | VPC Flow Logs sent to S3, CW Logs Insights returns zero — why? | B: Logs in S3 not in CW Logs | ✅ | Insights only queries CW Logs, not S3 | — | CW Logs Insights scope |
+| 1293 | D1 | Macie enabled 48hrs, 0 findings despite known PII — cause? | D: CMK blocks Macie | ❌ | B: No discovery job created (Macie enabled ≠ scanning) | — | Macie enabled ≠ Macie scanning |
+| 1294 | D1 | Correlate GD+Flow+CT across 20 accounts, OCSF, own S3, Splunk — service? | B: Security Lake | ✅ | Multiple sources + OCSF + your S3 + subscriber | — | Security Lake |
+| 1295 | D2/D3 | C2Activity, API behind NLB, block C2 + preserve evidence — TWO? | B+E (NF DROP + DNS FW) | ❌ | B+C: NF DROP + EBS snapshot. "Preserve evidence" = must pick snapshot. | — | Preserve evidence = EBS snapshot |
+| 1296 | D3 | NAA found path, need hop-by-hop SG+NACL+route explanation — tool? | A: NAA | ❌ | B: Reachability Analyzer (explains specific path) | — | NAA finds, RA explains |
+| 1297 | D2 | OutsideAWS, TokenIssueTime applied, fires again next day — why? | A: SSRF still exists, attacker got fresh creds | ✅ | Token deny kills old, vulnerability still present | — | TokenIssueTime doesn't fix root cause |
+| 1298 | D3 | Suricata IPS + block DNS bad domains — minimum services? | A: NF + DNS FW | ✅ | Different layers, complement each other | — | NF + DNS FW complementary |
+| 1299 | D2 | IAM user leaked, 2 keys + console + STS — single containment? | C: Deny * on user | ✅ | Blocks all paths | Q942 | User = Deny * |
