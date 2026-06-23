@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1319 |
-| **✅ Correct** | 1022 (77%) |
+| **Total Questions** | 1344 |
+| **✅ Correct** | 1046 (78%) |
 | **⚠️ Partial** | 35 (3%) |
-| **❌ Wrong** | 259 (20%) |
-| **Sessions** | 107 |
-| **Re-tests Passed** | 594 of 721 |
+| **❌ Wrong** | 260 (19%) |
+| **Sessions** | 108 |
+| **Re-tests Passed** | 618 of 746 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 280 | 11 | 76 | 367 | 76% | 🟡 |
-| D2: Incident Response | 14% | 66 | 2 | 18 | 86 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 222 | 9 | 56 | 287 | 77% | 🟡 |
-| D4: Identity & Access Management | 20% | 282 | 10 | 63 | 355 | 79% | 🟡 |
-| D5: Data Protection | 18% | 268 | 8 | 65 | 341 | 79% | 🟡 |
-| D6: Governance | 14% | 194 | 2 | 59 | 255 | 76% | 🟡 |
+| D1: Detection | 16% | 287 | 11 | 76 | 374 | 77% | 🟡 |
+| D2: Incident Response | 14% | 68 | 2 | 18 | 88 | 77% | 🟡 |
+| D3: Infrastructure Security | 18% | 226 | 9 | 56 | 291 | 78% | 🟡 |
+| D4: Identity & Access Management | 20% | 292 | 10 | 63 | 365 | 80% | 🟢 |
+| D5: Data Protection | 18% | 277 | 8 | 65 | 350 | 79% | 🟡 |
+| D6: Governance | 14% | 198 | 2 | 60 | 260 | 76% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -36,12 +36,12 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🔴 2 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1, D6 | 5 |
 | 🔴 3 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870, Q974 | D4, D5 | 5 |
 | 🔴 4 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
-| 🔴 5 | No-reboot AMI for volatile memory | Q810, Q825, Q830, Q933 | D1, D2 | 4 |
-| 🔴 6 | StopLogging kills own CW Logs delivery | Q860, Q866, Q1092, Q1256 | D1 | 4 |
-| 🔴 7 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
-| 🔴 8 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
-| 🔴 9 | KMS key policy root = delegation, not grant | Q264, Q503, Q687 | D4, D5 | 3 |
-| 🔴 10 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562 | D6 | 3 |
+| 🔴 5 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562, Q1329 | D6 | 4 |
+| 🔴 6 | No-reboot AMI for volatile memory | Q810, Q825, Q830, Q933 | D1, D2 | 4 |
+| 🔴 7 | StopLogging kills own CW Logs delivery | Q860, Q866, Q1092, Q1256 | D1 | 4 |
+| 🔴 8 | Network Firewall TLS inspection | Q35, Q87, Q152 | D3 | 3 |
+| 🔴 9 | GuardDuty finding types (Impact vs CryptoCurrency) | Q178, Q226, Q489 | D1 | 3 |
+| 🔴 10 | KMS key policy root = delegation, not grant | Q264, Q503, Q687 | D4, D5 | 3 |
 | 🔴 11 | Default encryption vs bucket policy Deny | Q426, Q626, Q643 | D5 | 3 |
 | 🔴 12 | kms:ViaService + SCP | Q488, Q495, Q495 | D4, D5 | 3 |
 | 🔴 13 | Detect C2 = GuardDuty (zero code) | Q571, Q584, Q633 | D1 | 3 |
@@ -366,6 +366,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 105 | 2026-06-22 | Q1255–Q1264 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Killer difficulty cross-domain drill) | [Jump](#session-105--2026-06-22) |
 | 106 | 2026-06-22 | Q1265–Q1274 | 8 | 0 | 2 | D1 Detection · D2 Incident Response · D6 Governance (D1+D6 targeted push — killer difficulty) | [Jump](#session-106--2026-06-22) |
 | 107 | 2026-06-22 | Q1275–Q1319 | 35 | 0 | 10 | D1 Detection · D3 Infrastructure · D5 Data Protection · D6 Governance (D1+D6 uplift drill + D2/D3 cross-domain) | [Jump](#session-107--2026-06-22) |
+| 108 | 2026-06-23 | Q1320–Q1344 | 24 | 0 | 1 | D1 Detection · D2 Incident Response · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Red-priority kill drill — all 48 red areas) | [Jump](#session-108--2026-06-23) |
 
 ---
 
@@ -2731,3 +2732,37 @@ After adding a session:
 | 1317 | D1 | Macie automated discovery 30d, only 5/200 buckets have findings — why? | A: Automated = sampling, create job for full | ✅ | Automated ≠ exhaustive. Job = full coverage. | Q1293 | Macie enabled ≠ Macie scanning |
 | 1318 | D6 | Developer creates S3 via CLI (no CF). cfn-guard + Config proactive + SCP + Config detective — which fire? | B: SCP + Config detective | ✅ | CLI direct = no CF = cfn-guard and proactive irrelevant | — | CLI/Console direct = only SCP + Config detective |
 | 1319 | D1 | Trojan:EC2/DNSDataExfiltration — block at DNS layer? | B: DNS Firewall | ✅ | Exfil in DNS query itself. Block resolution = channel dead. | — | DNS exfil = DNS Firewall blocks |
+
+
+### Session 108 — 2026-06-23
+
+**Domains:** D1 Detection · D2 Incident Response · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Red-priority kill drill — all 48 red areas)
+**Score:** 24 ✅ · 0 ⚠️ · 1 ❌ (96% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1320 | D1/D5 | SSE-KMS, CISO wants to know if external downloads, no custom infra, least overhead? | B: GuardDuty S3 Protection | ✅ | "Anomalous" + "zero infra" = GuardDuty S3 Protection | Q100, Q546, Q568, Q581 | Detect vs prevent (GuardDuty vs policy) |
+| 1321 | D1 | Alert 60s on iam:DeactivateMFADevice, org trail exists, least overhead? | C: EventBridge in management account | ✅ | "Specific API" + "60 seconds" + "org trail" = EventBridge | Q474, Q549, Q570 | EventBridge for API call detection |
+| 1322 | D4/D5 | Cross-account KMS, key policy only grants Account A root, Account B Lambda AccessDenied — fix? | B: Key policy must grant Account B | ✅ | Root enables delegation same-account only | Q541, Q669, Q850 | Cross-account KMS key policy must name external account |
+| 1323 | D1 | EC2 DNS query to mining pool, no TCP connection — ThreatPurpose? | B: Impact | ✅ | DNS query only = always Impact | Q116, Q142, Q154, Q155 | GuardDuty finding types |
+| 1324 | D2 | Trojan C2Activity, capture processes+network+kernel, no interruption — action? | C: No-reboot AMI | ✅ | Volatile memory capture without stopping instance | Q810, Q825, Q830, Q933 | No-reboot AMI for volatile memory |
+| 1325 | D1 | StopLogging called, CW metric filter didn't fire — why? | C: StopLogging kills own CW Logs delivery | ✅ | EventBridge receives directly, CW Logs doesn't | Q860, Q866, Q1092, Q1256 | StopLogging kills own CW Logs delivery |
+| 1326 | D3 | Network Firewall TLS inspection, cert warnings — fix? | B: Distribute private CA to client trust stores | ✅ | MITM pattern = private CA, not public | Q35, Q87, Q152 | Network Firewall TLS inspection |
+| 1327 | D1 | Two findings 15min apart: DNS to mining pool then TCP port 3333 — ThreatPurpose? | B: Impact then CryptoCurrency | ✅ | DNS=Impact, active TCP to mining=CryptoCurrency | Q178, Q226, Q489 | GuardDuty finding types (Impact vs CryptoCurrency) |
+| 1328 | D4/D5 | Key policy grants root only, Lambda has s3:GetObject (no kms:Decrypt) — SSE-KMS read? | B: Fails — needs explicit kms:Decrypt | ✅ | Root = delegation not grant | Q264, Q503, Q687 | KMS key policy root = delegation, not grant |
+| 1329 | D6 | DNS FW rule groups: available to 200 accounts + auto-associate all VPCs — which TWO? | A+D (RAM + Config) | ❌ | A+B: RAM shares + FM enforces association | Q313, Q441, Q562 | RAM for sharing vs FM for enforcing |
+| 1330 | D5 | Default encryption CMK + bucket policy Deny if wrong key header, upload without flags — result? | B: Denied — policy evaluates before default encryption | ✅ | Policy checks headers as-received | Q426, Q626, Q643 | Default encryption vs bucket policy Deny |
+| 1331 | D4/D5 | SCP denies kms:Decrypt unless ViaService=s3, direct CLI kms:decrypt — result? | B: Fails — no ViaService context, Deny fires | ✅ | Direct call = no ViaService | Q488, Q495 | kms:ViaService + SCP |
+| 1332 | D1 | EC2 communicating with C2 IP, finding generated, zero code/infra/rules — service? | C: GuardDuty | ✅ | "Zero code + zero infra" = always GuardDuty | Q571, Q584, Q633 | Detect C2 = GuardDuty (zero code) |
+| 1333 | D5/D6 | Config remediation enables S3 logging, PutBucketLogging succeeds, no logs appear — missing? | B: s3:GetBucketAcl (ACL validation) | ✅ | S3 access logging = ACLs (legacy) | Q864, Q868, Q903 | S3 server access logging = ACLs |
+| 1334 | D4 | 50 customers/month need kms:Decrypt, key policy at 28KB — mechanism? | B: KMS Grants | ✅ | Grants scale without policy edits, RAM doesn't support KMS | Q11, Q37 | RAM vs KMS Grants |
+| 1335 | D4/D5 | Cross-account S3+KMS, key policy grants B root, B SCP denies kms:* — result? | B: Fails — SCP follows caller | ✅ | SCP can't be bypassed by key policy | Q70, Q256 | Cross-account KMS + SCP evaluation |
+| 1336 | D4 | Identity s3:*, session Get+Put only, same-account bucket policy grants Delete to session — result? | B: Allowed — same-account bypass | ✅ | Resource-based naming session bypasses ceiling (same-account only) | Q96, Q169 | Session policy bypass by resource-based policy |
+| 1337 | D3/D4 | Guarantee NO EC2 without IMDSv2, preventive not detective, org-wide — approach? | B: SCP denying RunInstances unless MetadataHttpTokens=required | ✅ | "Preventive" + "never exist" = SCP | Q261, Q413 | SCP for preventive enforcement |
+| 1338 | D4/D6 | Block external IN + block insider OUT — which TWO? | A+B: RCP + SCP with ResourceAccount | ✅ | RCP=inbound, SCP=outbound, full perimeter | Q398, Q1095 | Data perimeter (RCP blocks IN, SCP blocks OUT) |
+| 1339 | D6 | Deploy Inspector 250 accounts, auto for new — approach? | B: Delegated admin + auto-enable | ✅ | Native org support = use native | Q483, Q492 | Native org-wide deployment |
+| 1340 | D1/D4 | RCP blocks external, 500 denied GetObjects, AA + GD enabled — which true? | B: Only Access Analyzer fires | ✅ | AA=static policy, GD=needs successful access | Q534, Q594 | GuardDuty ≠ failed attempts |
+| 1341 | D3/D5 | Gateway endpoint allows Get+Put only, Lambda calls ListBucket — result? | B: Access Denied (not in endpoint policy) | ✅ | Endpoint policy = explicit allowlist | Q535, Q1080 | Gateway endpoint policy as additional gate |
+| 1342 | D4/D6 | RCP denies non-org s3:*, Lambda writes to PARTNER bucket — blocked? | B: No — partner's bucket not your resource | ✅ | RCP protects YOUR resources only | Q683, Q698 | RCP scope (your resources only, not outbound) |
+| 1343 | D2 | Keys on GitHub, attacker created 2nd keys + console + EC2 — single containment? | C: Deny * on IAM user | ✅ | Blocks all paths (both keys, console, sessions) | Q862, Q867 | Credential leak IR (Deny-all before investigate) |
+| 1344 | D5/D3 | Kinesis consumer Access Denied, has GetRecords — missing TWO? | A+C: kms:Decrypt + kms:DescribeKey | ✅ | Consumer = Decrypt + DescribeKey | Q879, Q1100 | Kinesis consumer = Decrypt + DescribeKey |
