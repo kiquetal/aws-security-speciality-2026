@@ -1,90 +1,102 @@
-# GuardDuty Finding Types — Flashcard
+# GuardDuty Finding ThreatPurpose Decision Tree
 
-> Pattern: `ThreatPurpose:ResourceType/ThreatName`
+> Finding format: `ThreatPurpose:ResourceType/ThreatName!DataSource`
+> Example: `CryptoCurrency:EC2/BitcoinTool.B!DNS`
 
-## ThreatPurpose (memorize these 8)
+---
 
-| ThreatPurpose | Meaning | Example Finding |
+## ThreatPurpose Decision Tree
+
+```
+What is the instance DOING?
+│
+├─ DNS query only (no TCP connection)?
+│  └─ IMPACT (always, regardless of destination)
+│     Examples: BitcoinDomainRequest.Reputation, MaliciousDomainRequest
+│
+├─ Active TCP to mining pool (port 3333, pool.*, xmr.*)?
+│  └─ CRYPTOCURRENCY
+│     Examples: BitcoinTool.B, CryptoMinerTool
+│
+├─ Active TCP to C2 server (beacon, command channel)?
+│  └─ TROJAN
+│     Examples: C2Activity.B, DriveBySourceTraffic, DGADomainRequest
+│
+├─ Port scanning / probing (outbound OR inbound)?
+│  └─ RECON
+│     Examples: PortProbeUnprotectedPort, Portscan
+│
+├─ Credentials from unusual location / Tor / anonymous proxy?
+│  └─ UNAUTHORIZED ACCESS
+│     Examples: TorIPCaller, AnomalousBehavior, ConsoleLogin
+│
+├─ Data transfer anomaly (S3 large download, unusual geo)?
+│  └─ EXFILTRATION
+│     Examples: AnomalousBehavior (S3), ObjectRead.Unusual
+│
+├─ Bucket/resource misconfiguration detected?
+│  └─ POLICY
+│     Examples: RootCredentialUsage, BucketAnonymousAccessGranted
+│
+└─ Malware/backdoor on instance?
+   └─ BACKDOOR or TROJAN
+      Examples: Backdoor:EC2/DenialOfService, Trojan:EC2/DropPoint
+```
+
+---
+
+## Quick Lookup Table
+
+| Scenario | ThreatPurpose | Key Signal |
 |---|---|---|
-| **UnauthorizedAccess** | Creds used from bad place (Tor, malicious IP) | `UnauthorizedAccess:IAMUser/TorIPCaller` |
-| **CryptoCurrency** | Mining crypto | `CryptoCurrency:EC2/BitcoinTool.B` |
-| **Trojan** | Malware communicating out | `Trojan:EC2/BlackholeTraffic` |
-| **Recon** | Scanning, probing | `Recon:EC2/PortProbeUnprotectedPort` |
-| **Exfiltration** | Data leaving your environment | `Exfiltration:S3/AnomalousBehavior` |
-| **Impact** | Resource abuse (not crypto) | `Impact:EC2/WinRMBruteForce` |
-| **Policy** | Risky config or root usage | `Policy:IAMUser/RootCredentialUsage` |
-| **Discovery** | Enumeration of resources | `Discovery:S3/MaliciousIPCaller` |
+| DNS query to mining pool | **Impact** | DNS only = always Impact |
+| DNS query to C2 domain | **Impact** | DNS only = always Impact |
+| DNS query to ANY bad domain | **Impact** | DNS only = always Impact |
+| Active TCP to mining pool | **CryptoCurrency** | Connection established + mining |
+| Active TCP to C2 IP | **Trojan** | Connection established + C2 |
+| EC2 scanning ports outbound | **Recon** | Probing |
+| External IP scanning your EC2 | **Recon** | Probing |
+| Creds used from Tor exit node | **UnauthorizedAccess** | Unusual identity behavior |
+| Creds used from new country | **UnauthorizedAccess** | Unusual identity behavior |
+| S3 downloads unusual volume/geo | **Exfiltration** | Data leaving |
+| Root account API call | **Policy** | Risky configuration/usage |
+| Bucket made public | **Policy** | Risky configuration |
 
-## ResourceType (the middle part)
+---
 
-| ResourceType | What's affected |
+## The Two-Finding Attack Progression
+
+```
+Time 14:30 — DNS query to bad domain
+             Finding: Impact:EC2/MaliciousDomainRequest
+
+Time 14:45 — TCP connection established to resolved IP
+             ├─ If mining pool → CryptoCurrency:EC2/BitcoinTool.B
+             └─ If C2 server  → Trojan:EC2/C2Activity.B
+```
+
+**Rule:** DNS = always Impact (stage 1). TCP determines stage 2 based on DESTINATION TYPE.
+
+---
+
+## DataSource Suffix (!DNS, !VPCFlowLogs, !CloudTrail)
+
+| Suffix | Meaning |
 |---|---|
-| `IAMUser` | IAM credentials (user or role) |
-| `EC2` | EC2 instance |
-| `S3` | S3 bucket |
-| `EKS` | EKS cluster |
-| `RDS` | RDS database |
-| `Lambda` | Lambda function |
-| `Runtime` | Container/EC2 runtime |
+| `!DNS` | Detected from DNS log analysis |
+| `!VPCFlowLogs` | Detected from VPC Flow Log analysis |
+| `!CloudTrail` | Detected from CloudTrail analysis |
+| (no suffix) | Multiple sources or runtime agent |
 
-## High-Priority Findings to Know Cold
+Suffix = HOW it was detected, not WHAT the attack does.
 
-| Finding | What Happened |
+---
+
+## Common Traps
+
+| Trap | Truth |
 |---|---|
-| `UnauthorizedAccess:IAMUser/TorIPCaller` | Creds used from Tor exit node |
-| `UnauthorizedAccess:IAMUser/MaliciousIPCaller` | Creds used from known-bad IP |
-| `CryptoCurrency:EC2/BitcoinTool.B` | EC2 mining Bitcoin |
-| `Recon:EC2/PortProbeUnprotectedPort` | Open port being scanned |
-| `Trojan:EC2/BlackholeTraffic` | EC2 sending traffic to black hole |
-| `Policy:IAMUser/RootCredentialUsage` | Root account API call |
-| `Exfiltration:S3/AnomalousBehavior` | Unusual S3 data transfer |
-| `Impact:EC2/BitcoinDomainRequest.Reputation` | EC2 querying crypto domain |
-
-## CryptoCurrency vs Impact (Exam Trap!)
-
-```
-ACTIVELY MINING (confirmed traffic to mining pool)
-  → CryptoCurrency:EC2/BitcoinTool.B
-
-QUERYING DNS for crypto domains (indicator, not confirmed)
-  → Impact:EC2/BitcoinDomainRequest.Reputation
-
-Rule: DNS query = Impact. Active mining = CryptoCurrency.
-
-MEMORY TRICK:
-  DNS query = just LOOKING at the menu  → Impact
-  Active mining = EATING the food       → CryptoCurrency
-
-  Looking ≠ doing. Impact ≠ CryptoCurrency.
-
-Discovery = enumerating YOUR resources (listing buckets, etc.)
-            NEVER for crypto. Don't pick it.
-```
-
-## Data Source Suffix (!suffix)
-
-Some findings include a `!DataSource` suffix indicating HOW GuardDuty detected it:
-
-| Suffix | Data Source | Example |
-|---|---|---|
-| `!DNS` | DNS log analysis | `Trojan:EC2/DriveBySourceTraffic!DNS` |
-| (none) | VPC Flow Logs or CloudTrail | `CryptoCurrency:EC2/BitcoinTool.B` |
-
-Full pattern: `ThreatPurpose:ResourceType/ThreatName!DataSource`
-
-> ⚠️ `!DNS` does NOT mean DNS Firewall generated the finding. GuardDuty reads DNS logs via its own internal feed.
-
-## Memory Trick
-
-```
-U-C-T-R-E-I-P-D (say: "U See TRIP-D")
-
-U = UnauthorizedAccess (bad location)
-C = CryptoCurrency     (mining)
-T = Trojan             (malware)
-R = Recon              (scanning)
-E = Exfiltration       (data out)
-I = Impact             (abuse)
-P = Policy             (risky config)
-D = Discovery          (enumeration)
-```
+| "DNS to mining pool = CryptoCurrency" | ❌ DNS only = Impact. Active TCP = CryptoCurrency |
+| "Outbound to bad IP = Recon" | ❌ Outbound to bad IP = Trojan (C2). Recon = port scanning |
+| "GuardDuty fires on blocked attempts" | ❌ GD needs SUCCESSFUL access. RCP blocks = no finding |
+| "Discovery = DNS query" | ❌ Discovery = resource enumeration. DNS query = Impact |
