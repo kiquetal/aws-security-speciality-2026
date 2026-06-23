@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1344 |
-| **✅ Correct** | 1046 (78%) |
+| **Total Questions** | 1379 |
+| **✅ Correct** | 1079 (78%) |
 | **⚠️ Partial** | 35 (3%) |
-| **❌ Wrong** | 260 (19%) |
+| **❌ Wrong** | 262 (19%) |
 | **Sessions** | 108 |
-| **Re-tests Passed** | 618 of 746 |
+| **Re-tests Passed** | 647 of 777 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 287 | 11 | 76 | 374 | 77% | 🟡 |
+| D1: Detection | 16% | 294 | 11 | 76 | 381 | 77% | 🟡 |
 | D2: Incident Response | 14% | 68 | 2 | 18 | 88 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 226 | 9 | 56 | 291 | 78% | 🟡 |
-| D4: Identity & Access Management | 20% | 292 | 10 | 63 | 365 | 80% | 🟢 |
-| D5: Data Protection | 18% | 277 | 8 | 65 | 350 | 79% | 🟡 |
-| D6: Governance | 14% | 198 | 2 | 60 | 260 | 76% | 🟡 |
+| D3: Infrastructure Security | 18% | 233 | 9 | 56 | 298 | 78% | 🟡 |
+| D4: Identity & Access Management | 20% | 296 | 10 | 63 | 369 | 80% | 🟢 |
+| D5: Data Protection | 18% | 294 | 8 | 66 | 368 | 80% | 🟢 |
+| D6: Governance | 14% | 204 | 2 | 61 | 267 | 76% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -252,6 +252,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 218 | Trojan = outbound. Recon = inbound. | Q1302 | D1 | 1 |
 | 🟡 219 | EventBridge=seconds, Config=minutes | Q1309 | D1 | 1 |
 | 🟡 220 | SCP + conformance pack = OU-level auto-apply | Q1313 | D6 | 1 |
+| 🟡 221 | cfn-guard bypassable vs Config proactive | Q1354 | D6 | 1 |
+| 🟡 222 | EBS encryption by default + SCP | Q1371 | D5 | 1 |
 
 ---
 
@@ -366,7 +368,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 105 | 2026-06-22 | Q1255–Q1264 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Killer difficulty cross-domain drill) | [Jump](#session-105--2026-06-22) |
 | 106 | 2026-06-22 | Q1265–Q1274 | 8 | 0 | 2 | D1 Detection · D2 Incident Response · D6 Governance (D1+D6 targeted push — killer difficulty) | [Jump](#session-106--2026-06-22) |
 | 107 | 2026-06-22 | Q1275–Q1319 | 35 | 0 | 10 | D1 Detection · D3 Infrastructure · D5 Data Protection · D6 Governance (D1+D6 uplift drill + D2/D3 cross-domain) | [Jump](#session-107--2026-06-22) |
-| 108 | 2026-06-23 | Q1320–Q1344 | 24 | 0 | 1 | D1 Detection · D2 Incident Response · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Red-priority kill drill — all 48 red areas) | [Jump](#session-108--2026-06-23) |
+| 108 | 2026-06-23 | Q1320–Q1379 | 57 | 0 | 3 | D1 Detection · D2 Incident Response · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Red-priority kill drill — all 48 red areas) | [Jump](#session-108--2026-06-23) |
 
 ---
 
@@ -2766,3 +2768,44 @@ After adding a session:
 | 1342 | D4/D6 | RCP denies non-org s3:*, Lambda writes to PARTNER bucket — blocked? | B: No — partner's bucket not your resource | ✅ | RCP protects YOUR resources only | Q683, Q698 | RCP scope (your resources only, not outbound) |
 | 1343 | D2 | Keys on GitHub, attacker created 2nd keys + console + EC2 — single containment? | C: Deny * on IAM user | ✅ | Blocks all paths (both keys, console, sessions) | Q862, Q867 | Credential leak IR (Deny-all before investigate) |
 | 1344 | D5/D3 | Kinesis consumer Access Denied, has GetRecords — missing TWO? | A+C: kms:Decrypt + kms:DescribeKey | ✅ | Consumer = Decrypt + DescribeKey | Q879, Q1100 | Kinesis consumer = Decrypt + DescribeKey |
+
+---
+**Session 108 continued — Red priorities #19-48 + D5 uplift (24 more questions)**
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1345 | D5 | Glacier Vault Lock: 10yr, permanently irreversible after 24hr confirm — approach? | B: Glacier Vault Lock | ✅ | "24hr confirm + permanently irreversible" = Vault Lock | Q800, Q822 | Glacier Vault Lock vs Object Lock |
+| 1346 | D5 | Asymmetric KMS sign, air-gapped partners verify — how? | B: Download public key, verify locally OpenSSL | ✅ | Sign=private, verify=public, offline OK | Q812, Q824 | Sign=private, verify=public |
+| 1347 | D1/D5 | S3 Access Grants: All-Employees root prefix READ, engineer reads /hr/ — cause? | B: Root prefix includes everything | ✅ | Prefix overlap = #1 misconfiguration | Q819, Q826 | S3 Access Grants prefix overlap |
+| 1348 | D5/D3 | Lambda private subnet, Kinesis+KMS endpoints exist, GetRecords timeout, SM works — fix TWO? | A+D: Kinesis endpoint SG inbound + Lambda SG outbound | ✅ (partial round 2, full here) | Interface endpoint = TWO SGs cooperate | Q918, Q950 | Kinesis + KMS VPC endpoints (timeout = network) |
+| 1349 | D3 | API GW mTLS on default execute-api endpoint — result? | C: Can't enable, needs custom domain | ✅ | mTLS = custom domain + S3 truststore only | Q967, Q1012 | API Gateway mTLS = custom domain + S3 truststore |
+| 1350 | D5 | EMR inter-node, engineer proposes Nitro C6i — why insufficient? | B: EMR needs explicit security config + PEM certs | ✅ | Nitro is implicit, compliance needs auditable config | Q1030, Q1073 | EMR in-transit = security config + PEM certs |
+| 1351 | D3/D5 | IoT revocation + API GW mTLS revocation — mechanisms? | B: IoT=INACTIVE in registry, API GW=CRL in S3 truststore | ✅ | Two different mechanisms | Q1032, Q1070 | IoT revocation = registry. API GW mTLS = CRL |
+| 1352 | D1/D3 | State Manager CIS on boot + every 2hr — minimum config? | B: ONE association with OnBoot + rate(2hr) | ✅ | Dual triggers on single association | Q1048, Q1071 | State Manager OnBoot + schedule (dual triggers) |
+| 1353 | D3 | Inspector SBOM weekly to S3 — which TWO? | B+C: EventBridge+Lambda + bucket policy for inspector2 | ✅ | No built-in scheduler, on-demand API | Q1059, Q1119 | Inspector SBOM = native export + bucket policy |
+| 1354 | D6 | cfn-guard bypassed via Console, catch ALL CF deploys — mechanism? | A: SCP | ❌ | D: Both Config proactive and CF Hook work (CF service-level) | Q1220, Q1271 | cfn-guard bypassable vs Config proactive |
+| 1355 | D3 | Public HTTPS + SSH from bastion — SG rules TWO? | B+D: 443 from 0.0.0.0/0 + 22 from bastion CIDR | ✅ | Public-facing = 0.0.0.0/0 on 443 | Q1239, Q1250 | Public-facing = 0.0.0.0/0 on 443 |
+| 1356 | D5/D3 | Rotation Lambda succeeds in SM but new app gets auth failed on RDS — cause? | B: Lambda SG can't reach RDS SG | ✅ | Rotation Lambda network → DB = SG issue | Q1242, Q1254 | Rotation Lambda can't reach DB = SG issue |
+| 1357 | D6 | Security Hub setup order? | B: Enable → Designate → Members → Access | ✅ | E-D-M-A | Q1244, Q1273 | Security Hub setup ordering (E-D-M-A) |
+| 1358 | D1 | No GD finding, suspect lateral movement, query all IPs over 7d — tool? | B: CW Logs Insights | ✅ | No finding = no Detective entry point | Q1277, Q1314 | Detective needs finding. No finding = CW Logs Insights |
+| 1359 | D1 | Active threat from unusual IP, zero code — service? | C: GuardDuty | ✅ | "Happening now" + "zero code" = GuardDuty | Q187, Q233 | Detect vs prevent (GuardDuty vs Access Analyzer) |
+| 1360 | D6 | Self-service RDS, dev has no rds:CreateDBInstance — how? | B: Service Catalog launch constraint role | ✅ | Launch constraint = SC assumes role | Q274, Q277 | Service Catalog (self-service) |
+| 1361 | D6 | StackSets deployed Config, admin stops recorder — what happens? | B: Nothing — StackSets no auto-remediation | ✅ | StackSets = deploy and forget | Q283, Q439 | StackSets no auto-remediation |
+| 1362 | D6 | FM WAF policy, developer disassociates Web ACL — what happens? | B: FM re-associates automatically | ✅ | FM auto-remediates | Q284, Q435 | Firewall Manager auto-remediation |
+| 1363 | D4 | Unused permissions 90d + generate replacement — service? | B: Access Analyzer unused + policy generation | ✅ | Two features, one service | Q374, Q1003 | Access Analyzer unused + policy generation |
+| 1364 | D1/D4 | Bucket policy grants external, no access yet, AA+GD — both fire? | C: Both fire (AA=policy, GD=after actual access) | ✅ | AA=static, GD=needs successful access | Q518, Q652 | Access Analyzer + GuardDuty both fire |
+| 1365 | D4/D5 | Session policy=GetObject only, same-account SSE-KMS read — succeeds? | B: Succeeds — server-side KMS not gated by session policy | ✅ | Session policy gates direct calls only | Q591, Q679 | Session policy + server-side KMS |
+| 1366 | D1/D4 | RCP blocks external, AA+GD enabled, no access, bucket policy unchanged — which TWO true? | A+D: AA fires (static) + GD doesn't fire (no access) | ✅ | AA reads policy, GD needs behavior | Q706, Q1260 | Access Analyzer static + GuardDuty ≠ failed attempts |
+| 1367 | D6 | RAM shares NF policy, FM enforces, admin deletes endpoint — what happens? | A+B: RAM + FM auto-recreates | ✅ | RAM shares, FM enforces lifecycle | Q313, Q441 | RAM for sharing vs FM for enforcing |
+| 1368 | D5 | CRR custom context "Engineering", dest key expects "Finance" — result? | B: Fails — context preserved, mismatch | ✅ | CRR preserves source custom context | Q923 | CRR custom encryption context preserved |
+| 1369 | D5 | S3 Batch job us-east-1, target bucket us-west-2 — result? | B: Fails — Batch is regional | ✅ | Job + manifest + target = same region | Q872 | S3 Batch Operations regional |
+| 1370 | D5 | Object Lock: most users can't delete 5yr, CLO can release early — config? | B: Governance mode + BypassGovernanceRetention for CLO | ✅ | "Someone CAN override" = Governance | Q800, Q822 | Object Lock Governance vs Compliance |
+| 1371 | D5 | EBS encryption by default — TWO gaps? | A+D: Per-region + new accounts don't inherit | ❌ | A+D correct. Picked A+C (C wrong: can't override) | Q902 | EBS encryption by default + SCP |
+| 1372 | D5 | Imported key rotation — procedure? | B: New key EXTERNAL + import + alias swap | ✅ | No auto/on-demand rotation for imported | — | Imported key rotation procedure |
+| 1373 | D5 | Global Table MRK, eu-west-1 reads fail, us-east-1 key policy correct — cause? | B: Replica key policy independent, missing DynamoDB grant | ✅ | MRK policies independent per region | Q84 | MRK independent key policies |
+| 1374 | D5 | CW Logs PHI masking + compliance officer raw access + audit trail — THREE? | A+B+C: Data protection + logs:Unmask + CloudTrail | ✅ | Three layers for three requirements | — | CW Logs data masking + Unmask |
+| 1375 | D5 | Parameter Store SecureString CMK, has ssm:GetParameter, Access Denied — missing? | B: kms:Decrypt on CMK | ✅ | Customer-managed = explicit Decrypt | — | Parameter Store + kms:Decrypt |
+| 1376 | D5 | Daily EBS snapshots + 30d retention + cross-region + auto-delete DR — service? | B: DLM | ✅ | All native in one policy | — | DLM cross-region |
+| 1377 | D5 | SM replication, source uses single-region CMK — works? | B: Yes — SM re-encrypts with dest key | ✅ | MRK not required for SM replication | Q428 | Secrets Manager replication ≠ MRK |
+| 1378 | D6 | Deploy Inspector 250 accounts, auto new — approach? | B: Delegated admin + auto-enable | ✅ | Native org support | Q483, Q492 | Native org-wide deployment |
+| 1379 | D1 | 200 accounts, CIS + FSBP + aggregate GD+Inspector — least overhead? | B: Security Hub org-wide | ✅ | Dashboard + standards + aggregation | Q5, Q24 | Security services comparison |
