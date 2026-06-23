@@ -20,7 +20,7 @@ Read section → close eyes → recall 3 rules.
 
 | Week | Date | Focus | Never-Seen Included | Status |
 |------|------|-------|---------------------|--------|
-| 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ⬜ |
+| 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ✅ |
 | 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | 4 new topics | ⬜ |
 | 3 | Jun 30 - Jul 6 | D1 weak areas + CloudFormation Guard, SSM State Manager | 2 new topics | ⬜ |
 | 4 | Jul 7-13 | **NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced | 3 new topics | ⬜ |
@@ -40,8 +40,8 @@ Each mock MUST include 5-8 questions from never-seen topics to guarantee coverag
 
 | # | Target Date | Source | Never-Seen Quota | Score | Status |
 |---|---|---|---|---|---|
-| Mock 1 | Jun 23 | Tutorials Dojo Set 3 (or similar) | Include 5 Qs: API GW, CF Field-Level, Inspector SBOM, Macie custom, WAF Bot | — | ⬜ |
-| Mock 2 | Jul 7 | Tutorials Dojo Set 4 (or similar) | Include 5 Qs: VPC Lattice, CF Guard, State Manager, DataSync, DLM | — | ⬜ |
+| Mock 1 | Jun 23 | Tutorials Dojo Set 3 (or similar) | Include 5 Qs: API GW, CF Field-Level, Inspector SBOM, Macie custom, WAF Bot | 48% (Dojo 3) | ✅ |
+| Mock 2 | Jul 7 | Tutorials Dojo Set 4 (or similar) | Include 5 Qs: VPC Lattice, CF Guard, State Manager, DataSync, DLM | 64% (Dojo 4) | ✅ |
 | Mock 3 | Jul 21 | Tutorials Dojo Set 5 (or similar) | Include 5 Qs: Resilience Hub, FIS, ARC, Well-Architected, CodeGuru | — | ⬜ |
 | Mock 4 | Aug 4 | Tutorials Dojo Set 6 (or AWS official) | Include 8 Qs: all never-seen topics mixed | — | ⬜ |
 | Mock 5 | Aug 18 | Final validation (any source) | Full coverage validation | — | ⬜ |
@@ -55,19 +55,19 @@ Each mock MUST include 5-8 questions from never-seen topics to guarantee coverag
 
 | # | Topic | Blueprint Task | Week | Mock | Tested? |
 |---|---|---|---|---|---|
-| 1 | API Gateway security (authorizers, resource policies, mutual TLS) | Task 3.1 | W2 | M1 | ⬜ |
-| 2 | VPC Lattice (service-to-service auth, auth policies) | Task 3.3 | W4 | M2 | ⬜ |
-| 3 | CloudFront Field-Level Encryption | Task 3.1 | W2 | M1 | ⬜ |
-| 4 | Inspector SBOM export | Task 3.2 | W2 | M1 | ⬜ |
-| 5 | WAF Bot Control (token challenges, CAPTCHA) | Task 3.1 | W4 | M1 | ⬜ |
-| 6 | CloudFormation Guard (policy-as-code) | Task 6.2 | W3 | M2 | ⬜ |
-| 7 | Systems Manager State Manager (desired-state) | Task 1.1 | W3 | M2 | ⬜ |
-| 8 | Amazon Data Lifecycle Manager (EBS snapshots) | Task 5.2 | W5 | M2 | ⬜ |
-| 9 | AWS DataSync (secure data transfer) | Task 5.2 | W5 | M2 | ⬜ |
-| 10 | Macie custom data identifiers (regex, keywords) | Task 1.1 | W2 | M1 | ⬜ |
-| 11 | Resilience Hub (RTO/RPO assessment) | Task 2.1 | W7 | M3 | ⬜ |
-| 12 | FIS (chaos engineering for IR testing) | Task 2.1 | W7 | M3 | ⬜ |
-| 13 | Application Recovery Controller (zonal shift) | Task 2.1 | W7 | M3 | ⬜ |
+| 1 | API Gateway security (authorizers, resource policies, mutual TLS) | Task 3.1 | W2 | M1 | ✅ |
+| 2 | VPC Lattice (service-to-service auth, auth policies) | Task 3.3 | W4 | M2 | ✅ |
+| 3 | CloudFront Field-Level Encryption | Task 3.1 | W2 | M1 | ✅ |
+| 4 | Inspector SBOM export | Task 3.2 | W2 | M1 | ✅ |
+| 5 | WAF Bot Control (token challenges, CAPTCHA) | Task 3.1 | W4 | M1 | ✅ |
+| 6 | CloudFormation Guard (policy-as-code) | Task 6.2 | W3 | M2 | ✅ |
+| 7 | Systems Manager State Manager (desired-state) | Task 1.1 | W3 | M2 | ✅ |
+| 8 | Amazon Data Lifecycle Manager (EBS snapshots) | Task 5.2 | W5 | M2 | ✅ |
+| 9 | AWS DataSync (secure data transfer) | Task 5.2 | W5 | M2 | ✅ |
+| 10 | Macie custom data identifiers (regex, keywords) | Task 1.1 | W2 | M1 | ✅ |
+| 11 | Resilience Hub (RTO/RPO assessment) | Task 2.1 | W7 | M3 | ✅ |
+| 12 | FIS (chaos engineering for IR testing) | Task 2.1 | W7 | M3 | ✅ |
+| 13 | Application Recovery Controller (zonal shift) | Task 2.1 | W7 | M3 | ✅ |
 | 14 | Amazon Q Developer / CodeGuru Security | Task 3.2 | W4 | M3 | ⬜ |
 | 15 | Well-Architected Tool (security pillar) | Task 6.3 | W5 | M3 | ⬜ |
 | 16 | Automated Forensics Orchestrator for EC2 | Task 2.1 | W7 | M4 | ⬜ |
