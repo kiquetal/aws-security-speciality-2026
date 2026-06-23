@@ -5,7 +5,7 @@
 
 ---
 
-## Total: ~5,361 minutes (~89 hours)
+## Total: ~5,455 minutes (~91 hours)
 
 ## Sessions
 
