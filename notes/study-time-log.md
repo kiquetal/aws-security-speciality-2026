@@ -63,4 +63,4 @@
 | 100a | 2026-06-20 | 12:37 | 13:54 | 77 | Session 100: CF Stack Policy + PassRole + Traffic Mirroring + mTLS + 25-question weekly drill + rapid-fire (42.5/47, 90%) |
 | 101 | 2026-06-20 | 23:10 | 23:45 | 35 | Session 101: low-rep topic drill (cfn-guard, DataSync, DLM, Well-Architected, StopLogging, Lattice) |
 | 102 | 2026-06-21 | 11:49 | 13:14 | 85 | Session 102: ⚠️ never-seen re-test drill (mTLS, SBOM, State Manager, WAT, SageMaker) + 3 FAQs created |
-| 2026-06-23 | 17:37 | 19:38 | 121 | Red-priority kill drill |
+| 2026-06-23 | 17:37 | | | Red-priority kill drill + D6 + D3 |
