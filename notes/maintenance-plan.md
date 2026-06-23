@@ -2,6 +2,7 @@
 
 > You're ready. This is decay prevention, not cramming.
 > **NEW:** Never-seen blueprint topics now integrated into weekly drills and mocks.
+> **RULE:** After completing ANY weekly drill, mock exam, or never-seen topic test — update this file immediately (mark ✅, add scores, update dates). Don't wait for the user to remind you.
 
 ---
 
