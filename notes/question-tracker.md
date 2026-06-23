@@ -8,18 +8,18 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1299 |
-| **✅ Correct** | 1006 (77%) |
+| **Total Questions** | 1309 |
+| **✅ Correct** | 1014 (77%) |
 | **⚠️ Partial** | 35 (3%) |
-| **❌ Wrong** | 255 (20%) |
+| **❌ Wrong** | 257 (20%) |
 | **Sessions** | 107 |
-| **Re-tests Passed** | 589 of 715 |
+| **Re-tests Passed** | 590 of 716 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 267 | 11 | 73 | 351 | 76% | 🟡 |
+| D1: Detection | 16% | 275 | 11 | 75 | 361 | 76% | 🟡 |
 | D2: Incident Response | 14% | 66 | 2 | 18 | 86 | 77% | 🟡 |
 | D3: Infrastructure Security | 18% | 222 | 9 | 56 | 287 | 77% | 🟡 |
 | D4: Identity & Access Management | 20% | 282 | 10 | 63 | 355 | 79% | 🟡 |
@@ -249,6 +249,8 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 215 | Macie enabled ≠ Macie scanning | Q1293 | D1 | 1 |
 | 🟡 216 | Preserve evidence = EBS snapshot | Q1295 | D2, D3 | 1 |
 | 🟡 217 | NAA finds, RA explains | Q1296 | D3 | 1 |
+| 🟡 218 | Trojan = outbound. Recon = inbound. | Q1302 | D1 | 1 |
+| 🟡 219 | EventBridge=seconds, Config=minutes | Q1309 | D1 | 1 |
 
 ---
 
@@ -362,7 +364,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 104 | 2026-06-22 | Q1245–Q1254 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Dojo 4 re-test drill) | [Jump](#session-104--2026-06-22) |
 | 105 | 2026-06-22 | Q1255–Q1264 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection · D6 Governance (Killer difficulty cross-domain drill) | [Jump](#session-105--2026-06-22) |
 | 106 | 2026-06-22 | Q1265–Q1274 | 8 | 0 | 2 | D1 Detection · D2 Incident Response · D6 Governance (D1+D6 targeted push — killer difficulty) | [Jump](#session-106--2026-06-22) |
-| 107 | 2026-06-22 | Q1275–Q1299 | 19 | 0 | 6 | D1 Detection · D3 Infrastructure · D5 Data Protection · D6 Governance (D1+D6 uplift drill + D2/D3 cross-domain) | [Jump](#session-107--2026-06-22) |
+| 107 | 2026-06-22 | Q1275–Q1309 | 27 | 0 | 8 | D1 Detection · D3 Infrastructure · D5 Data Protection · D6 Governance (D1+D6 uplift drill + D2/D3 cross-domain) | [Jump](#session-107--2026-06-22) |
 
 ---
 
@@ -2672,7 +2674,7 @@ After adding a session:
 ### Session 107 — 2026-06-22
 
 **Domains:** D1 Detection · D3 Infrastructure · D5 Data Protection · D6 Governance (D1+D6 uplift drill + D2/D3 cross-domain)
-**Score:** 18 ✅ · 0 ⚠️ · 7 ❌ (72% correct)
+**Score:** 19 ✅ · 0 ⚠️ · 6 ❌ (76% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -2701,3 +2703,20 @@ After adding a session:
 | 1297 | D2 | OutsideAWS, TokenIssueTime applied, fires again next day — why? | A: SSRF still exists, attacker got fresh creds | ✅ | Token deny kills old, vulnerability still present | — | TokenIssueTime doesn't fix root cause |
 | 1298 | D3 | Suricata IPS + block DNS bad domains — minimum services? | A: NF + DNS FW | ✅ | Different layers, complement each other | — | NF + DNS FW complementary |
 | 1299 | D2 | IAM user leaked, 2 keys + console + STS — single containment? | C: Deny * on user | ✅ | Blocks all paths | Q942 | User = Deny * |
+
+---
+
+**Session 107 continued — D1 Pure Blitz (10 more questions)**
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1300 | D1 | Lambda resolves malware-c2.evil.com — which log source? | B: Resolver query logging | ✅ | VPC resource outbound lookup = Resolver | — | Resolver vs DNS query logging direction |
+| 1301 | D1 | CW Logs Insights query on ELB logs returns zero — why? | B: ELB logs in S3 not CW Logs | ✅ | ELB = S3 only | — | ELB access logs = S3 only |
+| 1302 | D1 | EC2 TCP to 5 threat intel IPs port 443 — ThreatPurpose? | D: Recon | ❌ | C: Trojan (outbound to bad IPs = C2) | — | Trojan = outbound. Recon = inbound. |
+| 1303 | D1 | CT Lake mgmt-only EDS, query PutObject returns zero — why? | A: PutObject is data event | ✅ | Data event not in mgmt-only EDS | Q882 | CloudTrail Lake (data vs mgmt) |
+| 1304 | D1 | GD finding exists, what else instance communicated 48hr, visualize — tool? | C: Detective | ✅ | Finding + visualize + timeline = Detective | — | Detective for investigation |
+| 1305 | D1 | Macie SSE-KMS buckets "Unable to analyze" — cause? | B: SLR needs kms:Decrypt on CMK | ✅ | Key policy must grant Macie SLR | — | Macie + SSE-KMS key policy |
+| 1306 | D1 | Flow Logs show IP but unknown domain — which log reveals domain? | C: Resolver query logging | ✅ | Flow Logs lose domain after DNS resolves | — | Resolver query logging for domain visibility |
+| 1307 | D1 | Security Hub non-compliant, want auto-remediate — where configure? | B: Config rule auto-remediation | ✅ | SH = dashboard only, Config = remediation | — | Security Hub vs Config remediation |
+| 1308 | D1 | CW Logs data protection masks PII, compliance officer needs raw — permission? | B: logs:Unmask | ✅ | Specific permission for unmasked access | — | CW Logs data protection + Unmask |
+| 1309 | D1 | StopLogging: EventBridge fires 2s, Config detects when? | A: Immediately | ❌ | B: 1-10 minutes (Config has inherent latency) | — | EventBridge=seconds, Config=minutes |
