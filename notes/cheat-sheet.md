@@ -121,6 +121,8 @@
 - "Mask PII in logs" → **CloudWatch Logs data protection policy**. Real-time, no app changes, managed data identifiers.
 - "Find PII in S3" → **Macie**. Completely different service, S3 only.
 - SNS message data protection = same concept for SNS topics.
+- 🧠 **CW Logs data protection has TWO outputs:** (1) Masking = `***` in original log group. (2) Audit = record of what was detected sent to separate destination (CW log group / S3 / Firehose).
+- 🧠 **"Audit what was masked" = data protection audit destination. "Audit who viewed raw data" = CloudTrail (logs:Unmask calls).** Different questions, different answers.
 
 ### Encryption in Transit (New in C03)
 - "Encrypt between instances, no app changes" → **Nitro inter-instance encryption**. Automatic, hardware-level, zero config.
@@ -230,6 +232,7 @@
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
 - 🧠 **DNS query = Impact (always). Active TCP: mining pool = CryptoCurrency, C2 server = Trojan.** The destination type determines the second finding's ThreatPurpose.
 - 🧠 **GuardDuty EKS: Audit Log Monitoring = agentless. Runtime Monitoring = needs agent (DaemonSet).** Runtime detects process-level (crypto miners, shells). No agent = no runtime findings.
+- 🧠 **GuardDuty finding `!suffix` = data source used for detection.** `!DNS` = DNS logs. `!VPCFlowLogs` = Flow Logs. `!CloudTrail` = CloudTrail. Suffix = HOW it was detected, not WHAT the attack does.
 - 🧠 **GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet):** correlates multiple findings into attack sequences in the GD console. If tested, answer = "Extended Threat Detection." Otherwise "correlate/investigate" = Detective.
 - 🧠 **GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.
 
