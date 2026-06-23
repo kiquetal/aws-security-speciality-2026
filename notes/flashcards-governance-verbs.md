@@ -46,6 +46,8 @@ RAM + FM = visible AND mandatory
 
 **The rule:** "Does the resource already exist in another account?" YES = RAM first. NO (FM creates it) = no RAM needed.
 
+**Mnemonic: "WSS = no RAM" (WAF, Shield, SG) — FM creates these fresh. DNS+NF = RAM (they're authored centrally and shared).**
+
 ---
 
 ## StackSets vs Native Delegated Admin
