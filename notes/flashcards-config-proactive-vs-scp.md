@@ -77,10 +77,34 @@ Enable: Config → Rules → Add Rule → Choose "Proactive" evaluation mode →
 
 ```
 Question: "Ensure no RDS without encryption is EVER deployed via CloudFormation"
-Trap answer: SCP (can't see inside template)
-Correct: Config proactive (evaluates resource properties at CF service level)
+Trap answer: SCP (can't see inside template... BUT check if it's also an API param!)
+If StorageEncrypted is an API param → SCP works for ALL paths (not just CF)
+If it's ONLY in CF template → Config proactive is the only option for CF path
 
 Question: "Ensure no EC2 without IMDSv2 is EVER launched"  
-Correct: SCP (MetadataHttpTokens IS an API request parameter)
-Trap: Config proactive (works too, but SCP is simpler and preventive for ALL paths, not just CF)
+Correct: SCP (MetadataHttpTokens IS an API request parameter → covers ALL paths)
+Config proactive also works for CF, but SCP is broader
+
+Question: "Catch ALL CF deployments (Console+CLI+SDK CF deploys)"
+Correct: Config proactive (CF service-level)
+Wrong: cfn-guard (CI/CD only, bypassable)
+```
+
+## CRITICAL SCOPE REMINDER
+
+```
+Config proactive = ONLY evaluates CloudFormation deployments
+                   Does NOT catch: direct CLI/SDK API calls outside CF
+                   
+SCP = evaluates ALL API calls regardless of trigger
+      (CF, CLI, SDK, Console, Terraform, everything)
+
+IF the property is an API request parameter:
+  → SCP alone covers ALL paths (including CF)
+  → Config proactive is redundant (but adds defense-in-depth)
+
+IF the property is ONLY visible inside CF template (not an API param):
+  → SCP can't help
+  → Config proactive is the ONLY preventive option for CF path
+  → Direct API path needs Config detective + remediation (after-the-fact)
 ```
