@@ -1,0 +1,35 @@
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '13px'}}}%%
+flowchart TD
+    START["What verb does the question use?"] --> VERB{"Verb?"}
+    
+    VERB -->|"SHARE / VISIBLE /<br/>ACCESSIBLE"| RAM["AWS RAM<br/>(makes resource available)"]
+    VERB -->|"ENFORCE / ASSOCIATE /<br/>RE-ATTACH / AUTO-REMEDIATE"| FM["Firewall Manager<br/>(lifecycle management)"]
+    VERB -->|"DEPLOY / ENABLE /<br/>PUSH (any resource)"| SS["StackSets<br/>(IaC to many accounts)"]
+    VERB -->|"SELF-SERVICE / PULL /<br/>PROVISION (no broad IAM)"| SC["Service Catalog<br/>(launch constraint role)"]
+    VERB -->|"PREVENT / BLOCK /<br/>NEVER HAPPEN"| SCP["SCP<br/>(API-level deny)"]
+    VERB -->|"DETECT + FIX /<br/>CHECK + REMEDIATE"| CFG["Config rule + SSM<br/>(or conformance pack)"]
+    VERB -->|"VALIDATE TEMPLATE /<br/>BEFORE DEPLOY"| GUARD{"All CF paths<br/>or just CI/CD?"}
+    
+    GUARD -->|"CI/CD only"| CFN["cfn-guard<br/>(bypassable via Console)"]
+    GUARD -->|"ALL CF deploys<br/>(Console+CLI+SDK)"| PROACTIVE["Config proactive<br/>(service-level, can't bypass)"]
+    
+    %% Key distinctions
+    RAM -.- RAM_NOTE["FM needs RAM first for:<br/>DNS FW, Network FW<br/>(resource in another account)"]
+    FM -.- FM_NOTE["FM creates directly for:<br/>WAF, Shield, SGs<br/>(no RAM needed)"]
+    SS -.- SS_NOTE["NO auto-remediation.<br/>Deploys once, forgets."]
+    SC -.- SC_NOTE["User pulls. Admin doesn't push.<br/>Launch role = no broad IAM."]
+    
+    %% Native deployment
+    SCP --> NATIVE{"Does service have<br/>delegated admin + auto-enable?"}
+    NATIVE -->|"YES (GD, Inspector, SH,<br/>Macie, Detective, Config)"| USE_NATIVE["Use native org deployment<br/>(not StackSets)"]
+    NATIVE -->|"NO (custom IAM roles,<br/>CW dashboards, etc.)"| USE_SS["Use StackSets"]
+
+    style START fill:#ff6b6b,color:#fff
+    style RAM fill:#4ecdc4,color:#000
+    style FM fill:#45b7d1,color:#000
+    style SS fill:#96ceb4,color:#000
+    style SC fill:#feca57,color:#000
+    style SCP fill:#ff9ff3,color:#000
+    style CFG fill:#c8d6e5,color:#000
+    style CFN fill:#dfe6e9,color:#000
+    style PROACTIVE fill:#b8e994,color:#000

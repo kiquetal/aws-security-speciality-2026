@@ -1,0 +1,25 @@
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '14px'}}}%%
+flowchart LR
+    ATTACKER["Attacker calls<br/>StopLogging"] --> CT["CloudTrail<br/>management stream"]
+    
+    CT --> EB["EventBridge<br/>(mgmt account)"]
+    CT --> CW["CloudWatch Logs<br/>(log group)"]
+    CT --> CFG["AWS Config<br/>(resource recorder)"]
+    
+    EB --> EB_RESULT["FIRES in seconds"]
+    CW --> CW_RESULT["BLIND - never fires"]
+    CFG --> CFG_RESULT["FIRES in 1-10 minutes"]
+    
+    CW_RESULT -.- WHY["WHY: StopLogging kills<br/>its OWN delivery to CW Logs.<br/>The event that stops logging<br/>is itself never delivered."]
+    
+    EB_RESULT -.- WHY_EB["WHY: EventBridge receives<br/>from CT management event<br/>stream DIRECTLY - not via<br/>CW Logs. Independent path."]
+    
+    CFG_RESULT -.- WHY_CFG["WHY: Config evaluates<br/>resource STATE independently.<br/>Trail resource changed from<br/>Logging=true to Logging=false."]
+
+    style ATTACKER fill:#ff6b6b,color:#fff
+    style EB_RESULT fill:#00b894,color:#fff
+    style CW_RESULT fill:#d63031,color:#fff
+    style CFG_RESULT fill:#fdcb6e,color:#000
+    style WHY fill:#ffe8e8,color:#000,stroke:#d63031
+    style WHY_EB fill:#e8ffe8,color:#000,stroke:#00b894
+    style WHY_CFG fill:#fff8e8,color:#000,stroke:#fdcb6e

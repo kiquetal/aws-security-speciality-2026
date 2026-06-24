@@ -1,0 +1,30 @@
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '13px'}}}%%
+flowchart TD
+    START["GuardDuty Finding on EC2"] --> TYPE{"Finding type?"}
+    
+    TYPE -->|"InstanceCredentialExfiltration<br/>.OutsideAWS"| OUT["Creds used from<br/>EXTERNAL IP"]
+    TYPE -->|"InstanceCredentialExfiltration<br/>.InsideAWS"| IN["Creds used from<br/>DIFFERENT EC2 same account"]
+    TYPE -->|"Credential Leak<br/>(keys on GitHub)"| LEAK["IAM User keys<br/>exposed publicly"]
+    
+    %% OutsideAWS path
+    OUT --> OUTQ{"Can you disrupt<br/>the instance?"}
+    OUTQ -->|"YES (non-prod)"| OUT_FULL["1. Deny-all SG<br/>2. EBS snapshot<br/>3. No-reboot AMI"]
+    OUTQ -->|"NO (API must stay up)"| OUT_SAFE["1. Inline Deny TokenIssueTime<br/>2. EBS snapshot<br/>3. IMDSv2 hop limit = 1"]
+    
+    OUT_SAFE -.- OUT_NOTE["DO NOT deny-all SG<br/>(kills legitimate traffic)"]
+    
+    %% InsideAWS path
+    IN --> IN_ACT["1. Deny-all SG on ATTACKER instance<br/>2. EBS snapshot of attacker<br/>3. No-reboot AMI of attacker"]
+    IN -.- IN_NOTE["DO NOT use TokenIssueTime<br/>(kills BOTH instances - same role)"]
+    
+    %% Credential Leak path
+    LEAK --> LEAK_ACT["1. Deactivate exposed keys<br/>2. Inline Deny * on IAM USER<br/>3. CloudTrail investigation<br/>4. Detective timeline"]
+    LEAK -.- LEAK_NOTE["Deny * covers ALL paths:<br/>2nd key + console + sessions.<br/>NOT just deactivate keys."]
+
+    style START fill:#ff6b6b,color:#fff
+    style OUT fill:#ffa502,color:#000
+    style IN fill:#7bed9f,color:#000
+    style LEAK fill:#70a1ff,color:#000
+    style OUT_NOTE fill:#fff3cd,color:#000,stroke:#ffc107
+    style IN_NOTE fill:#fff3cd,color:#000,stroke:#ffc107
+    style LEAK_NOTE fill:#fff3cd,color:#000,stroke:#ffc107
