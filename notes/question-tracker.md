@@ -8,11 +8,11 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1389 |
-| **✅ Correct** | 1087 (78%) |
+| **Total Questions** | 1394 |
+| **✅ Correct** | 1092 (78%) |
 | **⚠️ Partial** | 35 (3%) |
 | **❌ Wrong** | 264 (19%) |
-| **Sessions** | 109 |
+| **Sessions** | 110 |
 | **Re-tests Passed** | 647 of 777 |
 
 ## Domain Breakdown
@@ -20,10 +20,10 @@
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
 | D1: Detection | 16% | 298 | 11 | 76 | 385 | 77% | 🟡 |
-| D2: Incident Response | 14% | 68 | 2 | 18 | 88 | 77% | 🟡 |
-| D3: Infrastructure Security | 18% | 237 | 9 | 56 | 302 | 78% | 🟡 |
+| D2: Incident Response | 14% | 73 | 2 | 18 | 93 | 78% | 🟡 |
+| D3: Infrastructure Security | 18% | 238 | 9 | 56 | 303 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 297 | 10 | 63 | 370 | 80% | 🟢 |
-| D5: Data Protection | 18% | 295 | 8 | 66 | 369 | 80% | 🟢 |
+| D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
 | D6: Governance | 14% | 205 | 2 | 63 | 270 | 76% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
@@ -265,6 +265,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1 | 2025-05-01 | Q1–Q20 | 10 | 6 | 4 | D1 Detection · D3 Infrastructure · D4 IAM · D5 Data Protection | [Jump](#session-1--2025-05-01) |
 | 2 | 2025-05-02 | Q21–Q23 | 2 | 0 | 1 | D1 Detection (re-test) | [Jump](#session-2--2025-05-02) |
 | 3 | 2025-05-03 | Q24–Q25 | 1 | 1 | 0 | D1 Detection (re-test) | [Jump](#session-3--2025-05-03) |
+| 110 | 2026-06-24 | Q1390–Q1394 | 5 | 0 | 0 | D2 Incident Response (D2 uplift drill — novel operational patterns) | [Jump](#session-110--2026-06-24) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
@@ -428,6 +429,21 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 |---|---|---|---|---|---|---|---|
 | 24 | D1 | 200 accounts, detect public S3 buckets org-wide, least overhead — Config conformance pack vs Security Hub vs Macie vs Lambda? | B: Config conformance pack | ⚠️ | C: **Security Hub** FSBP standard — wraps Config rules with less overhead, one-click org-wide, dashboards | Q5 | Security services comparison |
 | 25 | D1 | Investigate credential compromise across 15 accounts, need SQL + dashboards + fast results — Athena vs Lake vs CloudWatch Logs vs OpenSearch? | B: CloudTrail Lake | ✅ | CloudTrail Lake — near real-time, cross-account, built-in SQL + dashboards | Q23 | CloudTrail Lake vs S3+Athena |
+
+---
+
+### Session 110 — 2026-06-24
+
+**Domains:** D2 Incident Response (D2 uplift drill — novel operational patterns)
+**Score:** 5 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1390 | D2/D5 | Cross-account forensic snapshot, encrypted EBS, share with external firm — sequence? | B: Copy with new CMK + Grant Decrypt + share snapshot | ✅ | Copy re-encrypts, Grant gives access, RAM doesn't support KMS | — | Forensic snapshot sharing cross-account |
+| 1391 | D2 | 12-account role investigation, custom Python, reusable template — tool? | C: SageMaker notebooks | ✅ | Custom code + reusable + interactive = SageMaker | — | SageMaker notebooks vs Detective (custom vs built-in) |
+| 1392 | D2/D3 | C2 active, block surgically + preserve memory + keep production — THREE? | B+C+D: NF DROP + no-reboot AMI + EBS snapshot | ✅ | NF=surgical, AMI=memory, snapshot=disk | — | Surgical containment (NF + forensics) |
+| 1393 | D2 | Test full IR pipeline (GD→EB→SF) with realistic findings — approach? | B: CreateSampleFindings | ✅ | Generates real findings through EventBridge flow | — | CreateSampleFindings = test IR pipeline |
+| 1394 | D2 | Forensics account: isolation + immutability 1yr + audit access — THREE? | A+B+C: Cross-account copy + Object Lock Compliance + CloudTrail data events | ✅ | Separate account + WORM + audit trail | — | Forensics chain of custody architecture |
 
 ---
 
