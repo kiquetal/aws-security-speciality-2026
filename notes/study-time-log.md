@@ -66,3 +66,4 @@
 | 2026-06-23 | 17:37 | 20:21 | 164 | Red-priority kill drill + D5 + D6 + D3 + D2 + D1 || 2026-06-24 | 18:35 | 18:41 | 6 | Week 2 drill (10 Qs) - 8/10 - SCP vs Config proactive scope trap |
 | 2026-06-24 | 18:49 | 18:56 | 7 | D2 uplift 5/5 + D1 uplift 5/5 - novel patterns only |
 | 2026-06-24 | 18:59 | 19:04 | 5 | D2 uplift 3/3 + D1 uplift 5/5 - all novel |
+| 2026-06-24 | 19:05 | 19:10 | 5 | D3 drill 3/5 - missed NAA vs RA + Bot Control Challenge |
