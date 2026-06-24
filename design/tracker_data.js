@@ -299,8 +299,8 @@ const TRACKER_DATA = {
         "S96-Q974"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 5,
       "level": "red"
@@ -345,8 +345,8 @@ const TRACKER_DATA = {
         "S93-Q933"
       ],
       "domains": [
-        "D1",
-        "D2"
+        "D2",
+        "D1"
       ],
       "count": 4,
       "level": "red"
@@ -417,8 +417,8 @@ const TRACKER_DATA = {
         "S69-Q687"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 3,
       "level": "red"
@@ -446,8 +446,8 @@ const TRACKER_DATA = {
         "S52-Q495"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 3,
       "level": "red"
@@ -475,8 +475,8 @@ const TRACKER_DATA = {
         "S90-Q903"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -515,8 +515,8 @@ const TRACKER_DATA = {
         "S33-Q256"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -555,8 +555,8 @@ const TRACKER_DATA = {
         "S48-Q413"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -608,8 +608,8 @@ const TRACKER_DATA = {
         "S96-Q1003"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -622,8 +622,8 @@ const TRACKER_DATA = {
         "S98-Q1095"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -649,8 +649,8 @@ const TRACKER_DATA = {
         "S66-Q652"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -663,10 +663,10 @@ const TRACKER_DATA = {
         "S61-Q594"
       ],
       "domains": [
-        "D4",
-        "D1",
         "D5",
-        "D6"
+        "D1",
+        "D6",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -679,8 +679,8 @@ const TRACKER_DATA = {
         "S98-Q1080"
       ],
       "domains": [
-        "D4",
         "D5",
+        "D4",
         "D3"
       ],
       "count": 2,
@@ -694,9 +694,9 @@ const TRACKER_DATA = {
         "S68-Q679"
       ],
       "domains": [
-        "D4",
+        "D6",
         "D5",
-        "D6"
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -709,8 +709,8 @@ const TRACKER_DATA = {
         "S70-Q698"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -723,8 +723,8 @@ const TRACKER_DATA = {
         "S105-Q1260"
       ],
       "domains": [
-        "D4",
-        "D1"
+        "D1",
+        "D4"
       ],
       "count": 2,
       "level": "yellow"
@@ -1537,8 +1537,8 @@ const TRACKER_DATA = {
         "S42-Q336"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1550,8 +1550,8 @@ const TRACKER_DATA = {
         "S42-Q339"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1563,8 +1563,8 @@ const TRACKER_DATA = {
         "S42-Q341"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1600,8 +1600,8 @@ const TRACKER_DATA = {
         "S47-Q395"
       ],
       "domains": [
-        "D4",
-        "D3"
+        "D3",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1637,8 +1637,8 @@ const TRACKER_DATA = {
         "S49-Q423"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -1810,8 +1810,8 @@ const TRACKER_DATA = {
       ],
       "domains": [
         "D1",
-        "D6",
-        "D3"
+        "D3",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1823,9 +1823,9 @@ const TRACKER_DATA = {
         "S56-Q545"
       ],
       "domains": [
-        "D4",
         "D1",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2007,8 +2007,8 @@ const TRACKER_DATA = {
         "S77-Q761"
       ],
       "domains": [
-        "D4",
-        "D2"
+        "D2",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2093,9 +2093,9 @@ const TRACKER_DATA = {
         "S82-Q820"
       ],
       "domains": [
-        "D4",
+        "D2",
         "D1",
-        "D2"
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2119,8 +2119,8 @@ const TRACKER_DATA = {
         "S86-Q855"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2132,8 +2132,8 @@ const TRACKER_DATA = {
         "S86-Q857"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2145,8 +2145,8 @@ const TRACKER_DATA = {
         "S86-Q858"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2231,8 +2231,8 @@ const TRACKER_DATA = {
         "S89-Q899"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2256,8 +2256,8 @@ const TRACKER_DATA = {
         "S89-Q902"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2404,8 +2404,8 @@ const TRACKER_DATA = {
         "S96-Q989"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2490,8 +2490,8 @@ const TRACKER_DATA = {
         "S97-Q1026"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2527,8 +2527,8 @@ const TRACKER_DATA = {
         "S97-Q1040"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2576,8 +2576,8 @@ const TRACKER_DATA = {
         "S98-Q1074"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2711,8 +2711,8 @@ const TRACKER_DATA = {
         "S99-Q1140"
       ],
       "domains": [
-        "D4",
-        "D5"
+        "D5",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2880,8 +2880,8 @@ const TRACKER_DATA = {
         "S103-Q1236"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2905,8 +2905,8 @@ const TRACKER_DATA = {
         "S103-Q1238"
       ],
       "domains": [
-        "D4",
-        "D6"
+        "D6",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -20963,6 +20963,12 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**EBS encryption by default = opt-in PER REGION.** Must enable in each region's EC2 settings. Not retroactive. S3 encryption is automatic globally (no opt-in since Jan 2023). \"Regional opt-in + encryption at rest\" = EBS.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**EBS snapshot sharing: \"copy then share\" vs \"share directly.\"** Default key (`aws/ebs`) = MUST copy with CMK first (can't share managed keys). Cross-account/external = always copy with new CMK + Grant. Direct share only works if recipient already has key access (rare).",
               "is_insight": true,
               "is_warning": false
             },
