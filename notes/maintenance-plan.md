@@ -135,6 +135,8 @@ You're ready when:
 | Config org custom rule = Lambda resource-based policy | 4x | Session 94 |
 | ACM regional (ALB=ALB region, CF=us-east-1) | 3x | Session 94 |
 | No-reboot AMI for volatile memory | 3x | Session 93 |
+| SageMaker notebooks for custom IR (not Detective) | 4x | Session 110 |
+| CreateSampleFindings to test IR pipeline (not FIS) | 4x | Session 110 |
 
 ---
 
