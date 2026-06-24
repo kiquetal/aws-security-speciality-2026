@@ -9,6 +9,7 @@
 | Diagram | Format | Description |
 |---|---|---|
 | [d1-detection-decision-flowchart](d1-detection-decision-flowchart.png) | mmd+png | Service selection: EventBridge vs GuardDuty vs Config vs AA vs Inspector vs Detective |
+| [stoplogging-detection-paths](stoplogging-detection-paths.png) | mmd+png | StopLogging: CW=blind, EventBridge=seconds, Config=minutes (WHY for each) |
 | [security-services-comparison](security-services-comparison.png) | mmd+png | Side-by-side: GuardDuty vs Inspector vs Macie vs Config vs Security Hub |
 | [security-services-complete-map](security-services-complete-map.png) | mmd+png | Full map of all security services and their relationships |
 | [log-source-coverage](log-source-coverage.png) | mmd+png | Which log sees what (VPC Flow, TGW Flow, ELB, Resolver, CloudTrail) |
@@ -18,6 +19,7 @@
 
 | Diagram | Format | Description |
 |---|---|---|
+| [ir-containment-decision-tree](ir-containment-decision-tree.png) | mmd+png | OutsideAWS vs InsideAWS vs Credential Leak — containment actions for each |
 | [rds-incident-response-flow](../aws-incident-response-demonstrated-microcredential/diagrams/rds-incident-response-flow.png) | png | RDS compromise IR flow |
 | [iam-backdoor-eradication-flow](../aws-incident-response-demonstrated-microcredential/diagrams/iam-backdoor-eradication-flow.png) | png | IAM backdoor cleanup steps |
 | [scp-external-trust-prevention](../aws-incident-response-demonstrated-microcredential/diagrams/scp-external-trust-prevention.png) | png | SCP to prevent external trust policies |
@@ -63,6 +65,7 @@
 
 | Diagram | Format | Description |
 |---|---|---|
+| [d6-governance-decision-tree](d6-governance-decision-tree.png) | mmd+png | Verb-to-service: RAM vs FM vs StackSets vs Service Catalog vs SCP vs Config vs cfn-guard |
 | [study-progress-gantt](study-progress-gantt.png) | mmd+png | Study timeline and milestones |
 
 ## UI Mockups / Screenshots
@@ -78,9 +81,9 @@
 
 ## Quick Stats
 
-- **Total diagrams:** 61 files
-- **Mermaid sources (.mmd):** 30
-- **Rendered PNGs:** 31
+- **Total diagrams:** 67 files
+- **Mermaid sources (.mmd):** 33
+- **Rendered PNGs:** 34
 - **Domains covered:** All 6
-- **Most covered:** D5 Data Protection (8 diagrams), D4 IAM (8 diagrams)
-- **Least covered:** D6 Governance (1 diagram), D2 Incident Response (3 diagrams)
+- **Most covered:** D5 Data Protection (8), D4 IAM (8), D3 Infrastructure (6), D1 Detection (6)
+- **Least covered:** D6 Governance (2), D2 Incident Response (4)
