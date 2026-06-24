@@ -1,0 +1,34 @@
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '14px'}}}%%
+flowchart TD
+    START["QUESTION SAYS 'DETECT / ALERT / MONITOR'"] --> Q1{"What type of thing?"}
+    
+    Q1 -->|"SPECIFIC API CALL<br/>(named action: PutBucketPolicy,<br/>StopLogging, CreateAccessKey)"| EB["EventBridge<br/>on CloudTrail<br/>(seconds, one rule)"]
+    
+    Q1 -->|"ANOMALOUS BEHAVIOR<br/>(unusual geo, volume,<br/>never-seen IP, 3AM)"| GD["GuardDuty<br/>(zero code, zero infra,<br/>built-in ML)"]
+    
+    Q1 -->|"MISCONFIGURATION<br/>(public bucket, open SG,<br/>unencrypted, missing tag)"| CFG["Config rule<br/>or Security Hub<br/>(detect + dashboard)"]
+    
+    Q1 -->|"WHO COULD ACCESS?<br/>(policy analysis,<br/>no access yet)"| AA["Access Analyzer<br/>(static, reads policy text)"]
+    
+    Q1 -->|"SOFTWARE VULN<br/>(CVE, package,<br/>container image)"| INS["Inspector<br/>(CVE scanning)"]
+    
+    Q1 -->|"INVESTIGATE<br/>(blast radius, timeline,<br/>what else touched)"| DET["Detective<br/>(needs existing finding)"]
+    
+    %% Speed signals
+    EB -.- SPEED1["Signal words: 'within 60s',<br/>'specific API', 'fast'"]
+    GD -.- SPEED2["Signal words: 'zero code',<br/>'least overhead', 'anomalous'"]
+    CFG -.- SPEED3["Signal words: 'compliance',<br/>'non-compliant', 'remediate'"]
+    AA -.- SPEED4["Signal words: 'who can',<br/>'externally accessible',<br/>'unused permissions'"]
+    
+    %% Critical exceptions
+    GD -.->|"GD does NOT fire on<br/>BLOCKED attempts"| NOTE1["If RCP blocks access,<br/>GD generates NO finding"]
+    AA -.->|"AA fires even if<br/>RCP blocks runtime"| NOTE2["AA reads POLICY TEXT<br/>not runtime behavior"]
+    EB -.->|"EventBridge does NOT<br/>detect BEHAVIOR"| NOTE3["Can't detect 'unusual'<br/>Only 'this exact API happened'"]
+
+    style START fill:#ff6b6b,color:#fff
+    style EB fill:#4ecdc4,color:#000
+    style GD fill:#45b7d1,color:#000
+    style CFG fill:#96ceb4,color:#000
+    style AA fill:#feca57,color:#000
+    style INS fill:#ff9ff3,color:#000
+    style DET fill:#c8d6e5,color:#000
