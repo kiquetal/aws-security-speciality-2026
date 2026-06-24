@@ -77,3 +77,9 @@ Post-2018 service delivering to S3 → Bucket policy with service principal
 | **S3 Server Access Logs** | ACL (log delivery group) | N/A |
 
 **VPC Flow Logs is the only service using IAM role for ALL delivery targets.**
+
+## Mnemonic
+
+> **"Access Logs = S3 only."** (ELB, CloudFront, S3 server access logs — all S3-exclusive)
+> **"Public DNS = CW Logs only."** (Route 53 DNS query logging — the one rebel, no S3 option)
+> Everything else (Flow, Trail, WAF, Resolver) → both S3 and CW Logs.
