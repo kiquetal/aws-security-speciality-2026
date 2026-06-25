@@ -10,7 +10,7 @@ const TRACKER_DATA = {
     "retests_passed": 662,
     "accuracy_pct": 78,
     "study_hours": 92,
-    "study_minutes": 5490
+    "study_minutes": 5525
   },
   "weeks": [
     {
@@ -432,8 +432,8 @@ const TRACKER_DATA = {
         "S69-Q687"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -461,8 +461,8 @@ const TRACKER_DATA = {
         "S52-Q495"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -490,8 +490,8 @@ const TRACKER_DATA = {
         "S90-Q903"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -679,8 +679,8 @@ const TRACKER_DATA = {
       ],
       "domains": [
         "D1",
-        "D5",
         "D6",
+        "D5",
         "D4"
       ],
       "count": 2,
@@ -694,9 +694,9 @@ const TRACKER_DATA = {
         "S98-Q1080"
       ],
       "domains": [
-        "D5",
+        "D4",
         "D3",
-        "D4"
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -709,8 +709,8 @@ const TRACKER_DATA = {
         "S68-Q679"
       ],
       "domains": [
-        "D5",
         "D6",
+        "D5",
         "D4"
       ],
       "count": 2,
@@ -805,8 +805,8 @@ const TRACKER_DATA = {
         "S98-Q1100"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -819,8 +819,8 @@ const TRACKER_DATA = {
         "S94-Q950"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -899,8 +899,8 @@ const TRACKER_DATA = {
         "S104-Q1254"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -1698,8 +1698,8 @@ const TRACKER_DATA = {
         "S49-Q423"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -1871,8 +1871,8 @@ const TRACKER_DATA = {
       ],
       "domains": [
         "D1",
-        "D3",
-        "D6"
+        "D6",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1922,8 +1922,8 @@ const TRACKER_DATA = {
         "S68-Q685"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2180,8 +2180,8 @@ const TRACKER_DATA = {
         "S86-Q855"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2292,8 +2292,8 @@ const TRACKER_DATA = {
         "S89-Q899"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2317,8 +2317,8 @@ const TRACKER_DATA = {
         "S89-Q902"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2355,8 +2355,8 @@ const TRACKER_DATA = {
         "S90-Q911"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2440,8 +2440,8 @@ const TRACKER_DATA = {
         "S96-Q965"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2551,8 +2551,8 @@ const TRACKER_DATA = {
         "S97-Q1026"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2588,8 +2588,8 @@ const TRACKER_DATA = {
         "S97-Q1040"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2662,8 +2662,8 @@ const TRACKER_DATA = {
         "S98-Q1079"
       ],
       "domains": [
-        "D3",
-        "D2"
+        "D2",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -3052,8 +3052,8 @@ const TRACKER_DATA = {
         "S107-Q1295"
       ],
       "domains": [
-        "D3",
-        "D2"
+        "D2",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -21672,6 +21672,12 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**Gateway endpoint = SAME REGION only.** Routes traffic to S3/DynamoDB in the VPC's region. Cross-region S3 access = needs NAT/IGW or Interface endpoint.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**S3 SSE-KMS = server-side (no KMS endpoint needed). Direct kms:Decrypt/GenerateDataKey in YOUR code = needs KMS Interface endpoint.** Count DynamoDB separately (Gateway endpoint).",
               "is_insight": true,
               "is_warning": false
@@ -21721,6 +21727,18 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**\"Find all exposed paths\" = Network Access Analyzer. \"Explain WHY this specific path works (hop-by-hop)\" = Reachability Analyzer.** NAA finds. RA explains.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**TGW appliance mode = force request + return traffic through SAME AZ.** Without it, TGW splits across AZs = stateful firewall drops return (no conn state). Enable on security VPC attachment.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**WAF scope-down statement = \"only apply rule group to matching requests.\"** Exempt known-good traffic (mobile apps, server-to-server) from Challenge/CAPTCHA. Both require browser/JS.",
               "is_insight": true,
               "is_warning": false
             },
