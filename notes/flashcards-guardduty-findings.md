@@ -100,3 +100,24 @@ Suffix = HOW it was detected, not WHAT the attack does.
 | "Outbound to bad IP = Recon" | ❌ Outbound to bad IP = Trojan (C2). Recon = port scanning |
 | "GuardDuty fires on blocked attempts" | ❌ GD needs SUCCESSFUL access. RCP blocks = no finding |
 | "Discovery = DNS query" | ❌ Discovery = resource enumeration. DNS query = Impact |
+
+---
+
+## Custom Threat List → `.Custom` Suffix
+
+```
+Built-in AWS threat intel:
+  EC2 connects to known C2 IP → UnauthorizedAccess:EC2/MaliciousIPCaller
+
+YOUR custom threat list (uploaded IPs):
+  EC2 connects to YOUR listed IP → UnauthorizedAccess:EC2/MaliciousIPCaller.Custom
+                                                                          ^^^^^^^
+                                                                     YOUR list = .Custom
+```
+
+| Source | Finding Name | Example |
+|---|---|---|
+| AWS built-in threat intel | Standard type (no suffix) | `Trojan:EC2/C2Activity.B` |
+| Your custom threat IP list | `.Custom` suffix appended | `UnauthorizedAccess:EC2/MaliciousIPCaller.Custom` |
+
+**Rule:** See `.Custom` in a finding → traffic matched YOUR uploaded threat list, not AWS's built-in intel.
