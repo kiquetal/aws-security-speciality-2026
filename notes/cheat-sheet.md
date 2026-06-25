@@ -226,6 +226,9 @@
 
 ### GuardDuty Operational
 - 🧠 **GuardDuty is REGIONAL.** Must enable in every region where workloads run. No findings from a region where it's not enabled.
+- 🧠 **GuardDuty custom threat list → finding type has `.Custom` suffix.** Built-in intel = standard types. Your list = `MaliciousIPCaller.Custom`.
+- 🧠 **Global services (IAM, STS, CloudFront) deliver events to us-east-1 ONLY.** EventBridge rules for `CreateUser` etc must be in us-east-1.
+- 🧠 **Security Hub = dashboard (view findings). Config = remediation engine (fix resources).** SH wraps Config rules but doesn't own the fix. Auto-remediation = Config rule + SSM.
 - 🧠 **GuardDuty reads VPC Flow Logs + DNS logs via internal feed — you DON'T need to enable them yourself.** Your VPC Flow Logs are for YOUR queries (Insights, Athena). GuardDuty has its own tap.
 - 🧠 **"Unusual IP" / "never-seen location" = active threat = GuardDuty.** NOT Access Analyzer (that's permission audit, not real-time threats).
 - 🧠 **"Zero findings despite active workloads + GuardDuty confirmed enabled" = suppression rule archiving findings.** GuardDuty WILL generate findings on production — if you see none, something is hiding them.
