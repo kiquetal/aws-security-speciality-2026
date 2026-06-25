@@ -342,6 +342,8 @@
 - 🧠 **Well-Architected Tool = architecture review + improvement plan + milestones (snapshot + compare over time).** No Config/SH integration for auto-resolution.
 - 🧠 **cfn-guard = validate template content in CI/CD (shift-left, cheapest). Config proactive = validate at CF service level (heavier). CF Hook = same as Config proactive but Control Tower managed.** All three = "before deploy" but different weight.
 - 🧠 **cfn-guard = bypassable (CI/CD only, Console deploy skips it). Config proactive = service-level (can't bypass, catches ALL CF deploys including Console).** "Developer bypasses pipeline" = Config proactive catches, cfn-guard misses.
+- 🧠 **CF Hook = CF service-level (same layer as Config proactive).** Both intercept ANY CF deploy (CLI, Console, SDK). cfn-guard = pipeline only.
+- 🧠 **"ALL CF deploys + BEFORE creation + least code" = Config proactive with managed rules.** SCP can't see template content. cfn-guard is bypassable.
 - 🧠 **Declarative policy = "this state is impossible to violate" (EC2/VPC/EBS only).** SCP = "this API call is blocked." Different layers. "Regardless of which API" = declarative.
 - 🧠 **Stack Policy = protect resources inside stack (preventive, blocks CF updates). Termination protection = prevent stack deletion.** Drift detection = detective only (reports manual changes, doesn't prevent). Change sets = preview before deploy.
 ---
