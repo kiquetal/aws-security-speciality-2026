@@ -150,6 +150,7 @@
 
 ### Network
 - Gateway endpoint (S3, DynamoDB) = free, route table entry. Interface endpoint = ENI + PrivateLink, costs money, needs SG.
+- 🧠 **Gateway endpoint = SAME REGION only.** Routes traffic to S3/DynamoDB in the VPC's region. Cross-region S3 access = needs NAT/IGW or Interface endpoint.
 - 🧠 **S3 SSE-KMS = server-side (no KMS endpoint needed). Direct kms:Decrypt/GenerateDataKey in YOUR code = needs KMS Interface endpoint.** Count DynamoDB separately (Gateway endpoint).
 - Endpoint policy + bucket policy BOTH evaluated. Endpoint policy doesn't replace resource policies.
 - NACLs are stateless — need explicit inbound rule for ephemeral ports (1024–65535) on return traffic. SGs are stateful — handle it automatically.
@@ -159,6 +160,8 @@
 - VPC Reachability Analyzer = "why can't A reach B?" (specific pair, troubleshooting one connection).
 - 🧠 **"What's exposed?" = Network Access Analyzer (auditor). "Why can't A reach B?" = Reachability Analyzer (debugger).** Different tools, different questions.
 - 🧠 **"Find all exposed paths" = Network Access Analyzer. "Explain WHY this specific path works (hop-by-hop)" = Reachability Analyzer.** NAA finds. RA explains.
+- 🧠 **TGW appliance mode = force request + return traffic through SAME AZ.** Without it, TGW splits across AZs = stateful firewall drops return (no conn state). Enable on security VPC attachment.
+- 🧠 **WAF scope-down statement = "only apply rule group to matching requests."** Exempt known-good traffic (mobile apps, server-to-server) from Challenge/CAPTCHA. Both require browser/JS.
 - MACsec = Layer 2 encryption on **dedicated** Direct Connect only. Hosted connection → use Site-to-Site VPN over DX (IPsec).
 - 🧠 **IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only Internet Gateway.** NAT doesn't exist for IPv6 — all IPv6 is globally routable. Egress-only IGW = one-way gate (outbound yes, inbound no).
 - 🧠 **"Individual remote users (home)" = Client VPN (SSL). "Two fixed networks (office↔AWS)" = Site-to-Site VPN (IPsec). "Physical dedicated link" = Direct Connect.**
