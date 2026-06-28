@@ -8,18 +8,18 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1444 |
-| **✅ Correct** | 1133 (78%) |
+| **Total Questions** | 1454 |
+| **✅ Correct** | 1143 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 272 (19%) |
 | **Sessions** | 113 |
-| **Re-tests Passed** | 683 of 821 |
+| **Re-tests Passed** | 693 of 831 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 327 | 11 | 80 | 418 | 78% | 🟡 |
+| D1: Detection | 16% | 337 | 11 | 80 | 428 | 79% | 🟡 |
 | D2: Incident Response | 14% | 73 | 2 | 18 | 93 | 78% | 🟡 |
 | D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
@@ -275,7 +275,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 110 | 2026-06-24 | Q1390–Q1394 | 5 | 0 | 0 | D2 Incident Response (D2 uplift drill — novel operational patterns) | [Jump](#session-110--2026-06-24) |
 | 111 | 2026-06-25 | Q1395–Q1419 | 19 | 1 | 5 | D1 Detection · D6 Governance · D3 Infrastructure (Week 3 drill — StopLogging, cfn-guard vs Config proactive vs CF Hook, State Manager dual triggers, GuardDuty regional) | [Jump](#session-111--2026-06-25) |
 | 112 | 2026-06-27 | Q1420–Q1429 | 9 | 0 | 1 | D6 Governance (hyperfocus uplift — cfn-guard vs Config proactive, WAT milestones, Stack Policy, SCP all-paths, auto-apply on OU join) | [Jump](#session-112--2026-06-27) |
-| 113 | 2026-06-27 | Q1430–Q1444 | 13 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
+| 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
@@ -515,7 +515,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 113 — 2026-06-27
 
 **Domains:** D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction)
-**Score:** 14 ✅ · 0 ⚠️ · 1 ❌ (93% correct)
+**Score:** 23 ✅ · 0 ⚠️ · 2 ❌ (92% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -534,6 +534,16 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1442 | D1 | Security Hub non-compliant, want auto-fix — where configure? | C: Security Hub custom actions + EB + Lambda | ❌ | B: Config rule auto-remediation (SSM). SH = dashboard only. | Q1307 | Security Hub = dashboard. Config = remediation. |
 | 1443 | D1 | Resolver query logging enabled, public zone external queries missing — why? | A: Resolver = VPC outbound only, not inbound to public zones | ✅ | Two different features, different directions. | Q1276 | Resolver vs DNS query logging direction |
 | 1444 | D1 | CW metric filter correct pattern, alarm never fires, trail delivers to log group — cause? | A: Metric value set to 0 instead of 1 | ✅ | Value=0 publishes nothing useful. | Q724 | CW metric filter value |
+| 1445 | D1 | GD S3 Protection: same-account Lambda 10x volume + 3AM + new region — fires? | B: Yes — behavioral anomaly detection | ✅ | Anomaly = baseline deviation regardless of caller identity. | Q1268 | GuardDuty S3 Protection behavioral |
+| 1446 | D1 | StopLogging then DeleteTrail 3min later — which detects DeleteTrail? | B: Only EventBridge | ✅ | StopLogging killed CW delivery, EB receives directly | Q860, Q1092 | StopLogging kills own CW Logs delivery |
+| 1447 | D1 | Top 10 source IPs by bytes, Flow Logs in S3 (not CW) — tool? | B: Athena | ✅ | CW Logs Insights can't query S3. Athena queries S3 directly. | Q236 | CW Logs Insights scope (CW only) |
+| 1448 | D1 | CT Insights 10x RunInstances, GD silent — which true? | B: Complementary (Insights=volume, GD=behavior) | ✅ | Legit spike triggers Insights not GD. Different detection lenses. | Q1004 | CloudTrail Insights vs GuardDuty (complementary) |
+| 1449 | D1 | Macie SSE-KMS "Unable to analyze" one bucket, others work — check first? | B: Key policy missing Macie SLR kms:Decrypt | ✅ | Per-key grant needed. Other keys work = those grant access. | Q1305 | Macie + SSE-KMS key policy |
+| 1450 | D1 | SH 47 non-compliant, engineer proposes fix inside SH — why wrong? | B: SH = dashboard, Config = remediation | ✅ | SH views. Config + SSM fixes. | Q1307, Q1442 | Security Hub = dashboard. Config = remediation. |
+| 1451 | D1 | DNS query logging on public zone, can't see Lambda queries from VPC — why? | B: DNS query logging = TO zone from internet, not FROM VPC | ✅ | Two features, two directions. VPC queries = Resolver logging. | Q1276 | Resolver vs DNS query logging direction |
+| 1452 | D1 | Config remediation enables S3 logging, succeeds but no logs appear — missing? | B: s3:GetBucketAcl — logging uses ACLs | ✅ | Legacy ACL mechanism for S3 access logging. | Q864, Q868, Q903 | S3 server access logging = ACLs |
+| 1453 | D1 | OutsideAWS finding, "what else accessed 72hr" — tool? | C: Detective | ✅ | Finding exists + blast radius + timeline = Detective. | Q1277 | Finding exists = Detective |
+| 1454 | D1 | Detect CreateUser without MFA, 300 accounts, sub-60s, org trail — approach? | B: EventBridge in management account | ✅ | Specific API + fast + org trail = EventBridge. | Q474 | EventBridge for API call detection |
 
 ---
 
