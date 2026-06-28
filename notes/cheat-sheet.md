@@ -351,6 +351,7 @@
 - 🧠 **CF Hook = CF service-level (same layer as Config proactive).** Both intercept ANY CF deploy (CLI, Console, SDK). cfn-guard = pipeline only.
 - 🧠 **"ALL CF deploys + BEFORE creation + least code" = Config proactive with managed rules.** SCP can't see template content. cfn-guard is bypassable.
 - 🧠 **Declarative policy = "this state is impossible to violate" (EC2/VPC/EBS only).** SCP = "this API call is blocked." Different layers. "Regardless of which API" = declarative.
+- 🧠 **Proactive enforcement = don't downgrade for convenience.** If Config proactive blocks it, the answer is "fix the template" — never "switch to detective so dev can fix later."
 - 🧠 **Stack Policy = protect resources inside stack (preventive, blocks CF updates). Termination protection = prevent stack deletion.** Drift detection = detective only (reports manual changes, doesn't prevent). Change sets = preview before deploy.
 ---
 
