@@ -356,6 +356,14 @@
 - 🧠 **Proactive enforcement = don't downgrade for convenience.** If Config proactive blocks it, the answer is "fix the template" — never "switch to detective so dev can fix later."
 - 🧠 **Service Catalog = deploy only, no post-provisioning monitoring.** SC provisions resources but never detects drift/changes after. "Post-deploy compliance" = Config + SSM.
 - 🧠 **Stack Policy = protect resources inside stack (preventive, blocks CF updates). Termination protection = prevent stack deletion.** Drift detection = detective only (reports manual changes, doesn't prevent). Change sets = preview before deploy.
+- 🧠 **Stack Policy = DEFAULT DENY ALL.** Unlike IAM, if no Allow statement exists, NOTHING passes. Must explicitly Allow actions. Explicit Deny always wins (same as IAM).
+- 🧠 **Config proactive fires BEFORE SCP in CF deploys.** Proactive rejects template → CF never calls API → SCP never evaluates. Earliest CF-level gate.
+- 🧠 **cfn-guard can't resolve intrinsics (!Ref, !Sub, Fn::If).** Sees raw template text only. Parameter overrides at deploy time bypass cfn-guard.
+- 🧠 **Proactive rejection = CloudTrail failed API.** Config proactive rejects → CF logs failed CreateStack in CloudTrail.
+- 🧠 **StackSets auto-deploy = new accounts.** Service-managed + auto-deploy = auto-deploys to new accounts joining OU. Different from auto-remediation (which StackSets NEVER does).
+- 🧠 **CT supports custom controls.** Custom SCP = preventive. Custom Config rule = detective. Custom CF Hook = proactive. NOT limited to AWS-managed.
+- 🧠 **RAM attachment = member-owned.** RAM shares parent resource (TGW). Attachments created BY members belong to members. Members can delete their own.
+- 🧠 **Standards evaluation latency at scale.** Enabling SH standards across 200 accounts = 2-24 hours for findings (Config evaluation at scale). Not minutes.
 ---
 
 ## Quotas That Trick You (4-5-8-32-5120)
