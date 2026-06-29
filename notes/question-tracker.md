@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1554 |
-| **✅ Correct** | 1232 (79%) |
+| **Total Questions** | 1557 |
+| **✅ Correct** | 1235 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 283 (18%) |
 | **Sessions** | 115 |
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
-| D6: Governance | 14% | 310 | 3 | 78 | 391 | 79% | 🟡 |
+| D6: Governance | 14% | 313 | 3 | 78 | 394 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -289,7 +289,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
-| 115 | 2026-06-28 | Q1515–Q1554 | 37 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
+| 115 | 2026-06-28 | Q1515–Q1557 | 40 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -654,7 +654,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 115 — 2026-06-28
 
 **Domains:** D6 Governance (re-test — Session 114 errors)
-**Score:** 37 ✅ · 0 ⚠️ · 3 ❌ (93% correct)
+**Score:** 40 ✅ · 0 ⚠️ · 3 ❌ (93% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -698,6 +698,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1552 | D6 | Audit Manager 95% vs Security Hub 60% — why? | B: AM includes manual attestation + automated | ✅ | AM = manual + automated. SH = automated only. | — | Audit Manager includes manual evidence |
 | 1553 | D6 | RAM NF policy + FM enforces, admin deletes endpoint — what happens? | B: FM re-creates endpoint | ✅ | FM auto-remediates lifecycle | — | FM auto-remediates deletions |
 | 1554 | D6 | SCP on OU, member root user StopLogging — result? | B: Denied — SCP applies to member root | ✅ | Member root subject to SCP. Management root exempt. | — | SCP applies to member root |
+| 1555 | D6 | Prevent member accounts sharing externally via RAM — how? | B: SCP condition + Organizations sharing setting | ✅ | Two mechanisms: SCP + org-level setting | — | RAM external sharing controls |
+| 1556 | D6 | Org conformance pack 15 rules, new account joins OU — what happens? | B: Auto-deploys all rules immediately | ✅ | Organizational conformance pack = auto-deploy | — | Conformance pack auto-deploys |
+| 1557 | D6 | SH standards enabled 200 accounts, 0 findings after 10min — when? | B: 2-24 hours (Config evaluation latency at scale) | ✅ | Config at scale = hours, not minutes | — | Standards evaluation latency |
 
 ---
 
