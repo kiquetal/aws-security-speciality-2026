@@ -341,6 +341,8 @@
 - 🧠 **FM creates WAF/Shield/SG directly (no RAM). FM only enforces DNS FW + Network FW (needs RAM to share first).** Ask: "Does the resource already exist in another account?" Yes = RAM.
 - 🧠 **Config can't remediate its own disablement.** If someone stops Config, the rule can't fire. Use SCP to prevent `StopConfigurationRecorder`.
 - 🧠 **Config stopped = detection engine dead.** Rules can't fire, remediation can't trigger. Not a circular dependency — the engine itself is off.
+- 🧠 **SCP future only + FM auto-remediates existing.** New account joins OU: SCP blocks FUTURE API calls. FM attaches to EXISTING resources immediately.
+- 🧠 **Terraform = direct API (not CF).** Terraform AWS provider calls APIs directly — Config proactive (CF service-level) is blind to it.
 - 🧠 **Control Tower guardrails: Preventive = SCP (block API). Detective = Config (detect after). Proactive = CF Hook (validate template before deploy).**
 - 🧠 **"Validate template content" = Proactive guardrail (CF Hook). "Block API call" = SCP.** SCP can't see what's inside a CloudFormation template.
 - 🧠 **SCP can't inspect API payload content (e.g., bucket policy JSON).** To prevent the consequence of `Principal:*`, use RCP (blocks external access) + EventBridge (detects the call).
