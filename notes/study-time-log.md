@@ -69,3 +69,4 @@
 | 2026-06-24 | 19:05 | 19:10 | 5 | D3 drill 3/5 - missed NAA vs RA + Bot Control Challenge |
 | 111 | 2026-06-25 | 18:42 | 19:52 | 70 | Session 111 — Week 3 drill + D1/D3/D6 uplift — 89/112 (79.5%) |
 | 112 | 2026-06-27 | 22:14 | | | D6 Governance hyperfocus uplift |
+| 115 | 2026-06-28 | 23:36 | | | D6 re-test (Session 114 errors) |

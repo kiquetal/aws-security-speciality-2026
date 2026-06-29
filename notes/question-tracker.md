@@ -8,12 +8,12 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1514 |
-| **✅ Correct** | 1195 (79%) |
+| **Total Questions** | 1522 |
+| **✅ Correct** | 1203 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 280 (18%) |
-| **Sessions** | 114 |
-| **Re-tests Passed** | 724 of 863 |
+| **Sessions** | 115 |
+| **Re-tests Passed** | 732 of 871 |
 
 ## Domain Breakdown
 
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
-| D6: Governance | 14% | 273 | 3 | 75 | 351 | 78% | 🟡 |
+| D6: Governance | 14% | 281 | 3 | 75 | 359 | 78% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -286,6 +286,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
+| 115 | 2026-06-28 | Q1515–Q1522 | 8 | 0 | 0 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -647,6 +648,24 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ---
 
 <!-- TEMPLATE: Copy this block for new sessions
+### Session 115 — 2026-06-28
+
+**Domains:** D6 Governance (re-test — Session 114 errors)
+**Score:** 8 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1515 | D6 | Service Catalog EKS clusters, logging disabled 3mo later — correct statement + fix? | B: SC no post-deploy monitoring + Config+SSM | ✅ | SC doesn't monitor after provisioning. Config+SSM detects+fixes. | Q1464 | Service Catalog = no post-deploy monitoring |
+| 1516 | D6 | Config proactive + SCP both present, CF deploy without DeletionProtection — order? | B: Proactive fires first, CF never calls API, SCP never evaluates | ✅ | Config proactive fires BEFORE SCP in CF deploys | Q1486 | Config proactive fires BEFORE SCP in CF deploys |
+| 1517 | D6 | Config proactive rejects template — where in CloudTrail? | A: Failed CreateStack API call | ✅ | Proactive rejection = CloudTrail failed API | Q1499 | Proactive rejection = CloudTrail failed API |
+| 1518 | D6 | StackSets service-managed + auto-deploy, new account joins OU — what happens? | B: Auto-deploys without manual action | ✅ | StackSets auto-deploy = new accounts get stack automatically | Q1505 | StackSets auto-deploy = new accounts |
+| 1519 | D6 | CT custom preventive guardrail for RDS FinalDBSnapshot — how? | B: Register custom SCP as CT preventive control | ✅ | CT supports custom controls (SCP=preventive, Config=detective, Hook=proactive) | Q1509 | CT supports custom controls |
+| 1520 | D6 | cfn-guard rule, template uses !Ref EncryptionEnabled — result? | B: FAIL — sees literal text, can't resolve Ref | ✅ | cfn-guard can't resolve intrinsics (!Ref, !Sub, Fn::If) | Q1510 | cfn-guard can't resolve intrinsics |
+| 1521 | D6 | RAM shared TGW, member creates+deletes own attachment — allowed? | B: Yes — member owns resources they create | ✅ | RAM attachment = member-owned | Q1512 | RAM attachment = member-owned |
+| 1522 | D6 | SH 200 accounts, standards enabled, 0% after 15min — cause? | B: 2-24 hours (Config evaluation latency at scale) | ✅ | Standards evaluation latency at scale | Q1514 | Standards evaluation latency at scale |
+
+---
+
 
 ### Session N — YYYY-MM-DD
 
