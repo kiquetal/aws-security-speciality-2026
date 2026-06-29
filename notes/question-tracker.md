@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1544 |
-| **✅ Correct** | 1222 (79%) |
+| **Total Questions** | 1549 |
+| **✅ Correct** | 1227 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 283 (18%) |
 | **Sessions** | 115 |
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
-| D6: Governance | 14% | 300 | 3 | 78 | 381 | 79% | 🟡 |
+| D6: Governance | 14% | 305 | 3 | 78 | 386 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -289,7 +289,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
-| 115 | 2026-06-28 | Q1515–Q1544 | 27 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
+| 115 | 2026-06-28 | Q1515–Q1549 | 32 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -654,7 +654,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 115 — 2026-06-28
 
 **Domains:** D6 Governance (re-test — Session 114 errors)
-**Score:** 27 ✅ · 0 ⚠️ · 3 ❌ (90% correct)
+**Score:** 32 ✅ · 0 ⚠️ · 3 ❌ (91% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -688,6 +688,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1542 | D6 | WAT milestones: show Config/CloudTrail evidence to auditors? | B: No — self-reported only, use Audit Manager | ✅ | WAT = no automation, no resource links | — | WAT milestones = no automated evidence |
 | 1543 | D6 | Stack Policy Allow Modify + Deny Replace/Delete, engine change requires replacement — result? | B: Fails — Replace explicitly denied | ✅ | Modify/Replace/Delete independent. Explicit Deny wins. | — | Stack Policy Modify vs Replace independent |
 | 1544 | D6 | SH custom action "Quarantine Instance" button clicked — what triggers? | B: EventBridge event — you build automation | ✅ | SH = dashboard. Custom action → EB → Lambda (you build). | — | SH custom action = EventBridge (you build it) |
+| 1545 | D6 | Prevent disabling GD in member accounts — which actions to deny? | B: DeleteDetector + StopMonitoringMembers | ✅ | No DisableGuardDuty API exists. Block both paths. | — | SCP prevents disabling GD |
+| 1546 | D6 | SCP deny ScheduleKeyDeletion + break-glass exception — approach? | B: StringNotLike PrincipalARN condition | ✅ | SCPs support conditions for exceptions | — | SCP condition exemption pattern |
+| 1547 | D6 | Declarative no-public-IPv4, AWS releases new API — needs update? | B: No — state enforcement, future-proof | ✅ | Declarative = regardless of API | — | Declarative policy future-proof |
+| 1548 | D6 | SC launch role + SCP requires versioning, template lacks it — result? | B: Fails — SCP evaluates launch role | ✅ | SCP applies to ALL principals | — | SCP applies to SC launch roles |
+| 1549 | D6 | Config proactive rejects, dev asks to switch to detective — response? | B: Reject — proactive exists to prevent non-compliant | ✅ | Don't downgrade for convenience | — | Proactive enforcement philosophy |
 
 ---
 
