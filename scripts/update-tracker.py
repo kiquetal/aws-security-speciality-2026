@@ -231,3 +231,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # Auto-regenerate dashboard data
+    import subprocess
+    subprocess.run(["python3", str(Path(__file__).parent / "export_to_json.py")], check=False)
