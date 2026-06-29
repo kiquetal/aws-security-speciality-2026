@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1522 |
-| **✅ Correct** | 1203 (79%) |
+| **Total Questions** | 1529 |
+| **✅ Correct** | 1210 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 280 (18%) |
 | **Sessions** | 115 |
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
-| D6: Governance | 14% | 281 | 3 | 75 | 359 | 78% | 🟡 |
+| D6: Governance | 14% | 288 | 3 | 75 | 366 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -286,7 +286,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
-| 115 | 2026-06-28 | Q1515–Q1522 | 8 | 0 | 0 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
+| 115 | 2026-06-28 | Q1515–Q1529 | 15 | 0 | 0 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -651,7 +651,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 115 — 2026-06-28
 
 **Domains:** D6 Governance (re-test — Session 114 errors)
-**Score:** 8 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+**Score:** 15 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -663,6 +663,13 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1520 | D6 | cfn-guard rule, template uses !Ref EncryptionEnabled — result? | B: FAIL — sees literal text, can't resolve Ref | ✅ | cfn-guard can't resolve intrinsics (!Ref, !Sub, Fn::If) | Q1510 | cfn-guard can't resolve intrinsics |
 | 1521 | D6 | RAM shared TGW, member creates+deletes own attachment — allowed? | B: Yes — member owns resources they create | ✅ | RAM attachment = member-owned | Q1512 | RAM attachment = member-owned |
 | 1522 | D6 | SH 200 accounts, standards enabled, 0% after 15min — cause? | B: 2-24 hours (Config evaluation latency at scale) | ✅ | Standards evaluation latency at scale | Q1514 | Standards evaluation latency at scale |
+| 1523 | D6 | Config proactive + direct CLI rds:CreateDBInstance — blocked? | B: No — proactive = CF only, not direct API | ✅ | Config proactive = CF only, not direct API | — | Config proactive = CF only |
+| 1524 | D6 | 12 new Config rules + remediation + org-wide + auto new accounts — approach? | B: Organizational conformance pack | ✅ | Conformance pack = bundle + remediation + auto-deploy | — | Conformance pack vs StackSets |
+| 1525 | D6 | Stack Policy empty Statement array, dev tries update — result? | B: Fails — default deny all | ✅ | No Allow = nothing passes | — | Stack Policy default deny |
+| 1526 | D6 | FM WAF + FM DNS FW — which needs RAM? | C: Only DNS Firewall requires RAM | ✅ | FM creates WAF directly, DNS FW rule group needs RAM sharing | — | FM WAF vs FM DNS FW RAM dependency |
+| 1527 | D6 | SCP denies ec2:AssignIpv6Address, new API ec2:AssignIpv6PublicPool — protected? | B: No — SCPs must enumerate specific actions | ✅ | Declarative = state enforcement vs SCP = action-specific | — | Declarative policy vs SCP (future API) |
+| 1528 | D6 | SH enabled 48hr, findings aggregated, compliance tab empty — missing? | B: Standards must be explicitly enabled | ✅ | Enable SH ≠ enable standards | — | SH standards must be explicitly enabled |
+| 1529 | D6 | SCP modified outside CT, CT detects — what happens? | B: Reports drift, no auto-fix | ✅ | CT drift = alert only, manual resolution | — | Control Tower drift |
 
 ---
 
