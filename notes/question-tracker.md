@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1574 |
-| **✅ Correct** | 1252 (80%) |
+| **Total Questions** | 1577 |
+| **✅ Correct** | 1255 (80%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 283 (18%) |
 | **Sessions** | 115 |
@@ -21,7 +21,7 @@
 |---|---|---|---|---|---|---|---|
 | D1: Detection | 16% | 337 | 11 | 80 | 428 | 79% | 🟡 |
 | D2: Incident Response | 14% | 78 | 2 | 18 | 98 | 80% | 🟢 |
-| D3: Infrastructure Security | 18% | 253 | 9 | 57 | 319 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 256 | 9 | 57 | 322 | 80% | 🟢 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
 | D6: Governance | 14% | 315 | 3 | 78 | 396 | 80% | 🟢 |
@@ -289,7 +289,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
-| 115 | 2026-06-28 | Q1515–Q1574 | 57 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
+| 115 | 2026-06-28 | Q1515–Q1577 | 60 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -654,7 +654,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 115 — 2026-06-28
 
 **Domains:** D6 Governance (re-test — Session 114 errors)
-**Score:** 57 ✅ · 0 ⚠️ · 3 ❌ (95% correct)
+**Score:** 60 ✅ · 0 ⚠️ · 3 ❌ (95% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -718,6 +718,9 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1572 | D3 | Same-subnet lateral movement SMB — which log source? | B: VPC Flow Logs (ENI-level) | ✅ | TGW = cross-VPC only. VPC Flow = intra-VPC. | — | VPC Flow Logs scope |
 | 1573 | D3 | Okta + CrowdStrike + no VPN + internal web app — service? | B: Verified Access (identity + device trust) | ✅ | Zero-trust per-app, no VPN client | — | Verified Access use case |
 | 1574 | D3 | Same VPC, SG ref sg-B, communicate via public IP — result? | B: Fails — public IP via IGW, SG ref doesn't match | ✅ | Public IP = IGW = source is public IP, not SG | — | Public IP via IGW breaks SG refs |
+| 1575 | D3 | Okta + CrowdStrike + no VPN + Finance group + internal app — service? | B: Verified Access | ✅ | Identity + device + group + no VPN = VA | — | Verified Access full stack |
+| 1576 | D3 | Flow Logs inbound ACCEPT 443 + outbound REJECT ephemeral — cause? | B: NACL missing outbound ephemeral | ✅ | NACLs stateless, SGs never cause this | — | NACLs stateless |
+| 1577 | D3 | DNS Firewall: ALLOW 2 + ALERT crypto + BLOCK * — priority order? | B: ALLOW(1,2) → ALERT(3) → BLOCK(4) | ✅ | First match wins, ALLOW specific first | — | DNS Firewall rule priority |
 
 ---
 
