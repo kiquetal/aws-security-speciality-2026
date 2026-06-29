@@ -10,7 +10,7 @@ const TRACKER_DATA = {
     "retests_passed": 733,
     "accuracy_pct": 79,
     "study_hours": 92,
-    "study_minutes": 5525
+    "study_minutes": 5548
   },
   "weeks": [
     {
@@ -345,8 +345,8 @@ const TRACKER_DATA = {
         "S93-Q933"
       ],
       "domains": [
-        "D1",
-        "D2"
+        "D2",
+        "D1"
       ],
       "count": 4,
       "level": "red"
@@ -2039,8 +2039,8 @@ const TRACKER_DATA = {
         "S55-Q532"
       ],
       "domains": [
-        "D6",
         "D3",
+        "D6",
         "D1"
       ],
       "count": 1,
@@ -2237,8 +2237,8 @@ const TRACKER_DATA = {
         "S77-Q761"
       ],
       "domains": [
-        "D4",
-        "D2"
+        "D2",
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
@@ -2323,9 +2323,9 @@ const TRACKER_DATA = {
         "S82-Q820"
       ],
       "domains": [
+        "D2",
         "D1",
-        "D4",
-        "D2"
+        "D4"
       ],
       "count": 1,
       "level": "yellow"
