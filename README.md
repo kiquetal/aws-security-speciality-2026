@@ -1,6 +1,6 @@
 # AWS Certified Security - Specialty (SCS-C03) Study Repository
 
-[![Questions Attempted](https://img.shields.io/badge/Questions-1,534-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-79%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-92_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-115-purple)](#current-progress)
+[![Questions Attempted](https://img.shields.io/badge/Questions-1,514-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-79%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-92_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-114-purple)](#current-progress)
 
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
@@ -43,13 +43,13 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | Metric | Value |
 |--------|-------|
 | **Phase** | Maintenance mode (decay prevention until Aug 27) |
-| **Questions Attempted** | 1,534 |
+| **Questions Attempted** | 1,514 |
 | **Accuracy** | 79% overall, 85-90% on recent sessions |
-| **Sessions** | 115 |
+| **Sessions** | 114 |
 | **Study Hours** | 92+ hours |
 | **Dojo Mock Scores** | Test 1: 58% → Test 2: 72% (passing) |
 | **Never-Seen Topics Tested** | 14/18 (all passed or re-locked) |
-| **Weakest Domain** | D6 Governance (76%) — target 80% |
+| **Weakest Domain** | D2 Incident Response (78%) — all domains within 2% |
 
 ## Domain Weights
 
@@ -57,10 +57,10 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 |--------|--------|--------|-------|
 | D4: Identity and Access Management | 20% | ✅ Complete | 80% |
 | D5: Data Protection | 18% | ✅ Complete | 80% |
+| D1: Detection | 16% | ✅ Complete | 79% |
 | D3: Infrastructure Security | 18% | ✅ Complete | 79% |
-| D1: Detection | 16% | ✅ Complete | 78% |
-| D2: Incident Response | 14% | ✅ Complete | 78% |
 | D6: Governance | 14% | ✅ Complete | 79% |
+| D2: Incident Response | 14% | ✅ Complete | 78% |
 
 Strategy: All domains covered. Now in maintenance mode — weekly 25-question drills + bi-weekly 65-question Dojo mocks until exam day. See [`notes/maintenance-plan.md`](notes/maintenance-plan.md) for the schedule.
 
