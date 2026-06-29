@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1564 |
-| **✅ Correct** | 1242 (79%) |
+| **Total Questions** | 1569 |
+| **✅ Correct** | 1247 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 283 (18%) |
 | **Sessions** | 115 |
@@ -21,7 +21,7 @@
 |---|---|---|---|---|---|---|---|
 | D1: Detection | 16% | 337 | 11 | 80 | 428 | 79% | 🟡 |
 | D2: Incident Response | 14% | 78 | 2 | 18 | 98 | 80% | 🟢 |
-| D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 248 | 9 | 57 | 314 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
 | D6: Governance | 14% | 315 | 3 | 78 | 396 | 80% | 🟢 |
@@ -289,7 +289,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
-| 115 | 2026-06-28 | Q1515–Q1564 | 47 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
+| 115 | 2026-06-28 | Q1515–Q1569 | 52 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -654,7 +654,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 115 — 2026-06-28
 
 **Domains:** D6 Governance (re-test — Session 114 errors)
-**Score:** 47 ✅ · 0 ⚠️ · 3 ❌ (94% correct)
+**Score:** 52 ✅ · 0 ⚠️ · 3 ❌ (95% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -708,6 +708,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1562 | D2 | Assess RTO + inject AZ failure + shift traffic — match 3 services? | A: Resilience Hub + FIS + ARC zonal shift | ✅ | Assess, test, recover — three verbs | — | Resilience Hub vs FIS vs ARC |
 | 1563 | D2 | IAM user leaked vs role exfiltrated — containment? | B: User=Deny *, Role=TokenIssueTime | ✅ | Persistent creds vs temp tokens | — | User = Deny *. Role = TokenIssueTime. |
 | 1564 | D2 | Deny-all SG then SSM fails — cause + fix? | B: Acquire BEFORE isolate | ✅ | Deny-all blocks SSM outbound | — | Acquire before isolate |
+| 1565 | D3 | Third-party Palo Alto, inline, scale, health-check — component? | C: GWLB with Palo Alto targets | ✅ | GWLB = third-party inline appliances | — | GWLB = third-party inline |
+| 1566 | D3 | Private API: Lambda A works, Lambda B timeout, same endpoint — cause? | B: Lambda B SG missing outbound 443 | ✅ | Timeout = network. Same RP = permissions fine. | — | Interface endpoint dual SGs |
+| 1567 | D3 | Laptops + office router + dedicated 10G L2 — match? | A: Client VPN + S2S VPN + DX MACsec | ✅ | Three connectivity types | — | VPN types + DX MACsec |
+| 1568 | D3 | IPv6 outbound only, no inbound — component? | B: Egress-Only Internet Gateway | ✅ | NAT = IPv4 only. Egress-only IGW = IPv6 one-way | — | Egress-Only IGW (IPv6) |
+| 1569 | D3 | New Lambda SG, endpoint times out, first Lambda works — fix? | A: Add sg-new to endpoint inbound rules | ✅ | Endpoint SG must allow each caller's SG | — | Interface endpoint SG per-caller |
 
 ---
 
