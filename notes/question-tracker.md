@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1529 |
-| **✅ Correct** | 1210 (79%) |
+| **Total Questions** | 1534 |
+| **✅ Correct** | 1215 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 280 (18%) |
 | **Sessions** | 115 |
@@ -24,7 +24,7 @@
 | D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
-| D6: Governance | 14% | 288 | 3 | 75 | 366 | 79% | 🟡 |
+| D6: Governance | 14% | 293 | 3 | 75 | 371 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -286,7 +286,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
-| 115 | 2026-06-28 | Q1515–Q1529 | 15 | 0 | 0 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
+| 115 | 2026-06-28 | Q1515–Q1534 | 20 | 0 | 0 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -651,7 +651,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 115 — 2026-06-28
 
 **Domains:** D6 Governance (re-test — Session 114 errors)
-**Score:** 15 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
+**Score:** 20 ✅ · 0 ⚠️ · 0 ❌ (100% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -670,6 +670,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1527 | D6 | SCP denies ec2:AssignIpv6Address, new API ec2:AssignIpv6PublicPool — protected? | B: No — SCPs must enumerate specific actions | ✅ | Declarative = state enforcement vs SCP = action-specific | — | Declarative policy vs SCP (future API) |
 | 1528 | D6 | SH enabled 48hr, findings aggregated, compliance tab empty — missing? | B: Standards must be explicitly enabled | ✅ | Enable SH ≠ enable standards | — | SH standards must be explicitly enabled |
 | 1529 | D6 | SCP modified outside CT, CT detects — what happens? | B: Reports drift, no auto-fix | ✅ | CT drift = alert only, manual resolution | — | Control Tower drift |
+| 1530 | D6 | SCP denies DeleteDetector, management account calls it — result? | B: Allowed — management account exempt | ✅ | Management account exempt from SCPs | — | Management account exempt from SCP |
+| 1531 | D6 | Prod OU strict rules, Dev OU relaxed — approach? | B: Two separate conformance packs per OU | ✅ | Org conformance packs target specific OUs | — | Conformance packs per OU |
+| 1532 | D6 | Find+revoke 0.0.0.0/0 + apply baseline SG — FM policy types? | C: SG audit + SG common | ✅ | Audit=remove bad, Common=add good | — | FM SG audit vs FM SG common |
+| 1533 | D6 | SC launch role + SCP denies without tag, template lacks tag — result? | B: Fails — SCP applies to launch role | ✅ | SCP applies to SC launch roles | — | SCP applies to all principals |
+| 1534 | D6 | Console S3 creation, cfn-guard+proactive+SCP+detective — which fire? (TWO) | C: SCP + Config detective | ✅ | Console direct = no CF = only SCP + detective | — | Console direct = SCP + Config detective |
 
 ---
 
