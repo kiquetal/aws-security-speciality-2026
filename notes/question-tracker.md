@@ -8,8 +8,8 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1559 |
-| **✅ Correct** | 1237 (79%) |
+| **Total Questions** | 1564 |
+| **✅ Correct** | 1242 (79%) |
 | **⚠️ Partial** | 36 (2%) |
 | **❌ Wrong** | 283 (18%) |
 | **Sessions** | 115 |
@@ -20,7 +20,7 @@
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
 | D1: Detection | 16% | 337 | 11 | 80 | 428 | 79% | 🟡 |
-| D2: Incident Response | 14% | 73 | 2 | 18 | 93 | 78% | 🟡 |
+| D2: Incident Response | 14% | 78 | 2 | 18 | 98 | 80% | 🟢 |
 | D3: Infrastructure Security | 18% | 243 | 9 | 57 | 309 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 298 | 10 | 63 | 371 | 80% | 🟢 |
 | D5: Data Protection | 18% | 296 | 8 | 66 | 370 | 80% | 🟢 |
@@ -289,7 +289,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 113 | 2026-06-27 | Q1430–Q1454 | 23 | 0 | 2 | D1 Detection (hyperfocus uplift — remediation loops, Detective vs CW Insights, StopLogging detection, Macie sampling, log source direction) | [Jump](#session-113--2026-06-27) |
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
-| 115 | 2026-06-28 | Q1515–Q1559 | 42 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
+| 115 | 2026-06-28 | Q1515–Q1564 | 47 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -654,7 +654,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 ### Session 115 — 2026-06-28
 
 **Domains:** D6 Governance (re-test — Session 114 errors)
-**Score:** 42 ✅ · 0 ⚠️ · 3 ❌ (93% correct)
+**Score:** 47 ✅ · 0 ⚠️ · 3 ❌ (94% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -703,6 +703,11 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 1557 | D6 | SH standards enabled 200 accounts, 0 findings after 10min — when? | B: 2-24 hours (Config evaluation latency at scale) | ✅ | Config at scale = hours, not minutes | — | Standards evaluation latency |
 | 1558 | D6 | SCP denies StopConfigurationRecorder, member admin tries — result? | B: Denied — SCP blocks regardless | ✅ | SCP blocks API regardless of caller | — | SCP protects Config recorder |
 | 1559 | D6 | Conformance pack vs StackSets for 20 Config rules — TWO advantages? | A+C: Bundle + auto-deploy to new OU members | ✅ | Purpose-built for Config rules, lighter weight | — | Conformance pack advantages over StackSets |
+| 1560 | D2 | Forensics: isolation + immutability 1yr + audit — THREE? | A+B+C: Cross-account + Object Lock + CT data events | ✅ | Separate account + WORM + audit trail | — | Forensics chain of custody architecture |
+| 1561 | D2 | Step Functions severity routing (≥8 quarantine, 4-7 notify, <4 suppress) — state type? | B: Choice state evaluates severity | ✅ | Native branching, no Lambda needed | — | Step Functions Choice state for IR |
+| 1562 | D2 | Assess RTO + inject AZ failure + shift traffic — match 3 services? | A: Resilience Hub + FIS + ARC zonal shift | ✅ | Assess, test, recover — three verbs | — | Resilience Hub vs FIS vs ARC |
+| 1563 | D2 | IAM user leaked vs role exfiltrated — containment? | B: User=Deny *, Role=TokenIssueTime | ✅ | Persistent creds vs temp tokens | — | User = Deny *. Role = TokenIssueTime. |
+| 1564 | D2 | Deny-all SG then SSM fails — cause + fix? | B: Acquire BEFORE isolate | ✅ | Deny-all blocks SSM outbound | — | Acquire before isolate |
 
 ---
 
