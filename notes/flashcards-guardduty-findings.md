@@ -121,3 +121,32 @@ YOUR custom threat list (uploaded IPs):
 | Your custom threat IP list | `.Custom` suffix appended | `UnauthorizedAccess:EC2/MaliciousIPCaller.Custom` |
 
 **Rule:** See `.Custom` in a finding → traffic matched YOUR uploaded threat list, not AWS's built-in intel.
+
+---
+
+## GuardDuty Operational Traps
+
+### Regional (Failed Q1398, Q1579, D1-Q9)
+
+```
+Q: GD enabled in us-east-1, workloads in 3 regions, 0 findings in other 2 — why?
+A: GD is REGIONAL. Must enable PER REGION.
+
+Q: Delegated admin + auto-enable = all regions covered?
+A: NO. Delegated admin = WHO manages. Regional = WHERE it runs.
+   Auto-enable = new accounts in THAT region only.
+   Must enable GD in each region FIRST.
+```
+
+### Failed Attempts (Failed Q534, Q594, Q1582)
+
+```
+Q: RCP blocks external, 50K denied GetObjects, GD enabled — finding?
+A: NO. GuardDuty = SUCCESSFUL + ANOMALOUS. Denied = not successful = invisible.
+
+Q: Volume of denied requests triggers GD?
+A: NEVER. 1 denied or 1 million denied = zero findings. Only successful data access matters.
+
+Q: When does GD fire after RCP removal?
+A: Immediately on first SUCCESSFUL anomalous access after the block is removed.
+```
