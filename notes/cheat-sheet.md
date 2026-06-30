@@ -229,6 +229,7 @@
 
 ### GuardDuty Operational
 - 🧠 **GuardDuty is REGIONAL.** Must enable in every region where workloads run. No findings from a region where it's not enabled.
+- 🧠 **Delegated admin ≠ auto-enabled everywhere.** Delegated admin = WHO manages. Regional = WHERE it runs. Independent axes. Must enable per-region THEN auto-enable handles future accounts in THAT region.
 - 🧠 **GuardDuty custom threat list → finding type has `.Custom` suffix.** Built-in intel = standard types. Your list = `MaliciousIPCaller.Custom`.
 - 🧠 **Global services (IAM, STS, CloudFront) deliver events to us-east-1 ONLY.** EventBridge rules for `CreateUser` etc must be in us-east-1.
 - 🧠 **Security Hub = dashboard (view findings). Config = remediation engine (fix resources).** SH wraps Config rules but doesn't own the fix. Auto-remediation = Config rule + SSM.
