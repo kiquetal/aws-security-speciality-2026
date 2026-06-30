@@ -746,7 +746,7 @@ After adding a session:
 ### Session 116 — 2026-06-30
 
 **Domains:** Cross-domain (Red-priority kill drill — novel angles, killer difficulty)
-**Score:** 12 ✅ · 1 ⚠️ · 7 ❌ (62.5% correct)
+**Score:** 12 ✅ · 2 ⚠️ · 6 ❌ (62.5% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
