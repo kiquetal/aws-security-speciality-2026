@@ -57,7 +57,7 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 |--------|--------|--------|-------|
 | D4: Identity and Access Management | 20% | ✅ Complete | 80% |
 | D5: Data Protection | 18% | ✅ Complete | 80% |
-| D1: Detection | 16% | ✅ Complete | 78% |
+| D1: Detection | 16% | ✅ Complete | 79% |
 | D3: Infrastructure Security | 18% | ✅ Complete | 79% |
 | D6: Governance | 14% | ✅ Complete | 79% |
 | D2: Incident Response | 14% | ✅ Complete | 79% |
