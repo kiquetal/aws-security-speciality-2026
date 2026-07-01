@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1597 |
-| **✅ Correct** | 1267 (79%) |
+| **Total Questions** | 1606 |
+| **✅ Correct** | 1275 (79%) |
 | **⚠️ Partial** | 38 (2%) |
-| **❌ Wrong** | 289 (18%) |
+| **❌ Wrong** | 290 (18%) |
 | **Sessions** | 116 |
-| **Re-tests Passed** | 745 of 892 |
+| **Re-tests Passed** | 753 of 901 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 341 | 12 | 82 | 435 | 78% | 🟡 |
-| D2: Incident Response | 14% | 80 | 2 | 19 | 101 | 79% | 🟡 |
-| D3: Infrastructure Security | 18% | 260 | 10 | 59 | 329 | 79% | 🟡 |
+| D1: Detection | 16% | 344 | 12 | 82 | 438 | 79% | 🟡 |
+| D2: Incident Response | 14% | 81 | 2 | 20 | 103 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 261 | 10 | 59 | 330 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 302 | 11 | 66 | 379 | 80% | 🟢 |
 | D5: Data Protection | 18% | 302 | 9 | 68 | 379 | 80% | 🟢 |
-| D6: Governance | 14% | 319 | 3 | 82 | 404 | 79% | 🟡 |
+| D6: Governance | 14% | 322 | 3 | 82 | 407 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -33,14 +33,14 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | Priority | Topic | Questions | Domain | Count |
 |---|---|---|---|---|
 | 🔴 1 | Detect vs prevent (GuardDuty vs policy) | Q1578, Q100, Q105, Q153, Q156, Q158, Q546, Q568, Q581 | D1, D3, D5 | 9 |
-| 🔴 2 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1, D6 | 5 |
-| 🔴 3 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870, Q974 | D4, D5 | 5 |
-| 🔴 4 | State Manager OnBoot + schedule (dual triggers) | Q1403, Q1579, Q1048, Q1071 | D1, D3, D6 | 4 |
-| 🔴 5 | cfn-guard bypassable vs Config proactive service-level | Q1387, Q1588, Q1220, Q1271 | D3, D6 | 4 |
-| 🔴 6 | S3 server access logging = ACLs | Q1595, Q864, Q868, Q903 | D5, D6 | 4 |
-| 🔴 7 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
-| 🔴 8 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562, Q1329 | D6 | 4 |
-| 🔴 9 | No-reboot AMI for volatile memory | Q810, Q825, Q830, Q933 | D1, D2 | 4 |
+| 🔴 2 | No-reboot AMI for volatile memory | Q1598, Q810, Q825, Q830, Q933 | D1, D2 | 5 |
+| 🔴 3 | EventBridge for API call detection | Q474, Q549, Q570, Q574, Q688 | D1, D6 | 5 |
+| 🔴 4 | Cross-account KMS key policy must name external account | Q541, Q669, Q850, Q870, Q974 | D4, D5 | 5 |
+| 🔴 5 | State Manager OnBoot + schedule (dual triggers) | Q1403, Q1579, Q1048, Q1071 | D1, D3, D6 | 4 |
+| 🔴 6 | cfn-guard bypassable vs Config proactive service-level | Q1387, Q1588, Q1220, Q1271 | D3, D6 | 4 |
+| 🔴 7 | S3 server access logging = ACLs | Q1595, Q864, Q868, Q903 | D5, D6 | 4 |
+| 🔴 8 | GuardDuty finding types | Q116, Q142, Q154, Q155 | D1 | 4 |
+| 🔴 9 | RAM for sharing vs FM for enforcing | Q313, Q441, Q562, Q1329 | D6 | 4 |
 | 🔴 10 | StopLogging kills own CW Logs delivery | Q860, Q866, Q1092, Q1256 | D1 | 4 |
 | 🔴 11 | RCP scope (your resources only, not outbound) | Q1581, Q683, Q698 | D4, D6 | 3 |
 | 🔴 12 | GuardDuty ≠ failed attempts | Q1582, Q534, Q594 | D1, D4, D5, D6 | 3 |
@@ -290,7 +290,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
 | 115 | 2026-06-28 | Q1515–Q1577 | 60 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
-| 116 | 2026-06-30 | Q1578–Q1597 | 12 | 2 | 6 | Cross-domain (Red-priority kill drill — novel angles, killer difficulty) | [Jump](#session-116--2026-06-30) |
+| 116 | 2026-06-30 | Q1578–Q1606 | 20 | 2 | 7 | Cross-domain (Red-priority kill drill — novel angles, killer difficulty) | [Jump](#session-116--2026-06-30) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -746,7 +746,7 @@ After adding a session:
 ### Session 116 — 2026-06-30
 
 **Domains:** Cross-domain (Red-priority kill drill — novel angles, killer difficulty)
-**Score:** 12 ✅ · 2 ⚠️ · 6 ❌ (62.5% correct)
+**Score:** 21 ✅ · 2 ⚠️ · 7 ❌ (62.5% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -770,6 +770,15 @@ After adding a session:
 | 1595 | D5/D6 | S3 access logging enabled, zero logs appear, ACLs disabled (BucketOwnerEnforced) — cause? | D: Missing GetBucketAcl | ❌ | B: S3 logging uses ACLs. ACLs disabled = logging can't work. Re-enable ACLs + grant log-delivery group. | Q864, Q868, Q903 | S3 server access logging = ACLs |
 | 1596 | D5/D4 | IoT firmware signing offline verification + key rotation + non-repudiation — THREE correct? | A+C+F | ⚠️ | A+B+C: Symmetric=needs API (wrong for air-gapped) + shared secret=no non-repudiation + asymmetric sign/verify. | Q812, Q824 | Sign=private, verify=public |
 | 1597 | D6/D3 | NF policy + DNS FW rules + WAF, "RAM for all three" — what's wrong? | B | ✅ | B: RAM shares NF+DNS FW but NOT WAF. FM creates WAF directly. DNS/NF = RAM+FM. WAF = FM only. | Q313, Q441, Q562 | RAM for sharing vs FM for enforcing |
+| 1598 | D2 | Trojan C2Activity, capture memory+disk, instance removable — order? | A: Deny-all first | ❌ | B: No-reboot AMI FIRST (memory) → EBS → deregister → deny-all. Acquire before isolate. | Q810, Q825, Q830 | No-reboot AMI for volatile memory |
+| 1599 | D3 | Flow Logs inbound ACCEPT + outbound REJECT ephemeral — cause? | B: NACL | ✅ | NACL stateless, needs explicit outbound ephemeral rule. SG stateful = never causes this. | Q707 | NACLs stateless |
+| 1600 | D6 | SH enabled 200 accounts, 0 findings after 10min — cause? | B: 2-24hr latency | ✅ | Config evaluation at scale = hours not minutes. | Q1514 | Standards evaluation latency at scale |
+| 1601 | D6 | WAF vs DNS FW — which needs RAM? | B: WAF=FM only, DNS FW=RAM+FM | ✅ | FM creates WAF directly. DNS FW rule groups shared via RAM. | Q313, Q441 | RAM for sharing vs FM for enforcing |
+| 1602 | D6 | StackSets deployed Config, admin disables — what happens? | B: Nothing, no auto-remediation | ✅ | StackSets = deploy and forget. SCP prevents. | Q283, Q439 | StackSets no auto-remediation |
+| 1603 | D1 | SOC searches Flow Logs for domain name, zero results — why? | B: Flow Logs = IP only, domains = Resolver | ✅ | VPC Flow Logs never contain domain names. | Q1276 | VPC Flow Logs = IPs only |
+| 1604 | D1 | RCP blocks external, 5K denied, GD+AA enabled — which fires? | B: Only AA (static). GD silent. | ✅ | GD needs successful access. AA reads policy. | Q534, Q594 | GuardDuty ≠ failed attempts |
+| 1605 | D1 | Detect kms:DisableKey 30s, org trail — approach? | B: EventBridge in mgmt account | ✅ | Specific API + fast = EventBridge. | Q474 | EventBridge for API call detection |
+| 1606 | D2 | IAM user keys on GitHub, attacker created 2nd key + admin — FIRST action? | B: Inline Deny-all on user | ✅ | Blocks all paths (keys+console+sessions). | Q862, Q867 | Credential leak IR (Deny-all before investigate) |
 
 ---
 
