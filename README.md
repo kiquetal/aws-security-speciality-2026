@@ -1,6 +1,6 @@
 # AWS Certified Security - Specialty (SCS-C03) Study Repository
 
-[![Questions Attempted](https://img.shields.io/badge/Questions-1,606-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-79%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-102_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-116-purple)](#current-progress)
+[![Questions Attempted](https://img.shields.io/badge/Questions-1,606-blue)](#current-progress) [![Accuracy](https://img.shields.io/badge/Accuracy-79%25-green)](#current-progress) [![Study Hours](https://img.shields.io/badge/Study_Hours-101_hrs-orange)](#current-progress) [![Sessions](https://img.shields.io/badge/Sessions-116-purple)](#current-progress)
 
 
 A structured, depth-first study environment for the **AWS Certified Security - Specialty (SCS-C03)** exam. Built for senior engineers who prefer architectural diagrams and hands-on labs over long text.
@@ -46,7 +46,7 @@ A structured, depth-first study environment for the **AWS Certified Security - S
 | **Questions Attempted** | 1,606 |
 | **Accuracy** | 79% overall, 85-90% on recent sessions |
 | **Sessions** | 116 |
-| **Study Hours** | 102+ hours |
+| **Study Hours** | 101+ hours |
 | **Dojo Mock Scores** | Test 1: 58% → Test 2: 72% (passing) |
 | **Never-Seen Topics Tested** | 14/18 (all passed or re-locked) |
 | **Weakest Domain** | D2 Incident Response (78%) — all domains within 2% |
