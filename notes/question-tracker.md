@@ -8,18 +8,18 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1606 |
-| **✅ Correct** | 1275 (79%) |
+| **Total Questions** | 1611 |
+| **✅ Correct** | 1280 (79%) |
 | **⚠️ Partial** | 38 (2%) |
 | **❌ Wrong** | 290 (18%) |
 | **Sessions** | 116 |
-| **Re-tests Passed** | 753 of 901 |
+| **Re-tests Passed** | 758 of 906 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 344 | 12 | 82 | 438 | 79% | 🟡 |
+| D1: Detection | 16% | 349 | 12 | 82 | 443 | 79% | 🟡 |
 | D2: Incident Response | 14% | 81 | 2 | 20 | 103 | 79% | 🟡 |
 | D3: Infrastructure Security | 18% | 261 | 10 | 59 | 330 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 302 | 11 | 66 | 379 | 80% | 🟢 |
@@ -290,7 +290,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 109 | 2026-06-24 | Q1380–Q1389 | 8 | 0 | 2 | D1 Detection · D3 Infrastructure · D6 Governance (Week 2 never-seen drill — Bedrock, NACLs, StopLogging, cfn-guard vs Config proactive) | [Jump](#session-109--2026-06-24) |
 | 114 | 2026-06-27 | Q1455–Q1514 | 52 | 0 | 8 | D6 Governance (hyperfocus uplift — Config proactive scope, Security Hub setup, WAT vs Audit Manager, Stack Policy, Service Catalog) | [Jump](#session-114--2026-06-27) |
 | 115 | 2026-06-28 | Q1515–Q1577 | 60 | 0 | 3 | D6 Governance (re-test — Session 114 errors) | [Jump](#session-115--2026-06-28) |
-| 116 | 2026-06-30 | Q1578–Q1606 | 20 | 2 | 7 | Cross-domain (Red-priority kill drill — novel angles, killer difficulty) | [Jump](#session-116--2026-06-30) |
+| 116 | 2026-06-30 | Q1578–Q1611 | 25 | 2 | 7 | Cross-domain (Red-priority kill drill — novel angles, killer difficulty) | [Jump](#session-116--2026-06-30) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -746,7 +746,7 @@ After adding a session:
 ### Session 116 — 2026-06-30
 
 **Domains:** Cross-domain (Red-priority kill drill — novel angles, killer difficulty)
-**Score:** 21 ✅ · 2 ⚠️ · 7 ❌ (62.5% correct)
+**Score:** 25 ✅ · 2 ⚠️ · 7 ❌ (62.5% correct)
 
 | # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
 |---|---|---|---|---|---|---|---|
@@ -779,6 +779,11 @@ After adding a session:
 | 1604 | D1 | RCP blocks external, 5K denied, GD+AA enabled — which fires? | B: Only AA (static). GD silent. | ✅ | GD needs successful access. AA reads policy. | Q534, Q594 | GuardDuty ≠ failed attempts |
 | 1605 | D1 | Detect kms:DisableKey 30s, org trail — approach? | B: EventBridge in mgmt account | ✅ | Specific API + fast = EventBridge. | Q474 | EventBridge for API call detection |
 | 1606 | D2 | IAM user keys on GitHub, attacker created 2nd key + admin — FIRST action? | B: Inline Deny-all on user | ✅ | Blocks all paths (keys+console+sessions). | Q862, Q867 | Credential leak IR (Deny-all before investigate) |
+| 1607 | D1 | Detect iam:DeleteRolePolicy 45s, org trail — approach? | B: EventBridge in mgmt account | ✅ | Specific API + fast = EventBridge. | Q474 | EventBridge for API call detection |
+| 1608 | D1 | Macie "Unable to analyze" one bucket, other SSE-KMS buckets work — cause? | B: CMK key policy missing Macie SLR kms:Decrypt | ✅ | Per-key grant needed. | Q1305 | Macie + SSE-KMS key policy |
+| 1609 | D1 | EC2 contacted IP behind shared CDN, need domain proof — log source? | B: Resolver query logging | ✅ | Flow Logs=IP only. Resolver=domain visibility. | Q1276 | Resolver vs DNS query logging direction |
+| 1610 | D1 | Config remediation succeeds, GD fires same finding 10min later — cause? | B: Something re-adding rule (check CloudTrail) | ✅ | Remediation loop = re-creation. | Q1287 | Remediation succeeds but returns = re-creation |
+| 1611 | D1 | CT Lake EDS mgmt-only, query PutObject June 5 returns zero — why? | B: PutObject is data event, EDS mgmt only | ✅ | Data events need explicit EDS config. | Q882, Q927 | CloudTrail Lake (data vs mgmt + no backfill) |
 
 ---
 
