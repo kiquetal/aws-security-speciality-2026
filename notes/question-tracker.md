@@ -792,6 +792,7 @@ After adding a session:
 
 ---
 
+
 ### Session 4 — 2025-05-04
 
 **Domains:** D3 Infrastructure Security (firewalls comparison)
