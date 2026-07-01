@@ -5,7 +5,7 @@
 
 ---
 
-## Total: ~6,098 minutes (~102 hours)
+## Total: ~6,104 minutes (~102 hours)
 
 ## Sessions
 
@@ -70,4 +70,4 @@
 | 111 | 2026-06-25 | 18:42 | 19:52 | 70 | Session 111 — Week 3 drill + D1/D3/D6 uplift — 89/112 (79.5%) |
 | 112 | 2026-06-27 | 22:14 | | | D6 Governance hyperfocus uplift |
 | 115 | 2026-06-28 | 23:36 | 00:34 | 58 | D6 re-test (Session 114 errors) + D2/D3 uplift — 5/6 green |
-| 116 | 2026-06-30 | 13:54 | 21:18 | 444 | Red-priority kill drill (novel angles, killer difficulty) + D1 uplift + D2/D3/D6 recovery |
+| 116 | 2026-06-30 | 13:54 | 21:24 | 450 | Red-priority kill drill (novel angles, killer difficulty) + D1 uplift + D2/D3/D6 recovery + 15/15 rapid-fire lock |
