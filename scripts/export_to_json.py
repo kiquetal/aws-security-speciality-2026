@@ -283,9 +283,13 @@ def update_readme_progress(base_dir, total_q, accuracy_pct, sessions_count, tota
         text
     )
     
-    # Update Domain score columns
+    # Update Domain score columns — read from tracker's pre-computed Domain Breakdown table
+    # This avoids discrepancies from multi-domain question counting
+    tracker_text = TRACKER_PATH.read_text(encoding="utf-8") if TRACKER_PATH.exists() else ""
     for d_code, d_info in domain_proficiency.items():
-        pct = d_info["score_pct"]
+        # Try to read the score from tracker's Domain Breakdown table first
+        tracker_pct_match = re.search(rf"\|\s*{d_code}:[^|]+\|[^|]+\|[^|]+\|[^|]+\|[^|]+\|[^|]+\|\s*(\d+)%\s*\|", tracker_text)
+        pct = int(tracker_pct_match.group(1)) if tracker_pct_match else d_info["score_pct"]
         # Match e.g., | D4: Identity and Access Management | 20% | ✅ Complete | 79% |
         pattern = rf"(\|\s*{d_code}:[^\n|]+\|\s*\d+%\s*\|\s*[^|]+\s*\|\s*)\d+%\s*\|"
         replacement = rf"\g<1>{pct}% |"
