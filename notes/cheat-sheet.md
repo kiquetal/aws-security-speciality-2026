@@ -29,6 +29,9 @@
 - Direct cross-account (no AssumeRole): caller's SCP applies, not resource owner's. SCP governs the principal's account, period.
 - 🧠 **"SCP follows the PERSON, not the building."** Your account's SCP applies to you even when you visit another account's resource.
 - Revoke active STS sessions: inline Deny with `aws:TokenIssueTime` < timestamp. Only way — can't invalidate individual tokens.
+- 🧠 **OutsideAWS = TokenIssueTime (your instances refresh, attacker can't). InsideAWS = deny-all SG on attacker's instance ONLY (surgical isolation).**
+- 🧠 **OutsideAWS = credentials used externally → TokenIssueTime OK. InsideAWS = credentials used internally → need surgical SG.**
+- 🧠 **IAM user leaked = Deny * on user (keys + password + sessions). Role leaked = TokenIssueTime (only temp sessions exist).**
 - Session tags from IdP (SAML/OIDC) land in `aws:PrincipalTag/Key`. Same key used for ABAC matching.
 - Session policy = temporary scope-down passed at AssumeRole time. Filters down, never escalates. Effective = role ∩ session policy ∩ boundary ∩ SCP.
 - ⚠️ Session policy is a CEILING just like boundary — not "after" it. Both are intersected in parallel. If session allows only Get+Put, Delete is denied even if boundary allows s3:*.
@@ -344,6 +347,7 @@
 - 🧠 **Config can't remediate its own disablement.** If someone stops Config, the rule can't fire. Use SCP to prevent `StopConfigurationRecorder`.
 - 🧠 **Config stopped = detection engine dead.** Rules can't fire, remediation can't trigger. Not a circular dependency — the engine itself is off.
 - 🧠 **SCP future only + FM auto-remediates existing.** New account joins OU: SCP blocks FUTURE API calls. FM attaches to EXISTING resources immediately.
+- 🧠 **Org conformance pack auto-deploys rules + remediation CONFIG, but NOT the execution role.** New account joins → role missing → remediation silently fails. Fix: StackSets deploys the role.
 - 🧠 **Terraform = direct API (not CF).** Terraform AWS provider calls APIs directly — Config proactive (CF service-level) is blind to it.
 - 🧠 **Control Tower guardrails: Preventive = SCP (block API). Detective = Config (detect after). Proactive = CF Hook (validate template before deploy).**
 - 🧠 **"Validate template content" = Proactive guardrail (CF Hook). "Block API call" = SCP.** SCP can't see what's inside a CloudFormation template.
