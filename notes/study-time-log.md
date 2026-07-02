@@ -5,7 +5,7 @@
 
 ---
 
-## Total: ~6,159 minutes (~103 hours)
+## Total: ~6,179 minutes (~103 hours)
 
 ## Sessions
 
@@ -72,3 +72,4 @@
 | 115 | 2026-06-28 | 23:36 | 00:34 | 58 | D6 re-test (Session 114 errors) + D2/D3 uplift — 5/6 green |
 | 116 | 2026-06-30 | 13:54 | 22:02 | 488 | Red-priority kill drill (novel angles, killer difficulty) + D1 uplift + D2/D3/D6 recovery + rapid-fire + extended D1 |
 | 117 | 2026-07-01 | 08:52 | 09:29 | 37 | D2/D3/D6 killer uplift — novel forensics + enforcement + network |
+| 118 | 2026-07-02 | 15:22 | 15:35 | 13 | D2+D6 killer drill — novel operational containment + governance gaps (8 Qs) |
