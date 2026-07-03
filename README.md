@@ -132,6 +132,8 @@ Strategy: All domains covered. Now in maintenance mode — weekly 25-question dr
 │   ├── session-manager-logging.*
 │   ├── session-manager-vpc-endpoints.*
 │   ├── route53-dns-firewall.*
+│   ├── guardduty-org-setup.*
+│   ├── kms-access-control-myths.*
 │   └── study-plan-gantt.png
 │
 ├── examples/                      # Production-ready policy JSON + CLI examples
