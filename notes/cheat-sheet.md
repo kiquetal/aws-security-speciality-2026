@@ -321,6 +321,7 @@
 - 🧠 **`CreateSampleFindings` = test GuardDuty → EventBridge → Step Functions pipeline end-to-end without a real incident.** FIS injects infra failures (AZ/network), NOT security findings.
 - Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.
 - 🧠 **OutsideAWS = TokenIssueTime (creds used externally, instance gets fresh ones). InsideAWS = deny-all SG on attacker's instance (TokenIssueTime would break both instances sharing same role).**
+- 🧠 **OutsideAWS + SHARED ROLE = never TokenIssueTime (kills all instances). Use deny-all SG or NACL on compromised only.**
 - 🧠 **OutsideAWS + can't stop instance: TokenIssueTime (stop attacker) + EBS snapshot (forensics) + IMDSv2 hop limit 1 (prevent future SSRF). Deny-all SG kills legitimate traffic — wrong choice if API must stay up.**
 - 🧠 **C2Activity + API must stay up: Network Firewall DROP on C2 IP (surgical). Deny-all SG = nuclear (kills all traffic). "Preserve evidence" in same question = MUST include EBS snapshot.**
 - 🧠 **Credential leak IR (keys on GitHub): Deactivate exposed keys + attach inline Deny-all to user (covers second key/console/sessions).** Contain ALL access paths BEFORE investigating. Detective comes after containment.
