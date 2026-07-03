@@ -1,0 +1,36 @@
+---
+title: GuardDuty Org-Wide Setup (Per Region)
+---
+flowchart TD
+    subgraph MGMT["Management Account (one-time setup)"]
+        A[Enable GuardDuty] --> B[Designate Delegated Admin]
+    end
+
+    subgraph ADMIN["Delegated Admin Account (day-to-day)"]
+        C[Auto-enable new members]
+        D[Enable existing members]
+        E[Configure protection plans]
+        F[Manage Trusted/Threat IP lists]
+        G[Archive findings]
+        H[Create suppression rules]
+    end
+
+    subgraph MEMBER["Member Accounts (limited)"]
+        I[View own findings ✅]
+        J[Generate sample findings ✅]
+        K[Archive findings ❌]
+        L[Manage IP lists ❌]
+        M[Disable GD ❌]
+    end
+
+    B --> C
+    B --> D
+    C --> MEMBER
+    D --> MEMBER
+
+    style MGMT fill:#ff9900,color:#fff
+    style ADMIN fill:#3366cc,color:#fff
+    style MEMBER fill:#44bb44,color:#fff
+    style K fill:#ff4444,color:#fff
+    style L fill:#ff4444,color:#fff
+    style M fill:#ff4444,color:#fff

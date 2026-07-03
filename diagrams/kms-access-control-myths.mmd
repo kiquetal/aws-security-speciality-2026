@@ -1,0 +1,37 @@
+---
+title: KMS Access Control - Who Has Permission?
+---
+flowchart TD
+    subgraph MYTH["❌ Common Misconceptions"]
+        M1["Root user has FULL access automatically"]
+        M2["Key creator OWNS the key"]
+        M3["Root in key policy = blanket grant to everyone"]
+    end
+
+    subgraph TRUTH["✅ Reality"]
+        T1["NOBODY has automatic access"]
+        T2["Creator needs EXPLICIT permission like anyone else"]
+        T3["Root in key policy = ENABLES IAM delegation only"]
+        T4["Each principal needs explicit kms:* in their identity policy"]
+    end
+
+    subgraph AUTH["Three Authorization Mechanisms"]
+        A1["Key Policy (required, on key itself)"]
+        A2["IAM Policy (on caller, if key policy enables delegation)"]
+        A3["KMS Grant (programmatic, per-operation, revocable)"]
+    end
+
+    subgraph SPECIAL["Special Rules"]
+        S1["kms:CreateKey holder CAN set initial key policy"]
+        S2["Cross-account: key policy MUST name external account"]
+        S3["AWS managed key: you control NOTHING"]
+    end
+
+    MYTH -->|WRONG| TRUTH
+    TRUTH --> AUTH
+    AUTH --> SPECIAL
+
+    style MYTH fill:#ff4444,color:#fff
+    style TRUTH fill:#44bb44,color:#fff
+    style AUTH fill:#3366cc,color:#fff
+    style SPECIAL fill:#ff9900,color:#fff
