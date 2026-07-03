@@ -134,7 +134,12 @@ Strategy: All domains covered. Now in maintenance mode — weekly 25-question dr
 │   ├── route53-dns-firewall.*
 │   ├── guardduty-org-setup.*
 │   ├── kms-access-control-myths.*
-│   └── study-plan-gantt.png
+│   ├── study-plan-gantt.png
+│   ├── aws-policy-5-gates-tldraw.png
+│   ├── s3-object-lock-tldraw.png
+│   ├── kms-key-types-tldraw.png
+│   ├── traffic-inspection-tldraw.png
+│   └── log-destinations-tldraw.png
 │
 ├── examples/                      # Production-ready policy JSON + CLI examples
 │   ├── index.md                   #   Examples organized by domain
