@@ -9,6 +9,9 @@
 | `kms-key-types-tldraw.png` | AWS Managed vs Customer Managed vs Imported | Imported = no auto-rotation, YOU own durability. |
 | `traffic-inspection-tldraw.png` | Traffic Mirroring (passive) vs GWLB (inline) vs Network Firewall | "IDS/observe" = Mirror. "Palo Alto" = GWLB. "Suricata" = NF. |
 | `log-destinations-tldraw.png` | Which log source writes to S3 / CW Logs / Firehose / EventBridge | ELB/CF/S3 = S3 ONLY. DNS public = CW ONLY. |
+| `ir-outside-aws-tldraw.png` | OutsideAWS containment: TokenIssueTime vs shared role vs memory | "Shared role" = never TokenIssueTime. "Memory" = AMI first. |
+| `ir-inside-asg-alb-tldraw.png` | InsideAWS + ASG detach + ALB deregister ordering | ASG = detach first. ALB only = acquire first, deregister last. |
+| `ir-credential-leak-tldraw.png` | IAM user keys on GitHub: 5-step ordering | Inactivate → Create → Update → Revoke STS → Delete console. |
 
 ## Mermaid Diagrams
 
