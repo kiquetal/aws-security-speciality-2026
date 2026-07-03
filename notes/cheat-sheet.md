@@ -106,6 +106,9 @@
 - 🧠 **KMS keys are REGIONAL.** Cross-account call to wrong region = Access Denied (key not found). Always verify the endpoint region matches the key's region.
 - 🧠 **Cross-account KMS: key policy MUST name the external account.** Root in key policy enables IAM delegation same-account only. For Account B to use Account A's key, key policy must grant Account B's root or role explicitly.
 - 🧠 **S3 wraps KMS errors as S3 AccessDenied.** Caller called S3, not KMS directly. Error surface = S3, root cause = KMS. Direct `kms:Decrypt` call → KMS.AccessDeniedException.
+- 🧠 **SSE-S3 already generates a unique DEK per object.** Envelope encryption = every object gets its own key automatically. "Different key per file" = SSE-S3 (zero config).
+- 🧠 **Imported key material = immediate delete (DeleteImportedKeyMaterial).** No 7-day wait. ScheduleKeyDeletion minimum = 7 days. "Within 24 hours" = only imported satisfies.
+- 🧠 **KMS: creator ≠ owner, root ≠ full access.** Nobody has automatic access. Must be explicitly granted via key policy/IAM/grant. kms:CreateKey holder CAN set initial key policy.
 - 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.
 - 🧠 **CRR + SSE-KMS: source = kms:Decrypt. Destination = kms:GenerateDataKey (not kms:Encrypt).** Same rule as all S3 uploads — S3 never uses kms:Encrypt.
 - 🧠 **CRR replication role needs exactly THREE permissions: (1) kms:Decrypt on source key, (2) kms:GenerateDataKey on dest key, (3) s3:GetObjectVersionForReplication on source.** Mnemonic: D-G-F (Decrypt, GenerateDataKey, ForReplication). GetObjectVersion alone is NOT enough — ForReplication is the replication-specific permission.
@@ -179,6 +182,7 @@
 - 🧠 **"Public-facing + HTTPS to customers" = inbound 0.0.0.0/0 on 443.** "Highest security" doesn't override the requirement of being publicly accessible.
 - 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance. HIDS inspects AFTER decryption at the host. ECDHE = ephemeral keys = PFS (past sessions safe even if key leaks later). Static RSA = no PFS.
 - Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
+- 🧠 **WAF rate-based types: Blanket (all pages) vs URI-specific (one path) vs IP reputation (blocklist).** "Attack on /login" = URI-specific. Match scope of response to scope of attack.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
 
 ### API Gateway Security
@@ -192,6 +196,7 @@
 - 🧠 **Resource Policy can't inspect header VALUES — only IP/VPC/account.** Header value inspection = Lambda authorizer (REQUEST type) or WAF regex.
 - 🧠 **Private API = VPC endpoint only.** Resource policy restricts to `vpce-xxx`. Endpoint SG controls which clients can reach the endpoint (inbound 443).
 - 🧠 **Private API timeout = Resource Policy rejection (not always network).** If endpoint SG and Lambda SG are fine, check Resource Policy `aws:SourceVpce` condition.
+- 🧠 **Interface endpoint + private DNS ON = hijacks ALL DNS for that service in your VPC.** Good: call private APIs via normal URL. Bad: public APIs for that same service become unreachable from your VPC. Need both? Keep private DNS OFF, use vpce-specific URL for private API.
 
 ### Troubleshooting
 - 🧠 **Timeout = network problem (SG, NACL, routing, missing endpoint). Access Denied = permissions problem (IAM, policy, key policy).** The error type tells you where to look.
@@ -246,6 +251,7 @@
 - 🧠 **GuardDuty finding `!suffix` = data source used for detection.** `!DNS` = DNS logs. `!VPCFlowLogs` = Flow Logs. `!CloudTrail` = CloudTrail. Suffix = HOW it was detected, not WHAT the attack does.
 - 🧠 **GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet):** correlates multiple findings into attack sequences in the GD console. If tested, answer = "Extended Threat Detection." Otherwise "correlate/investigate" = Detective.
 - 🧠 **GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.
+- 🧠 **Trusted IP list = nuclear (blinds GD to ALL findings from that IP). Suppression rule = surgical (archives ONE finding type from that IP).** Trusted IP list is NOT a filter field inside suppression rules — it's a separate mechanism.
 
 ### Log Sources
 - 🧠 **ELB access logs → S3 ONLY (never CW Logs directly).** Search = Athena. Metrics = Athena query → PutMetricData to CloudWatch. CW metric filters only work on CW Logs log groups, not S3 files.
