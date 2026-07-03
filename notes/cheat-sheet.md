@@ -178,6 +178,7 @@
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
 - WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.
 - 🧠 **"Add security headers (HSTS, CSP, X-Content-Type-Options) to CloudFront, least overhead" = CloudFront response headers policy (managed, zero code).** Lambda@Edge = only if you need dynamic/conditional logic.
+- 🧠 **CloudFront `Authorization` header = Cache Policy ONLY.** Origin Request Policy → HTTP 400 error. Authorization must be part of cache key to prevent serving authenticated responses to unauthenticated users.
 - 🧠 **CW agent ships logs (not SSM agent).** SSM agent = execute commands, sessions, patching. CW agent = ship custom log files + metrics. SSM can INSTALL CW agent but can't replace it.
 - 🧠 **"Public-facing + HTTPS to customers" = inbound 0.0.0.0/0 on 443.** "Highest security" doesn't override the requirement of being publicly accessible.
 - 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance. HIDS inspects AFTER decryption at the host. ECDHE = ephemeral keys = PFS (past sessions safe even if key leaks later). Static RSA = no PFS.
