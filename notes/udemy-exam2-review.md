@@ -203,6 +203,23 @@
 
 ---
 
+### Q — SSM VPC Endpoints (THREE required, not one) (Reading Error)
+
+**Scenario:** Private EC2, no internet, need Systems Manager. Select THREE.
+
+**Your picks:** SSM Agent ✅ + IAM instance profile on EC2 ✅ + ONE endpoint (ssm only) ❌
+**Correct:** SSM Agent + IAM instance profile on EC2 + THREE endpoints (ssm + ssmmessages + ec2messages)
+
+**Rules:**
+- Three VPC endpoints required: `com.amazonaws.[region].ssm` + `.ssmmessages` + `.ec2messages`
+- Miss any one = connection fails
+- IAM instance profile goes on EC2 (not on VPC endpoint policy)
+- "Allow outbound internet" contradicts "without internet access" requirement
+
+**Reading trap:** One option says "a VPC endpoint" (singular, ssm only). Another says "three VPC endpoints" (all three listed). Must read carefully.
+
+---
+
 ## Remaining Questions (TBD)
 
-8 more wrong questions to review.
+7 more wrong questions to review.
