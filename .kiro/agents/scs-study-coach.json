@@ -13,14 +13,32 @@
     "web_fetch",
     "generate_mermaid_diagram",
     "use_aws",
-    "knowledge"
+    "knowledge",
+    "tldraw_create",
+    "tldraw_read",
+    "tldraw_write",
+    "tldraw_add_shape",
+    "tldraw_update_shape",
+    "tldraw_delete_shape",
+    "tldraw_get_shapes",
+    "tldraw_list",
+    "tldraw_search"
   ],
   "allowedTools": [
     "fs_read",
     "grep",
     "glob",
     "code",
-    "knowledge"
+    "knowledge",
+    "tldraw_create",
+    "tldraw_read",
+    "tldraw_write",
+    "tldraw_add_shape",
+    "tldraw_update_shape",
+    "tldraw_delete_shape",
+    "tldraw_get_shapes",
+    "tldraw_list",
+    "tldraw_search"
   ],
   "resources": [
     "file://study-plan.md",
