@@ -10,9 +10,9 @@
 
 | Finding | Containment | WHY not the other? |
 |---|---|---|
-| OutsideAWS (API must stay up) | TokenIssueTime + EBS snapshot + IMDSv2 hop=1 | Deny-all SG kills legitimate traffic |
+| OutsideAWS (API must stay up) | TokenIssueTime + no-reboot AMI + EBS snapshot + IMDSv2 hop=1 | Deny-all SG kills legitimate traffic |
 | OutsideAWS (shared role) | Deny-all SG or NACL on compromised ONLY | TokenIssueTime kills ALL instances sharing that role |
-| OutsideAWS (can disrupt) | Deny-all SG + EBS snapshot + no-reboot AMI | Full isolation OK |
+| OutsideAWS (can disrupt) | No-reboot AMI + EBS snapshot + deny-all SG | Memory first (most perishable) |
 | InsideAWS | Deny-all SG on ATTACKER's instance | TokenIssueTime kills BOTH (same role) |
 | Credential leak (keys on GitHub) | Deactivate keys + Deny * on IAM USER | Covers 2nd key + console + sessions |
 
