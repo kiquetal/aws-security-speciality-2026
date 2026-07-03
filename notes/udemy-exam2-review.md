@@ -181,6 +181,28 @@
 
 ---
 
+### Q — Credential Leak IR Ordering (Ordering Question)
+
+**Scenario:** Service account access key published on GitHub. No compromise yet. Critical production app with hard-coded credentials. Minimize downtime.
+
+**Your answer:** Revoke STS first → Inactivate key → Create new → Update app → Delete console
+**Correct order:**
+1. Inactivate the publicly exposed IAM access key
+2. Create a new access key and secret access key pair
+3. Update the application to use the new credentials
+4. Revoke any temporary STS credentials
+5. Delete AWS Management Console credentials
+
+**Why Revoke STS first is wrong:** The exposed key is still active while you revoke sessions. Attacker can call AssumeRole again or make direct API calls. "Mopping the floor while faucet is running."
+
+**Why Delete console credentials (step 5) even though question says "service account":** Attacker may have ENABLED console access via CreateLoginProfile using the leaked key. IR best practice = close ALL doors.
+
+**Principle:** Contain (inactivate) → Replace (new key) → Restore (update app) → Clean up (revoke STS + delete console)
+
+**Rule:** Every long-term credential belongs to an IAM user. One user can have: 2 access keys + 1 password + MFA. Roles have NO long-term credentials.
+
+---
+
 ## Remaining Questions (TBD)
 
-9 more wrong questions to review.
+8 more wrong questions to review.
