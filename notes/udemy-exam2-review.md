@@ -168,6 +168,19 @@
 
 ---
 
+### Q — CloudFront Authorization Header Forwarding (Knowledge Gap)
+
+**Your answer:** Configure the CloudFront origin request policy to forward the Authorization header to the origin
+**Correct:** Create a cache policy, associate it with the cache behavior that must forward the Authorization header
+
+**Rules:**
+- `Authorization` header MUST be in Cache Policy (part of cache key)
+- Origin Request Policy with Authorization → HTTP 400 error (CloudFront rejects at creation)
+- Why: prevents serving cached authenticated responses to unauthenticated users
+- Viewer Request Policy = doesn't exist for header forwarding (distractor)
+
+---
+
 ## Remaining Questions (TBD)
 
-10 more wrong questions to review.
+9 more wrong questions to review.
