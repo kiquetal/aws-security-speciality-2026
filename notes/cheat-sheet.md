@@ -291,6 +291,10 @@
 - CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
 - 🧠 **CloudTrail Lake no backfill — events before EDS creation are never ingested.** "Zero results" + old data = no backfill, not ingestion delay.
 - 🧠 **Security Hub = dashboard (view findings). Config = remediation engine (fix resources).** SH wraps Config rules but doesn't own the fix. Auto-remediation = Config rule + SSM.
+- 🧠 **Security Hub is REGIONAL (not global).** Cross-region aggregation = designate one region. Does NOT write to S3. Trusted Advisor does NOT integrate with SH.
+- 🧠 **Trusted Advisor = periodic checklist (no real-time, no automation, no SH integration).** "Immediately" or "as soon as" = eliminate TA.
+- 🧠 **S3 event notifications can't filter by ACL/permission values.** Only prefix, suffix, event type. Need CloudTrail data events + EventBridge for ACL-based detection.
+- 🧠 **"Object-level logging" = CloudTrail data events for S3.** Same feature, different name. Must enable explicitly.
 - Security Lake = YOUR S3 bucket, OCSF format, normalizes ALL log sources (CloudTrail + VPC Flow + WAF + GuardDuty + third-party).
 - CloudWatch Logs Insights = query app logs / VPC Flow Logs / Lambda logs. Custom syntax (not SQL). Already-ingested data.
 - "Fast API call investigation" → CloudTrail Lake. "Normalize all logs into one schema" → Security Lake. "Query app/VPC logs" → CloudWatch Logs Insights.
@@ -325,6 +329,7 @@
 - 🧠 **Session Manager logging = built-in "upload session logs" (records keystrokes/commands).** CloudWatch Agent = OS/app logs. Different things. "Record session activity" = Session Manager preferences.
 - 🧠 **Route 53 TWO logging features:** DNS query logging = public hosted zone queries (CW Logs only). Resolver query logging = VPC outbound queries (CW Logs, S3, Firehose). "Public DNS queries" = DNS query logging.
 - 🧠 **JWT decode ≠ JWT verify.** Decode = read payload (no tamper detection). Verify = check cryptographic signature (aws-jwt-verify). "Most secure" = always verify.
+- 🧠 **"AWS managed key" = NEVER the answer when question mentions control, policy, expiration, rotation config, or grants.** AWS managed = autopilot with no steering wheel.
 - 🧠 **"AWS managed key" = NEVER the answer when question mentions control, policy, expiration, rotation config, or grants.** AWS managed = autopilot with no steering wheel.
 - 🧠 **Config proactive evaluation = evaluates resources BEFORE CloudFormation creates them.** "Before provisioned" = proactive. "After exists" = detective. Config supports both modes.
 - 🧠 **EFS encryption = creation-time ONLY.** Cannot enable on existing file system. Must create new EFS + migrate.
