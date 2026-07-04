@@ -220,6 +220,19 @@
 
 ---
 
+### Q56 — Lambda Permissions = Execution Role (Reading Error)
+
+**Scenario:** Lambda needs access to CMK-encrypted S3 data. Each function needs its own access control.
+
+**Your answer:** Lambda assumes IAM role for AWS-managed key
+**Correct:** Establish a Lambda execution role with KMS access for each function
+
+**Why wrong:** (1) Question says customer managed key, you picked AWS-managed. (2) Lambda doesn't "assume" a separate role — it already HAS an execution role.
+
+**Rule:** Lambda permissions = execution role. Always. Can't attach IAM policies directly to functions. Lambda runs AS its execution role.
+
+---
+
 ## Remaining Questions (TBD)
 
-7 more wrong questions to review.
+6 more wrong questions to review.
