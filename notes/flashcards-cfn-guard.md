@@ -181,11 +181,58 @@ This means cfn-guard has trouble even PARSING short-form YAML intrinsics in some
 
 ---
 
+## WHERE cfn-guard Runs (Client-Side, Not Server-Side)
+
+```
+cfn-guard = a CLI binary. It runs wherever YOU put it:
+  - In a CI/CD pipeline (typical)
+  - On a developer's laptop (also valid)
+  - In a pre-commit hook
+  - Anywhere you can run a command
+
+It is NOT a server-side gate. CloudFormation does not run cfn-guard.
+```
+
+### What This Means for Security
+
+| Scenario | cfn-guard validates? | CF deploys correctly? | GAP? |
+|---|---|---|---|
+| Pipeline validates → pipeline deploys (same artifact) | ✅ | ✅ | ❌ No gap |
+| Developer runs cfn-guard locally → deploys same file | ✅ | ✅ | ❌ No gap |
+| Pipeline validates → developer deploys DIFFERENT file via CLI | ✅ (old file) | ✅ (new file) | ✅ GAP! |
+| Developer deploys via Console CF (no pipeline) | ❌ Never ran | ✅ | ✅ BYPASSED |
+| Developer deploys via Terraform (direct API) | ❌ Irrelevant | N/A (no CF) | ✅ BYPASSED |
+
+### The Key Distinction (Exam-Critical)
+
+```
+cfn-guard = CLIENT-SIDE validation (your pipeline/laptop)
+  → Bypassable: deploy from Console, CLI without pipeline, or Terraform
+  → No enforcement if developer doesn't go through the pipeline
+
+Config proactive = SERVER-SIDE validation (inside CloudFormation service)
+  → NOT bypassable for CF deploys: Console, CLI, SDK — all caught
+  → Still blind to non-CF deployments (Terraform, direct API)
+
+SCP = SERVER-SIDE validation (inside IAM/Organizations)
+  → NOT bypassable for ANY deployment path
+  → But can only see API request parameters, not template content
+```
+
+**For the exam:**
+- "Developer bypasses pipeline" → cfn-guard misses it, Config proactive catches it
+- "Hardcoded value + same file deployed" → cfn-guard validation is trustworthy
+- "Developer could edit file after cfn-guard ran" → gap exists (no server-side enforcement without Config proactive)
+
+---
+
 ## 🧠 Exam One-Liners
 
 - **cfn-guard = static text analysis. Sees the file, not resolved values.**
+- **cfn-guard = CLIENT-SIDE (pipeline/laptop). Config proactive = SERVER-SIDE (CF service). Different enforcement points.**
 - **ANY intrinsic (!Ref, !If, !Sub, etc.) = cfn-guard sees a JSON object, not the resolved value.**
 - **Rule `Property == true` + template has `!Ref X` → FAIL (object ≠ boolean).**
 - **cfn-guard can't read Parameters/AllowedValues to validate Refs. It's not that smart.**
 - **CloudFormation's OWN AllowedValues still enforces at deploy time — separate from cfn-guard.**
 - **Config proactive + CF Hooks see RESOLVED values (they run inside CF service). cfn-guard does not.**
+- **"Developer bypasses pipeline" = cfn-guard blind. Config proactive catches. SCP catches API params.**
