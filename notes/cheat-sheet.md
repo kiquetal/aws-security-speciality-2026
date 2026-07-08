@@ -291,6 +291,8 @@
 ### CloudTrail / Logging
 - CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
 - 🧠 **CloudTrail Lake no backfill — events before EDS creation are never ingested.** "Zero results" + old data = no backfill, not ingestion delay.
+- 🧠 **Org trail = management account only.** Member accounts can see it but cannot modify, stop, or delete it. API call fails.
+- 🧠 **State Manager: new target = immediate first run.** `rate(1hr)` = how often to RE-RUN on known targets. New matching instance detected = runs within minutes (doesn't wait for next rate cycle).
 - 🧠 **Security Hub = dashboard (view findings). Config = remediation engine (fix resources).** SH wraps Config rules but doesn't own the fix. Auto-remediation = Config rule + SSM.
 - 🧠 **Security Hub is REGIONAL (not global).** Cross-region aggregation = designate one region. Does NOT write to S3. Trusted Advisor does NOT integrate with SH.
 - 🧠 **Trusted Advisor = periodic checklist (no real-time, no automation, no SH integration).** "Immediately" or "as soon as" = eliminate TA.
