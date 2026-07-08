@@ -8,23 +8,23 @@
 
 | Metric | Value |
 |---|---|
-| **Total Questions** | 1645 |
-| **✅ Correct** | 1306 (79%) |
-| **⚠️ Partial** | 39 (2%) |
-| **❌ Wrong** | 297 (18%) |
-| **Sessions** | 118 |
-| **Re-tests Passed** | 781 of 935 |
+| **Total Questions** | 1670 |
+| **✅ Correct** | 1325 (79%) |
+| **⚠️ Partial** | 40 (2%) |
+| **❌ Wrong** | 302 (18%) |
+| **Sessions** | 119 |
+| **Re-tests Passed** | 796 of 954 |
 
 ## Domain Breakdown
 
 | Domain | Exam Weight | ✅ | ⚠️ | ❌ | Total | Score % | Weak? |
 |---|---|---|---|---|---|---|---|
-| D1: Detection | 16% | 360 | 12 | 83 | 455 | 79% | 🟡 |
+| D1: Detection | 16% | 371 | 12 | 85 | 468 | 79% | 🟡 |
 | D2: Incident Response | 14% | 90 | 2 | 24 | 116 | 78% | 🟡 |
-| D3: Infrastructure Security | 18% | 263 | 11 | 60 | 334 | 79% | 🟡 |
+| D3: Infrastructure Security | 18% | 269 | 11 | 61 | 341 | 79% | 🟡 |
 | D4: Identity & Access Management | 20% | 303 | 11 | 66 | 380 | 80% | 🟢 |
-| D5: Data Protection | 18% | 302 | 9 | 68 | 379 | 80% | 🟢 |
-| D6: Governance | 14% | 327 | 3 | 85 | 415 | 79% | 🟡 |
+| D5: Data Protection | 18% | 303 | 9 | 68 | 380 | 80% | 🟢 |
+| D6: Governance | 14% | 339 | 4 | 88 | 431 | 79% | 🟡 |
 
 Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 
@@ -117,170 +117,182 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 🟡 83 | Org conformance pack deploys rules but NOT execution role | Q1639 | D6 | 1 |
 | 🟡 84 | Shared role + zero disruption = SG isolation | Q1640 | D2 | 1 |
 | 🟡 85 | ALB only (no ASG) = acquire first, deregister last | Q1643 | D2, D3 | 1 |
-| 🟡 86 | NACLs stateless | Q34 | D3 | 1 |
-| 🟡 87 | RAM vs RCP | Q38 | D4 | 1 |
-| 🟡 88 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
-| 🟡 89 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
-| 🟡 90 | Cross-account KMS | Q53 | D4 | 1 |
-| 🟡 91 | STS session revocation | Q62 | D4 | 1 |
-| 🟡 92 | Session tags + ABAC | Q63 | D4 | 1 |
-| 🟡 93 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
-| 🟡 94 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
-| 🟡 95 | Session policy as ceiling | Q78 | D4 | 1 |
-| 🟡 96 | SCP cannot be bypassed | Q83 | D4 | 1 |
-| 🟡 97 | MRK independent key policies | Q84 | D5 | 1 |
-| 🟡 98 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
-| 🟡 99 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
-| 🟡 100 | Imported key rotation procedure | Q114 | D5 | 1 |
-| 🟡 101 | SCP for preventive guardrails | Q119 | D6 | 1 |
-| 🟡 102 | RAM for resource sharing | Q126 | D6 | 1 |
-| 🟡 103 | DNS Firewall rule actions | Q129 | D3 | 1 |
-| 🟡 104 | GuardDuty vs Inspector | Q132 | D1 | 1 |
-| 🟡 105 | DNS Firewall rule structure | Q134 | D3 | 1 |
-| 🟡 106 | Step Functions for IR | Q138 | D2 | 1 |
-| 🟡 107 | Access Analyzer modes | Q144 | D1 | 1 |
-| 🟡 108 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
-| 🟡 109 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
-| 🟡 110 | RCP exemptions (SLR) | Q183 | D4 | 1 |
-| 🟡 111 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
-| 🟡 112 | KMS auto-rotation retention | Q192 | D5 | 1 |
-| 🟡 113 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
-| 🟡 114 | Firewall Manager SG audit | Q208 | D3 | 1 |
-| 🟡 115 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
-| 🟡 116 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
-| 🟡 117 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
-| 🟡 118 | Secrets Manager cross-region replication | Q258 | D5 | 1 |
-| 🟡 119 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
-| 🟡 120 | Audit Manager vs Artifact | Q271 | D6 | 1 |
-| 🟡 121 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
-| 🟡 122 | Config conformance packs | Q275 | D6 | 1 |
-| 🟡 123 | StackSets vs Conformance Pack | Q276 | D6 | 1 |
-| 🟡 124 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
-| 🟡 125 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
-| 🟡 126 | Verified Access trust providers | Q336 | D3, D4 | 1 |
-| 🟡 127 | Signer revocation (job vs profile vs IAM) | Q339 | D4, D6 | 1 |
-| 🟡 128 | Cognito Identity Pool + KMS permissions | Q341 | D3, D4 | 1 |
-| 🟡 129 | GuardDuty suppression rules | Q372 | D1 | 1 |
-| 🟡 130 | Secrets Manager rotation failure | Q376 | D5 | 1 |
-| 🟡 131 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D3, D4 | 1 |
-| 🟡 132 | EventBridge for fast detection | Q401 | D1 | 1 |
-| 🟡 133 | Timeout vs Access Denied (SG troubleshooting) | Q418 | D3 | 1 |
-| 🟡 134 | KMS is regional | Q423 | D4, D5 | 1 |
-| 🟡 135 | RCP same-org evaluation | Q427 | D4 | 1 |
-| 🟡 136 | Secrets Manager replication ≠ MRK | Q428 | D5 | 1 |
-| 🟡 137 | SCP prevents disabling services | Q440 | D6 | 1 |
-| 🟡 138 | RAM + FM complementary | Q442 | D6 | 1 |
-| 🟡 139 | Full governance stack | Q445 | D6 | 1 |
-| 🟡 140 | StackSets limitations | Q450 | D6 | 1 |
-| 🟡 141 | FM SG common policy | Q454 | D6 | 1 |
-| 🟡 142 | Delegated admin (all services) | Q462 | D6 | 1 |
-| 🟡 143 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
-| 🟡 144 | No single governance service | Q486 | D6 | 1 |
-| 🟡 145 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1, D6 | 1 |
-| 🟡 146 | EventBridge for fast detection + auto-revert | Q523 | D1, D6 | 1 |
-| 🟡 147 | Network FW for IP-level C2 block | Q526 | D1, D3 | 1 |
-| 🟡 148 | Detection + response architecture | Q532 | D1, D3, D6 | 1 |
-| 🟡 149 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1, D4, D5 | 1 |
-| 🟡 150 | Detect vs prevent (GuardDuty vs EventBridge for behavioral) | Q640 | D1 | 1 |
-| 🟡 151 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) | Q655 | D1 | 1 |
-| 🟡 152 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D3, D5 | 1 |
-| 🟡 153 | DGA = allow-list DNS Firewall | Q690 | D1, D3 | 1 |
-| 🟡 154 | NACLs stateless (Dojo Q19, Q61) | Q707 | D3 | 1 |
-| 🟡 155 | Directory Service + trust direction (Dojo Q5) | Q709 | D4 | 1 |
-| 🟡 156 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
-| 🟡 157 | GuardDuty Trusted IP list (Dojo Q22) | Q711 | D1 | 1 |
-| 🟡 158 | VPN types (Dojo Q56) | Q719 | D3 | 1 |
-| 🟡 159 | CW metric filter value (Dojo Q57) | Q724 | D1 | 1 |
-| 🟡 160 | ADFS vs AD Connector (Dojo Q48) | Q731 | D4 | 1 |
-| 🟡 161 | AD Connector vs Simple AD | Q739 | D4 | 1 |
-| 🟡 162 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
-| 🟡 163 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
-| 🟡 164 | InsideAWS = SG isolation | Q761 | D2, D4 | 1 |
-| 🟡 165 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
-| 🟡 166 | Cognito Identity Pool + role (not direct STS) | Q778 | D4 | 1 |
-| 🟡 167 | NACLs stateless (inbound ACCEPT + outbound REJECT) | Q781 | D3 | 1 |
-| 🟡 168 | EKS Runtime Monitoring (agent required) | Q797 | D1, D3 | 1 |
-| 🟡 169 | CloudFront response headers policy | Q801 | D3 | 1 |
-| 🟡 170 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
-| 🟡 171 | OutsideAWS IR + IMDSv2 hardening | Q820 | D1, D2, D4 | 1 |
-| 🟡 172 | GuardDuty ≠ failed attempts + AA static | Q839 | D1 | 1 |
-| 🟡 173 | S3 Batch Operations cross-account + manifest region | Q855 | D4, D5 | 1 |
-| 🟡 174 | S3 Batch cross-account needs bucket policy | Q857 | D4, D6 | 1 |
-| 🟡 175 | SCP prevention > detect+remediate | Q858 | D4, D6 | 1 |
-| 🟡 176 | S3 Batch Operations regional | Q872 | D5 | 1 |
-| 🟡 177 | IoT ThingName = cert-bound, not hardware | Q880 | D3 | 1 |
-| 🟡 178 | Config custom rule = Lambda (max 15min timeout) | Q881 | D1, D6 | 1 |
-| 🟡 179 | CRR dest = kms:GenerateDataKey (not Encrypt) | Q883 | D5 | 1 |
-| 🟡 180 | CRR rewrites encryption context to dest | Q888 | D5 | 1 |
-| 🟡 181 | IoT cert revocation = instant (no CRL delay) | Q892 | D3 | 1 |
-| 🟡 182 | DynamoDB + CMK = CreateGrant + DescribeKey | Q899 | D4, D5 | 1 |
-| 🟡 183 | Reading comprehension (perms already present) | Q901 | D5 | 1 |
-| 🟡 184 | EBS encryption by default + SCP = full prevention | Q902 | D5, D6 | 1 |
-| 🟡 185 | GWLB GENEVE decapsulation | Q905 | D3 | 1 |
-| 🟡 186 | Config org custom rule cross-account invoke | Q908 | D1, D6 | 1 |
-| 🟡 187 | Reading comprehension (multiple missing perms) | Q911 | D3, D5 | 1 |
-| 🟡 188 | CRR custom encryption context preserved | Q923 | D5 | 1 |
-| 🟡 189 | CreateSampleFindings vs FIS | Q934 | D2 | 1 |
-| 🟡 190 | Resilience Hub = assess, FIS = test, ARC = recover | Q935 | D2 | 1 |
-| 🟡 191 | ARC zonal shift | Q936 | D2 | 1 |
-| 🟡 192 | Deny * on user vs TokenIssueTime (user vs role) | Q942 | D2 | 1 |
-| 🟡 193 | KMS endpoint + SG (direct calls only) | Q965 | D3, D5 | 1 |
-| 🟡 194 | API Gateway TOKEN vs REQUEST authorizer | Q988 | D3 | 1 |
-| 🟡 195 | S3 wraps KMS errors (error surface vs root cause) | Q989 | D4, D5 | 1 |
-| 🟡 196 | SageMaker notebooks vs Detective (custom vs built-in) | Q996 | D2 | 1 |
-| 🟡 197 | CloudTrail Insights vs GuardDuty (complementary) | Q1004 | D1 | 1 |
-| 🟡 198 | Bedrock IAM guardrail enforcement (condition key) | Q1007 | D3 | 1 |
-| 🟡 199 | Q Business ACL identity mapping failure | Q1010 | D3 | 1 |
-| 🟡 200 | Resource Policy = boundary rejection (before authorizer) | Q1013 | D3 | 1 |
-| 🟡 201 | Private API timeout = Resource Policy rejection (not always network) | Q1025 | D3, D5 | 1 |
-| 🟡 202 | Access Grants + SSE-KMS needs explicit kms:Decrypt on role | Q1026 | D4, D5 | 1 |
-| 🟡 203 | Well-Architected Tool = architecture review + improvement plan | Q1031 | D6 | 1 |
-| 🟡 204 | IoT Core = registry-based revocation (instant) | Q1035 | D3 | 1 |
-| 🟡 205 | Key policy conditions enforced regardless of caller's identity policy | Q1040 | D4, D5 | 1 |
-| 🟡 206 | Inspector SBOM = on-demand API (EventBridge + Lambda to schedule) | Q1051 | D3 | 1 |
-| 🟡 207 | Hardcoded credential → always Secrets Manager | Q1054 | D3 | 1 |
-| 🟡 208 | mTLS 403 = cert expired (if same CA works for others) | Q1055 | D3 | 1 |
-| 🟡 209 | RCP evaluates S3 CALLER (Lambda), not original HTTP client | Q1074 | D4, D6 | 1 |
-| 🟡 210 | CRR preserves source custom encryption context | Q1075 | D5 | 1 |
-| 🟡 211 | Lambda = no EBS/AMI forensics (ephemeral) | Q1079 | D2, D3 | 1 |
-| 🟡 212 | OutsideAWS + can't disrupt = TokenIssueTime + snapshot | Q1108 | D2 | 1 |
-| 🟡 213 | Cron vs Rate vs PITR | Q1124 | D5 | 1 |
-| 🟡 214 | Traffic Mirroring = passive. GWLB = inline. 3x failed. | Q1126 | D3 | 1 |
-| 🟡 215 | State Manager = schedule enforcement (proactive) | Q1127 | D1, D3 | 1 |
-| 🟡 216 | Session Manager logging = session activity (not CW Agent) | Q1132 | D2 | 1 |
-| 🟡 217 | DNSSEC broken chain = DS in parent | Q1135 | D3 | 1 |
-| 🟡 218 | Stack Policy = protect resources inside stack | Q1138 | D6 | 1 |
-| 🟡 219 | Federated user ARN = sts:: not iam:: | Q1139 | D4 | 1 |
-| 🟡 220 | SCP = what key, Key policy = who uses it | Q1140 | D4, D5 | 1 |
-| 🟡 221 | mTLS = custom domain + S3 | Q1172 | D3 | 1 |
-| 🟡 222 | Bedrock guardrail condition key | Q1187 | D3 | 1 |
-| 🟡 223 | Config also detects StopLogging | Q1201 | D1 | 1 |
-| 🟡 224 | mTLS S3 versioning required | Q1207 | D3 | 1 |
-| 🟡 225 | Well-Architected Tool milestones | Q1211 | D6 | 1 |
-| 🟡 226 | cfn-guard vs Config proactive (template validation) | Q1213 | D6 | 1 |
-| 🟡 227 | WAT milestones = no automation | Q1221 | D6 | 1 |
-| 🟡 228 | Stack Policy default deny + selective Deny | Q1225 | D6 | 1 |
-| 🟡 229 | WAT milestones = no automated evidence | Q1226 | D6 | 1 |
-| 🟡 230 | User = Deny *. Role = TokenIssueTime. | Q1231 | D2 | 1 |
-| 🟡 231 | WAT = self-reported, no automation | Q1233 | D6 | 1 |
-| 🟡 232 | IAM Credential Report 4-hour cache | Q1234 | D1 | 1 |
-| 🟡 233 | Permission boundary delegation vs Service Catalog | Q1235 | D4 | 1 |
-| 🟡 234 | SCP attachment OU vs accounts | Q1236 | D4, D6 | 1 |
-| 🟡 235 | EBS snapshot sharing (copy with CMK, no volume needed) | Q1237 | D5 | 1 |
-| 🟡 236 | SCP block root (containment vs hygiene) | Q1238 | D4, D6 | 1 |
-| 🟡 237 | CW agent ships logs (not SSM agent) | Q1240 | D1 | 1 |
-| 🟡 238 | Boot-time retrieval vs deploy-time injection | Q1241 | D5 | 1 |
-| 🟡 239 | VPC Flow vs TGW Flow Logs scope | Q1243 | D1, D3 | 1 |
-| 🟡 240 | Resolver vs DNS query logging direction | Q1276 | D1 | 1 |
-| 🟡 241 | Remediation succeeds but returns = re-creation | Q1287 | D1 | 1 |
-| 🟡 242 | Macie enabled ≠ Macie scanning | Q1293 | D1 | 1 |
-| 🟡 243 | Preserve evidence = EBS snapshot | Q1295 | D2, D3 | 1 |
-| 🟡 244 | NAA finds, RA explains | Q1296 | D3 | 1 |
-| 🟡 245 | Trojan = outbound. Recon = inbound. | Q1302 | D1 | 1 |
-| 🟡 246 | EventBridge=seconds, Config=minutes | Q1309 | D1 | 1 |
-| 🟡 247 | SCP + conformance pack = OU-level auto-apply | Q1313 | D6 | 1 |
-| 🟡 248 | cfn-guard bypassable vs Config proactive | Q1354 | D6 | 1 |
-| 🟡 249 | EBS encryption by default + SCP | Q1371 | D5 | 1 |
+| 🟡 86 | Org trail = management account only (members can't modify) | Q1647 | D1 | 1 |
+| 🟡 87 | cfn-guard can't resolve intrinsics (!Ref, !If, !Sub) | Q1649 | D6 | 1 |
+| 🟡 88 | SCP can't inspect CF template properties | Q1651 | D6 | 1 |
+| 🟡 89 | Pre-creation gates fire before SCP | Q1659 | D6 | 1 |
+| 🟡 90 | cfn-guard can't resolve !Ref | Q1662 | D6 | 1 |
+| 🟡 91 | State Manager: new target = immediate first run | Q1665 | D1, D3 | 1 |
+| 🟡 92 | NACLs stateless | Q34 | D3 | 1 |
+| 🟡 93 | RAM vs RCP | Q38 | D4 | 1 |
+| 🟡 94 | RCP exemptions (SLR vs service principal) | Q39 | D4 | 1 |
+| 🟡 95 | RCP exemptions (PrincipalIsAWSService) | Q42 | D4 | 1 |
+| 🟡 96 | Cross-account KMS | Q53 | D4 | 1 |
+| 🟡 97 | STS session revocation | Q62 | D4 | 1 |
+| 🟡 98 | Session tags + ABAC | Q63 | D4 | 1 |
+| 🟡 99 | SCP + RequestTag enforcement | Q68 | D4 | 1 |
+| 🟡 100 | Session tags + ABAC (ResourceTag vs RequestTag) | Q72 | D4 | 1 |
+| 🟡 101 | Session policy as ceiling | Q78 | D4 | 1 |
+| 🟡 102 | SCP cannot be bypassed | Q83 | D4 | 1 |
+| 🟡 103 | MRK independent key policies | Q84 | D5 | 1 |
+| 🟡 104 | Object Lock Compliance vs Legal Hold | Q85 | D5 | 1 |
+| 🟡 105 | Detect C2 = GuardDuty (not DNS Firewall) | Q106 | D1 | 1 |
+| 🟡 106 | Imported key rotation procedure | Q114 | D5 | 1 |
+| 🟡 107 | SCP for preventive guardrails | Q119 | D6 | 1 |
+| 🟡 108 | RAM for resource sharing | Q126 | D6 | 1 |
+| 🟡 109 | DNS Firewall rule actions | Q129 | D3 | 1 |
+| 🟡 110 | GuardDuty vs Inspector | Q132 | D1 | 1 |
+| 🟡 111 | DNS Firewall rule structure | Q134 | D3 | 1 |
+| 🟡 112 | Step Functions for IR | Q138 | D2 | 1 |
+| 🟡 113 | Access Analyzer modes | Q144 | D1 | 1 |
+| 🟡 114 | Validate findings (Task 2.2.3) | Q148 | D2 | 1 |
+| 🟡 115 | Data masking (Macie ≠ logs) | Q181 | D5 | 1 |
+| 🟡 116 | RCP exemptions (SLR) | Q183 | D4 | 1 |
+| 🟡 117 | Access Analyzer policy validation vs Simulator | Q184 | D4 | 1 |
+| 🟡 118 | KMS auto-rotation retention | Q192 | D5 | 1 |
+| 🟡 119 | KMS key policy delegation + GenerateDataKey | Q206 | D5 | 1 |
+| 🟡 120 | Firewall Manager SG audit | Q208 | D3 | 1 |
+| 🟡 121 | GuardDuty is regional + agentless | Q232 | D1 | 1 |
+| 🟡 122 | CloudWatch Logs Insights vs Detective | Q236 | D1 | 1 |
+| 🟡 123 | SCP for preventive guardrails (Control Tower) | Q251 | D6 | 1 |
+| 🟡 124 | Secrets Manager cross-region replication | Q258 | D5 | 1 |
+| 🟡 125 | SCIM provisioning (Identity Center) | Q263 | D4 | 1 |
+| 🟡 126 | Audit Manager vs Artifact | Q271 | D6 | 1 |
+| 🟡 127 | StackSets vs Firewall Manager | Q273 | D6 | 1 |
+| 🟡 128 | Config conformance packs | Q275 | D6 | 1 |
+| 🟡 129 | StackSets vs Conformance Pack | Q276 | D6 | 1 |
+| 🟡 130 | DNS Firewall ALERT ≠ finding | Q295 | D1 | 1 |
+| 🟡 131 | Security Lake vs CW Logs Insights | Q303 | D1 | 1 |
+| 🟡 132 | Verified Access trust providers | Q336 | D3, D4 | 1 |
+| 🟡 133 | Signer revocation (job vs profile vs IAM) | Q339 | D4, D6 | 1 |
+| 🟡 134 | Cognito Identity Pool + KMS permissions | Q341 | D3, D4 | 1 |
+| 🟡 135 | GuardDuty suppression rules | Q372 | D1 | 1 |
+| 🟡 136 | Secrets Manager rotation failure | Q376 | D5 | 1 |
+| 🟡 137 | Cognito + DynamoDB ABAC (sub vs TenantId) | Q395 | D3, D4 | 1 |
+| 🟡 138 | EventBridge for fast detection | Q401 | D1 | 1 |
+| 🟡 139 | Timeout vs Access Denied (SG troubleshooting) | Q418 | D3 | 1 |
+| 🟡 140 | KMS is regional | Q423 | D4, D5 | 1 |
+| 🟡 141 | RCP same-org evaluation | Q427 | D4 | 1 |
+| 🟡 142 | Secrets Manager replication ≠ MRK | Q428 | D5 | 1 |
+| 🟡 143 | SCP prevents disabling services | Q440 | D6 | 1 |
+| 🟡 144 | RAM + FM complementary | Q442 | D6 | 1 |
+| 🟡 145 | Full governance stack | Q445 | D6 | 1 |
+| 🟡 146 | StackSets limitations | Q450 | D6 | 1 |
+| 🟡 147 | FM SG common policy | Q454 | D6 | 1 |
+| 🟡 148 | Delegated admin (all services) | Q462 | D6 | 1 |
+| 🟡 149 | Proactive guardrail (CF Hook) | Q464 | D6 | 1 |
+| 🟡 150 | No single governance service | Q486 | D6 | 1 |
+| 🟡 151 | SCP can't inspect payload + RCP prevents consequence | Q515 | D1, D6 | 1 |
+| 🟡 152 | EventBridge for fast detection + auto-revert | Q523 | D1, D6 | 1 |
+| 🟡 153 | Network FW for IP-level C2 block | Q526 | D1, D3 | 1 |
+| 🟡 154 | Detection + response architecture | Q532 | D1, D3, D6 | 1 |
+| 🟡 155 | GuardDuty ≠ failed attempts + Access Analyzer static analysis | Q545 | D1, D4, D5 | 1 |
+| 🟡 156 | Detect vs prevent (GuardDuty vs EventBridge for behavioral) | Q640 | D1 | 1 |
+| 🟡 157 | GuardDuty finding types (C2 = Trojan, not CryptoCurrency) | Q655 | D1 | 1 |
+| 🟡 158 | VPC endpoints (direct KMS + DynamoDB) | Q685 | D3, D5 | 1 |
+| 🟡 159 | DGA = allow-list DNS Firewall | Q690 | D1, D3 | 1 |
+| 🟡 160 | NACLs stateless (Dojo Q19, Q61) | Q707 | D3 | 1 |
+| 🟡 161 | Directory Service + trust direction (Dojo Q5) | Q709 | D4 | 1 |
+| 🟡 162 | CloudTrail management events Read/Write (Dojo Q16) | Q710 | D1 | 1 |
+| 🟡 163 | GuardDuty Trusted IP list (Dojo Q22) | Q711 | D1 | 1 |
+| 🟡 164 | VPN types (Dojo Q56) | Q719 | D3 | 1 |
+| 🟡 165 | CW metric filter value (Dojo Q57) | Q724 | D1 | 1 |
+| 🟡 166 | ADFS vs AD Connector (Dojo Q48) | Q731 | D4 | 1 |
+| 🟡 167 | AD Connector vs Simple AD | Q739 | D4 | 1 |
+| 🟡 168 | EC2 EBS + kms:CreateGrant (Dojo T2 Q47) | Q745 | D5 | 1 |
+| 🟡 169 | SCP ceiling implicit deny (Dojo T2 Q65) | Q747 | D4 | 1 |
+| 🟡 170 | InsideAWS = SG isolation | Q761 | D2, D4 | 1 |
+| 🟡 171 | S3 envelope encryption never uses kms:Encrypt | Q765 | D5 | 1 |
+| 🟡 172 | Cognito Identity Pool + role (not direct STS) | Q778 | D4 | 1 |
+| 🟡 173 | NACLs stateless (inbound ACCEPT + outbound REJECT) | Q781 | D3 | 1 |
+| 🟡 174 | EKS Runtime Monitoring (agent required) | Q797 | D1, D3 | 1 |
+| 🟡 175 | CloudFront response headers policy | Q801 | D3 | 1 |
+| 🟡 176 | GuardDuty Extended Threat Detection (too new) | Q806 | D1 | 1 |
+| 🟡 177 | OutsideAWS IR + IMDSv2 hardening | Q820 | D1, D2, D4 | 1 |
+| 🟡 178 | GuardDuty ≠ failed attempts + AA static | Q839 | D1 | 1 |
+| 🟡 179 | S3 Batch Operations cross-account + manifest region | Q855 | D4, D5 | 1 |
+| 🟡 180 | S3 Batch cross-account needs bucket policy | Q857 | D4, D6 | 1 |
+| 🟡 181 | SCP prevention > detect+remediate | Q858 | D4, D6 | 1 |
+| 🟡 182 | S3 Batch Operations regional | Q872 | D5 | 1 |
+| 🟡 183 | IoT ThingName = cert-bound, not hardware | Q880 | D3 | 1 |
+| 🟡 184 | Config custom rule = Lambda (max 15min timeout) | Q881 | D1, D6 | 1 |
+| 🟡 185 | CRR dest = kms:GenerateDataKey (not Encrypt) | Q883 | D5 | 1 |
+| 🟡 186 | CRR rewrites encryption context to dest | Q888 | D5 | 1 |
+| 🟡 187 | IoT cert revocation = instant (no CRL delay) | Q892 | D3 | 1 |
+| 🟡 188 | DynamoDB + CMK = CreateGrant + DescribeKey | Q899 | D4, D5 | 1 |
+| 🟡 189 | Reading comprehension (perms already present) | Q901 | D5 | 1 |
+| 🟡 190 | EBS encryption by default + SCP = full prevention | Q902 | D5, D6 | 1 |
+| 🟡 191 | GWLB GENEVE decapsulation | Q905 | D3 | 1 |
+| 🟡 192 | Config org custom rule cross-account invoke | Q908 | D1, D6 | 1 |
+| 🟡 193 | Reading comprehension (multiple missing perms) | Q911 | D3, D5 | 1 |
+| 🟡 194 | CRR custom encryption context preserved | Q923 | D5 | 1 |
+| 🟡 195 | CreateSampleFindings vs FIS | Q934 | D2 | 1 |
+| 🟡 196 | Resilience Hub = assess, FIS = test, ARC = recover | Q935 | D2 | 1 |
+| 🟡 197 | ARC zonal shift | Q936 | D2 | 1 |
+| 🟡 198 | Deny * on user vs TokenIssueTime (user vs role) | Q942 | D2 | 1 |
+| 🟡 199 | KMS endpoint + SG (direct calls only) | Q965 | D3, D5 | 1 |
+| 🟡 200 | API Gateway TOKEN vs REQUEST authorizer | Q988 | D3 | 1 |
+| 🟡 201 | S3 wraps KMS errors (error surface vs root cause) | Q989 | D4, D5 | 1 |
+| 🟡 202 | SageMaker notebooks vs Detective (custom vs built-in) | Q996 | D2 | 1 |
+| 🟡 203 | CloudTrail Insights vs GuardDuty (complementary) | Q1004 | D1 | 1 |
+| 🟡 204 | Bedrock IAM guardrail enforcement (condition key) | Q1007 | D3 | 1 |
+| 🟡 205 | Q Business ACL identity mapping failure | Q1010 | D3 | 1 |
+| 🟡 206 | Resource Policy = boundary rejection (before authorizer) | Q1013 | D3 | 1 |
+| 🟡 207 | Private API timeout = Resource Policy rejection (not always network) | Q1025 | D3, D5 | 1 |
+| 🟡 208 | Access Grants + SSE-KMS needs explicit kms:Decrypt on role | Q1026 | D4, D5 | 1 |
+| 🟡 209 | Well-Architected Tool = architecture review + improvement plan | Q1031 | D6 | 1 |
+| 🟡 210 | IoT Core = registry-based revocation (instant) | Q1035 | D3 | 1 |
+| 🟡 211 | Key policy conditions enforced regardless of caller's identity policy | Q1040 | D4, D5 | 1 |
+| 🟡 212 | Inspector SBOM = on-demand API (EventBridge + Lambda to schedule) | Q1051 | D3 | 1 |
+| 🟡 213 | Hardcoded credential → always Secrets Manager | Q1054 | D3 | 1 |
+| 🟡 214 | mTLS 403 = cert expired (if same CA works for others) | Q1055 | D3 | 1 |
+| 🟡 215 | RCP evaluates S3 CALLER (Lambda), not original HTTP client | Q1074 | D4, D6 | 1 |
+| 🟡 216 | CRR preserves source custom encryption context | Q1075 | D5 | 1 |
+| 🟡 217 | Lambda = no EBS/AMI forensics (ephemeral) | Q1079 | D2, D3 | 1 |
+| 🟡 218 | OutsideAWS + can't disrupt = TokenIssueTime + snapshot | Q1108 | D2 | 1 |
+| 🟡 219 | Cron vs Rate vs PITR | Q1124 | D5 | 1 |
+| 🟡 220 | Traffic Mirroring = passive. GWLB = inline. 3x failed. | Q1126 | D3 | 1 |
+| 🟡 221 | State Manager = schedule enforcement (proactive) | Q1127 | D1, D3 | 1 |
+| 🟡 222 | Session Manager logging = session activity (not CW Agent) | Q1132 | D2 | 1 |
+| 🟡 223 | DNSSEC broken chain = DS in parent | Q1135 | D3 | 1 |
+| 🟡 224 | Stack Policy = protect resources inside stack | Q1138 | D6 | 1 |
+| 🟡 225 | Federated user ARN = sts:: not iam:: | Q1139 | D4 | 1 |
+| 🟡 226 | SCP = what key, Key policy = who uses it | Q1140 | D4, D5 | 1 |
+| 🟡 227 | mTLS = custom domain + S3 | Q1172 | D3 | 1 |
+| 🟡 228 | Bedrock guardrail condition key | Q1187 | D3 | 1 |
+| 🟡 229 | Config also detects StopLogging | Q1201 | D1 | 1 |
+| 🟡 230 | mTLS S3 versioning required | Q1207 | D3 | 1 |
+| 🟡 231 | Well-Architected Tool milestones | Q1211 | D6 | 1 |
+| 🟡 232 | cfn-guard vs Config proactive (template validation) | Q1213 | D6 | 1 |
+| 🟡 233 | WAT milestones = no automation | Q1221 | D6 | 1 |
+| 🟡 234 | Stack Policy default deny + selective Deny | Q1225 | D6 | 1 |
+| 🟡 235 | WAT milestones = no automated evidence | Q1226 | D6 | 1 |
+| 🟡 236 | User = Deny *. Role = TokenIssueTime. | Q1231 | D2 | 1 |
+| 🟡 237 | WAT = self-reported, no automation | Q1233 | D6 | 1 |
+| 🟡 238 | IAM Credential Report 4-hour cache | Q1234 | D1 | 1 |
+| 🟡 239 | Permission boundary delegation vs Service Catalog | Q1235 | D4 | 1 |
+| 🟡 240 | SCP attachment OU vs accounts | Q1236 | D4, D6 | 1 |
+| 🟡 241 | EBS snapshot sharing (copy with CMK, no volume needed) | Q1237 | D5 | 1 |
+| 🟡 242 | SCP block root (containment vs hygiene) | Q1238 | D4, D6 | 1 |
+| 🟡 243 | CW agent ships logs (not SSM agent) | Q1240 | D1 | 1 |
+| 🟡 244 | Boot-time retrieval vs deploy-time injection | Q1241 | D5 | 1 |
+| 🟡 245 | VPC Flow vs TGW Flow Logs scope | Q1243 | D1, D3 | 1 |
+| 🟡 246 | Resolver vs DNS query logging direction | Q1276 | D1 | 1 |
+| 🟡 247 | Remediation succeeds but returns = re-creation | Q1287 | D1 | 1 |
+| 🟡 248 | Macie enabled ≠ Macie scanning | Q1293 | D1 | 1 |
+| 🟡 249 | Preserve evidence = EBS snapshot | Q1295 | D2, D3 | 1 |
+| 🟡 250 | NAA finds, RA explains | Q1296 | D3 | 1 |
+| 🟡 251 | Trojan = outbound. Recon = inbound. | Q1302 | D1 | 1 |
+| 🟡 252 | EventBridge=seconds, Config=minutes | Q1309 | D1 | 1 |
+| 🟡 253 | SCP + conformance pack = OU-level auto-apply | Q1313 | D6 | 1 |
+| 🟡 254 | cfn-guard bypassable vs Config proactive | Q1354 | D6 | 1 |
+| 🟡 255 | EBS encryption by default + SCP | Q1371 | D5 | 1 |
+| 🟡 86 | Org trail = management account only (members can't modify) | Q1647 | D1 | 1 |
+| 🟡 87 | cfn-guard can't resolve intrinsics (!Ref, !If, !Sub) | Q1649 | D6 | 1 |
+| 🟡 88 | SCP can't inspect CF template properties | Q1651 | D6 | 1 |
+| 🟡 89 | Pre-creation gates fire before SCP | Q1659 | D6 | 1 |
+| 🟡 90 | cfn-guard can't resolve !Ref | Q1662 | D6 | 1 |
+| 🟡 91 | State Manager: new target = immediate first run | Q1665 | D1, D3 | 1 |
 
 ---
 
@@ -301,6 +313,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 116 | 2026-06-30 | Q1578–Q1616 | 30 | 2 | 7 | Cross-domain (Red-priority kill drill — novel angles, killer difficulty) | [Jump](#session-116--2026-06-30) |
 | 117 | 2026-07-01 | Q1617–Q1637 | 17 | 1 | 3 | D2 Incident Response · D3 Infrastructure · D6 Governance · D1 Detection (killer uplift — novel forensics + enforcement + network) | [Jump](#session-117--2026-07-01) |
 | 118 | 2026-07-02 | Q1638–Q1645 | 4 | 0 | 4 | D2 Incident Response · D6 Governance · D1 Detection · D4 IAM (killer D2+D6 drill — novel operational containment + governance gaps) | [Jump](#session-118--2026-07-02) |
+| 119 | 2026-07-08 | Q1646–Q1670 | 19 | 1 | 5 | D1 Detection · D6 Governance · D3 Infrastructure (Week 3 drill — cfn-guard, Config proactive, State Manager, cross-domain killers) | [Jump](#session-119--2026-07-08) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -850,6 +863,41 @@ After adding a session:
 | 1643 | D2/D3 | Trojan C2Activity, in-memory ML behind ALB (no ASG), capture RAM+disk+block C2+keep ALB healthy — sequence? | A: Deregister → AMI → EBS → deny-all | ❌ | D: No-reboot AMI → EBS → NACL deny C2 IP → deregister. ALB only (no ASG) = acquire first. Deregister last. | Q1617 | ALB only (no ASG) = acquire first, deregister last |
 | 1644 | D6/D1 | SCP denies RunInstances without IMDSv2 + Config proactive + State Manager 4hr — admin runs modify-instance-metadata-options --http-tokens optional. Which fires? | B: Nothing prevents. SM re-applies within 4hr. Config detective flags. | ✅ | SCP only covers RunInstances (not Modify). Proactive = CF only. SM + Config detective = detect and fix, not prevent. | — | SCP must enumerate each API action separately |
 | 1645 | D2/D4 | Keys on GitHub, attacker created 2nd key + console + role — deactivate original key, attacker still operates. How? | D: All paths valid. Should have used Deny * on user. | ✅ | 2nd key + console + assumed role = 3 independent attack paths. Deny * on user blocks all user-level paths + prevents further AssumeRole from user. | Q862, Q867, Q942 | Credential leak = Deny * covers all user paths |
+
+---
+
+### Session 119 — 2026-07-08
+
+**Domains:** D1 Detection · D6 Governance · D3 Infrastructure (Week 3 drill — cfn-guard, Config proactive, State Manager, cross-domain killers)
+**Score:** 19 ✅ · 1 ⚠️ · 5 ❌ (76% correct)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1646 | D6/D1 | Config proactive for RDS DeletionProtection, CF CLI deploy + direct CLI rds:CreateDBInstance — which blocked? | B: Only CF blocked, direct caught by detective | ✅ | Config proactive = CF only. Direct CLI = detective after. | Q1389 | Config proactive = CF only, not direct API |
+| 1647 | D1 | Member account admin calls DeleteTrail on org trail — result? | A: Trail deleted | ❌ | B: Fails — org trails can only be modified from management account. | — | Org trail = management account only (members can't modify) |
+| 1648 | D1/D6 | Config remediation removes SG rule, GD fires again 5min later, CT shows CF stack update re-added — fix? | B: Update CF template to remove rule | ✅ | Remediation loop = fix root cause (CF template still has rule). | Q1287 | Remediation loop = fix root cause |
+| 1649 | D6 | cfn-guard validates StorageEncrypted==true, template has !If [IsProd, true, false] — result? | C: PASS always | ❌ | B: FAIL always — cfn-guard can't resolve Fn::If intrinsics. | Q1510 | cfn-guard can't resolve intrinsics (!Ref, !If, !Sub) |
+| 1650 | D1/D3 | State Manager tag removed at 10:00, re-added at 11:30, next run at 12:00 — runs? | B: Yes, tag present at execution time | ✅ | State Manager evaluates targets at execution time. | — | State Manager targets evaluated at execution time |
+| 1651 | D6 | cfn-guard in pipeline, dev creates RDS via Console CF (not pipeline) — which TWO catch? | B+C: Proactive + SCP | ⚠️ | B+E: Config proactive + CF Hook (both CF service-level). SCP can't inspect CF template properties. | Q1220, Q1411 | SCP can't inspect CF template properties |
+| 1652 | D1 | CT Lake EDS mgmt-only June 1, add data events July 5, query GetObject June 15-30 — results? | B: Zero results | ✅ | Data events only ingested from July 5 onward. No backfill. | Q882, Q1440 | CloudTrail Lake no backfill for new event types |
+| 1653 | D1 | SH 200 accounts, one shows 0 findings after 48hr, Config running — cause? | B: Account not a SH member | ✅ | Not enrolled as member = no findings reported. | Q1244 | Security Hub member enrollment |
+| 1654 | D6 | cfn-guard in pipeline + Config proactive, dev runs CF from CLI (bypasses pipeline) — caught? | B: Config proactive catches it | ✅ | Config proactive = CF service-level, all CF deploys. | Q1220 | Config proactive catches all CF deploys |
+| 1655 | D1/D3 | State Manager OnBoot + rate(2hr), reboot at 13:45, last rate at 13:00 — next rate run? | A: 15:00 (independent of OnBoot) | ✅ | OnBoot and rate are independent triggers. Rate timer unaffected. | Q1048, Q1405 | State Manager OnBoot + rate independent |
+| 1656 | D6 | Config proactive rejects template — what in CloudTrail? | B: Failed CreateStack event | ✅ | Proactive rejection = CF stack failure in CloudTrail. | Q1499 | Proactive rejection = CloudTrail failed API |
+| 1657 | D6 | cfn-guard passes template, dev overrides DeletionProtection=false via param at deploy — deployed RDS has DeletionProtection? | B: No — params resolve at deploy time | ✅ | cfn-guard validates text, parameters resolve at deploy time. | Q1510 | cfn-guard = static text only |
+| 1658 | D1/D3 | State Manager RunPatchBaseline rate(6hr)+OnBoot, new critical patch at 10:00, launched 09:00 — when patched? | B: 15:00 (next rate run) | ✅ | State Manager = scheduler, blind between runs. | Q1048 | State Manager = blind between runs |
+| 1659 | D6 | Config proactive + CF Hook + SCP, dev runs CF create-stack — evaluation order? | D: Proactive+Hook pre-creation, SCP never fires if rejected | ❌ | D: Both pre-creation (order varies) → SCP never fires if template rejected. | Q1486 | Pre-creation gates fire before SCP |
+| 1660 | D1/D3 | State Manager cron(0 2 * * ? *), instance stopped 1AM-3AM — what happens? | B: 2AM run skipped, next at 2AM tomorrow | ✅ | Instance offline = run skipped. No queue, no retry. | — | State Manager skips offline instances |
+| 1661 | D5/D6 | Detect unencrypted RDS + SSM auto-remediate to enable encryption — flaw? | B: RDS encryption = creation-time only | ✅ | Can't toggle encryption on existing RDS. Must snapshot+copy+restore. | — | RDS encryption = creation-time only |
+| 1662 | D6 | cfn-guard checks Engine allowed values, template uses !Ref EngineParam — result? | C: PASS (reads AllowedValues) | ❌ | B: FAIL — cfn-guard sees {"Ref": "EngineParam"}, can't resolve. | Q1510 | cfn-guard can't resolve !Ref |
+| 1663 | D6/D1 | State Manager proactive vs Config detective for CW agent — which true? | B: SM proactive re-applies on schedule, Config detects after drift | ✅ | State Manager = proactive (no delay). Config = reactive (minutes). | Q1127 | State Manager proactive vs Config reactive |
+| 1664 | D6/D3 | Terraform deploys EC2 without IMDSv2, cfn-guard+proactive+SCP deployed — which fires? | B: Only SCP | ✅ | Terraform = direct API. Only SCP evaluates RunInstances. | Q1541 | Terraform = direct API (not CF) |
+| 1665 | D1/D3 | State Manager rate(1hr), new instance launches at 14:35 — first run? | D: 15:35 (1hr from launch) | ❌ | C: Within minutes — new target detected immediately, first run is prompt. | — | State Manager: new target = immediate first run |
+| 1666 | D6 | Config proactive rejects, dev says "SCP allows this" — correct? | B: No — proactive fires before CF calls API, SCP never evaluates | ✅ | Pre-creation rejection means SCP is irrelevant. | Q1486 | Config proactive fires before SCP |
+| 1667 | D6 | Org conformance pack, new account joins, rules deploy but remediation never fires — cause? | B: Execution role doesn't exist in new account | ✅ | Conformance pack deploys rules+config but NOT execution role. | Q1639 | Org conformance pack doesn't deploy execution role |
+| 1668 | D1/D3 | State Manager OnBoot+rate(30min), admin stops CW agent manually — what happens? | B: Stays stopped until next rate run re-applies | ✅ | State Manager blind between runs. Next rate run fixes it. | Q1409 | State Manager re-applies on schedule |
+| 1669 | D6/D1 | Console S3 creation (no CF), cfn-guard+proactive+detective+SCP — which TWO fire? | C+D: SCP + Config detective | ✅ | Console direct = no CF = only SCP + detective. | Q1318, Q1429 | Console direct = SCP + Config detective only |
+| 1670 | D6 | ALL RDS via CF need DeletionProtection + ALL via CLI/Terraform + detect existing — minimum THREE? | B+C+D: Proactive + SCP + detective+SNS | ✅ | Minimum: proactive (CF) + SCP (all paths) + detective (existing). | — | Minimum enforcement architecture |
 
 ---
 
