@@ -23,7 +23,7 @@ Read section → close eyes → recall 3 rules.
 |------|------|-------|---------------------|--------|
 | 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ✅ |
 | 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | 4 new topics | ⬜ |
-| 3 | Jun 30 - Jul 6 | D1 weak areas + CloudFormation Guard, SSM State Manager | 2 new topics | ⬜ |
+| 3 | Jun 30 - Jul 6 | D1 weak areas + CloudFormation Guard, SSM State Manager | 2 new topics | ✅ |
 | 4 | Jul 7-13 | **NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced | 3 new topics | ⬜ |
 | 5 | Jul 14-20 | Cross-domain killer + Data Lifecycle Manager, DataSync, Well-Architected Tool, EMR inter-node | 4 new topics | ⬜ |
 | 6 | Jul 21-27 | Re-test all remaining errors from Sessions 81+ | — (consolidation) | ⬜ |
@@ -95,7 +95,7 @@ You're ready when:
 ## Mastered Patterns — DO NOT RE-TEST
 
 > These have >= 3 consecutive correct answers. Skip them in all drills.
-> Last updated: 2026-06-24
+> Last updated: 2026-07-07
 
 | Pattern | Correct Streak | Last Tested |
 |---|---|---|
@@ -137,6 +137,22 @@ You're ready when:
 | No-reboot AMI for volatile memory | 3x | Session 93 |
 | SageMaker notebooks for custom IR (not Detective) | 4x | Session 110 |
 | CreateSampleFindings to test IR pipeline (not FIS) | 4x | Session 110 |
+| Detect vs prevent (GuardDuty vs policy/EventBridge) | 5x | Informal Jul 7 |
+| S3 server access logging = ACLs (BucketOwnerEnforced breaks it) | 3x | Informal Jul 7 |
+| RAM shares + FM enforces (DNS FW/NF need RAM, WAF doesn't) | 3x | Informal Jul 7 |
+| StopLogging kills own CW Logs delivery (EB + Config detect) | 5x | Informal Jul 7 |
+| GuardDuty ≠ failed attempts (RCP blocks = no finding) | 5x | Informal Jul 7 |
+| Default encryption vs policy Deny (policy evaluates headers first) | 3x | Informal Jul 7 |
+| GD finding types: DNS=Impact, TCP C2=Trojan, TCP mining=Crypto | 7x | Informal Jul 7 |
+| CRR dest = GenerateDataKey (never kms:Encrypt) | 3x | Informal Jul 7 |
+| NF TLS inspection = private CA + distribute to clients | 3x | Informal Jul 7 |
+| Sign=private, verify=public (offline with exported public key) | 3x | Informal Jul 7 |
+| Terraform = direct API (Config proactive blind, only SCP+detective) | 3x | Informal Jul 7 |
+| State Manager dynamic targeting (tag removed = skipped) | 3x | Informal Jul 7 |
+| OutsideAWS + shared role + API up = TokenIssueTime safe | 3x | Informal Jul 7 |
+| InsideAWS + shared role = SG isolation (not TokenIssueTime) | 4x | Informal Jul 7 |
+| Kinesis timeout = dual SGs (Lambda outbound + endpoint inbound) | 3x | Informal Jul 7 |
+| GD needs threat intel match (unknown bad IP = silent) | 3x | Informal Jul 7 |
 
 ---
 
