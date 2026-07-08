@@ -5,17 +5,17 @@
 
 ---
 
-## Current Week: 3 (Jun 30 - Jul 6) — D1 Weak Areas + cfn-guard + State Manager
+## Current Week: 4 (Jul 7-13) — NEVER-SEEN BLITZ 2: VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced
 
-**Focus:** D1 Detection remaining wording traps + CloudFormation Guard (policy-as-code) + SSM State Manager (deeper variants)
+**Focus:** Never-seen topics from blueprint + harder variants of partially-tested topics
 
 **Generate:** 25 questions, killer difficulty
 
 **Structure:**
-- Q1-8: D1 Detection (StopLogging detection mechanisms, GuardDuty ≠ failed attempts, Access Analyzer static vs GD dynamic, EventBridge vs Config speed, CW Logs Insights vs Detective)
-- Q9-14: CloudFormation Guard (cfn-guard rules, CI/CD integration, vs CF Hooks vs SCP, validate template content)
-- Q15-20: State Manager (dual triggers, vs Config remediation, vs Session Manager, desired-state vs reactive, schedule enforcement)
-- Q21-25: Cross-domain killers mixing all Week 3 topics with Dojo-style wording traps
+- Q1-8: VPC Lattice (service-to-service auth, auth policies, cross-account, RAM sharing, vs API Gateway)
+- Q9-14: WAF Bot Control (challenge action, CAPTCHA, scope-down statements, mobile app exemption, token challenges)
+- Q15-20: CodeGuru Security (SAST vs Inspector CVE, pipeline integration, hardcoded secrets, OWASP detection)
+- Q21-25: Cross-domain killers mixing Week 4 topics with D1/D4/D6 patterns
 
 ---
 
