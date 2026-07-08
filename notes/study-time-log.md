@@ -73,4 +73,4 @@
 | 116 | 2026-06-30 | 13:54 | 22:02 | 488 | Red-priority kill drill (novel angles, killer difficulty) + D1 uplift + D2/D3/D6 recovery + rapid-fire + extended D1 |
 | 117 | 2026-07-01 | 08:52 | 09:29 | 37 | D2/D3/D6 killer uplift — novel forensics + enforcement + network |
 | 118 | 2026-07-02 | 15:22 | 15:35 | 13 | D2+D6 killer drill — novel operational containment + governance gaps (8 Qs) |
-| 119 | 2026-07-08 | 10:46 | | | Week 3 drill — cfn-guard, Config proactive, State Manager, cross-domain killers (25 Qs) |
+| 119 | 2026-07-08 | 10:46 | 13:03 | 137 | Week 3 drill (25 Qs, 76%) + re-tests (20 Qs: cfn-guard, RCP scope, credential leak, cross-domain) |
