@@ -25,6 +25,38 @@
 | **Cost** | Lower | Higher |
 | **Exam signal** | "known bot" / "obvious crawler" | "distributed" / "rotating" / "low-volume per IP" |
 
+### Common CATCHES (known signatures):
+```
+✅ User-Agent: Python-Requests/2.28
+✅ User-Agent: curl/7.68
+✅ User-Agent: scrapy/2.5
+✅ User-Agent: wget/1.21
+✅ Known bot IP addresses (AWS threat intel)
+✅ Any FIXED, KNOWN pattern that doesn't change
+```
+
+### Common MISSES (evasion techniques):
+```
+❌ Rotating User-Agent every request (no stable signature)
+❌ Rotating IPs (no stable IP to block)
+❌ Low volume per IP (below rate threshold)
+❌ Headless browsers (look like real browsers)
+```
+
+### Targeted CATCHES (behavioral):
+```
+✅ Rotating User-Agent (tracks by JS token, not headers)
+✅ Rotating IPs (session fingerprinting, not IP-based)
+✅ Headless browsers (interaction pattern analysis)
+✅ Distributed low-volume attacks (correlates across sessions)
+```
+
+### Decision Rule:
+```
+"Bot uses known/fixed signature" → Common handles it
+"Bot rotates/evades/distributes"  → Targeted required
+```
+
 ---
 
 ## Challenge vs CAPTCHA vs Scope-Down
@@ -81,3 +113,4 @@ Scope-down = "only apply this rule group to requests matching THIS condition." E
 - **Common = known patterns. Targeted = behavioral + tokens.** "Rotating/distributed" = always Targeted.
 - **Verified bots (Google) = allowed by default.** Unverified = challenged/blocked by default.
 - **Scope-down = surgical exemption.** Identify known-good by header, IP, or path → exclude from rule group.
+- **WAF rules = priority-based evaluation.** Lowest number = first evaluated. First match wins. No inherent precedence between rule types — YOU set the order.
