@@ -74,3 +74,4 @@
 | 117 | 2026-07-01 | 08:52 | 09:29 | 37 | D2/D3/D6 killer uplift — novel forensics + enforcement + network |
 | 118 | 2026-07-02 | 15:22 | 15:35 | 13 | D2+D6 killer drill — novel operational containment + governance gaps (8 Qs) |
 | 119 | 2026-07-08 | 10:46 | 13:03 | 137 | Week 3 drill (25 Qs, 76%) + re-tests (20 Qs: cfn-guard, RCP scope, credential leak, cross-domain) |
+| 120 | 2026-07-08 | 21:27 | 21:43 | 16 | Evening session — RCP scope (3/5) + D2 ordering (7/10) + credential leak (5/5) |
