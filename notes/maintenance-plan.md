@@ -24,7 +24,7 @@ Read section → close eyes → recall 3 rules.
 | 1 | Jun 16-22 | Novel topics: ACM cross-region, IoT ThingName, Kinesis+OpenSearch, Config custom rules | — (recent Session 86-90 gaps) | ✅ |
 | 2 | Jun 23-29 | **NEVER-SEEN BLITZ 1:** API Gateway security, CF Field-Level Encryption, Inspector SBOM, Macie custom identifiers, S3 Access Grants | 4 new topics | ⬜ |
 | 3 | Jun 30 - Jul 6 | D1 weak areas + CloudFormation Guard, SSM State Manager | 2 new topics | ✅ |
-| 4 | Jul 7-13 | **NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced | 3 new topics | ⬜ |
+| 4 | Jul 7-13 | **NEVER-SEEN BLITZ 2:** VPC Lattice, WAF Bot Control, CodeGuru Security, Private CA advanced | 3 new topics | ✅ |
 | 5 | Jul 14-20 | Cross-domain killer + Data Lifecycle Manager, DataSync, Well-Architected Tool, EMR inter-node | 4 new topics | ⬜ |
 | 6 | Jul 21-27 | Re-test all remaining errors from Sessions 81+ | — (consolidation) | ⬜ |
 | 7 | Jul 28 - Aug 3 | **NEVER-SEEN BLITZ 3:** Resilience Hub, FIS, Application Recovery Controller, Automated Forensics Orchestrator, SageMaker IR | 5 new topics | ⬜ |
