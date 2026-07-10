@@ -114,3 +114,6 @@ Scope-down = "only apply this rule group to requests matching THIS condition." E
 - **Verified bots (Google) = allowed by default.** Unverified = challenged/blocked by default.
 - **Scope-down = surgical exemption.** Identify known-good by header, IP, or path → exclude from rule group.
 - **WAF rules = priority-based evaluation.** Lowest number = first evaluated. First match wins. No inherent precedence between rule types — YOU set the order.
+- **BLOCK/ALLOW = terminates evaluation.** COUNT = continues to next rule. First BLOCK/ALLOW that matches = done.
+- **"High volume one IP" = rate-based rule.** "Known bot signature" = Common. "Evasive rotating" = Targeted. Three SEPARATE rule types in your Web ACL.
+- **Exam trap:** If priorities ARE stated → use them. If NOT stated → answer is "depends on priority order."
