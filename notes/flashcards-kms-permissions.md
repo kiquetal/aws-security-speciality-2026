@@ -34,13 +34,14 @@
 | **CRR Replication Role** | Decrypt(src) + GenerateDataKey(dest) + GetObjectVersionForReplication | Mnemonic: D-G-F |
 | **CloudFront OAC + SSE-KMS** | `kms:Decrypt` on CF service principal | Key policy must grant `cloudfront.amazonaws.com` |
 | **FSx Lustre + SSE-KMS S3** | Encrypt + Decrypt + GenerateDataKey + DescribeKey | Key policy must grant `fsx.amazonaws.com` |
+| **EFS (encrypted)** | `kms:CreateGrant` + `kms:GenerateDataKeyWithoutPlaintext` + `kms:Decrypt` + `kms:DescribeKey` | Delegates via grants (like EBS). Encryption = creation-time ONLY. |
 
 ---
 
 ## Rules to Memorize
 
 1. **S3 NEVER uses `kms:Encrypt`** — always GenerateDataKey (envelope encryption)
-2. **`kms:CreateGrant` = services that delegate to backends** — EBS, DynamoDB, RDS, Redshift
+2. **`kms:CreateGrant` = services that delegate to backends** — EBS, DynamoDB, RDS, Redshift, EFS
 3. **Kinesis does NOT use CreateGrant** — it uses Decrypt + DescribeKey directly
 4. **CRR dest = GenerateDataKey (not Encrypt)** — same envelope rule as any S3 write
 5. **Multipart = GenerateDataKey + Decrypt** — the Decrypt is for reassembly at CompleteMultipartUpload
