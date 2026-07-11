@@ -6,6 +6,8 @@
 
 ## D4: Identity & Access Management (20%)
 
+---
+
 ### Policy Layers
 - SCP restricts your principals. RCP restricts your resources — blocks external callers that SCPs can't touch.
 - 🧠 **SCP is a CEILING (allowlist).** If an action isn't in the SCP Allow, it's implicitly denied — IAM policy Allow is irrelevant. SCP Allow ec2+lambda only → s3:* in IAM = denied.
@@ -14,15 +16,21 @@
 - Delegation pattern: Deny CreateRole without boundary + Deny remove/swap boundary = safe self-service IAM.
 - 🧠 **SCP questions: read the ATTACHMENT TARGET first (OU vs account), not the JSON.** "Existing + future accounts" = attach to OU. Attach to individual accounts = new accounts miss it.
 
+---
+
 ### Data Perimeter
 - 🧠 **RCP blocks outsiders IN. SCP blocks insiders OUT.** Full data perimeter = both together. Bucket policy per-bucket doesn't scale org-wide.
 - 🧠 **RCP protects YOUR resources only (inbound). Outbound to external resources = SCP's job.** If your SLR replicates to a partner's bucket, RCP doesn't apply — the partner's bucket isn't your resource.
+
+---
 
 ### Cross-Account
 - RAM opens, RCP closes. RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.
 - RAM doesn't support KMS. Use KMS Grants for per-operation, per-principal, revocable cross-account key access.
 - RAM supports: Transit Gateways, Subnets, Route 53 Resolver rules, DNS Firewall rule groups, Aurora DB clusters, License Manager, EC2 Image Builder. NOT S3, NOT KMS.
 - RCP DOES support KMS (also S3, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito). Don't confuse with RAM's list.
+
+---
 
 ### STS
 - Cross-account KMS always needs BOTH sides: key policy (Account A) + identity policy (Account B). Resource policy alone is never enough for KMS.
@@ -39,11 +47,15 @@
 - ⚠️ **SAME-ACCOUNT ONLY.** The resource-policy bypass of session policies and boundaries ONLY works same-account. Cross-account, session policy ceiling ALWAYS applies — no bypass possible.
 - SCPs and RCPs can NEVER be bypassed — not by resource-based policies, not by anything. Only session policies and boundaries have the resource-policy bypass exception (same-account only).
 
+---
+
 ### ABAC
 - PrincipalTag = who. ResourceTag = what. RequestTag = what you're sending. Three different tags, three different moments.
 - RequestTag = creation time ("must tag"). ResourceTag = access time ("can only touch matching"). Don't confuse them.
 - 🧠 **"Request = birth certificate (creation). Resource = ID badge (access)."**
 - ResourceTag for access control (StartInstances, StopInstances). RequestTag for creation enforcement (RunInstances). They are NOT interchangeable.
+
+---
 
 ### Identity Center
 - Identity Center = workforce SSO. Cognito = customer apps. Never mix them.
@@ -51,6 +63,8 @@
 - Only ONE identity source at a time: built-in OR AD OR external IdP (SAML 2.0).
 - Permission set = IAM role auto-created in target accounts. No manual role management.
 - 🧠 **SCIM = auto-sync users + groups from IdP.** New user added to group in Okta → auto-inherits permission set assignment. No manual action in Identity Center.
+
+---
 
 ### Directory Service
 - 🧠 **Simple AD = Samba (no trusts, no RDS SQL, no Identity Center). AD Connector = proxy (no data in AWS, no trusts). Managed AD = full MS AD (trusts, RDS SQL, Identity Center).**
@@ -64,7 +78,11 @@
 
 ---
 
+---
+
 ## D5: Data Protection (18%)
+
+---
 
 ### S3
 - `s3:prefix` condition key ONLY works with `s3:ListBucket` (bucket-level). For object-level path restriction (GetObject, PutObject), use a variable in the Resource ARN instead.
@@ -81,6 +99,8 @@
 - 🧠 **Config delivery to S3 = bucket policy needs `s3:PutObject` + `s3:GetBucketAcl` for `config.amazonaws.com`.** Same ACL-check pattern — service verifies bucket ownership before writing.
 - 🧠 **S3 Batch Operations cross-account: identity policy alone is insufficient.** Destination bucket policies must also grant the batch job role. Same "both sides" rule as all cross-account S3.
 - 🧠 **S3 Batch Operations = regional.** Job + manifest + target bucket must ALL be in the same region. No cross-region support.
+
+---
 
 ### KMS
 - 🧠 **Sign = private key → verify = public key → integrity + non-repudiation. Encrypt = public key → decrypt = private key → confidentiality.** Direction determines the security property.
@@ -116,6 +136,8 @@
 - 🧠 **CRR preserves source custom encryption context alongside S3 system context.** If dest key policy uses strict conditions, custom context from source causes mismatch.
 - 🧠 **DynamoDB + customer-managed KMS = needs `kms:CreateGrant` + `kms:DescribeKey`.** DynamoDB delegates via grants internally (like EBS). Never uses kms:Encrypt.
 
+---
+
 ### Secrets Manager
 - 🧠 **"Retrieve secrets at boot/initialization" = instance role + runtime API call (SSM or SM). CF `ValueFrom` = deploy-time injection (secret visible in stack, wrong timing).** Exam says "during bootstrapping" = boot time, not deploy time.
 - Rotation doesn't re-authenticate open connections. Old connections keep working until closed. Compromised? Kill connections directly.
@@ -124,12 +146,16 @@
 - 🧠 **"Credentials available in DR region" = Secrets Manager cross-region replication.** MRK replicates key material, not the secret itself. Different layers.
 - 🧠 **"Access Denied on DATABASE after rotation" = rotation Lambda failed to update DB password.** Secret changed but DB didn't. "Access Denied on Secrets Manager" = IAM problem. Different layers.
 
+---
+
 ### Data Masking (New in C03)
 - "Mask PII in logs" → **CloudWatch Logs data protection policy**. Real-time, no app changes, managed data identifiers.
 - "Find PII in S3" → **Macie**. Completely different service, S3 only.
 - SNS message data protection = same concept for SNS topics.
 - 🧠 **CW Logs data protection has TWO outputs:** (1) Masking = `***` in original log group. (2) Audit = record of what was detected sent to separate destination (CW log group / S3 / Firehose).
 - 🧠 **"Audit what was masked" = data protection audit destination. "Audit who viewed raw data" = CloudTrail (logs:Unmask calls).** Different questions, different answers.
+
+---
 
 ### Encryption in Transit (New in C03)
 - "Encrypt between instances, no app changes" → **Nitro inter-instance encryption**. Automatic, hardware-level, zero config.
@@ -141,18 +167,26 @@
 - 🧠 **State Manager = "enforce desired state on schedule" (proactive). Session Manager = "connect to instance remotely" (interactive). Config remediation = "detect drift then fix" (reactive, has latency).** "Ensure X applied every 30 min + on launch" = State Manager.
 - 🧠 **Inspector SBOM = on-demand API only (no built-in scheduler).** Schedule with EventBridge + Lambda calling `CreateSbomExport`. Export needs bucket policy for `inspector2.amazonaws.com`.
 
+---
+
 ### Detect vs Prevent (D5 Trap)
 - 🧠 **"Detect external decryption" = GuardDuty S3 Protection. "Prevent external decryption" = KMS key policy condition.** The verb tells you the service.
 
 ---
 
+---
+
 ## D3: Infrastructure Security (18%)
+
+---
 
 ### Firewalls
 - Network Firewall: 1 endpoint per AZ, dedicated firewall subnet, route tables direct traffic through it. ~$288/month per AZ.
 - Stateless evaluated FIRST. If stateless says "pass" → skips stateful entirely. "Forward" → sends to stateful engine.
 - TLS inspection requires a CA certificate in ACM — firewall decrypts, inspects, re-encrypts (MITM pattern).
 - DNS Firewall = domain resolution filtering (VPC-level). Network Firewall = traffic content inspection (subnet-level). Different layers.
+
+---
 
 ### Network
 - Gateway endpoint (S3, DynamoDB) = free, route table entry. Interface endpoint = ENI + PrivateLink, costs money, needs SG.
@@ -172,7 +206,11 @@
 - 🧠 **IPv4 outbound-only = NAT Gateway. IPv6 outbound-only = Egress-Only Internet Gateway.** NAT doesn't exist for IPv6 — all IPv6 is globally routable. Egress-only IGW = one-way gate (outbound yes, inbound no).
 - 🧠 **"Individual remote users (home)" = Client VPN (SSL). "Two fixed networks (office↔AWS)" = Site-to-Site VPN (IPsec). "Physical dedicated link" = Direct Connect.**
 
+---
+
 ### Troubleshooting
+
+---
 
 ### Edge
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
@@ -186,6 +224,8 @@
 - 🧠 **WAF rate-based types: Blanket (all pages) vs URI-specific (one path) vs IP reputation (blocklist).** "Attack on /login" = URI-specific. Match scope of response to scope of attack.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
 
+---
+
 ### API Gateway Security
 - 🧠 **API Gateway mTLS = custom domain name + S3 truststore (PEM file + object version).** Not ACM. Not Lambda authorizer. mTLS only works on custom domains, never on default execute-api endpoint.
 - 🧠 **mTLS S3 bucket MUST have versioning enabled.** API Gateway requires an explicit object version reference. No versioning = domain creation fails at setup.
@@ -198,6 +238,8 @@
 - 🧠 **Private API = VPC endpoint only.** Resource policy restricts to `vpce-xxx`. Endpoint SG controls which clients can reach the endpoint (inbound 443).
 - 🧠 **Private API timeout = Resource Policy rejection (not always network).** If endpoint SG and Lambda SG are fine, check Resource Policy `aws:SourceVpce` condition.
 - 🧠 **Interface endpoint + private DNS ON = hijacks ALL DNS for that service in your VPC.** Good: call private APIs via normal URL. Bad: public APIs for that same service become unreachable from your VPC. Need both? Keep private DNS OFF, use vpce-specific URL for private API.
+
+---
 
 ### Troubleshooting
 - 🧠 **Timeout = network problem (SG, NACL, routing, missing endpoint). Access Denied = permissions problem (IAM, policy, key policy).** The error type tells you where to look.
@@ -213,7 +255,11 @@
 
 ---
 
+---
+
 ## D1: Detection (16%)
+
+---
 
 ### Service Selection
 - GuardDuty = active threats NOW (C2, crypto mining, exfil). Inspector = known CVEs (software vulns). Macie = sensitive data in S3.
@@ -236,6 +282,8 @@
 - 🧠 **"Detect API call fast + least overhead" + org trail exists = EventBridge rule in management account.** Near real-time, one rule. Config is slower + heavier — use for remediation, not pure fast detection.
 - 🧠 **"Detect specific API call fast" = EventBridge on CloudTrail. "Detect malicious behavior" = GuardDuty.** GuardDuty doesn't alert on policy changes or blocked attempts.
 
+---
+
 ### GuardDuty Operational
 - 🧠 **GuardDuty is REGIONAL.** Must enable in every region where workloads run. No findings from a region where it's not enabled.
 - 🧠 **Delegated admin ≠ auto-enabled everywhere.** Delegated admin = WHO manages. Regional = WHERE it runs. Independent axes. Must enable per-region THEN auto-enable handles future accounts in THAT region.
@@ -253,6 +301,8 @@
 - 🧠 **GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet):** correlates multiple findings into attack sequences in the GD console. If tested, answer = "Extended Threat Detection." Otherwise "correlate/investigate" = Detective.
 - 🧠 **GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.
 - 🧠 **Trusted IP list = nuclear (blinds GD to ALL findings from that IP). Suppression rule = surgical (archives ONE finding type from that IP).** Trusted IP list is NOT a filter field inside suppression rules — it's a separate mechanism.
+
+---
 
 ### Log Sources
 - 🧠 **ELB access logs → S3 ONLY (never CW Logs directly).** Search = Athena. Metrics = Athena query → PutMetricData to CloudWatch. CW metric filters only work on CW Logs log groups, not S3 files.
@@ -288,6 +338,8 @@
   - WAF Logs → CW Logs = **log group resource policy**, S3 = bucket policy, Firehose = IAM role
 - 🧠 **CW Logs as destination = usually log group resource policy (service principal).** Exception: VPC Flow Logs uses IAM role for everything.
 
+---
+
 ### CloudTrail / Logging
 - CloudTrail Lake = its own managed data store, SQL, near real-time, dashboards. NOT S3, NOT OCSF.
 - 🧠 **CloudTrail Lake no backfill — events before EDS creation are never ingested.** "Zero results" + old data = no backfill, not ingestion delay.
@@ -308,6 +360,8 @@
 - 🧠 **CW metric filter: metric value must be 1 (not 0).** Value=0 means every match publishes nothing — alarm threshold >= 1 never fires. Common troubleshooting trap.
 - 🧠 **StopLogging kills its own CW Logs delivery.** Metric filter on the log group can never detect StopLogging — use EventBridge instead (receives from CloudTrail's management event stream directly).
 - 🧠 **CloudTrail data events (GetObject, PutObject, Decrypt, Invoke) are NOT logged by default.** Only management events are. If a question says "CloudTrail recorded X" where X is a data operation — check if data events are explicitly enabled. Not stated = not logged.
+
+---
 
 ---
 
@@ -341,6 +395,8 @@
 - 🧠 **DNSSEC trust chain:** Root → `.com` (DS) → `example.com` (DS) → `api.example.com` (KSK→ZSK→records). Each parent holds a DS record pointing to child's KSK. Missing DS = validating resolvers return SERVFAIL, non-validating work fine. Fix: add DS record in parent zone manually after enabling DNSSEC signing.
 - 🧠 **Network Firewall = inline IDS/IPS (inspect + block). Traffic Mirroring = passive copy (doesn't block).** "IDS" in question = Network Firewall.
 - 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance.
+
+---
 
 ---
 
@@ -390,6 +446,8 @@
 - 🧠 **Standards evaluation latency at scale.** Enabling SH standards across 200 accounts = 2-24 hours for findings (Config evaluation at scale). Not minutes.
 ---
 
+---
+
 ## Quotas That Trick You (4-5-8-32-5120)
 
 | Service | Limit | Value |
@@ -409,6 +467,8 @@
 
 ---
 
+---
+
 ## GenAI / ML / New Services (SCS-C03 additions)
 
 - 🧠 **Bedrock Guardrails = LLM content filtering (prompt injection, PII, topics). WAF = HTTP filtering. Different layers.**
@@ -424,6 +484,8 @@
 - 🧠 **FSx for Lustre = ALWAYS encrypted (XTS-AES-256), symmetric KMS only, VPC-only.**
 - 🧠 **FSx linked to SSE-KMS S3 bucket: key policy must grant `fsx.amazonaws.com`.** Same pattern as CloudFront OAC.
 - 🧠 **FSx Scratch = no backups, no replication (temp). Persistent = backups + within-AZ replication.**
+
+---
 
 ---
 
