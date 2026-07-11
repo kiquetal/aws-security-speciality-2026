@@ -310,6 +310,10 @@
 - GuardDuty reads BOTH: DNS logs (domain) + VPC Flow Logs (traffic volume/destination). That's why it catches C2 that other services miss.
 - 🧠 **Log source SCOPE (what each sees):**
 
+---
+
+### Log Source Scope Table
+
 | Log Source | Sees What | Key Exam Signal |
 |---|---|---|
 | **VPC Flow Logs** | IP/port per ENI (intra-subnet, intra-VPC) | "lateral movement", "same subnet" |
@@ -319,7 +323,9 @@
 | **R53 Resolver Query Logging** | Queries FROM your VPC (internal lookups) | "C2 domains", "VPC DNS" |
 | **CloudTrail** | AWS API calls | "who changed", "API call" |
 
-- 🧠 **Log delivery destinations (exam-critical table):**
+---
+
+### Log Delivery Destinations
 
 | Log Source | S3 | CW Logs | Firehose | EventBridge |
 |---|---|---|---|---|
@@ -330,13 +336,16 @@
 | **R53 DNS query logging (public)** | ❌ | ✅ only | ❌ | ❌ |
 | **R53 Resolver query logging (VPC)** | ✅ | ✅ | ✅ | ❌ |
 
-- 🧠 **VPC Flow Logs = only service using IAM role for ALL delivery targets (S3, CloudWatch Logs, Kinesis Firehose).** CloudTrail uses bucket policy for S3, not an IAM role.
-- 🧠 **Log delivery mechanisms:**
+---
+
+### Log Delivery Mechanisms
   - VPC Flow Logs → S3/CW Logs/Firehose = **IAM role** (all three)
   - CloudTrail → S3 = **bucket policy**, CW Logs = **IAM role**, EventBridge = automatic
   - Route 53 Resolver → CW Logs = **log group resource policy**, S3 = bucket policy, Firehose = IAM role
   - WAF Logs → CW Logs = **log group resource policy**, S3 = bucket policy, Firehose = IAM role
+- 🧠 **VPC Flow Logs = only service using IAM role for ALL delivery targets.**
 - 🧠 **CW Logs as destination = usually log group resource policy (service principal).** Exception: VPC Flow Logs uses IAM role for everything.
+- 🧠 **"Old Four" that need `s3:GetBucketAcl` for S3 delivery:** CloudTrail, Config, ELB, S3 server access logging. Legacy ACL ownership check. Modern services (GuardDuty, Inspector, Macie, Security Lake) use bucket policy with service principal instead.
 
 ---
 
