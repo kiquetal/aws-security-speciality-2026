@@ -96,6 +96,7 @@
 - 🧠 **S3 server access logging = ACLs (legacy).** Target logging bucket needs WRITE + READ_ACP ACL for log delivery group. Not bucket policies.
 - 🧠 **BucketOwnerEnforced (ACLs disabled) = S3 access logging BREAKS.** Must re-enable ACLs (BucketOwnerPreferred) + grant log-delivery group. Config remediation for logging also needs `s3:GetBucketAcl`.
 - 🧠 **Config delivery to S3 = bucket policy needs `s3:PutObject` + `s3:GetBucketAcl` for `config.amazonaws.com`.** Same ACL-check pattern — service verifies bucket ownership before writing.
+- 🧠 **Config delivery to S3 = bucket policy needs `s3:PutObject` + `s3:GetBucketAcl` for `config.amazonaws.com`.** Same ACL-check pattern — service verifies bucket ownership before writing.
 - 🧠 **S3 Batch Operations cross-account: identity policy alone is insufficient.** Destination bucket policies must also grant the batch job role. Same "both sides" rule as all cross-account S3.
 - 🧠 **S3 Batch Operations = regional.** Job + manifest + target bucket must ALL be in the same region. No cross-region support.
 
