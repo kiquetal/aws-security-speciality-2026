@@ -78,8 +78,6 @@
 
 ---
 
----
-
 ## D5: Data Protection (18%)
 
 ---
@@ -174,8 +172,6 @@
 
 ---
 
----
-
 ## D3: Infrastructure Security (18%)
 
 ---
@@ -252,8 +248,6 @@
 - 🧠 **IoT Core cert revocation = instant.** Registry status checked at TLS handshake — no CRL propagation delay.
 - 🧠 **Flow Log: inbound ACCEPT + outbound REJECT = always NACL.** SGs are stateful — accepted inbound = auto-allowed return. NACLs are stateless — need explicit outbound ephemeral port rule.
 - 🧠 **VPC Flow Logs = intra-VPC (ENI-level, sees same-subnet traffic). TGW Flow Logs = cross-VPC (sees traffic traversing the transit gateway hub).** Each log sees traffic at ITS layer only.
-
----
 
 ---
 
@@ -335,6 +329,8 @@
 | **WAF Logs** | ✅ | ✅ | ✅ | ❌ |
 | **R53 DNS query logging (public)** | ❌ | ✅ only | ❌ | ❌ |
 | **R53 Resolver query logging (VPC)** | ✅ | ✅ | ✅ | ❌ |
+| **S3 Server Access Logs** | ✅ | ❌ | ❌ | ❌ |
+| **CloudFront Access Logs** | ✅ | ❌ | ❌ | ❌ |
 
 ---
 
@@ -372,8 +368,6 @@
 
 ---
 
----
-
 ## D2: Incident Response (14%)
 - IR sequence: Acquire (metadata + EBS snapshot + no-reboot AMI for memory) → Isolate (swap SG to deny-all) → Investigate (Detective, forensics account) → Report (SNS, S3). NEVER terminate first.
 - 🧠 **ASG = detach/suspend FIRST (protect evidence from auto-termination), THEN acquire → isolate.** No ASG = acquire before isolate directly.
@@ -385,27 +379,29 @@
 - 🧠 **"Assess RTO/RPO for auditors" = Resilience Hub (analyze architecture). "Test IR plan by breaking things" = FIS (inject chaos). "Shift traffic from bad AZ" = ARC zonal shift (recover).** Three verbs: assess → test → recover.
 - 🧠 **`CreateSampleFindings` = test GuardDuty → EventBridge → Step Functions pipeline end-to-end without a real incident.** FIS injects infra failures (AZ/network), NOT security findings.
 - Revoke compromised sessions: inline Deny with `aws:TokenIssueTime` < timestamp on the role.
+
+---
+
 - 🧠 **OutsideAWS = TokenIssueTime (creds used externally, instance gets fresh ones). InsideAWS = deny-all SG on attacker's instance (TokenIssueTime would break both instances sharing same role).**
 - 🧠 **OutsideAWS + SHARED ROLE = never TokenIssueTime (kills all instances). Use deny-all SG or NACL on compromised only.**
 - 🧠 **OutsideAWS + can't stop instance: TokenIssueTime (stop attacker) + no-reboot AMI (if memory requested) + EBS snapshot (disk) + IMDSv2 hop limit 1 (prevent future SSRF). Deny-all SG kills legitimate traffic — wrong choice if API must stay up.**
 - 🧠 **C2Activity + API must stay up: Network Firewall DROP on C2 IP (surgical). Deny-all SG = nuclear (kills all traffic). "Preserve evidence" in same question = MUST include EBS snapshot.**
 - 🧠 **Credential leak IR (keys on GitHub): Deactivate exposed keys + attach inline Deny-all to user (covers second key/console/sessions).** Contain ALL access paths BEFORE investigating. Detective comes after containment.
 - 🧠 **Compromised ROLE = TokenIssueTime (only temp creds exist). Compromised IAM USER = Deny * on user (keys + console + sessions = persistent creds).** TokenIssueTime only kills STS tokens, not access keys or console passwords.
+
+---
+
 - 🧠 **S3 Access Grants scope access by prefix (location). Overlapping prefixes = unintended cross-department access.** This is the #1 operational misconfiguration — not IAM bypass.
 - 🧠 **"Windows boot issue + collect memory dump" = EC2Rescue for Windows.** SSM agent requires running OS — can't help if instance won't boot.
 - 🧠 **Session Manager logging = built-in "upload session logs" (records keystrokes/commands).** CloudWatch Agent = OS/app logs. Different things. "Record session activity" = Session Manager preferences.
 - 🧠 **Route 53 TWO logging features:** DNS query logging = public hosted zone queries (CW Logs only). Resolver query logging = VPC outbound queries (CW Logs, S3, Firehose). "Public DNS queries" = DNS query logging.
 - 🧠 **JWT decode ≠ JWT verify.** Decode = read payload (no tamper detection). Verify = check cryptographic signature (aws-jwt-verify). "Most secure" = always verify.
 - 🧠 **"AWS managed key" = NEVER the answer when question mentions control, policy, expiration, rotation config, or grants.** AWS managed = autopilot with no steering wheel.
-- 🧠 **"AWS managed key" = NEVER the answer when question mentions control, policy, expiration, rotation config, or grants.** AWS managed = autopilot with no steering wheel.
 - 🧠 **Config proactive evaluation = evaluates resources BEFORE CloudFormation creates them.** "Before provisioned" = proactive. "After exists" = detective. Config supports both modes.
 - 🧠 **EFS encryption = creation-time ONLY.** Cannot enable on existing file system. Must create new EFS + migrate.
 - 🧠 **DNSSEC "broken trust chain" = DS record missing in parent zone.** Always.
-- 🧠 **DNSSEC trust chain:** Root → `.com` (DS) → `example.com` (DS) → `api.example.com` (KSK→ZSK→records). Each parent holds a DS record pointing to child's KSK. Missing DS = validating resolvers return SERVFAIL, non-validating work fine. Fix: add DS record in parent zone manually after enabling DNSSEC signing.
 - 🧠 **Network Firewall = inline IDS/IPS (inspect + block). Traffic Mirroring = passive copy (doesn't block).** "IDS" in question = Network Firewall.
 - 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance.
-
----
 
 ---
 
@@ -455,8 +451,6 @@
 - 🧠 **Standards evaluation latency at scale.** Enabling SH standards across 200 accounts = 2-24 hours for findings (Config evaluation at scale). Not minutes.
 ---
 
----
-
 ## Quotas That Trick You (4-5-8-32-5120)
 
 | Service | Limit | Value |
@@ -476,8 +470,6 @@
 
 ---
 
----
-
 ## GenAI / ML / New Services (SCS-C03 additions)
 
 - 🧠 **Bedrock Guardrails = LLM content filtering (prompt injection, PII, topics). WAF = HTTP filtering. Different layers.**
@@ -493,8 +485,6 @@
 - 🧠 **FSx for Lustre = ALWAYS encrypted (XTS-AES-256), symmetric KMS only, VPC-only.**
 - 🧠 **FSx linked to SSE-KMS S3 bucket: key policy must grant `fsx.amazonaws.com`.** Same pattern as CloudFront OAC.
 - 🧠 **FSx Scratch = no backups, no replication (temp). Persistent = backups + within-AZ replication.**
-
----
 
 ---
 
