@@ -34,7 +34,7 @@
 | **CRR Replication Role** | Decrypt(src) + GenerateDataKey(dest) + GetObjectVersionForReplication | Mnemonic: D-G-F |
 | **CloudFront OAC + SSE-KMS** | `kms:Decrypt` on CF service principal | Key policy must grant `cloudfront.amazonaws.com` |
 | **FSx Lustre + SSE-KMS S3** | Encrypt + Decrypt + GenerateDataKey + DescribeKey | Key policy must grant `fsx.amazonaws.com` |
-| **EFS (encrypted)** | `kms:CreateGrant` + `kms:GenerateDataKeyWithoutPlaintext` + `kms:Decrypt` + `kms:DescribeKey` | Delegates via grants (like EBS). Encryption = creation-time ONLY. |
+| **EFS (encrypted)** | `kms:CreateGrant` + `kms:GenerateDataKeyWithoutPlaintext` + `kms:Decrypt` + `kms:DescribeKey` | Delegates via grants (like EBS). Encryption = creation-time ONLY. New grant per mount = every EC2 mounting needs CreateGrant. |
 
 ---
 
