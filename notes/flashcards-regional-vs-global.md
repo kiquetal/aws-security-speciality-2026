@@ -32,6 +32,24 @@
 | **Route 53** | Global DNS. |
 | **CloudFront** | Global CDN. But WAF on CF = must be in us-east-1. |
 | **S3 bucket names** | Globally unique (but bucket LIVES in one region). |
+| **WAF on CloudFront** | Web ACL MUST be in us-east-1 (global). WAF on ALB = ALB's region. |
+
+---
+
+## Cross-Region Data Patterns (MRK vs Re-Encrypt)
+
+| Service | Cross-Region Method | Needs MRK? | Why |
+|---|---|---|---|
+| **DynamoDB Global Tables** | Reads locally in each region | ✅ YES | Same key material needed for local decrypt |
+| **S3 CRR** | Re-encrypts at destination | ❌ NO | Specify any dest key (GenerateDataKey) |
+| **EBS snapshot copy** | Re-encrypts at destination | ❌ NO | Specify any dest key |
+| **Secrets Manager replication** | Re-encrypts at destination | ❌ NO | Specify any dest key |
+| **RDS cross-region replica** | Re-encrypts at destination | ❌ NO | Specify any dest key |
+
+```
+MRK REQUIRED = "reads locally without re-encryption" (DynamoDB Global Tables only)
+MRK NOT REQUIRED = "re-encrypts at destination" (everything else)
+```
 
 ---
 
