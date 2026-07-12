@@ -129,7 +129,7 @@
 - 🧠 **SSE-S3 already generates a unique DEK per object.** Envelope encryption = every object gets its own key automatically. "Different key per file" = SSE-S3 (zero config).
 - 🧠 **Imported key material = immediate delete (DeleteImportedKeyMaterial).** No 7-day wait. ScheduleKeyDeletion minimum = 7 days. "Within 24 hours" = only imported satisfies.
 - 🧠 **KMS: creator ≠ owner, root ≠ full access.** Nobody has automatic access. Must be explicitly granted via key policy/IAM/grant. kms:CreateKey holder CAN set initial key policy.
-- 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.
+- 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt.** Same upload/download pattern as S3. No DescribeKey needed for consumer (that's for stream admins only).
 - 🧠 **CRR + SSE-KMS: source = kms:Decrypt. Destination = kms:GenerateDataKey (not kms:Encrypt).** Same rule as all S3 uploads — S3 never uses kms:Encrypt.
 - 🧠 **CRR replication role needs exactly THREE permissions: (1) kms:Decrypt on source key, (2) kms:GenerateDataKey on dest key, (3) s3:GetObjectVersionForReplication on source.** Mnemonic: D-G-F (Decrypt, GenerateDataKey, ForReplication). GetObjectVersion alone is NOT enough — ForReplication is the replication-specific permission.
 - 🧠 **CRR rewrites encryption context to destination bucket ARN.** Key policy conditions on dest key must reference dest bucket, not source.
@@ -161,7 +161,7 @@
 - "Encrypt between instances, no app changes" → **Nitro inter-instance encryption**. Automatic, hardware-level, zero config.
 - Covers EC2-to-EC2, EKS inter-node, SageMaker. Only Nitro-based instance types.
 - 🧠 **EMR in-transit ≠ Nitro.** EMR inter-node encryption = EMR security configuration + in-transit enabled + PEM certificates (Private CA). Nitro is NOT the answer for EMR compliance.
-- 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Not CreateGrant — Kinesis doesn't delegate via grants.
+- 🧠 **Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt.** Not CreateGrant — Kinesis doesn't delegate via grants.
 - 🧠 **Config org custom rule = central Lambda invoked cross-account.** Fix "Unable to invoke": Lambda resource-based policy granting `config.amazonaws.com` + `SourceAccount` condition for member accounts.
 - 🧠 **State Manager: ONE association supports BOTH OnBoot trigger + rate schedule.** Don't create two associations — one does both.
 - 🧠 **State Manager = "enforce desired state on schedule" (proactive). Session Manager = "connect to instance remotely" (interactive). Config remediation = "detect drift then fix" (reactive, has latency).** "Ensure X applied every 30 min + on launch" = State Manager.
