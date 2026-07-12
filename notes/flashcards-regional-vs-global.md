@@ -105,3 +105,4 @@ TRAP: EventBridge rule for "detect CreateAccessKey"
 - **Config aggregator = VIEW only.** Can't remediate cross-region from aggregator.
 - **Org trail = the ONE exception.** One trail, auto-covers all regions. No per-region setup.
 - **ACM: CF = us-east-1. ALB = ALB's region.** Can't share certs cross-region.
+- **DNSSEC "broken trust chain" = DS record missing in parent zone.** Always.
