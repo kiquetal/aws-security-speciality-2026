@@ -34,6 +34,45 @@
 | `aws:TagKeys` | Restrict which tag keys can be used |
 | `aws:RequestedRegion` | Restrict API calls to specific regions |
 
+---
+
+## Tag Enforcement Patterns (Exam-Critical)
+
+```
+THREE tag condition keys — THREE different moments:
+
+aws:RequestTag/Key  = what tag is being SENT in this API call (creation time)
+aws:ResourceTag/Key = what tag does the TARGET resource already HAVE (access time)
+aws:PrincipalTag/Key = what tag does the CALLER have (ABAC matching)
+```
+
+**Force tagging at creation (Null condition):**
+```json
+{
+  "Effect": "Deny",
+  "Action": "ec2:RunInstances",
+  "Resource": "*",
+  "Condition": {
+    "Null": {
+      "aws:RequestTag/CostCenter": "true"
+    }
+  }
+}
+```
+= "Deny if CostCenter tag is MISSING from request" = must tag or denied.
+
+**ABAC matching (caller tag = resource tag):**
+```json
+{
+  "Condition": {
+    "StringEquals": {
+      "aws:ResourceTag/Project": "${aws:PrincipalTag/Project}"
+    }
+  }
+}
+```
+= "You can only access resources tagged with YOUR project."
+
 ## STS / Session Keys
 
 | Key | When to Use |
