@@ -14,7 +14,7 @@
 | **EBS (start existing)** | — | Decrypt | — | ✅ Always |
 | **DynamoDB** | GenerateDataKey (via grant) | Decrypt (via grant) | DescribeKey | ✅ Always |
 | **Kinesis producer** | GenerateDataKey | — | — | ❌ |
-| **Kinesis consumer** | — | Decrypt | DescribeKey | ❌ |
+| **Kinesis consumer** | — | Decrypt | — | ❌ |
 | **Secrets Manager write** | GenerateDataKey | — | — | ❌ |
 | **Secrets Manager read** | — | Decrypt | — | ❌ |
 | **Lambda env vars** | Encrypt (only exception!) | Decrypt | <4KB direct | ❌ |
@@ -23,7 +23,7 @@
 
 1. **S3 NEVER uses kms:Encrypt** — always GenerateDataKey (envelope encryption)
 2. **CreateGrant = services with backends** — EBS, DynamoDB, RDS, Redshift (delegate to backend)
-3. **DescribeKey = Kinesis consumer + DynamoDB** — verify key access before operations
+3. **DescribeKey = DynamoDB** — verify key access before operations
 4. **Multipart adds kms:Decrypt** — reassembly decrypts individual parts
 5. **kms:Encrypt = only Lambda env vars** — <4KB direct encryption, the ONLY exception
 
