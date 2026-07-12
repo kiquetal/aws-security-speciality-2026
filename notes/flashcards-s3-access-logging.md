@@ -65,13 +65,25 @@ Permissions: WRITE + READ_ACP
 ## The BucketOwnerEnforced Trap
 
 ```
-BucketOwnerEnforced = "disable ALL ACLs on this bucket"
+S3 Object Ownership settings (3 options):
 
-IF you use BUCKET POLICY method → logging works fine ✅
-IF you use ACL method → logging BREAKS ❌ (can't set ACLs)
+1. BucketOwnerEnforced (DEFAULT since Apr 2023)
+   → ACLs DISABLED. All objects owned by bucket owner.
+   → S3 access logging via ACL method = BROKEN
+   → Must use bucket policy method for logging
 
-New buckets since April 2023 = BucketOwnerEnforced BY DEFAULT
-  → Bucket policy is the only option for new buckets
+2. BucketOwnerPreferred
+   → ACLs ENABLED. Objects uploaded with bucket-owner-full-control ACL = owned by bucket owner.
+   → S3 access logging via ACL method = WORKS ✅
+
+3. ObjectWriter
+   → ACLs ENABLED. Object owned by uploading account.
+   → S3 access logging via ACL method = WORKS ✅
+
+Summary:
+  BucketOwnerEnforced = ACLs disabled → bucket policy ONLY for logging
+  BucketOwnerPreferred or ObjectWriter = ACLs enabled → both methods work
+  New buckets since April 2023 = BucketOwnerEnforced BY DEFAULT
 ```
 
 ---
