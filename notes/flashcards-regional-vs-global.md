@@ -108,6 +108,8 @@ TRAP: EventBridge rule for "detect CreateAccessKey"
 | "ACM cert in us-east-1 for ALB in eu-west-1" | ❌ ALB cert must be in ALB's region |
 | "Org trail = per region setup" | ❌ Org trail = auto all regions (the exception) |
 | "Member calls StopLogging/DeleteTrail on org trail" | ❌ FAILS. Org trail = management account ONLY. Members can't stop/delete/modify. |
+| "Delegated admin for GuardDuty = all regions covered" | ❌ Delegated admin = WHO manages. Must still enable GD PER REGION. Independent axes. |
+| "MRK = same key policy everywhere" | ❌ Policies are INDEPENDENT per region. Update primary ≠ update replica. Must update each. |
 
 ---
 
