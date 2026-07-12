@@ -153,6 +153,34 @@ You're ready when:
 | InsideAWS + shared role = SG isolation (not TokenIssueTime) | 4x | Informal Jul 7 |
 | Kinesis timeout = dual SGs (Lambda outbound + endpoint inbound) | 3x | Informal Jul 7 |
 | GD needs threat intel match (unknown bad IP = silent) | 3x | Informal Jul 7 |
+| cfn-guard can't resolve intrinsics (!Ref, !If, !Sub) | 3x | Session 119 Jul 8 |
+| Config proactive = CF only (not direct API/Terraform) | 4x | Session 119 Jul 8 |
+| State Manager: new target = immediate first run | 3x | Session 119 Jul 8 |
+| State Manager OnBoot + rate = independent triggers | 4x | Session 119 Jul 8 |
+| State Manager blind between runs (scheduler only) | 3x | Session 119 Jul 8 |
+| Org trail immutable from members (can't stop/delete/modify) | 3x | Jul 9 |
+| Credential leak = Deny * on user + TokenIssueTime on assumed role | 5x | Jul 8 |
+| E-D-M-A ordering (Enable → Designate → Members → Auto-enable) | 3x | Jul 8 |
+| Acquire before isolate (deny-all blocks SSM) | 3x | Jul 8 |
+| ASG = detach first (protect from auto-termination) | 3x | Jul 8 |
+| VPC Lattice: network ≠ access (auth policy per service) | 5x | Jul 9 |
+| VPC Lattice: RAM shares service network cross-account | 3x | Jul 9 |
+| VPC Lattice: no NAT/IGW/peering needed | 3x | Jul 9 |
+| CodeGuru = SAST pre-deploy. Inspector = CVE post-deploy. | 5x | Jul 9 |
+| WAF priority: lowest number = first evaluated | 3x | Jul 10 |
+| WAF Bot Control: Common = signatures. Targeted = behavioral. | 3x | Jul 10 |
+| WAF scope-down = exempt known-good (server/mobile) | 4x | Jul 9 |
+| Short-lived certs = no revocation needed | 3x | Jul 10 |
+| S3 access logging: BucketOwnerEnforced breaks ACL method | 3x | Jul 12 |
+| S3 access logging: target = no SSE-KMS, no Object Lock, no Requester Pays | 3x | Jul 12 |
+| S3 access logging: logging.s3.amazonaws.com service principal | 3x | Jul 12 |
+| Config remediation for logging needs s3:GetBucketAcl | 3x | Jul 12 |
+| RCP: target mine? No → irrelevant (don't check SLR/caller) | 4x | Jul 8-10 |
+| RCP: PrincipalIsAWSService condition exempts AWS service principals | 3x | Jul 12 |
+| RCP: SLR = structural exemption (separate from service principal) | 4x | Jul 10 |
+| Security Hub = REGIONAL (not global) | 3x | Jul 12 |
+| Kinesis consumer = kms:Decrypt ONLY (not DescribeKey) | 3x | Jul 12 |
+| DynamoDB + CMK = CreateGrant + DescribeKey (confirmed from AWS docs) | 5x | Jul 12 |
 
 ---
 
