@@ -28,7 +28,7 @@
 | **DynamoDB PutItem (CMK)** | `kms:CreateGrant` + `kms:DescribeKey` | Delegates via grants like EBS |
 | **DynamoDB GetItem (CMK)** | `kms:CreateGrant` + `kms:DescribeKey` | Same — both read and write need grants |
 | **Kinesis Producer** | `kms:GenerateDataKey` | Same as S3 upload |
-| **Kinesis Consumer** | `kms:Decrypt` + `kms:DescribeKey` | NOT CreateGrant — Kinesis doesn't delegate |
+| **Kinesis Consumer** | `kms:Decrypt` | NOT CreateGrant, NOT DescribeKey — just Decrypt |
 | **CRR Source** | `kms:Decrypt` | Decrypt source key to read |
 | **CRR Destination** | `kms:GenerateDataKey` | NOT kms:Encrypt — same as any S3 upload |
 | **CRR Replication Role** | Decrypt(src) + GenerateDataKey(dest) + GetObjectVersionForReplication | Mnemonic: D-G-F |
@@ -42,10 +42,10 @@
 
 1. **S3 NEVER uses `kms:Encrypt`** — always GenerateDataKey (envelope encryption)
 2. **`kms:CreateGrant` = services that delegate to backends** — EBS, DynamoDB, RDS, Redshift, EFS
-3. **Kinesis does NOT use CreateGrant** — it uses Decrypt + DescribeKey directly
+3. **Kinesis does NOT use CreateGrant or DescribeKey** — consumer uses Decrypt only, producer uses GenerateDataKey only
 4. **CRR dest = GenerateDataKey (not Encrypt)** — same envelope rule as any S3 write
 5. **Multipart = GenerateDataKey + Decrypt** — the Decrypt is for reassembly at CompleteMultipartUpload
-6. **DescribeKey appears with**: Kinesis consumer, DynamoDB, cross-account verification
+6. **DescribeKey appears with**: DynamoDB, stream administrators (not consumers)
 
 ---
 
@@ -55,7 +55,7 @@
 "Upload/write/produce" → GenerateDataKey
 "Download/read/consume" → Decrypt
 "EBS or DynamoDB" → add CreateGrant + DescribeKey
-"Kinesis consume" → Decrypt + DescribeKey (no CreateGrant)
+"Kinesis consume" → Decrypt only (no CreateGrant, no DescribeKey)
 "CRR" → Decrypt source + GenerateDataKey dest
 "S3 anything" → NEVER kms:Encrypt
 ```
