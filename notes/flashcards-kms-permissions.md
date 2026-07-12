@@ -11,7 +11,7 @@
 | **Upload/Write/Encrypt** | `kms:GenerateDataKey` | Producer (S3 PutObject, Kinesis PutRecord, CRR dest) |
 | **Download/Read/Decrypt** | `kms:Decrypt` | Consumer (S3 GetObject, Kinesis GetRecords, CRR source) |
 | **Delegate to backend** | `kms:CreateGrant` | Services that delegate internally (EBS, DynamoDB, RDS) |
-| **Verify key metadata** | `kms:DescribeKey` | Kinesis consumer, DynamoDB, some cross-account patterns |
+| **Verify key metadata** | `kms:DescribeKey` | DynamoDB, stream administrators (not consumers) |
 | **Multipart reassembly** | `kms:Decrypt` | S3 CompleteMultipartUpload (reassembles encrypted parts) |
 
 ---
