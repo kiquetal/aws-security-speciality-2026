@@ -53,6 +53,21 @@ MRK NOT REQUIRED = "re-encrypts at destination" (everything else)
 
 ---
 
+## Multi-Endpoint Services (Timeout Trap)
+
+| Service | Endpoints Needed | Type | Miss one = |
+|---|---|---|---|
+| **SSM Session Manager** | 3: `ssm` + `ssmmessages` + `ec2messages` | Interface | Can't connect |
+| **Bedrock** | 2: `bedrock` + `bedrock-runtime` | Interface | InvokeModel times out |
+| **ECR** | 2: `ecr.api` + `ecr.dkr` | Interface | Docker pull fails |
+| **S3** | 1 | Gateway (free) | — |
+| **DynamoDB** | 1 | Gateway (free) | — |
+| **Everything else** | 1 each | Interface | — |
+
+🧠 **"Private subnet + timeout" = count the endpoints. Miss ANY one = broken.**
+
+---
+
 ## Global Service Events → us-east-1 ONLY
 
 ```
