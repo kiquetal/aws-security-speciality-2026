@@ -92,6 +92,7 @@ TRAP: EventBridge rule for "detect CreateAccessKey"
 | "One State Manager association for 3 regions" | ❌ Need one per region (regional service) |
 | "ACM cert in us-east-1 for ALB in eu-west-1" | ❌ ALB cert must be in ALB's region |
 | "Org trail = per region setup" | ❌ Org trail = auto all regions (the exception) |
+| "Member calls StopLogging/DeleteTrail on org trail" | ❌ FAILS. Org trail = management account ONLY. Members can't stop/delete/modify. |
 
 ---
 
