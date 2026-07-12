@@ -151,6 +151,21 @@ Inspector = CVE scanning (RUNNING SYSTEMS, post-deploy)
 
 ---
 
+## Advanced Exam Traps (Harder Scenarios)
+
+| Scenario | Answer | Trap |
+|---|---|---|
+| Lambda private subnet, InvokeModel times out | Missing `bedrock-runtime` VPC endpoint (need BOTH: `bedrock` + `bedrock-runtime`) | Don't pick IAM — timeout = network |
+| Model shows "available" in console but InvokeModel Access Denied | IAM policy missing `bedrock:InvokeModel` on model ARN. Simplified access ≠ IAM bypass. | Simplified access makes models visible, NOT authorized |
+| Q Business user sees HR docs they shouldn't | ACL identity mapping failed (sync between connector + Identity Center broke) | NOT "ACLs disabled" — can't disable once enabled |
+| Protect API from SQLi AND LLM from prompt injection | WAF (HTTP layer) + Guardrails (LLM layer) — BOTH needed | One alone doesn't cover both layers |
+| SCP blocks `bedrock:InvokeModel`. Can dev still use `bedrock:ApplyGuardrail`? | YES — different actions. SCP on InvokeModel doesn't block ApplyGuardrail | They're independent permissions |
+| Dev has `bedrock:ApplyGuardrail` but NO `bedrock:InvokeModel` — can they filter text? | YES — ApplyGuardrail is standalone, no model invocation needed | ApplyGuardrail ≠ InvokeModel |
+| "Audit which models were invoked + by whom" | CloudTrail (logs every InvokeModel call with caller identity) | NOT GuardDuty (doesn't monitor Bedrock) |
+| Block ONE specific model org-wide, allow all others | SCP Deny InvokeModel on THAT model ARN specifically | Don't disable all Bedrock access |
+
+---
+
 ## Exam Decision Table
 
 | Signal | Answer | NOT this |
