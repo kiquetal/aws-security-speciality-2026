@@ -249,6 +249,7 @@
 - 🧠 **IoT ThingName = bound to certificate, not physical hardware.** Stolen cert = full impersonation. Mitigation = revoke cert in IoT Core.
 - 🧠 **IoT Core cert revocation = instant.** Registry status checked at TLS handshake — no CRL propagation delay.
 - 🧠 **Flow Log: inbound ACCEPT + outbound REJECT = always NACL.** SGs are stateful — accepted inbound = auto-allowed return. NACLs are stateless — need explicit outbound ephemeral port rule.
+- 🧠 **VPC Resolver (169.254.169.253) = single feed for GuardDuty DNS + DNS Firewall + Resolver Query Logging.** On-prem AD DNS / custom DHCP = bypass = all three blind. Fix = Resolver outbound endpoint.
 - 🧠 **VPC Flow Logs = intra-VPC (ENI-level, sees same-subnet traffic). TGW Flow Logs = cross-VPC (sees traffic traversing the transit gateway hub).** Each log sees traffic at ITS layer only.
 
 ---
