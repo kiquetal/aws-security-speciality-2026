@@ -288,6 +288,7 @@
 - 🧠 **Global services (IAM, STS, CloudFront) deliver events to us-east-1 ONLY.** EventBridge rules for `CreateUser` etc must be in us-east-1.
 - 🧠 **Security Hub = dashboard (view findings). Config = remediation engine (fix resources).** SH wraps Config rules but doesn't own the fix. Auto-remediation = Config rule + SSM.
 - 🧠 **GuardDuty reads VPC Flow Logs + DNS logs via internal feed — you DON'T need to enable them yourself.** Your VPC Flow Logs are for YOUR queries (Insights, Athena). GuardDuty has its own tap.
+- 🧠 **GuardDuty foundational = CloudTrail + VPC Flow Logs + DNS. All three ALWAYS ON.** "GD doesn't analyze DNS" = WRONG distractor. DNS IS foundational.
 - 🧠 **"Unusual IP" / "never-seen location" = active threat = GuardDuty.** NOT Access Analyzer (that's permission audit, not real-time threats).
 - 🧠 **"Zero findings despite active workloads + GuardDuty confirmed enabled" = suppression rule archiving findings.** GuardDuty WILL generate findings on production — if you see none, something is hiding them.
 - 🧠 **GuardDuty doesn't fire on BLOCKED/DENIED attempts.** It detects successful anomalous access. If RCP/SCP blocks the request, no successful access occurs = no finding. Access Analyzer fires on policy (static) regardless.
