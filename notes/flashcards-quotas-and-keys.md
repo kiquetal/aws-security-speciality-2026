@@ -92,3 +92,25 @@ Cover answers. Say them out loud. Check.
 10. Exempt AWS services condition? ___
 
 Answers: 4KB, 5, 8KB, 32KB, 5120, GetCallerIdentity, aws:TokenIssueTime, 7 days, 1 hour, aws:PrincipalIsAWSService
+
+---
+
+## IAM Credential Limits Per User
+
+| Credential Type | Max | Memory Hook |
+|---|---|---|
+| **Access keys** | 2 | "2 keys = rotation without downtime" |
+| **Console password** | 1 | "One door to the console" |
+| **MFA devices** | 8 | "8 = ate MFAs (weird but true)" |
+| **SSH keys (CodeCommit)** | 5 | — |
+| **Signing certificates** | 2 | "Same as access keys" |
+
+### Drill Pattern
+
+```
+Max access keys per user?           → 2
+Max MFA devices per user?           → 8
+Max console passwords?              → 1
+"5 access keys" on exam?            → WRONG (trap distractor)
+Why 2 keys allowed?                 → Zero-downtime rotation
+```
