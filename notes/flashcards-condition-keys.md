@@ -216,6 +216,27 @@ Example: PrincipalIsAWSService:false with IfExists
   → AWS services: key absent → condition skipped → allowed
 ```
 
+### BoolIfExists vs Bool for MFA (Exam Trap)
+
+```
+SCENARIO: Deny S3 access without MFA
+
+Bool {"aws:MultiFactorAuthPresent": "false"}:
+  → Console without MFA: key = false → Deny fires ✅
+  → Console with MFA: key = true → Deny doesn't fire ✅
+  → CLI/SDK call: key ABSENT → condition FAILS → Deny DOESN'T fire → ACCESS ALLOWED ❌
+  = HOLE: programmatic calls bypass the MFA requirement!
+
+BoolIfExists {"aws:MultiFactorAuthPresent": "false"}:
+  → Console without MFA: key = false → Deny fires ✅
+  → Console with MFA: key = true → Deny doesn't fire ✅
+  → CLI/SDK call: key ABSENT → IfExists treats as TRUE → Deny fires ✅
+  = SECURE: blocks everything without MFA context
+
+RULE: MFA enforcement in Deny statements = ALWAYS use BoolIfExists
+      Plain Bool = leaves a hole for programmatic access
+```
+
 ---
 
 ## Exam Patterns (Operator + Key Combos)
