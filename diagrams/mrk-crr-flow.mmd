@@ -1,0 +1,30 @@
+---
+title: Multi-Region Key (MRK) with S3 CRR
+---
+flowchart LR
+    subgraph US_EAST["us-east-1"]
+        direction TB
+        MRK_P["MRK Primary\nmrk-abc-123\nMaterial: X\n\nKey Policy A\n(independent)"]
+        SRC["S3 Source Bucket\nreport.pdf\nencrypted with mrk-abc-123"]
+        ROLE_SRC["Replication Role\nNeeds: kms:Decrypt"]
+    end
+
+    subgraph US_WEST["us-west-1"]
+        direction TB
+        MRK_R["MRK Replica\nmrk-abc-123\nMaterial: X (SAME!)\n\nKey Policy B\n(independent)"]
+        DST["S3 Dest Bucket\nreport.pdf\nencrypted with mrk-abc-123"]
+        ROLE_DST["Replication Role\nNeeds: kms:GenerateDataKey"]
+        APP["App in us-west-1\nNeeds: kms:Decrypt\n(LOCAL call, no cross-region)"]
+    end
+
+    SRC -->|"CRR: Decrypt source\nthen re-encrypt dest"| DST
+    ROLE_SRC -->|"kms:Decrypt"| MRK_P
+    ROLE_DST -->|"kms:GenerateDataKey"| MRK_R
+    APP -->|"kms:Decrypt\n(local, fast)"| MRK_R
+
+    MRK_P -.->|"Same key ID\nSame material\nDifferent policy"| MRK_R
+
+    style MRK_P fill:#ff9900,color:#fff
+    style MRK_R fill:#ff9900,color:#fff
+    style SRC fill:#3366cc,color:#fff
+    style DST fill:#3366cc,color:#fff
