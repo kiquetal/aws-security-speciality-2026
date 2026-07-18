@@ -218,6 +218,7 @@
 - 🧠 **CW agent ships logs (not SSM agent).** SSM agent = execute commands, sessions, patching. CW agent = ship custom log files + metrics. SSM can INSTALL CW agent but can't replace it.
 - 🧠 **"Public-facing + HTTPS to customers" = inbound 0.0.0.0/0 on 443.** "Highest security" doesn't override the requirement of being publicly accessible.
 - 🧠 **ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance. HIDS inspects AFTER decryption at the host. ECDHE = ephemeral keys = PFS (past sessions safe even if key leaks later). Static RSA = no PFS.
+- 🧠 **ACM-issued cert = private key NOT exportable (can't install on EC2). Imported third-party cert = private key available (can install anywhere).** "End-to-end ALB→EC2" = import third-party cert.
 - Rate-based rule = "too many requests from one IP." Min threshold: 100 per 5 min. Bot Control = identify/manage bots.
 - 🧠 **WAF rate-based types: Blanket (all pages) vs URI-specific (one path) vs IP reputation (blocklist).** "Attack on /login" = URI-specific. Match scope of response to scope of attack.
 - Shield Advanced: $3K/month, 1-year commitment. Includes DRT, cost protection, WAF free.
