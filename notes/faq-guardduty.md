@@ -63,6 +63,24 @@
 - No agent deployed → zero runtime findings. Audit log findings still appear.
 - "Crypto miner running in pod, no GuardDuty finding" → missing Runtime Monitoring agent.
 
+### Suppression Rules vs Trusted IP List
+
+| | Suppression Rule | Trusted IP List |
+|---|---|---|
+| **Scope** | ONE finding type + specific resource (surgical) | ALL findings from that IP (nuclear) |
+| **Findings generated?** | ✅ Yes (auto-archived, auditable) | ❌ No (never created, no record) |
+| **Filter by** | Finding type + instance tag + severity + account | Public IPs only |
+| **Use case** | "Ignore brute-force on THIS server only" | "Never alert on pen-test IPs" |
+| **Instance replaced?** | Tag-based filter survives | N/A (IP-based) |
+| **Best practice** | Filter by TAG (not instance ID) | Only for known-good public IPs |
+
+**Key rules:**
+- Trusted IP list = PUBLIC IPs only (private IPs can't be added, need EIPs)
+- Suppression = findings still exist in archive (auditable). Trusted IP = findings never created.
+- "Reduce noise from known-good workload" = suppression rule (surgical)
+- "Reduce noise from pen-test IP" = Trusted IP list (if public) or suppression (if need audit trail)
+- Trusted IP list is NOT a filter field inside suppression rules — separate mechanism entirely.
+
 ### Malware Protection
 - **EBS scanning**: Once per 24 hours per instance
 - **S3 scanning**: Newly uploaded objects only

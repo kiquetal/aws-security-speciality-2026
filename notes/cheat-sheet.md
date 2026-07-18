@@ -300,6 +300,8 @@
 - 🧠 **GuardDuty Extended Threat Detection (Dec 2024, likely not testable yet):** correlates multiple findings into attack sequences in the GD console. If tested, answer = "Extended Threat Detection." Otherwise "correlate/investigate" = Detective.
 - 🧠 **GuardDuty Trusted IP list = PUBLIC IPs only.** Private IPs cannot be added. Need EIPs first. `GuardDutyExcluded` tag = Malware Protection scanning ONLY.
 - 🧠 **Trusted IP list = nuclear (blinds GD to ALL findings from that IP). Suppression rule = surgical (archives ONE finding type from that IP).** Trusted IP list is NOT a filter field inside suppression rules — it's a separate mechanism.
+- 🧠 **Suppression rule filter by TAG (not instance ID).** Instance IDs change (scaling, replacement). Tags persist. "Reduce management overhead" = tag-based filter.
+- 🧠 **Trusted IP list = nuclear (blinds GD to ALL findings from that IP). Suppression rule = surgical (archives ONE finding type from that IP).** Trusted IP list is NOT a filter field inside suppression rules — it's a separate mechanism.
 
 ---
 
