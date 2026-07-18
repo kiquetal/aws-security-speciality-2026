@@ -84,6 +84,26 @@ aws:PrincipalTag/Key = what tag does the CALLER have (ABAC matching)
 | `aws:MultiFactorAuthPresent` | Require MFA |
 | `aws:MultiFactorAuthAge` | Require RECENT MFA (max seconds since auth) |
 
+### TokenIssueTime vs MultiFactorAuthAge (Exam Trap)
+
+```
+aws:TokenIssueTime = FIXED timestamp (incident response)
+  "Deny all sessions issued before 2pm today"
+  → Manual update during incident
+  → One-time revocation
+  → Use: credentials compromised → kill old tokens
+
+aws:MultiFactorAuthAge = ROLLING window (ongoing policy)
+  "Deny if MFA was performed more than 10800 seconds ago"
+  → Continuous enforcement (no manual updates)
+  → Every request checked against current time
+  → Use: "sessions must re-MFA every 3 hours"
+
+RULE:
+  "Session valid max X hours" = MultiFactorAuthAge (rolling, ongoing)
+  "Revoke compromised sessions" = TokenIssueTime (fixed, incident)
+```
+
 ## KMS Keys
 
 | Key | When to Use |
