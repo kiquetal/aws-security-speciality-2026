@@ -295,11 +295,34 @@ If your template deploys encrypted resources (e.g., an EBS Volume, S3 bucket, or
 
 ---
 
+---
+
+## Advanced Exam Traps (Nested Roles & KMS)
+
+### Trap 1: The "Nested PassRole" Trap (Stack creates IAM Roles)
+If your CloudFormation template creates a resource that *itself* requires an IAM Role (e.g., an EC2 instance with an Instance Profile, or a Lambda function with an Execution Role), **the CloudFormation Service Role (`CFDeployRole`) must have `iam:PassRole` permissions!**
+- **Why?** Because CloudFormation is the entity that must "pass" the newly created IAM role to the EC2 instance or Lambda function.
+- **Symptom:** Stack creation fails with `Access Denied` on `iam:PassRole` even though the developer has `iam:PassRole` on the CFDeployRole itself.
+- **Solution:** Add `iam:PassRole` to the **CFDeployRole's Permission Policy** targeting the ARNs of the execution roles or instance profiles being created in the template.
+
+### Trap 2: Encrypted Stack Resources & KMS Policies
+If your template deploys encrypted resources (e.g., an EBS Volume, S3 bucket, or Lambda with KMS CMKs):
+- The **CloudFormation Service Role** (NOT just the developer) must be explicitly allowed in the KMS Key Policy.
+- For EBS/S3, the service role typically needs `kms:Decrypt`, `kms:GenerateDataKey`, and sometimes `kms:CreateGrant` (for EBS volume attachment delegation).
+
+### Trap 3: Removing/Updating the Service Role on Stack Update
+- To update a stack that uses a service role, the caller must continue to have `iam:PassRole` on that role.
+- If a developer attempts to update a stack to *remove* the service role association (forcing it to fall back to caller permissions), the developer must have explicit permission to disassociate it, and their own IAM role must have all permissions to modify the stack resources.
+
+---
+
 ## 🧠 Cheat-Sheet One-Liners
 
 - **"CF deployments inconsistent" = create service role + update stacks to use it.** Developers only need `iam:PassRole`.
 - **CF service role trust = `cloudformation.amazonaws.com` ONLY.** Not composite. Not every service.
 - **Permission policy targets ACTUAL RESOURCES (EC2, Lambda, S3).** NOT stack ARNs.
 - **`iam:PassRole` = hand keys to service. `sts:AssumeRole` = drive the car yourself.** PassRole can't escalate. AssumeRole can.
+- **CF creating execution roles / instance profiles needs `iam:PassRole` inside the service role itself.** (Nested PassRole trap).
+- **Encrypted stacks require the CF service role to be authorized in KMS key policies.** (`kms:Decrypt`, `kms:GenerateDataKey`).
 - **CF creating execution roles / instance profiles needs `iam:PassRole` inside the service role itself.** (Nested PassRole trap).
 - **Encrypted stacks require the CF service role to be authorized in KMS key policies.** (`kms:Decrypt`, `kms:GenerateDataKey`).
