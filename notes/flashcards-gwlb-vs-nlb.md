@@ -45,6 +45,36 @@ GWLB = traffic goes THROUGH your targets (targets INSPECT then forward)
 
 ---
 
+## Traffic Mirroring + NLB — How They Work Together
+
+```
+Traffic Mirroring ≠ NLB. They're different things that COLLABORATE:
+
+Normal traffic (unaffected):
+  Client ──► EC2 instance (production, keeps working)
+
+Mirrored copy (passive observation):
+  EC2 ENI ──(VXLAN copy)──► NLB ──► IDS EC2 fleet (observes only)
+                             ^^^
+                        NLB = cable delivering footage
+                        to the monitoring room
+
+Traffic Mirroring = the CAMERA (copies packets)
+NLB               = the CABLE (distributes copies to IDS fleet)
+IDS tool          = the MONITOR (analyzes the footage)
+```
+
+| | Traffic Mirroring | NLB (as mirror target) |
+|---|---|---|
+| **What it is** | Feature that COPIES packets from an ENI | Load balancer receiving the copies |
+| **Does it block?** | ❌ Never | N/A (just distributes) |
+| **If it fails** | Production unaffected (copy stops) | IDS stops receiving (production fine) |
+| **Encapsulation** | VXLAN (IDS must decapsulate) | Passes VXLAN to targets |
+
+**Key exam trap:** "Traffic Mirroring destination" = NLB (or ENI). NOT GWLB. NOT Network Firewall. Mirroring is passive — it sends COPIES to an NLB target group of IDS instances.
+
+---
+
 ## GWLB GENEVE Trap
 
 Appliance logs show GWLB endpoint IP instead of client → appliance must **decapsulate GENEVE outer header** to see original packet inside. NOT X-Forwarded-For (that's ALB/HTTP only).

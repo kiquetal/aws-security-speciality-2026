@@ -113,3 +113,42 @@ MIRROR = CAMERA (watches, VXLAN, NLB, passive)
 GWLB   = GUARD (blocks, GENEVE, third-party, inline)
 NF     = BOUNCER (blocks, Suricata, AWS-native, inline)
 ```
+
+---
+
+## Traffic Mirroring vs VPC Flow Logs (4x Failed!)
+
+```
+VPC Flow Logs = METADATA ONLY
+  → Source IP, dest IP, port, protocol, accept/reject
+  → NO packet payload, NO content, NO headers
+  → Use: "who talked to whom" / "top talkers" / "was it accepted?"
+
+Traffic Mirroring = FULL PACKET COPY
+  → Complete packet including payload
+  → Encapsulated in VXLAN → sent to NLB → IDS fleet
+  → Use: "inspect content" / "IDS" / "full packet" / "network-layer attacks"
+
+┌──────────────────────────────────────────────────────────┐
+│  "Full packet" / "inspect content" / "IDS" / "payload"   │
+│  = Traffic Mirroring (ALWAYS)                            │
+│                                                           │
+│  "Metadata" / "who talked to whom" / "top talkers"       │
+│  = VPC Flow Logs                                         │
+│                                                           │
+│  Flow Logs CANNOT do content inspection. Period.          │
+└──────────────────────────────────────────────────────────┘
+```
+
+### Your Error Pattern (4x)
+
+```
+Dojo Q1126 (original): picked GWLB      → should be Traffic Mirroring (passive)
+Dojo Q1126 (re-test):  picked GWLB      → should be Traffic Mirroring (passive)
+Udemy Q30 (original):  picked GWLB      → should be Traffic Mirroring (passive)
+Udemy Q29 (retake):    picked Flow Logs  → should be Traffic Mirroring (full packet)
+
+SIGNAL: "full packet" + "passive" + "IDS" + "without blocking" = Traffic Mirroring
+        NEVER Flow Logs (metadata only)
+        NEVER GWLB (inline, not passive)
+```

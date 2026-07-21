@@ -377,6 +377,9 @@
 
 ## D2: Incident Response (14%)
 - IR sequence: Acquire (metadata + EBS snapshot + no-reboot AMI for memory) → Isolate (swap SG to deny-all) → Investigate (Detective, forensics account) → Report (SNS, S3). NEVER terminate first.
+- 🧠 **"Investigate without affecting production" = Detective (read-only). NEVER attach DenyAll or quarantine.** If question says "don't affect production" → eliminate ALL containment options.
+- 🧠 **"Kill EXISTING active connections immediately" = NACL (stateless, per-packet). SG = stateful (conntrack keeps tracked sessions alive even after rule removal).** 3x failed. "Active connections" + "immediately" = NACL always.
+- 🧠 **"Stop exfil + minimize disruption" = revoke role sessions (surgical). Bucket policy deny-all = nuclear (disrupts everyone).** Surgical = only the attacker affected. Nuclear = everyone affected.
 - 🧠 **ASG = detach/suspend FIRST (protect evidence from auto-termination), THEN acquire → isolate.** No ASG = acquire before isolate directly.
 - 🧠 **ACQUIRE before ISOLATE.** Isolation (deny-all SG) can block SSM needed for memory capture. Volatile memory must be captured FIRST. AWS docs: "capture memory before isolation or shutdown."
 - 🧠 **"Validate findings" = first step before full IR (Task 2.2.3, new in C03).** Assess scope, check false positives, confirm severity. Exam keyword is "validate" or "triage", not "evaluate".
