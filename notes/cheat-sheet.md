@@ -461,6 +461,20 @@
 - 🧠 **Standards evaluation latency at scale.** Enabling SH standards across 200 accounts = 2-24 hours for findings (Config evaluation at scale). Not minutes.
 ---
 
+## Operational Details That Trick You
+
+- 🧠 **DLM = tag-based scheduler only.** Tag match + volumes = snapshot regardless of instance state (running/stopped). Manual delete = DLM doesn't care (no monitoring, no replacement, no cross-region sync of deletions).
+- 🧠 **DataSync TLS = always on (zero config).** No VPN, no agent config file, no bucket policy needed for TLS. Filters + throttle = task-level settings.
+- 🧠 **`kms:ViaService` = region-specific:** `s3.us-east-1.amazonaws.com` ≠ `s3.eu-west-1.amazonaws.com`. SCP hardcoding one region blocks other regions.
+- 🧠 **cfn-guard is TYPE-STRICT.** `true` (boolean) ≠ `"true"` (string). Different types = FAIL. Any intrinsic (!Ref, !If) = opaque object = FAIL.
+- 🧠 **IAM paths = logical grouping** (`/product/`, `/security/`, `/platform/`). "Delegate role TO service" = `iam:PassRole`. "Become a role" = `sts:AssumeRole`. Different actions.
+- 🧠 **Specific calendar dates (10th, 20th) = cron.** Fixed interval (every 6hr) = rate. PITR = continuous window, NOT scheduled backups.
+- 🧠 **GuardDuty trusted IP list = PLAINTEXT file in S3.** Not JSON. Not DynamoDB. Public IPs only.
+- 🧠 **IR forensics "least overhead" = State Manager** (auto-snapshot + auto-tag). Manual EBS snapshot = works but higher overhead.
+- 🧠 **EMR "starts but inter-node TLS fails" = SG ports.** "Fails to start + can't locate certs" = S3 path. Timing of failure = the layer.
+
+---
+
 ## Quotas That Trick You (4-5-8-32-5120)
 
 | Service | Limit | Value |
