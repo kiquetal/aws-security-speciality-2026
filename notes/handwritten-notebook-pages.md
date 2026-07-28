@@ -239,51 +239,162 @@ DELIVERY MECHANISM:
 ## PAGE 3: Policy Evaluation + KMS + Governance (D4/D5/D6)
 
 ```
-FIVE GATES: SCP → RCP → Boundary → Identity → Resource
-  All ceilings must allow. Either grant can authorize.
+═══ FIVE GATES (policy evaluation) ═══
+
+  SCP → RCP → Boundary → Identity → Resource
+  
+  Gates 1-3 = CEILINGS (never grant, only restrict)
+  Gates 4-5 = GRANTS (actually give access)
+  Effective = all ceilings allow + either grant authorizes
   Explicit Deny in ANY gate = DENIED. Always.
 
-Cross-account KMS:
-  Key policy MUST name external account
-  Root = same-account delegation ONLY
-  ViaService satisfied = S3/SM call KMS server-side
-  Session policy does NOT gate server-side KMS
+  Same-account: identity OR resource policy can grant
+  Cross-account: BOTH sides must grant (except KMS = always both)
 
-RCP scope:
+═══ CROSS-ACCOUNT KMS (failed 5x: Q541, Q669, Q850, Q870, Q974) ═══
+
+  Key policy MUST name external account explicitly
+  Root in key policy = same-account delegation ONLY
+  "Root enables IAM delegation" ≠ "root grants everyone access"
+  Each principal still needs explicit kms:Decrypt
+
+  Full cross-account SSE-KMS read needs:
+    1. Key policy names Account B (or B's role)
+    2. Account B identity policy has kms:Decrypt
+    3. Account B SCP allows kms:Decrypt
+    4. RCP on Account A allows (PrincipalOrgID matches)
+    5. Bucket policy grants Account B s3:GetObject
+
+  ViaService satisfied = S3/SM call KMS server-side
+  Session policy does NOT gate server-side KMS calls
+    (session only restricts caller's DIRECT API calls)
+
+═══ RCP SCOPE (failed 3x: Q1581, Q683, Q698) ═══
+
   Protects YOUR resources only (inbound)
   Outbound to partner bucket = RCP irrelevant (SCP's job)
+
+  Lambda writes to own bucket + partner bucket:
+    Own = PrincipalOrgID matches → allowed
+    Partner = not your resource → RCP doesn't apply → allowed
+
   Supported: S3, KMS, STS, SQS, SM, DDB, ECR, CW Logs, Cognito,
              CloudFront, WAFv2, + 30 more (45+ total)
   NOT supported: EC2, RDS, Lambda, IAM, SNS, EBS, EFS
 
-Session policy bypass:
-  Same-account resource-based naming role → bypasses session ceiling
-  Cross-account → ceiling ALWAYS applies (no bypass)
+  Exemptions:
+    Management account resources = exempt
+    Service-linked roles = exempt (structural)
+    AWS managed KMS keys = exempt
+    kms:RetireGrant = exempt
+    AWS service principals = exempt via PrincipalIsAWSService
 
-OAC + SSE-KMS = TWO policies:
-  1. Bucket policy → CF s3:GetObject
-  2. KMS key policy → CF kms:Decrypt
+═══ SESSION POLICY (failed 2x: Q96, Q169) ═══
+
+  Session policy = ceiling on AssumeRole session
+  Effective = role ∩ session ∩ boundary ∩ SCP
+
+  Bypass rule:
+    Same-account resource-based naming role → bypasses session ceiling
+    Cross-account → ceiling ALWAYS applies (no bypass)
+
+  Server-side KMS:
+    S3 calls KMS internally → session policy doesn't gate it
+    Direct kms:Decrypt from YOUR code → session policy DOES gate it
+
+═══ DATA PERIMETER (failed 2x: Q398, Q1095) ═══
+
+  Block outsiders IN  → RCP (PrincipalOrgID on resources)
+  Block insiders OUT  → SCP (ResourceAccount condition on principals)
+  Full perimeter = BOTH together
+
+═══ OAC + SSE-KMS ═══
+
+  TWO policies needed:
+    1. Bucket policy → CF s3:GetObject (cloudfront.amazonaws.com)
+    2. KMS key policy → CF kms:Decrypt (cloudfront.amazonaws.com)
   Miss KMS policy = 403
 
-Default encryption vs policy Deny:
-  Policy evaluates headers AS-RECEIVED
+═══ DEFAULT ENCRYPTION vs POLICY DENY (failed 3x: Q426, Q626, Q643) ═══
+
+  Policy evaluates headers AS-RECEIVED (before default applies)
   No header + policy check = DENIED (default never fires)
 
-SCP vs Config proactive vs cfn-guard:
-  SCP       → blocks API call (ALL paths)
-  Proactive → validates CF template (CF-level only)
-  cfn-guard → validates in pipeline (bypassable)
-  Terraform → direct API (only SCP + detective catch it)
+  "Upload without flags + bucket has default + policy checks header"
+    → ALWAYS DENIED
 
-cfn-guard limitations:
-  Sees raw template text only
-  !Ref, !If, !Sub = JSON objects (can't resolve)
-  "true" (string) ≠ true (boolean) = type-strict
+═══ SCP vs CONFIG PROACTIVE vs CFN-GUARD (failed 4x) ═══
 
-State Manager = REGIONAL
-  4 regions = 4 associations
-  OnBoot + rate = same association
-  New target = immediate first run
+  SCP       → blocks API call (ALL paths: CLI, Console, CF, Terraform)
+  Proactive → validates CF template (CF-level only, catches Console CF)
+  cfn-guard → validates in pipeline (bypassable via Console/CLI)
+  CF Hook   → same level as Config proactive (CF service-level)
+  Terraform → direct API (only SCP + Config detective catch it)
+
+  Console direct (no CF):     only SCP + Config detective fire
+  Console CF deploy:          proactive + Hook + SCP fire (not cfn-guard)
+  Pipeline CF deploy:         cfn-guard + proactive + Hook + SCP all fire
+
+  cfn-guard limitations:
+    Sees raw template text only
+    !Ref, !If, !Sub = JSON objects (can't resolve)
+    "true" (string) ≠ true (boolean) = type-strict
+    Parameter overrides at deploy time bypass validation
+
+═══ ViaService + SCP (failed 3x: Q488, Q495) ═══
+
+  SCP Deny kms:* unless ViaService = s3
+  → S3 read/write: S3 calls KMS server-side → ViaService satisfied ✅
+  → Direct kms:Decrypt from CLI/code: no ViaService context → DENIED ❌
+  → DynamoDB: sets ViaService but value ≠ s3 → DENIED ❌
+
+  RULE: ViaService = which SERVICE made the KMS call on your behalf
+        Direct call = no service involved = no ViaService = SCP fires
+
+═══ SIGN vs ENCRYPT (failed 3x: Q1596, Q812, Q824) ═══
+
+  Sign = private key → verify = public key (integrity + non-repudiation)
+  Encrypt = public key → decrypt = private key (confidentiality)
+
+  "Customers verify offline air-gapped" = download public key, OpenSSL
+  Can't sign with public (anyone could forge)
+  KMS: one key = one purpose at creation (sign OR encrypt, not both)
+
+═══ RAM vs KMS GRANTS (failed 2x: Q11, Q37) ═══
+
+  RAM doesn't support KMS (RAM = infrastructure: TGW, subnets, DNS FW)
+  KMS cross-account = KMS Grants (per-operation, per-principal, revocable)
+  Key policy 32KB limit → ~200 principals max
+  Grants = unlimited, one API call per onboard, RevokeGrant to offboard
+
+═══ KMS KEY POLICY ROOT TRAP (failed 3x: Q264, Q503, Q687) ═══
+
+  Root in key policy = "enable IAM policies to control this key"
+  Root ≠ "everyone in the account automatically has access"
+  Each principal STILL needs explicit kms:Decrypt in identity policy
+
+═══ YOUR ERROR PATTERNS ═══
+
+  ❌ Thought root in key policy = blanket grant (Q264, Q503)
+     → RULE: root = delegation. Each principal needs explicit perms.
+
+  ❌ Thought RCP blocks outbound to partner (Q683, Q698)
+     → RULE: RCP = YOUR resources. Partner's bucket = not yours.
+
+  ❌ Thought session policy blocks server-side KMS (Q591, Q679)
+     → RULE: S3 calls KMS internally. Session gates YOUR calls only.
+
+  ❌ Thought default encryption overrides policy Deny (Q426, Q626)
+     → RULE: policy checks FIRST. No header = denied. Default = after.
+
+  ❌ Thought cross-account KMS works with root only (Q541, Q669)
+     → RULE: key policy MUST name external account. Root = same-account.
+
+  ❌ Thought ViaService applies to direct CLI calls (Q488, Q495)
+     → RULE: direct call = no service = no ViaService = SCP fires.
+
+  ❌ Thought you can sign with public key (Q812, Q824)
+     → RULE: sign = private. verify = public. Always.
 ```
 
 ---
