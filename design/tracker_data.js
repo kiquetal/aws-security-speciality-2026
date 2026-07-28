@@ -266,9 +266,9 @@ const TRACKER_DATA = {
         "S60-Q581"
       ],
       "domains": [
+        "D1",
         "D3",
-        "D5",
-        "D1"
+        "D5"
       ],
       "count": 9,
       "level": "red"
@@ -284,8 +284,8 @@ const TRACKER_DATA = {
         "S93-Q933"
       ],
       "domains": [
-        "D1",
-        "D2"
+        "D2",
+        "D1"
       ],
       "count": 5,
       "level": "red"
@@ -301,8 +301,8 @@ const TRACKER_DATA = {
         "S69-Q688"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 5,
       "level": "red"
@@ -318,8 +318,8 @@ const TRACKER_DATA = {
         "S96-Q974"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 5,
       "level": "red"
@@ -334,9 +334,9 @@ const TRACKER_DATA = {
         "S98-Q1071"
       ],
       "domains": [
-        "D3",
         "D6",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 4,
       "level": "red"
@@ -367,8 +367,8 @@ const TRACKER_DATA = {
         "S90-Q903"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 4,
       "level": "red"
@@ -427,8 +427,8 @@ const TRACKER_DATA = {
         "S70-Q698"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 3,
       "level": "red"
@@ -443,8 +443,8 @@ const TRACKER_DATA = {
       ],
       "domains": [
         "D5",
-        "D6",
         "D1",
+        "D6",
         "D4"
       ],
       "count": 3,
@@ -474,8 +474,8 @@ const TRACKER_DATA = {
         "S83-Q824"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -517,8 +517,8 @@ const TRACKER_DATA = {
         "S69-Q687"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -546,8 +546,8 @@ const TRACKER_DATA = {
         "S52-Q495"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 3,
       "level": "red"
@@ -613,8 +613,8 @@ const TRACKER_DATA = {
         "S33-Q256"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -653,8 +653,8 @@ const TRACKER_DATA = {
         "S48-Q413"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 2,
       "level": "yellow"
@@ -706,8 +706,8 @@ const TRACKER_DATA = {
         "S96-Q1003"
       ],
       "domains": [
-        "D1",
-        "D4"
+        "D4",
+        "D1"
       ],
       "count": 2,
       "level": "yellow"
@@ -720,8 +720,8 @@ const TRACKER_DATA = {
         "S98-Q1095"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 2,
       "level": "yellow"
@@ -761,9 +761,9 @@ const TRACKER_DATA = {
         "S98-Q1080"
       ],
       "domains": [
-        "D5",
+        "D4",
         "D3",
-        "D4"
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -776,9 +776,9 @@ const TRACKER_DATA = {
         "S68-Q679"
       ],
       "domains": [
-        "D5",
+        "D4",
         "D6",
-        "D4"
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -818,8 +818,8 @@ const TRACKER_DATA = {
         "S83-Q826"
       ],
       "domains": [
-        "D5",
-        "D1"
+        "D1",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -832,8 +832,8 @@ const TRACKER_DATA = {
         "S98-Q1100"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -846,8 +846,8 @@ const TRACKER_DATA = {
         "S94-Q950"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -926,8 +926,8 @@ const TRACKER_DATA = {
         "S104-Q1254"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 2,
       "level": "yellow"
@@ -1349,8 +1349,8 @@ const TRACKER_DATA = {
         "S118-Q1638"
       ],
       "domains": [
-        "D6",
-        "D2"
+        "D2",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1386,8 +1386,8 @@ const TRACKER_DATA = {
         "S118-Q1643"
       ],
       "domains": [
-        "D3",
-        "D2"
+        "D2",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1459,8 +1459,8 @@ const TRACKER_DATA = {
         "S119-Q1665"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1952,8 +1952,8 @@ const TRACKER_DATA = {
         "S42-Q336"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -1965,8 +1965,8 @@ const TRACKER_DATA = {
         "S42-Q339"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -1978,8 +1978,8 @@ const TRACKER_DATA = {
         "S42-Q341"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2015,8 +2015,8 @@ const TRACKER_DATA = {
         "S47-Q395"
       ],
       "domains": [
-        "D3",
-        "D4"
+        "D4",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2052,8 +2052,8 @@ const TRACKER_DATA = {
         "S49-Q423"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2185,8 +2185,8 @@ const TRACKER_DATA = {
         "S53-Q515"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2198,8 +2198,8 @@ const TRACKER_DATA = {
         "S54-Q523"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2211,8 +2211,8 @@ const TRACKER_DATA = {
         "S54-Q526"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2224,9 +2224,9 @@ const TRACKER_DATA = {
         "S55-Q532"
       ],
       "domains": [
-        "D3",
         "D6",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2276,8 +2276,8 @@ const TRACKER_DATA = {
         "S68-Q685"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2289,8 +2289,8 @@ const TRACKER_DATA = {
         "S69-Q690"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2471,8 +2471,8 @@ const TRACKER_DATA = {
         "S81-Q797"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -2508,8 +2508,8 @@ const TRACKER_DATA = {
         "S82-Q820"
       ],
       "domains": [
-        "D1",
         "D2",
+        "D1",
         "D4"
       ],
       "count": 1,
@@ -2534,8 +2534,8 @@ const TRACKER_DATA = {
         "S86-Q855"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2547,8 +2547,8 @@ const TRACKER_DATA = {
         "S86-Q857"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2560,8 +2560,8 @@ const TRACKER_DATA = {
         "S86-Q858"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2597,8 +2597,8 @@ const TRACKER_DATA = {
         "S87-Q881"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2646,8 +2646,8 @@ const TRACKER_DATA = {
         "S89-Q899"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2671,8 +2671,8 @@ const TRACKER_DATA = {
         "S89-Q902"
       ],
       "domains": [
-        "D5",
-        "D6"
+        "D6",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2696,8 +2696,8 @@ const TRACKER_DATA = {
         "S90-Q908"
       ],
       "domains": [
-        "D6",
-        "D1"
+        "D1",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -2709,8 +2709,8 @@ const TRACKER_DATA = {
         "S90-Q911"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2782,8 +2782,8 @@ const TRACKER_DATA = {
         "S96-Q965"
       ],
       "domains": [
-        "D5",
-        "D3"
+        "D3",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2807,8 +2807,8 @@ const TRACKER_DATA = {
         "S96-Q989"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2893,8 +2893,8 @@ const TRACKER_DATA = {
         "S97-Q1026"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2930,8 +2930,8 @@ const TRACKER_DATA = {
         "S97-Q1040"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -2979,8 +2979,8 @@ const TRACKER_DATA = {
         "S98-Q1074"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -3004,8 +3004,8 @@ const TRACKER_DATA = {
         "S98-Q1079"
       ],
       "domains": [
-        "D3",
-        "D2"
+        "D2",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -3053,8 +3053,8 @@ const TRACKER_DATA = {
         "S99-Q1127"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -3114,8 +3114,8 @@ const TRACKER_DATA = {
         "S99-Q1140"
       ],
       "domains": [
-        "D5",
-        "D4"
+        "D4",
+        "D5"
       ],
       "count": 1,
       "level": "yellow"
@@ -3283,8 +3283,8 @@ const TRACKER_DATA = {
         "S103-Q1236"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -3308,8 +3308,8 @@ const TRACKER_DATA = {
         "S103-Q1238"
       ],
       "domains": [
-        "D6",
-        "D4"
+        "D4",
+        "D6"
       ],
       "count": 1,
       "level": "yellow"
@@ -3345,8 +3345,8 @@ const TRACKER_DATA = {
         "S103-Q1243"
       ],
       "domains": [
-        "D3",
-        "D1"
+        "D1",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -3394,8 +3394,8 @@ const TRACKER_DATA = {
         "S107-Q1295"
       ],
       "domains": [
-        "D3",
-        "D2"
+        "D2",
+        "D3"
       ],
       "count": 1,
       "level": "yellow"
@@ -24434,7 +24434,13 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
-              "text": "RCP DOES support KMS (also S3, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito). Don't confuse with RAM's list.",
+              "text": "RCP DOES support KMS (also S3, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito, CloudFront, WAFv2, + 30 more AI/dev/data services). Don't confuse with RAM's list.",
+              "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "RCP does NOT support: EC2, RDS, Lambda, IAM, SNS, EBS, EFS. \"Restrict external access to EC2\" = SCP or resource-based policy.",
               "is_insight": false,
               "is_warning": false
             }
@@ -24717,6 +24723,18 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**BucketOwnerEnforced (ACLs disabled) = S3 access logging BREAKS.** Must re-enable ACLs (BucketOwnerPreferred) + grant log-delivery group. Config remediation for logging also needs `s3:GetBucketAcl`.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Config delivery to S3 = bucket policy needs `s3:PutObject` + `s3:GetBucketAcl` for `config.amazonaws.com`.** Same ACL-check pattern \u2014 service verifies bucket ownership before writing.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**Config delivery to S3 = bucket policy needs `s3:PutObject` + `s3:GetBucketAcl` for `config.amazonaws.com`.** Same ACL-check pattern \u2014 service verifies bucket ownership before writing.",
               "is_insight": true,
               "is_warning": false
@@ -24896,7 +24914,7 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
-              "text": "**Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Same upload/download pattern as S3, plus DescribeKey required for consumer verification.",
+              "text": "**Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt.** Same upload/download pattern as S3. No DescribeKey needed for consumer (that's for stream admins only).",
               "is_insight": true,
               "is_warning": false
             },
@@ -25031,7 +25049,7 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
-              "text": "**Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt + kms:DescribeKey.** Not CreateGrant \u2014 Kinesis doesn't delegate via grants.",
+              "text": "**Kinesis encrypted stream: Producer = kms:GenerateDataKey. Consumer = kms:Decrypt.** Not CreateGrant \u2014 Kinesis doesn't delegate via grants.",
               "is_insight": true,
               "is_warning": false
             },
@@ -25231,6 +25249,12 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**OAC + SSE-KMS = TWO policies needed.** (1) S3 bucket policy \u2192 allows CF `s3:GetObject`. (2) KMS key policy \u2192 allows CF `kms:Decrypt`. Both for `cloudfront.amazonaws.com` + SourceArn condition. Miss KMS policy = 403.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**CloudFront `Authorization` header = Cache Policy ONLY.** Origin Request Policy \u2192 HTTP 400 error. Authorization must be part of cache key to prevent serving authenticated responses to unauthenticated users.",
               "is_insight": true,
               "is_warning": false
@@ -25250,6 +25274,12 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**ALB + HIDS + PFS: send encrypted traffic END-TO-END to EC2 (ECDHE + PFS).** Don't decrypt at ALB if HIDS needs to see traffic on instance. HIDS inspects AFTER decryption at the host. ECDHE = ephemeral keys = PFS (past sessions safe even if key leaks later). Static RSA = no PFS.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**ACM-issued cert = private key NOT exportable (can't install on EC2). Imported third-party cert = private key available (can install anywhere).** \"End-to-end ALB\u2192EC2\" = import third-party cert.",
               "is_insight": true,
               "is_warning": false
             },
@@ -25398,6 +25428,12 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**Flow Log: inbound ACCEPT + outbound REJECT = always NACL.** SGs are stateful \u2014 accepted inbound = auto-allowed return. NACLs are stateless \u2014 need explicit outbound ephemeral port rule.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**VPC Resolver (169.254.169.253) = single feed for GuardDuty DNS + DNS Firewall + Resolver Query Logging.** On-prem AD DNS / custom DHCP = bypass = all three blind. Fix = Resolver outbound endpoint.",
               "is_insight": true,
               "is_warning": false
             },
@@ -25569,7 +25605,19 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**SH \"some accounts zero, others working\" = membership issue. ALL accounts delayed = latency (2-24hr at scale).** Don't confuse partial vs total.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**GuardDuty reads VPC Flow Logs + DNS logs via internal feed \u2014 you DON'T need to enable them yourself.** Your VPC Flow Logs are for YOUR queries (Insights, Athena). GuardDuty has its own tap.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**GuardDuty foundational = CloudTrail + VPC Flow Logs + DNS. All three ALWAYS ON.** \"GD doesn't analyze DNS\" = WRONG distractor. DNS IS foundational.",
               "is_insight": true,
               "is_warning": false
             },
@@ -25632,6 +25680,18 @@ const TRACKER_DATA = {
               "text": "**Trusted IP list = nuclear (blinds GD to ALL findings from that IP). Suppression rule = surgical (archives ONE finding type from that IP).** Trusted IP list is NOT a filter field inside suppression rules \u2014 it's a separate mechanism.",
               "is_insight": true,
               "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Suppression rule filter by TAG (not instance ID).** Instance IDs change (scaling, replacement). Tags persist. \"Reduce management overhead\" = tag-based filter.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Trusted IP list = nuclear (blinds GD to ALL findings from that IP). Suppression rule = surgical (archives ONE finding type from that IP).** Trusted IP list is NOT a filter field inside suppression rules \u2014 it's a separate mechanism.",
+              "is_insight": true,
+              "is_warning": false
             }
           ]
         },
@@ -25661,7 +25721,12 @@ const TRACKER_DATA = {
               "text": "**Log source SCOPE (what each sees):**",
               "is_insight": true,
               "is_warning": false
-            },
+            }
+          ]
+        },
+        {
+          "title": "Log Source Scope Table",
+          "items": [
             {
               "type": "table",
               "headers": [
@@ -25701,13 +25766,12 @@ const TRACKER_DATA = {
                   "\"who changed\", \"API call\""
                 ]
               ]
-            },
-            {
-              "type": "bullet",
-              "text": "**Log delivery destinations (exam-critical table):**",
-              "is_insight": true,
-              "is_warning": false
-            },
+            }
+          ]
+        },
+        {
+          "title": "Log Delivery Destinations",
+          "items": [
             {
               "type": "table",
               "headers": [
@@ -25759,21 +25823,28 @@ const TRACKER_DATA = {
                   "\u2705",
                   "\u2705",
                   "\u274c"
+                ],
+                [
+                  "**S3 Server Access Logs**",
+                  "\u2705",
+                  "\u274c",
+                  "\u274c",
+                  "\u274c"
+                ],
+                [
+                  "**CloudFront Access Logs**",
+                  "\u2705",
+                  "\u274c",
+                  "\u274c",
+                  "\u274c"
                 ]
               ]
-            },
-            {
-              "type": "bullet",
-              "text": "**VPC Flow Logs = only service using IAM role for ALL delivery targets (S3, CloudWatch Logs, Kinesis Firehose).** CloudTrail uses bucket policy for S3, not an IAM role.",
-              "is_insight": true,
-              "is_warning": false
-            },
-            {
-              "type": "bullet",
-              "text": "**Log delivery mechanisms:**",
-              "is_insight": true,
-              "is_warning": false
-            },
+            }
+          ]
+        },
+        {
+          "title": "Log Delivery Mechanisms",
+          "items": [
             {
               "type": "bullet",
               "text": "VPC Flow Logs \u2192 S3/CW Logs/Firehose = **IAM role** (all three)",
@@ -25800,7 +25871,19 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**VPC Flow Logs = only service using IAM role for ALL delivery targets.**",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**CW Logs as destination = usually log group resource policy (service principal).** Exception: VPC Flow Logs uses IAM role for everything.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Old Four\" that need `s3:GetBucketAcl` for S3 delivery:** CloudTrail, Config, ELB, S3 server access logging. Legacy ACL ownership check. Modern services (GuardDuty, Inspector, Macie, Security Lake) use bucket policy with service principal instead.",
               "is_insight": true,
               "is_warning": false
             }
@@ -25919,6 +26002,12 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
+              "text": "**Member StopLogging only kills THEIR trail. Org trail in management account keeps recording + delivering to EventBridge.** Attacker in member can't blind the org trail.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
               "text": "**CloudTrail data events (GetObject, PutObject, Decrypt, Invoke) are NOT logged by default.** Only management events are. If a question says \"CloudTrail recorded X\" where X is a data operation \u2014 check if data events are explicitly enabled. Not stated = not logged.",
               "is_insight": true,
               "is_warning": false
@@ -25938,6 +26027,24 @@ const TRACKER_DATA = {
               "type": "bullet",
               "text": "IR sequence: Acquire (metadata + EBS snapshot + no-reboot AMI for memory) \u2192 Isolate (swap SG to deny-all) \u2192 Investigate (Detective, forensics account) \u2192 Report (SNS, S3). NEVER terminate first.",
               "is_insight": false,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Investigate without affecting production\" = Detective (read-only). NEVER attach DenyAll or quarantine.** If question says \"don't affect production\" \u2192 eliminate ALL containment options.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Kill EXISTING active connections immediately\" = NACL (stateless, per-packet). SG = stateful (conntrack keeps tracked sessions alive even after rule removal).** 3x failed. \"Active connections\" + \"immediately\" = NACL always.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**\"Stop exfil + minimize disruption\" = revoke role sessions (surgical). Bucket policy deny-all = nuclear (disrupts everyone).** Surgical = only the attacker affected. Nuclear = everyone affected.",
+              "is_insight": true,
               "is_warning": false
             },
             {
@@ -26068,12 +26175,6 @@ const TRACKER_DATA = {
             },
             {
               "type": "bullet",
-              "text": "**\"AWS managed key\" = NEVER the answer when question mentions control, policy, expiration, rotation config, or grants.** AWS managed = autopilot with no steering wheel.",
-              "is_insight": true,
-              "is_warning": false
-            },
-            {
-              "type": "bullet",
               "text": "**Config proactive evaluation = evaluates resources BEFORE CloudFormation creates them.** \"Before provisioned\" = proactive. \"After exists\" = detective. Config supports both modes.",
               "is_insight": true,
               "is_warning": false
@@ -26087,12 +26188,6 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**DNSSEC \"broken trust chain\" = DS record missing in parent zone.** Always.",
-              "is_insight": true,
-              "is_warning": false
-            },
-            {
-              "type": "bullet",
-              "text": "**DNSSEC trust chain:** Root \u2192 `.com` (DS) \u2192 `example.com` (DS) \u2192 `api.example.com` (KSK\u2192ZSK\u2192records). Each parent holds a DS record pointing to child's KSK. Missing DS = validating resolvers return SERVFAIL, non-validating work fine. Fix: add DS record in parent zone manually after enabling DNSSEC signing.",
               "is_insight": true,
               "is_warning": false
             },
@@ -26374,6 +26469,71 @@ const TRACKER_DATA = {
             {
               "type": "bullet",
               "text": "**Standards evaluation latency at scale.** Enabling SH standards across 200 accounts = 2-24 hours for findings (Config evaluation at scale). Not minutes.",
+              "is_insight": true,
+              "is_warning": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Operational Details That Trick You",
+      "category": "General",
+      "subsections": [
+        {
+          "title": "",
+          "items": [
+            {
+              "type": "bullet",
+              "text": "**DLM = tag-based scheduler only.** Tag match + volumes = snapshot regardless of instance state (running/stopped). Manual delete = DLM doesn't care (no monitoring, no replacement, no cross-region sync of deletions).",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**DataSync TLS = always on (zero config).** No VPN, no agent config file, no bucket policy needed for TLS. Filters + throttle = task-level settings.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**`kms:ViaService` = region-specific:** `s3.us-east-1.amazonaws.com` \u2260 `s3.eu-west-1.amazonaws.com`. SCP hardcoding one region blocks other regions.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**cfn-guard is TYPE-STRICT.** `true` (boolean) \u2260 `\"true\"` (string). Different types = FAIL. Any intrinsic (!Ref, !If) = opaque object = FAIL.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**IAM paths = logical grouping** (`/product/`, `/security/`, `/platform/`). \"Delegate role TO service\" = `iam:PassRole`. \"Become a role\" = `sts:AssumeRole`. Different actions.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**Specific calendar dates (10th, 20th) = cron.** Fixed interval (every 6hr) = rate. PITR = continuous window, NOT scheduled backups.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**GuardDuty trusted IP list = PLAINTEXT file in S3.** Not JSON. Not DynamoDB. Public IPs only.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**IR forensics \"least overhead\" = State Manager** (auto-snapshot + auto-tag). Manual EBS snapshot = works but higher overhead.",
+              "is_insight": true,
+              "is_warning": false
+            },
+            {
+              "type": "bullet",
+              "text": "**EMR \"starts but inter-node TLS fails\" = SG ports.** \"Fails to start + can't locate certs\" = S3 path. Timing of failure = the layer.",
               "is_insight": true,
               "is_warning": false
             }
@@ -35485,6 +35645,85 @@ const TRACKER_DATA = {
               ]
             },
             {
+              "title": "Suppression Rules vs Trusted IP List",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "",
+                    "Suppression Rule",
+                    "Trusted IP List"
+                  ],
+                  "rows": [
+                    [
+                      "**Scope**",
+                      "ONE finding type + specific resource (surgical)",
+                      "ALL findings from that IP (nuclear)"
+                    ],
+                    [
+                      "**Findings generated?**",
+                      "\u2705 Yes (auto-archived, auditable)",
+                      "\u274c No (never created, no record)"
+                    ],
+                    [
+                      "**Filter by**",
+                      "Finding type + instance tag + severity + account",
+                      "Public IPs only"
+                    ],
+                    [
+                      "**Use case**",
+                      "\"Ignore brute-force on THIS server only\"",
+                      "\"Never alert on pen-test IPs\""
+                    ],
+                    [
+                      "**Instance replaced?**",
+                      "Tag-based filter survives",
+                      "N/A (IP-based)"
+                    ],
+                    [
+                      "**Best practice**",
+                      "Filter by TAG (not instance ID)",
+                      "Only for known-good public IPs"
+                    ]
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "**Key rules:**"
+                },
+                {
+                  "type": "bullet",
+                  "text": "Trusted IP list = PUBLIC IPs only (private IPs can't be added, need EIPs)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Suppression = findings still exist in archive (auditable). Trusted IP = findings never created.",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Reduce noise from known-good workload\" = suppression rule (surgical)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "\"Reduce noise from pen-test IP\" = Trusted IP list (if public) or suppression (if need audit trail)",
+                  "is_insight": false,
+                  "is_warning": false
+                },
+                {
+                  "type": "bullet",
+                  "text": "Trusted IP list is NOT a filter field inside suppression rules \u2014 separate mechanism entirely.",
+                  "is_insight": false,
+                  "is_warning": false
+                }
+              ]
+            },
+            {
               "title": "Malware Protection",
               "items": [
                 {
@@ -38087,7 +38326,7 @@ const TRACKER_DATA = {
                       "**Kinesis consumer**",
                       "\u2014",
                       "Decrypt",
-                      "DescribeKey",
+                      "\u2014",
                       "\u274c"
                     ],
                     [
@@ -38133,7 +38372,7 @@ const TRACKER_DATA = {
                 },
                 {
                   "type": "text",
-                  "text": "3. **DescribeKey = Kinesis consumer + DynamoDB** \u2014 verify key access before operations"
+                  "text": "3. **DescribeKey = DynamoDB** \u2014 verify key access before operations"
                 },
                 {
                   "type": "text",
@@ -41276,15 +41515,20 @@ const TRACKER_DATA = {
           ]
         },
         {
-          "title": "Supported Services (Exam-Critical \u2014 Limited List!)",
+          "title": "Supported Services (Exam-Critical)",
           "subsections": [
             {
               "title": "",
               "items": [
                 {
                   "type": "text",
-                  "text": "RCPs only apply to a **subset** of AWS services. Key ones for the exam:"
-                },
+                  "text": "RCPs now support **45+ services** (expanded significantly since launch in Nov 2024). Key ones for the exam:"
+                }
+              ]
+            },
+            {
+              "title": "Core Exam Services (memorize these)",
+              "items": [
                 {
                   "type": "table",
                   "headers": [
@@ -41327,16 +41571,92 @@ const TRACKER_DATA = {
                     [
                       "**Amazon ECR**",
                       "Protect container image pulls"
+                    ],
+                    [
+                      "**Amazon CloudFront**",
+                      "Protect distributions"
+                    ],
+                    [
+                      "**AWS WAFv2**",
+                      "Protect Web ACLs"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Also Supported (expanded list \u2014 know they exist)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Category",
+                    "Services"
+                  ],
+                  "rows": [
+                    [
+                      "**AI/ML**",
+                      "Comprehend, Kendra, Polly, Textract, Transcribe, Translate"
+                    ],
+                    [
+                      "**Developer**",
+                      "CodeBuild, CodeCommit, CodePipeline, AppConfig"
+                    ],
+                    [
+                      "**Data**",
+                      "DAX, MemoryDB, OpenSearch Serverless, Kinesis Video, Data Firehose"
+                    ],
+                    [
+                      "**Other**",
+                      "EC2 Auto Scaling, FIS, Health, Transfer, Inspector Scan, MediaStore, AppStream"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "NOT Supported (common exam distractors)",
+              "items": [
+                {
+                  "type": "table",
+                  "headers": [
+                    "Service",
+                    "Use Instead"
+                  ],
+                  "rows": [
+                    [
+                      "**EC2 (instances)**",
+                      "SCP or resource-based policy"
+                    ],
+                    [
+                      "**RDS**",
+                      "SCP"
+                    ],
+                    [
+                      "**Lambda (functions)**",
+                      "SCP"
+                    ],
+                    [
+                      "**IAM (users/roles)**",
+                      "SCP"
+                    ],
+                    [
+                      "**SNS**",
+                      "SCP or topic policy"
+                    ],
+                    [
+                      "**EBS**",
+                      "SCP"
+                    ],
+                    [
+                      "**EFS**",
+                      "SCP"
                     ]
                   ]
                 },
                 {
-                  "type": "text",
-                  "text": "**Not supported (yet):** EC2, RDS, Lambda, IAM, SNS, EBS, EFS, and many others."
-                },
-                {
                   "type": "blockquote",
-                  "text": "**Exam gotcha:** If a question asks about restricting external access to a service NOT on this list, RCPs won't help \u2014 you need resource-based policies or SCPs.",
+                  "text": "**Exam gotcha:** If a question asks about restricting external access to EC2/RDS/Lambda/IAM/SNS/EBS/EFS, RCPs won't help \u2014 you need SCPs or resource-based policies.",
                   "is_insight": false,
                   "is_warning": true
                 }
