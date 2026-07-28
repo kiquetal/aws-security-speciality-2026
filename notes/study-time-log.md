@@ -77,3 +77,4 @@
 | 120 | 2026-07-08 | 21:27 | 22:08 | 41 | Evening session — RCP scope (3/5) + D2 ordering (7/10) + credential leak (5/5) + VPC Lattice (5/5) + WAF Bot Control (3/5) + CodeGuru (5/5) |
 | 121 | 2026-07-09 | 20:24 | 20:40 | 16 | Week 4 drill — VPC Lattice + WAF Bot Control + CodeGuru + Private CA |
 | 122 | 2026-07-10 | 15:40 | 19:42 | 242 | Week 4 lock + decay drill |
+| 123 | 2026-07-27 | 08:42 | | | Week 6 — consolidation + decay prevention |

@@ -93,9 +93,11 @@ flowchart TB
 
 > **Gotcha:** RAM *can* be restricted by SCPs (SCP-deny `ram:CreateResourceShare` with external principals), but that's an SCP controlling RAM, not an RCP.
 
-## Supported Services (Exam-Critical — Limited List!)
+## Supported Services (Exam-Critical)
 
-RCPs only apply to a **subset** of AWS services. Key ones for the exam:
+RCPs now support **45+ services** (expanded significantly since launch in Nov 2024). Key ones for the exam:
+
+### Core Exam Services (memorize these)
 
 | Service | Why It Matters |
 |---|---|
@@ -108,10 +110,31 @@ RCPs only apply to a **subset** of AWS services. Key ones for the exam:
 | **CloudWatch Logs** | Protect log groups |
 | **Amazon DynamoDB** | Protect table access |
 | **Amazon ECR** | Protect container image pulls |
+| **Amazon CloudFront** | Protect distributions |
+| **AWS WAFv2** | Protect Web ACLs |
 
-**Not supported (yet):** EC2, RDS, Lambda, IAM, SNS, EBS, EFS, and many others.
+### Also Supported (expanded list — know they exist)
 
-> ⚠️ **Exam gotcha:** If a question asks about restricting external access to a service NOT on this list, RCPs won't help — you need resource-based policies or SCPs.
+| Category | Services |
+|---|---|
+| **AI/ML** | Comprehend, Kendra, Polly, Textract, Transcribe, Translate |
+| **Developer** | CodeBuild, CodeCommit, CodePipeline, AppConfig |
+| **Data** | DAX, MemoryDB, OpenSearch Serverless, Kinesis Video, Data Firehose |
+| **Other** | EC2 Auto Scaling, FIS, Health, Transfer, Inspector Scan, MediaStore, AppStream |
+
+### NOT Supported (common exam distractors)
+
+| Service | Use Instead |
+|---|---|
+| **EC2 (instances)** | SCP or resource-based policy |
+| **RDS** | SCP |
+| **Lambda (functions)** | SCP |
+| **IAM (users/roles)** | SCP |
+| **SNS** | SCP or topic policy |
+| **EBS** | SCP |
+| **EFS** | SCP |
+
+> ⚠️ **Exam gotcha:** If a question asks about restricting external access to EC2/RDS/Lambda/IAM/SNS/EBS/EFS, RCPs won't help — you need SCPs or resource-based policies.
 
 ## Key Limits/Quotas
 

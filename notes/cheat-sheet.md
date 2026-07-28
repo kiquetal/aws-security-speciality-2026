@@ -28,7 +28,8 @@
 - RAM opens, RCP closes. RAM shares infrastructure cross-account. RCP denies external access to data org-wide. Opposite problems, zero service overlap.
 - RAM doesn't support KMS. Use KMS Grants for per-operation, per-principal, revocable cross-account key access.
 - RAM supports: Transit Gateways, Subnets, Route 53 Resolver rules, DNS Firewall rule groups, Aurora DB clusters, License Manager, EC2 Image Builder. NOT S3, NOT KMS.
-- RCP DOES support KMS (also S3, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito). Don't confuse with RAM's list.
+- RCP DOES support KMS (also S3, STS, SQS, Secrets Manager, DynamoDB, ECR, CloudWatch Logs, Cognito, CloudFront, WAFv2, + 30 more AI/dev/data services). Don't confuse with RAM's list.
+- RCP does NOT support: EC2, RDS, Lambda, IAM, SNS, EBS, EFS. "Restrict external access to EC2" = SCP or resource-based policy.
 
 ---
 
@@ -214,6 +215,7 @@
 - WAF body inspection: only first **8 KB** by default (up to 64 KB paid). Large payloads can bypass rules.
 - WAF attached to CloudFront must be in **us-east-1**. WAF on ALB/API Gateway = regional.
 - 🧠 **"Add security headers (HSTS, CSP, X-Content-Type-Options) to CloudFront, least overhead" = CloudFront response headers policy (managed, zero code).** Lambda@Edge = only if you need dynamic/conditional logic.
+- 🧠 **OAC + SSE-KMS = TWO policies needed.** (1) S3 bucket policy → allows CF `s3:GetObject`. (2) KMS key policy → allows CF `kms:Decrypt`. Both for `cloudfront.amazonaws.com` + SourceArn condition. Miss KMS policy = 403.
 - 🧠 **CloudFront `Authorization` header = Cache Policy ONLY.** Origin Request Policy → HTTP 400 error. Authorization must be part of cache key to prevent serving authenticated responses to unauthenticated users.
 - 🧠 **CW agent ships logs (not SSM agent).** SSM agent = execute commands, sessions, patching. CW agent = ship custom log files + metrics. SSM can INSTALL CW agent but can't replace it.
 - 🧠 **"Public-facing + HTTPS to customers" = inbound 0.0.0.0/0 on 443.** "Highest security" doesn't override the requirement of being publicly accessible.
@@ -288,6 +290,7 @@
 - 🧠 **GuardDuty custom threat list → finding type has `.Custom` suffix.** Built-in intel = standard types. Your list = `MaliciousIPCaller.Custom`.
 - 🧠 **Global services (IAM, STS, CloudFront) deliver events to us-east-1 ONLY.** EventBridge rules for `CreateUser` etc must be in us-east-1.
 - 🧠 **Security Hub = dashboard (view findings). Config = remediation engine (fix resources).** SH wraps Config rules but doesn't own the fix. Auto-remediation = Config rule + SSM.
+- 🧠 **SH "some accounts zero, others working" = membership issue. ALL accounts delayed = latency (2-24hr at scale).** Don't confuse partial vs total.
 - 🧠 **GuardDuty reads VPC Flow Logs + DNS logs via internal feed — you DON'T need to enable them yourself.** Your VPC Flow Logs are for YOUR queries (Insights, Athena). GuardDuty has its own tap.
 - 🧠 **GuardDuty foundational = CloudTrail + VPC Flow Logs + DNS. All three ALWAYS ON.** "GD doesn't analyze DNS" = WRONG distractor. DNS IS foundational.
 - 🧠 **"Unusual IP" / "never-seen location" = active threat = GuardDuty.** NOT Access Analyzer (that's permission audit, not real-time threats).
@@ -371,6 +374,7 @@
 - 🧠 **CloudTrail management events: Write-only trail = ConsoleLogin (Read event) won't trigger EventBridge.** Must be "All" or "Read-only/Read+Write" for login events. Event History always shows all events regardless.
 - 🧠 **CW metric filter: metric value must be 1 (not 0).** Value=0 means every match publishes nothing — alarm threshold >= 1 never fires. Common troubleshooting trap.
 - 🧠 **StopLogging kills its own CW Logs delivery.** Metric filter on the log group can never detect StopLogging — use EventBridge instead (receives from CloudTrail's management event stream directly).
+- 🧠 **Member StopLogging only kills THEIR trail. Org trail in management account keeps recording + delivering to EventBridge.** Attacker in member can't blind the org trail.
 - 🧠 **CloudTrail data events (GetObject, PutObject, Decrypt, Invoke) are NOT logged by default.** Only management events are. If a question says "CloudTrail recorded X" where X is a data operation — check if data events are explicitly enabled. Not stated = not logged.
 
 ---
