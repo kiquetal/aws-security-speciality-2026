@@ -469,6 +469,36 @@ VPC Flow Logs DO NOT capture:
   169.254.x.x (IMDS, time sync, DNS resolver)
   DHCP, ARP, mirrored traffic, Windows licensing
   Everything else = captured (including EC2↔EC2 same subnet)
+
+Network analysis tools:
+  "Find ALL exposed resources"          → Network Access Analyzer
+  "Why can't A reach B? Hop-by-hop?"    → Reachability Analyzer
+  "Is THIS port actually reachable?"    → Inspector Network
+  "Find bad SGs org-wide + auto-fix"    → FM SG audit
+  NAA FINDS. RA EXPLAINS. Different tools.
+
+Service role pattern (same concept, different services):
+  CF service role      → cloudformation.amazonaws.com assumes role
+  VPC Flow Logs role   → vpc-flow-logs.amazonaws.com assumes role
+  EC2 instance profile → ec2.amazonaws.com assumes role
+  All three = "a service assumes a role YOU created"
+  Developer needs iam:PassRole (hand keys to service)
+  Developer does NOT need the role's actual permissions
+
+  PassRole vs AssumeRole:
+    PassRole = "give car keys to valet" (hand role to service)
+    AssumeRole = "drive the car yourself" (become the role)
+    PassRole can't escalate. AssumeRole can.
+
+Public IP between EC2s:
+  Private IP traffic → stays in VPC → SG can ref instance ID/SG
+  Public IP traffic → exits via IGW → source = public IP
+  SG ref sg-aaa won't match public IP traffic = TIMEOUT
+  Fix: allow the other instance's PUBLIC IP explicitly
+
+IPv4 outbound-only = NAT Gateway
+IPv6 outbound-only = Egress-Only Internet Gateway
+  NAT doesn't support IPv6. Egress-Only IGW = one-way gate.
 ```
 
 ---
