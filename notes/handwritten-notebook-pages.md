@@ -395,6 +395,25 @@ DELIVERY MECHANISM:
 
   ❌ Thought you can sign with public key (Q812, Q824)
      → RULE: sign = private. verify = public. Always.
+
+═══ KMS KEY ORIGINS + CAPABILITIES ═══
+
+                    │ Symmetric │ Asymmetric │ HMAC │ AWS Service │
+  ──────────────────┼───────────┼────────────┼──────┼─────────────┤
+  AWS_KMS (default) │    ✅      │     ✅      │  ✅   │     ✅       │
+  EXTERNAL (import) │    ✅      │     ✅      │  ✅   │     ✅       │
+  Custom Key Store  │    ✅      │     ❌      │  ❌   │     ✅       │
+  XKS (external)    │    ✅      │     ❌      │  ❌   │     ✅       │
+  CloudHSM DIRECT   │    ✅      │     ✅      │  ✅   │     ❌       │
+
+  Custom Key Store + XKS = SYMMETRIC ONLY through KMS
+  CloudHSM DIRECT = everything BUT no S3/EBS/RDS integration
+  Imported = all types BUT can't import into custom key store
+
+  "Single-tenant + S3/EBS/RDS"        → Custom key store
+  "Asymmetric signing on dedicated HSM" → CloudHSM direct
+  "Keys NEVER in AWS"                  → XKS
+  "Full control + native integration"  → Customer managed (AWS_KMS)
 ```
 
 ---
