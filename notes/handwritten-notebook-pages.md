@@ -579,6 +579,27 @@ S3 Access Grants: broadest prefix wins.
 
 Imported key = immediate delete (DeleteImportedKeyMaterial)
   No 7-day wait. ScheduleKeyDeletion min = 7 days.
+
+EC2 + encrypted EBS:
+  Start existing = CreateGrant + Decrypt
+  Create new     = CreateGrant + GenerateDataKeyWithoutPlaintext
+  BOTH always need CreateGrant (delegates to EBS backend)
+
+EBS cross-account snapshot sharing:
+  Default key (aws/ebs) can't share → copy with CMK first
+  Target account needs on source CMK:
+    Decrypt, ReEncrypt*, GenerateDataKey*, DescribeKey, CreateGrant
+  Flow: copy with CMK → share snapshot → grant key to target
+
+CRR replication role (D-G-F mnemonic):
+  Decrypt on source key
+  GenerateDataKey on dest key (NOT Encrypt)
+  GetObjectVersionForReplication on source bucket
+
+Cron vs Rate vs PITR:
+  Specific calendar dates (10th, 20th) = cron
+  Fixed interval (every 6hr)           = rate
+  Continuous recovery window           = PITR (not scheduled backups)
 ```
 
 ---
