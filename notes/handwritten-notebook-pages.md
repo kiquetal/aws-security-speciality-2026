@@ -501,7 +501,7 @@ IPv6 outbound-only = Egress-Only Internet Gateway
   NAT doesn't support IPv6. Egress-Only IGW = one-way gate.
 
 Kinesis encrypted stream (failed 2x: Q918, Q950):
-  Consumer needs: kms:Decrypt + kms:DescribeKey
+  Consumer needs: kms:Decrypt ONLY (DescribeKey = admin, not consumer)
   Producer needs: kms:GenerateDataKey
   Timeout = BOTH endpoints needed (Kinesis + KMS Interface)
   + BOTH SGs cooperate (Lambda outbound + endpoint inbound)
