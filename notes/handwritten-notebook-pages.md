@@ -414,6 +414,15 @@ DELIVERY MECHANISM:
   "Asymmetric signing on dedicated HSM" → CloudHSM direct
   "Keys NEVER in AWS"                  → XKS
   "Full control + native integration"  → Customer managed (AWS_KMS)
+
+  WHERE KEYS PHYSICALLY LIVE:
+    AWS KMS default   → AWS multi-tenant HSMs (shared infra)
+    CloudHSM direct   → YOUR dedicated HSMs, YOUR VPC (still in AWS)
+    Custom Key Store   → SAME CloudHSM cluster, accessed via KMS API
+    XKS               → Your on-prem HSM / data center (OUTSIDE AWS)
+
+  "Keys never in AWS" = ONLY XKS satisfies this
+  CloudHSM = in AWS (your account, your VPC, but AWS infrastructure)
 ```
 
 ---
