@@ -600,6 +600,27 @@ Cron vs Rate vs PITR:
   Specific calendar dates (10th, 20th) = cron
   Fixed interval (every 6hr)           = rate
   Continuous recovery window           = PITR (not scheduled backups)
+
+Services writing to YOUR S3 — two patterns:
+
+  Pattern 1: Service uses ITS OWN principal (you grant in bucket/key policy)
+    CloudTrail    → cloudtrail.amazonaws.com
+    Config        → config.amazonaws.com
+    S3 logging    → logging.s3.amazonaws.com
+    Inspector     → inspector2.amazonaws.com
+    ELB           → (ELB account ID)
+    → Bucket policy: Allow s3:PutObject for service
+    → Key policy: Allow GenerateDataKey + DescribeKey for service
+
+  Pattern 2: Service assumes A ROLE YOU CREATE (you specify --role-arn)
+    VPC Flow Logs → vpc-flow-logs.amazonaws.com assumes YOUR role
+    CRR           → s3.amazonaws.com assumes YOUR replication role
+    Firehose      → firehose.amazonaws.com assumes YOUR delivery role
+    → IAM role: trust + permissions (s3:PutObject, kms:GenerateDataKey)
+    → No service principal in bucket/key policy needed
+
+  RULE: "Just enable it" = Pattern 1 (service principal)
+        "Specify a role ARN" = Pattern 2 (your role)
 ```
 
 ---
