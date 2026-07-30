@@ -499,6 +499,31 @@ Public IP between EC2s:
 IPv4 outbound-only = NAT Gateway
 IPv6 outbound-only = Egress-Only Internet Gateway
   NAT doesn't support IPv6. Egress-Only IGW = one-way gate.
+
+Kinesis encrypted stream (failed 2x: Q918, Q950):
+  Consumer needs: kms:Decrypt + kms:DescribeKey
+  Producer needs: kms:GenerateDataKey
+  Timeout = BOTH endpoints needed (Kinesis + KMS Interface)
+  + BOTH SGs cooperate (Lambda outbound + endpoint inbound)
+  S3 SSE-KMS = server-side (no KMS endpoint needed)
+  Direct kms:Decrypt from YOUR code = needs KMS endpoint
+
+Secrets Manager rotation failure (failed 2x: Q1242, Q1254):
+  "Unable to log into database" = Lambda SG can't reach DB SG
+  "Auth failed for new app" = rotation Lambda didn't ALTER USER
+  SM endpoint works ≠ DB is reachable (different network path)
+  Fix: Lambda SG egress to DB port + DB SG ingress from Lambda SG
+
+Inspector SBOM (failed 2x: Q1059, Q1119):
+  No built-in scheduler (no Console option)
+  Schedule with: EventBridge rule + Lambda + CreateSbomExport API
+  Export needs: bucket policy for inspector2.amazonaws.com
+  NOT SSM, NOT custom scripts — native API only
+
+C2Activity + hardcoded IP (no DNS):
+  DNS Firewall useless (attacker doesn't need DNS)
+  → Network Firewall DROP on C2 IP
+  DGA (unpredictable domains) = flip to DNS Firewall ALLOW-LIST
 ```
 
 ---
