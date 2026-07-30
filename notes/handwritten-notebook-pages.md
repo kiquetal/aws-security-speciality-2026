@@ -540,6 +540,18 @@ KMS permissions per service:
   CRR source        → Decrypt
   CRR dest          → GenerateDataKey (NOT Encrypt)
 
+kms:DescribeKey — WHEN is it needed?
+  YOU calling S3 directly        → NOT needed (GenerateDataKey + Decrypt)
+  AWS SERVICE writing to your bucket → NEEDED in key policy
+    (Bedrock, Macie, Config, CloudTrail = validate key first)
+  Cross-account sharing          → NEEDED in key policy (always)
+  CreateGrant services (EBS, DDB) → NEEDED (validate before grant)
+  Kinesis consumer/producer      → NOT needed (direct call, no grant)
+  
+  RULE: "Service delegates via grant" OR "service principal in key policy"
+        → DescribeKey needed
+        "You call directly" → not needed
+
 CRR encryption context:
   Rewrites to DEST bucket ARN (not source)
   Custom context from source = preserved → can cause mismatch
