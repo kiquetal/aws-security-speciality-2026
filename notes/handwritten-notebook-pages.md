@@ -587,9 +587,11 @@ EC2 + encrypted EBS:
 
 EBS cross-account snapshot sharing:
   Default key (aws/ebs) can't share → copy with CMK first
+  copy-snapshot = decrypt + re-encrypt in ONE API call (no volume needed)
   Target account needs on source CMK:
     Decrypt, ReEncrypt*, GenerateDataKey*, DescribeKey, CreateGrant
-  Flow: copy with CMK → share snapshot → grant key to target
+  Flow: copy-snapshot with CMK → share snapshot → grant key to target
+  ❌ "Create volume" = unnecessary trap (copy-snapshot handles it directly)
 
 CRR replication role (D-G-F mnemonic):
   Decrypt on source key
