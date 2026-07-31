@@ -593,6 +593,11 @@ EBS cross-account snapshot sharing:
   Flow: copy-snapshot with CMK → share snapshot → grant key to target
   ❌ "Create volume" = unnecessary trap (copy-snapshot handles it directly)
 
+EBS vs RDS vs Aurora — encrypt unencrypted snapshot:
+  EBS:    copy-snapshot + encrypt = ✅ direct (one step)
+  RDS:    copy-db-snapshot + encrypt = ✅ direct (one step)
+  Aurora: copy CANNOT encrypt ❌ → must restore → enable encryption → new snapshot
+
 CRR replication role (D-G-F mnemonic):
   Decrypt on source key
   GenerateDataKey on dest key (NOT Encrypt)
