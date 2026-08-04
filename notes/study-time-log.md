@@ -78,3 +78,5 @@
 | 121 | 2026-07-09 | 20:24 | 20:40 | 16 | Week 4 drill — VPC Lattice + WAF Bot Control + CodeGuru + Private CA |
 | 122 | 2026-07-10 | 15:40 | 19:42 | 242 | Week 4 lock + decay drill |
 | 123 | 2026-07-27 | 08:42 | | | Week 6 — consolidation + decay prevention |
+| 124 | 2026-08-03 | 21:07 | 23:47 | 160 | Page 5 review + corrections (DescribeKey, Sign/Encrypt, versioning, CRR flow, Kinesis endpoints, EMR) + 15-question rapid fire drill (13/15) |
+| 125 | 2026-08-04 | 09:47 | | | Page 6 review + Pages 7-10 creation (100% exam coverage) |
