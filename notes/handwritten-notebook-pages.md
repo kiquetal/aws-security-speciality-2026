@@ -1006,6 +1006,47 @@ kms:DescribeKey — WHEN is it needed?
   TRAP: "3 offices with routers" = Site-to-Site (NOT Client VPN)
         "500 employees from home" = Client VPN (NOT Site-to-Site)
 
+═══ RAM FULL LIST (shares cross-account) ═══
+
+  RAM = "make resource VISIBLE to other accounts" (optional use)
+
+  NETWORKING:
+    Transit Gateways, Subnets, Prefix lists
+
+  SECURITY RULES:
+    DNS Firewall rule groups, Network Firewall policies
+    WAF Web ACLs, Route 53 Resolver rules
+
+  COMPUTE / DATA:
+    Aurora DB clusters, EC2 Image Builder, License Manager
+    CodeBuild projects, Outposts
+
+  NOT supported (use other mechanisms):
+    KMS keys → Grants or key policy
+    S3 buckets → bucket policy
+    Secrets Manager → resource policy
+    IAM roles → trust policy
+
+═══ FM CREATES DIRECTLY (no RAM needed for enforcement) ═══
+
+  FM creates these FRESH in member accounts:
+    ✅ WAF Web ACLs (creates new, attaches to ALBs/CF)
+    ✅ Shield Advanced protections (creates directly)
+    ✅ Security Groups (common policy = creates SG in each account)
+    ✅ Security Groups (audit policy = finds + removes bad rules)
+
+  FM CANNOT create these (needs RAM to share first):
+    ❌ DNS Firewall rule groups (authored centrally → RAM shares → FM associates)
+    ❌ Network Firewall policies (authored centrally → RAM shares → FM deploys)
+
+  RULE:
+    "FM enforces WAF/Shield/SG" = FM creates directly (no RAM step)
+    "FM enforces DNS FW/NF" = RAM shares first, THEN FM enforces association
+
+  SEPARATELY:
+    RAM CAN share WAF Web ACLs too (optional sharing pattern)
+    But when FM enforces WAF → FM creates its own, doesn't use RAM
+
 ═══ Inspector SBOM (failed 2x: Q1059, Q1119) ═══
 
   Inspector SBOM export:
