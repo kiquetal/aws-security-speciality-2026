@@ -594,6 +594,46 @@ kms:DescribeKey — WHEN is it needed?
     No versioning = domain creation FAILS at setup
     Update truststore = upload new PEM → reference new version
 
+═══ Kinesis + KMS VPC endpoints (timeout = network) ═══
+
+  Lambda private subnet + encrypted Kinesis stream:
+    NEEDS TWO Interface endpoints: Kinesis + KMS
+    NEEDS TWO SGs to cooperate per endpoint:
+      Lambda SG → outbound 443
+      Endpoint SG → inbound 443 from Lambda SG
+
+  Timeout = NETWORK (not permissions)
+    "GetRecords times out" = missing endpoint OR SG misconfigured
+    "Access Denied" = IAM/key policy (different error!)
+
+  S3 SSE-KMS = server-side (NO KMS endpoint needed)
+  Direct kms:Decrypt from YOUR code = NEEDS KMS endpoint
+  Kinesis GetRecords = YOUR code calling Kinesis = NEEDS Kinesis endpoint
+  Kinesis decrypts internally = NEEDS KMS endpoint too
+
+  RULE: count endpoints by counting DIRECT calls your code makes
+        + any service that calls KMS on the data path
+
+═══ EMR in-transit = security config + PEM certs ═══
+
+  EMR inter-node encryption:
+    ❌ NOT Nitro (Nitro = EC2-to-EC2 only, automatic, no config)
+    ✅ EMR security configuration → enable in-transit → PEM certificates
+
+  PEM certificates from:
+    → Private CA (ACM Private CA) — recommended
+    → Self-signed (custom, more operational burden)
+    → Uploaded to S3 as zip file
+
+  "EMR TLS handshake fails between nodes" = 
+    → Missing PEM certs in S3 path
+    → OR wrong security configuration reference
+
+  WHY NOT NITRO?
+    Nitro = implicit hardware encryption (no compliance proof)
+    EMR security config = explicit, auditable, configurable
+    Compliance/auditors need PROOF = must use security config
+
 ═══ CRR encryption context ═══
 
   Rewrites to DEST bucket ARN (not source)
