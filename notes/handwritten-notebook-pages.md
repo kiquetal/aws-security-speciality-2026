@@ -729,7 +729,8 @@ kms:DescribeKey — WHEN is it needed?
 ## PAGE 6: Governance Verbs + RAM/FM (D6 — 14%)
 
 ```
-VERB → SERVICE:
+═══ VERB → SERVICE (instant decision) ═══
+
   Share / visible / accessible     → RAM
   Enforce / associate / re-apply   → Firewall Manager
   Deploy resources / push infra    → StackSets
@@ -738,37 +739,162 @@ VERB → SERVICE:
   Detect + fix / remediate         → Config + SSM
   Validate template before deploy  → cfn-guard / Config proactive
 
-RAM + FM together:
-  DNS FW + Network FW = RAM shares first, FM enforces
-  WAF + Shield + SG   = FM creates directly (no RAM)
+═══ RAM + FM (failed 4x: Q313, Q441, Q562, Q1329) ═══
 
-StackSets:
-  Auto-deploy to new accounts ✅
-  Auto-remediate drift ❌ NEVER
+  RAM + FM together:
+    DNS FW + Network FW = RAM shares first, FM enforces
+    WAF + Shield + SG   = FM creates directly (no RAM)
 
-Native org-wide (don't use StackSets):
-  GD, Inspector, SH, Macie, Detective, Config, AA, FM
+  RULE: "Does resource exist in ANOTHER account?" 
+    YES = RAM shares first, then FM enforces
+    NO (FM creates fresh) = no RAM needed
 
-Conformance pack:
-  Deploys rules + remediation config
-  Does NOT deploy execution role
-  New account = role missing = remediation silently fails
+  Mnemonic: "WSS = no RAM" (WAF, Shield, SG — FM creates these)
+            "DNS + NF = RAM" (authored centrally, shared cross-account)
 
-Security Hub setup: E-D-M-A
-  Enable → Designate → Members → Access
-  "Some zero, others working" = membership issue
-  "All delayed" = latency (2-24hr)
+  FM auto-remediates:
+    Developer disassociates WAF → FM re-attaches ✅
+    Developer deletes NF endpoint → FM re-creates ✅
+    StackSets NEVER auto-remediates ❌
 
-WAT = self-reported, no automation, milestones = snapshots
-Audit Manager = YOUR evidence (Config + CloudTrail + manual)
-Artifact = AWS's reports (SOC, PCI, ISO)
+═══ cfn-guard vs Config proactive vs SCP (failed 4x: Q1387, Q1588, Q1220, Q1271) ═══
 
-RCP exemptions:
-  Management account = exempt
+  WHAT EACH LAYER SEES:
+
+  | Layer          | Sees API? | Sees template? | Sees properties? | Bypassable? |
+  |----------------|-----------|----------------|------------------|-------------|
+  | SCP            | ✅         | ❌              | ❌                | ❌ Never     |
+  | cfn-guard      | ❌         | ✅              | ✅ (raw text)     | ✅ Console   |
+  | Config proact  | ❌         | ❌              | ✅ (resolved)     | ❌ Never(CF) |
+  | CF Hook        | ❌         | ❌              | ✅ (resolved)     | ❌ Never(CF) |
+
+  WHICH FIRES FOR EACH DEPLOY PATH:
+    Console direct (no CF):  only SCP + Config detective
+    Console CF deploy:       proactive + Hook + SCP (NOT cfn-guard)
+    Pipeline CF deploy:      cfn-guard + proactive + Hook + SCP (ALL)
+    Terraform (direct API):  only SCP + Config detective
+
+  cfn-guard LIMITATIONS:
+    Can't resolve: !Ref, !If, !Sub, !Select, !GetAtt
+    Sees JSON objects, not resolved values → comparison FAILS
+    "true" (string) ≠ true (boolean) → type-strict FAIL
+    Parameter overrides at deploy time bypass validation
+
+  FIRING ORDER (CF deploys):
+    Config proactive → BEFORE resource creation → SCP never fires if rejected
+    SCP → at API call time (if proactive passes)
+
+  KEY TRAP: "SCP can't inspect CF template CONTENT"
+    → SCP sees API params (ec2:MetadataHttpTokens, ec2:Encrypted)
+    → SCP CANNOT see RDS DeletionProtection inside template
+    → For template content = Config proactive or cfn-guard
+
+═══ State Manager (failed 4x: Q1403, Q1579, Q1048, Q1071) ═══
+
+  ONE association supports BOTH:
+    OnBoot trigger + rate(Xhr) schedule = SAME association
+    ❌ DON'T create two associations
+
+  REGIONAL:
+    500 instances, 3 regions = 3 associations (one per region)
+    No org-wide associations exist
+
+  OnBoot + rate = INDEPENDENT triggers:
+    Reboot at 14:30, next rate at 17:00 → BOTH fire independently
+    OnBoot doesn't reset the rate timer
+
+  New target detected = immediate first run (within minutes)
+    rate(1hr) = re-run frequency, NOT "wait 1hr before first"
+
+  Blind between runs:
+    Admin stops CW agent manually → stays broken until next scheduled run
+    State Manager = scheduler, not real-time monitor
+
+  Tag removed = target leaves:
+    Instance loses matching tag → skipped on next run (dynamic targeting)
+
+═══ StackSets vs FM vs Native ═══
+
+  StackSets:
+    Auto-deploy to new accounts ✅ (service-managed + auto-deploy)
+    Auto-remediate drift ❌ NEVER
+    "Deploy resources" = StackSets. "Enforce rules" = FM.
+
+  Native org-wide (DON'T use StackSets for these):
+    GD, Inspector, SH, Macie, Detective, Config, AA, FM
+    → All have delegated admin + auto-enable
+    → StackSets only for CUSTOM resources (IAM roles, Lambda, etc.)
+
+═══ Conformance Pack ═══
+
+  Deploys rules + remediation CONFIG
+  Does NOT deploy execution ROLE
+  New account joins → rules deploy ✅ → role missing → remediation silently fails
+  Fix: StackSets deploys the execution role separately
+
+═══ Security Hub setup: E-D-M-A (failed 2x: Q1244, Q1273) ═══
+
+  Enable SH in admin → Designate admin → Enable Members → Access (cross-account)
+  
+  "Some accounts zero, others working" = membership issue (not enrolled)
+  "ALL accounts delayed 0 findings" = latency 2-24hr (Config at scale)
+  "Standards enabled but 0%" = standards must be EXPLICITLY enabled after SH
+
+  SH = REGIONAL (not global!)
+  Cross-region = designate aggregation region
+  SH = dashboard ONLY. Config = remediation engine.
+
+═══ WAT vs Audit Manager vs Artifact ═══
+
+  WAT = self-reported architecture review + improvement plan + milestones
+    → NO automation, NO Config/CloudTrail evidence, NO compliance scores
+    → Milestones = immutable snapshots (compare risk over time)
+
+  Audit Manager = YOUR evidence (auto-collected from Config + CT + SH + manual)
+    → Maps to frameworks (SOC 2, PCI, HIPAA)
+    → Generates audit-ready reports
+
+  Artifact = AWS's compliance reports (SOC, PCI, ISO, BAA)
+    → Not YOUR evidence — AWS's proof THEY are compliant
+
+═══ Service Catalog (failed 2x: Q274, Q277) ═══
+
+  Self-service + no broad IAM = Service Catalog + launch constraint
+  Launch role = SC assumes role with permissions (dev only needs ProvisionProduct)
+  SC = deploy only, NO post-provisioning monitoring
+  "Post-deploy compliance" = Config + SSM (not SC)
+
+═══ RCP exemptions ═══
+
+  Management account resources = exempt
   Service-linked roles = exempt (structural)
   AWS managed KMS keys = exempt
   kms:RetireGrant = exempt
   AWS service principals = exempt via PrincipalIsAWSService condition
+
+═══ YOUR ERROR PATTERNS ═══
+
+  ❌ RAM vs FM: picked FM alone for DNS FW sharing (Q313, Q441)
+     → RULE: DNS FW rule group lives in another account. RAM shares. FM enforces.
+
+  ❌ cfn-guard catches Console CF deploy (Q1220, Q1271, Q1588)
+     → RULE: cfn-guard = pipeline ONLY. Console CF = Config proactive catches.
+
+  ❌ State Manager: picked two associations for OnBoot+rate (Q1403, Q1071)
+     → RULE: ONE association supports BOTH triggers.
+
+  ❌ State Manager: picked one association for 3 regions (Q1579)
+     → RULE: State Manager = REGIONAL. One per region.
+
+  ❌ SCP inspects CF template properties (Q1651)
+     → RULE: SCP sees API params. Can't see inside template.
+       Template content = Config proactive or cfn-guard.
+
+  ❌ Security Hub: wrong setup order (Q1244, Q1273)
+     → RULE: E-D-M-A. Must enable FIRST, then designate.
+
+  ❌ Conformance pack deploys execution role (Q1639)
+     → RULE: Pack deploys rules. NOT the role. StackSets deploys role.
 ```
 
 ---
