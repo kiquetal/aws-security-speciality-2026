@@ -639,6 +639,11 @@ kms:DescribeKey — WHEN is it needed?
 
   HOW CRR ACTUALLY WORKS (S3 assumes your replication role):
 
+  Replication role lives in SOURCE account (always)
+    → s3.amazonaws.com assumes it
+    → Calls Decrypt on source CMK (same account = simple)
+    → Calls GenerateDataKey on DEST CMK (CROSS-ACCOUNT call!)
+
   Source bucket (us-east-1)              Dest bucket (eu-west-1)
   ┌─────────────────────┐               ┌─────────────────────┐
   │ object.txt          │               │ object.txt          │
@@ -657,6 +662,13 @@ kms:DescribeKey — WHEN is it needed?
   = Decrypt + Re-encrypt (NOT key copy, NOT key share)
   = Source and dest can use COMPLETELY DIFFERENT CMKs
   = MRK NOT required (only DynamoDB Global Tables needs MRK)
+
+  CROSS-ACCOUNT CRR (source Account A, dest Account B):
+    Replication role (Account A) → calls GenerateDataKey on Account B's CMK
+    → Account B's dest CMK key policy MUST grant Account A's role:
+      kms:Encrypt, kms:Decrypt, kms:ReEncrypt*, kms:GenerateDataKey*, kms:DescribeKey
+    → Account B's dest bucket policy MUST allow Account A's role:
+      s3:ReplicateObject, s3:ReplicateDelete
 
   ENCRYPTION CONTEXT at destination:
     S3 REWRITES aws:s3:arn → DEST bucket ARN (not source)
