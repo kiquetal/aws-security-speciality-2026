@@ -1068,5 +1068,322 @@ kms:DescribeKey — WHEN is it needed?
 
 ---
 
-> Total: 7 pages covering 95%+ of 49 red-priority error patterns.
-> Write by hand. Read before every drill. Cycle through daily (2-3 pages/day).
+## PAGE 8: IAM Fundamentals — D4 Gaps (D4 — 20%)
+
+```
+═══ PERMISSION BOUNDARIES (delegation pattern) ═══
+
+  Boundary = ceiling on ONE role. NEVER grants, only restricts.
+  Effective = Identity policy ∩ Boundary ∩ SCP
+
+  THE PROBLEM:
+    Dev has iam:CreateRole → creates role with AdministratorAccess
+    → Assumes it → full admin = ESCALATION
+
+  THE FIX (3 Deny statements):
+    1. Deny CreateRole WITHOUT boundary attached
+    2. Deny DeleteRolePermissionsBoundary (can't remove)
+    3. Deny PutRolePermissionsBoundary to different boundary (can't swap)
+
+  RESULT: Dev creates roles, but ALL capped by the boundary.
+    Even AdministratorAccess attached → effective = boundary ceiling only.
+
+  EXAM SIGNALS:
+    "Devs create own roles, prevent escalation" = boundary delegation
+    "Limit what created roles can do" = boundary
+    "Self-service IAM without risk" = SCP forces boundary on CreateRole
+
+═══ ABAC — 3 TAG CONDITION KEYS ═══
+
+  aws:PrincipalTag/Key  = WHO is calling (tag on the role/user)
+  aws:ResourceTag/Key   = WHAT are they touching (tag on the resource)
+  aws:RequestTag/Key    = WHAT are they sending (tag in the API call)
+
+  THREE DIFFERENT MOMENTS:
+    RequestTag  = CREATION time ("must tag when creating")
+    ResourceTag = ACCESS time ("can only touch matching resources")
+    PrincipalTag = ALWAYS (who the caller is)
+
+  THE MAGIC PATTERN (ABAC matching):
+    "aws:ResourceTag/Project": "${aws:PrincipalTag/Project}"
+    = "You can only access resources tagged with YOUR project"
+    = No ARNs. New resource with tag = auto-access.
+
+  ENFORCE TAGGING (Null condition):
+    "Null": {"aws:RequestTag/CostCenter": "true"} → Deny
+    = "Deny if CostCenter tag is MISSING" = must tag or denied
+
+  EXAM SIGNALS:
+    "Scales without policy changes" = ABAC
+    "Dynamic access based on tags" = ABAC
+    "Per-team access without per-team policies" = ABAC + session tags
+
+═══ COGNITO (User Pool vs Identity Pool) ═══
+
+  User Pool = WHO ARE YOU? (authentication)
+    → Sign-up, sign-in, MFA, tokens (JWT)
+    → Output: ID token + Access token + Refresh token
+    → Use: authenticate your app users
+
+  Identity Pool = WHAT CAN YOU DO IN AWS? (authorization)
+    → Exchanges token for temporary AWS credentials
+    → Output: AccessKey + SecretKey + SessionToken
+    → Use: app accesses S3, DynamoDB directly
+
+  TOGETHER:
+    App → User Pool (sign in) → JWT token
+    App → Identity Pool (exchange JWT) → temp AWS creds
+    App → S3/DynamoDB (with creds)
+
+  PER-USER S3 ACCESS:
+    Resource: "arn:aws:s3:::bucket/${cognito-identity.amazonaws.com:sub}/*"
+    = Each user only accesses their own folder
+
+  EXAM SIGNALS:
+    "Mobile app needs temp AWS creds" = Identity Pool
+    "Customer sign-up/sign-in" = User Pool
+    "Per-user S3 folders" = Identity Pool + sub in Resource ARN
+    "Employee SSO to Console" = Identity Center (NOT Cognito)
+
+  TRAPS:
+    ❌ Don't call AssumeRoleWithWebIdentity directly — use Identity Pool
+    ❌ Cognito ≠ Identity Center (customers vs employees)
+    ❌ User Pool tokens can't go directly to STS — use Identity Pool
+
+═══ IDENTITY CENTER (workforce SSO) ═══
+
+  WHAT: Centralized SSO for employees across multiple AWS accounts
+  WHERE: AWS Organizations (required)
+
+  Identity sources (ONLY ONE at a time):
+    Built-in directory OR Active Directory OR External IdP (SAML 2.0)
+
+  Permission set = IAM role auto-created in target accounts
+    → User picks account + permission set → assumes the role
+    → Temporary credentials (no long-term keys)
+
+  SCIM = auto-sync users + groups from IdP (Okta, Entra ID)
+    → New user joins group in Okta → auto-inherits permission set
+    → No manual action in Identity Center
+
+  EXAM SIGNALS:
+    "Workforce SSO" = Identity Center
+    "Employees access multiple accounts" = Identity Center
+    "Auto-sync from Okta/Entra" = SCIM
+    "Permission sets" = Identity Center (auto-creates IAM roles)
+
+  TRAPS:
+    ❌ Cognito NOT a source for Identity Center
+    ❌ Only ONE identity source at a time
+    ❌ Identity Center = employees. Cognito = customers. Never mix.
+
+═══ DIRECTORY SERVICE (AD decision tree) ═══
+
+  Simple AD     = Samba (no trusts, no RDS SQL, standalone)
+  AD Connector  = proxy to on-prem AD (no data in AWS, no trusts)
+  Managed AD    = full MS AD (trusts, RDS SQL, Identity Center)
+
+  DECISION:
+    "Need trusts" OR "RDS SQL Server" OR "Identity Center" = Managed AD
+    "Proxy to on-prem, no AWS infra needed" = AD Connector
+    "Small standalone directory" = Simple AD
+
+  TRUST DIRECTION:
+    "AWS trusts on-prem" = one-way (on-prem users → AWS resources)
+    "Both directions" = two-way trust
+
+  FEDERATION WITHOUT DIRECTORY SERVICE:
+    ADFS on-prem + Identity Center = NO AWS Directory Service infra needed
+    "No AWS Directory Service infrastructure" = ADFS + Identity Center
+
+═══ CONDITION KEYS QUICK REFERENCE ═══
+
+  aws:TokenIssueTime      = revoke sessions (DateLessThan = deny old)
+  aws:PrincipalOrgID      = restrict to my org
+  aws:PrincipalIsAWSService = exempt AWS services from deny rules
+  sts:ExternalId          = confused deputy (third-party roles)
+  aws:MultiFactorAuthPresent = require MFA (BoolIfExists!)
+  aws:MultiFactorAuthAge  = MFA max session (NumericLessThan, seconds)
+  aws:SecureTransport     = require HTTPS (Bool: false → Deny)
+  ec2:MetadataHttpTokens  = enforce IMDSv2 (SCP)
+  kms:ViaService          = only allow KMS through specific service
+
+  BoolIfExists vs Bool (MFA TRAP):
+    Bool alone: CLI/SDK calls (no MFA key) = condition SKIPPED = ALLOWED ❌
+    BoolIfExists: key absent = treated as match = Deny fires ✅
+    RULE: MFA in Deny statements = ALWAYS BoolIfExists
+```
+
+---
+
+## PAGE 9: New C03 Features + Remaining Gaps
+
+```
+═══ SECURITY LAKE / OCSF ═══
+
+  Security Lake = YOUR S3 bucket + OCSF format + ALL log sources normalized
+  OCSF = Open Cybersecurity Schema Framework (vendor-neutral)
+
+  Sources: CloudTrail + VPC Flow + DNS + WAF + GuardDuty + third-party
+  Storage: Apache Parquet on Iceberg tables (your S3)
+  Query: Athena (no built-in engine)
+  Consumers: subscriber model (Splunk, Datadog, OpenSearch)
+
+  NOT real-time (batch, minutes). For real-time → CloudTrail Lake or CW Logs.
+  NOT a replacement for Security Hub (SH = dashboard, SL = data lake).
+
+  "Normalize all logs + common schema + your S3" = Security Lake / OCSF
+
+═══ CW LOGS DATA PROTECTION (masking) ═══
+
+  WHAT: Detect + mask PII in logs automatically. No code changes.
+  HOW: Data protection policy on log group
+
+  Two actions:
+    Audit = send finding to separate destination (what was detected)
+    Deidentify = mask with **** (what users see)
+
+  UNMASKING:
+    Default: everyone sees ****
+    To see raw: needs logs:Unmask permission (grant sparingly)
+    "Who can see raw PII?" = who has logs:Unmask
+
+  NOT Macie (Macie = S3 only). NOT GuardDuty (threats, not PII).
+  "Mask PII in logs" = CW Logs data protection. Always.
+
+═══ DNS FIREWALL (DGA + allow-list) ═══
+
+  Rule actions: ALLOW, BLOCK, ALERT
+  Priority: lowest number = first evaluated (first match wins)
+  Scope: VPC-level (all resources in VPC)
+
+  NORMAL pattern: ALLOW specific → BLOCK *
+  DGA pattern: ALLOW known-good → BLOCK * (can't enumerate DGA domains)
+
+  "DGA (Domain Generation Algorithm)" = unpredictable domains
+    → Can't block-list (infinite domains)
+    → FLIP to allow-list (block all except known-good)
+
+  DNS Firewall ALERT ≠ finding (just logs, no security finding)
+  "Detect C2 via DNS" = GuardDuty (reads DNS natively)
+  "Block C2 domains" = DNS Firewall
+
+═══ WAF BOT CONTROL ═══
+
+  Common level = signatures (User-Agent strings, known bot IPs)
+    → Catches: obvious crawlers, curl, scrapy
+    → Misses: rotating User-Agent, distributed attacks
+
+  Targeted level = behavioral (JS tokens, fingerprinting, sessions)
+    → Catches: sophisticated bots rotating IPs + headers
+    → "Distributed + rotating" = always Targeted
+
+  Challenge = silent JS check (needs browser)
+  CAPTCHA = visible puzzle (needs browser + human)
+  Scope-down = exempt known-good traffic from rule group
+
+  TRAP: mobile apps + server-to-server can't do Challenge/CAPTCHA
+    → Fix: scope-down statement excluding by header/IP
+
+  "Legitimate traffic blocked by Bot Control" = scope-down
+  "Sophisticated distributed attack" = Targeted level
+
+═══ CLOUDFRONT OAC + SSE-KMS ═══
+
+  TWO policies needed (miss either = 403):
+    1. S3 bucket policy: Allow s3:GetObject for cloudfront.amazonaws.com
+       + Condition: aws:SourceArn = distribution ARN
+    2. KMS key policy: Allow kms:Decrypt for cloudfront.amazonaws.com
+       + Condition: aws:SourceArn = distribution ARN
+
+  OAC vs OAI:
+    OAI = legacy (can't do SSE-KMS, GET only)
+    OAC = current (SSE-KMS ✅, PUT/DELETE ✅, SigV4)
+    "S3 + SSE-KMS + only via CloudFront" = OAC + KMS key policy
+
+═══ VPC LATTICE (service-to-service) ═══
+
+  WHAT: East/west connectivity across accounts without peering/TGW
+  HOW: Service network + services + auth policies
+
+  Auth: IAM (SigV4) — no certs, no mesh
+  Share: RAM (share service network cross-account)
+  Enforce: Auth policy per service (resource-based, like bucket policy)
+
+  "Service A can call B, deny C" = auth policy on B allows A's role
+  Network membership = reachability. Auth policy = authorization. SEPARATE.
+
+  "Cross-account service-to-service + no VPN/peering + IAM" = Lattice
+
+═══ NITRO INTER-INSTANCE ENCRYPTION ═══
+
+  Automatic hardware-level encryption between EC2 instances
+  Zero config, zero app changes, zero performance impact
+  Both sides MUST be Nitro-based (5th gen+: C5, M5, T3, etc.)
+
+  Covers: EC2↔EC2, EKS inter-node, EMR, SageMaker
+  Does NOT cover: EC2→RDS, EC2→S3 (use TLS for managed services)
+  Non-Nitro on either side = NOT encrypted
+
+  "Encrypt between instances, no app changes" = Nitro
+  EMR inter-node = NOT Nitro (needs explicit security config + PEM)
+
+═══ CLOUDSHM vs CUSTOM KEY STORE vs XKS ═══
+
+  | | CloudHSM Direct | Custom Key Store | XKS |
+  |---|---|---|---|
+  | Symmetric | ✅ | ✅ | ✅ |
+  | Asymmetric | ✅ | ❌ | ❌ |
+  | Signing | ✅ | ❌ | ❌ |
+  | Interface | PKCS#11/JCE | KMS API | KMS API |
+  | S3/EBS/RDS integration | ❌ | ✅ | ✅ |
+  | Key lives | Your HSM (in AWS) | Your HSM (in AWS) | Your HSM (OUTSIDE AWS) |
+
+  "Single-tenant + S3/EBS integration" = Custom Key Store
+  "Asymmetric on dedicated HSM" = CloudHSM direct
+  "Keys NEVER in AWS" = XKS
+  Custom Key Store + XKS = SYMMETRIC ONLY through KMS
+
+═══ CONTROL TOWER ═══
+
+  Guardrail types:
+    Preventive = SCP (blocks API)
+    Detective = Config rule (detects after)
+    Proactive = CF Hook (validates template before deploy)
+
+  Drift: DETECTS but does NOT auto-fix (manual resolution)
+  Custom controls: ✅ supports custom SCPs, Config rules, CF Hooks
+
+  Prerequisites:
+    ✅ STS enabled in all regions
+    ✅ Identity Center enabled
+    ❌ DISABLE existing trusted access for Config/CloudTrail (CT manages these)
+
+═══ DECLARATIVE POLICIES ═══
+
+  "This STATE is impossible to violate, regardless of which API"
+  Scope: EC2, VPC, EBS ONLY (very narrow)
+
+  vs SCP:
+    SCP = "this API call is blocked" (must enumerate each API)
+    Declarative = "this state is enforced" (future APIs auto-covered)
+
+  "No public IPs regardless of any current or future API" = declarative
+  "Block RunInstances without IMDSv2" = SCP (specific API)
+
+═══ MACIE CUSTOM DATA IDENTIFIERS ═══
+
+  regex + keywords + max proximity distance
+  "Detect PROJ-[A-Z]{4}-\d{4} only when 'Classified' within 50 chars"
+    = Custom data identifier with regex + keyword + proximity
+
+  Macie enabled ≠ scanning (automated discovery = sampling only)
+  Full coverage = create discovery JOB
+  SSE-KMS bucket "Unable to analyze" = key policy missing Macie SLR kms:Decrypt
+```
+
+---
+
+> Total: 9 pages covering 95%+ of SCS-C03 exam content intersected with your error patterns.
+> Write by hand. Read before every drill. Cycle through daily (3 pages/day).
+> Exam day: skim all 9 pages in the 30 min before your appointment.
