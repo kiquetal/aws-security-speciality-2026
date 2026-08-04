@@ -964,6 +964,48 @@ kms:DescribeKey — WHEN is it needed?
     | "Employees full VPC access"         | Client VPN        |
     | "Specific apps, zero-trust, no VPN" | Verified Access   |
 
+═══ CLIENT VPN AUTHENTICATION (3 options) ═══
+
+  1. Mutual TLS (certificate-based):
+     → ACM Private CA issues client certs
+     → No user/password — cert = identity
+     → "Strongest, no credentials to steal"
+
+  2. Active Directory (user/password):
+     → AWS Managed AD or AD Connector
+     → Users authenticate with AD credentials
+     → "Existing corporate directory"
+
+  3. SAML-based SSO (federated):
+     → Okta, Entra ID, any SAML 2.0 IdP
+     → Users authenticate via IdP portal
+     → "SSO experience for VPN"
+
+  CAN COMBINE: mTLS + AD = cert + password (strongest)
+  
+  EXAM SIGNALS:
+    "Certificate-based VPN auth" = mutual TLS (ACM Private CA)
+    "Corporate AD credentials for VPN" = AD auth (Managed AD or Connector)
+    "SSO for VPN access" = SAML federation
+    "Strongest authentication" = mTLS + AD combined
+
+═══ SITE-TO-SITE VPN vs CLIENT VPN ═══
+
+  Site-to-Site VPN:
+    → TWO fixed endpoints (your router ↔ AWS VGW/TGW)
+    → IPsec tunnels (2 per connection for HA)
+    → Auth: pre-shared key OR certificate
+    → "Office to AWS" / "branch to AWS"
+
+  Client VPN:
+    → Individual users (laptop/phone → AWS)
+    → OpenVPN-based (needs client software)
+    → Auth: mTLS / AD / SAML (see above)
+    → "Remote workers to AWS"
+
+  TRAP: "3 offices with routers" = Site-to-Site (NOT Client VPN)
+        "500 employees from home" = Client VPN (NOT Site-to-Site)
+
 ═══ Inspector SBOM (failed 2x: Q1059, Q1119) ═══
 
   Inspector SBOM export:
