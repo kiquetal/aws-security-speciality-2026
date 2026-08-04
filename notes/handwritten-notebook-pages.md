@@ -1559,6 +1559,127 @@ kms:DescribeKey — WHEN is it needed?
 
 ---
 
-> Total: 9 pages covering 95%+ of SCS-C03 exam content intersected with your error patterns.
-> Write by hand. Read before every drill. Cycle through daily (3 pages/day).
-> Exam day: skim all 9 pages in the 30 min before your appointment.
+## PAGE 10: Regional vs Global + Quotas + Traps
+
+```
+═══ REGIONAL (must enable PER REGION) ═══
+
+  GuardDuty, Security Hub, Inspector, Macie, Detective
+  Config, KMS keys, ACM certs, State Manager
+  S3 Batch Operations (job + manifest + target = SAME region)
+  CloudTrail Lake (EDS is regional)
+
+  "Zero findings in Region X" = service not enabled there
+  "Delegated admin" = WHO manages. Regional = WHERE it runs. Independent.
+
+═══ GLOBAL (one place, works everywhere) ═══
+
+  IAM (users, roles, policies)
+  Organizations (SCPs, RCPs)
+  Route 53, CloudFront
+  S3 bucket names (but bucket LIVES in one region)
+
+═══ GLOBAL SERVICE EVENTS → us-east-1 ONLY ═══
+
+  IAM, STS, CloudFront → events ONLY in us-east-1
+  EventBridge rule for CreateUser/CreateAccessKey = must be in us-east-1
+  Workload in eu-west-1 ≠ where IAM events appear
+
+═══ ACM CERTS (regional trap) ═══
+
+  CloudFront custom domain = cert in us-east-1 ALWAYS
+  ALB = cert in ALB's region
+  Can't share certs cross-region
+  "ALB eu-west-1 cert error" = cert provisioned in wrong region
+
+═══ MRK (Multi-Region Keys) ═══
+
+  Same key ID + same material + INDEPENDENT policies per region
+  Update primary policy ≠ update replica (must do each separately)
+  
+  Required for: DynamoDB Global Tables ONLY
+  NOT required for: CRR, EBS copy, SM replication (all re-encrypt)
+
+═══ SECURITY HUB TRAPS ═══
+
+  Regional (NOT global!)
+  Cross-region = designate aggregation region
+  "Some accounts zero" = membership issue (not enrolled)
+  "All delayed 0 findings" = 2-24hr latency (Config at scale)
+  SH = dashboard ONLY. Config = remediation engine.
+  Trusted Advisor does NOT integrate with SH
+
+═══ MULTI-ENDPOINT SERVICES ═══
+
+  SSM Session Manager = 3: ssm + ssmmessages + ec2messages
+  Bedrock             = 2: bedrock + bedrock-runtime
+  ECR                 = 2: ecr.api + ecr.dkr
+  Miss ANY one = broken (timeout)
+
+═══ QUOTAS THAT TRICK YOU (4-5-8-32-5120) ═══
+
+  4 KB    = KMS direct Encrypt/Decrypt max payload
+  5       = max SCPs/RCPs per target (root/OU/account)
+  8 KB    = WAF body inspection default (up to 64KB paid)
+  32 KB   = KMS key policy max size (~200 principals)
+  5,120   = SCP/RCP max characters
+
+  Other critical:
+  7-30 days = KMS key deletion wait (default 30)
+  7-30 days = Secrets Manager deletion window (same!)
+  1 hour    = role chaining max session (always resets)
+  90 days   = CloudTrail Event History (free, management only)
+  4 hours   = IAM Credential Report cache
+
+═══ CONDITION KEY OPERATORS (traps) ═══
+
+  StringNotEquals + header check = Deny fires if header MISSING
+    (missing ≠ matches, so NotEquals = TRUE = Deny fires)
+
+  BoolIfExists vs Bool (MFA trap):
+    Bool: CLI/SDK (no MFA key present) = condition SKIPPED = ALLOWED ❌
+    BoolIfExists: key absent = treated as match = Deny fires ✅
+    RULE: MFA Deny = ALWAYS BoolIfExists
+
+  Null condition (force tagging):
+    "Null": {"aws:RequestTag/CostCenter": "true"}
+    = "Deny if tag is MISSING" = must tag or denied
+
+  IfExists suffix:
+    "If key present → evaluate. If absent → skip (don't deny)"
+    Used for: PrincipalIsAWSService (services don't carry this key)
+
+═══ SERVICES THAT CAN'T BE DENIED ═══
+
+  GetCallerIdentity = cannot be denied by ANY policy
+    (IAM, SCP, boundary, session — nothing blocks it)
+
+═══ OPERATIONAL TRAPS ═══
+
+  EFS encryption = creation-time ONLY (can't enable on existing)
+  RDS encryption = creation-time ONLY (snapshot → copy → restore)
+  S3 Object Lock = must enable at BUCKET CREATION (can't add later)
+  
+  DLM = tag-based scheduler (no monitoring, no replacement of deleted)
+  DataSync = TLS always on (zero config), filters + throttle built-in
+
+  Config stopped = detection engine DEAD (rules can't fire)
+    → SCP prevents StopConfigurationRecorder (only fix)
+
+  Org trail = management account ONLY
+    → Members can't stop/delete/modify it
+    → Attacker in member = org trail still recording
+
+  CW agent ships logs. SSM agent executes commands.
+    → "Ship custom logs" = CW agent (never SSM agent)
+    → SSM CAN install CW agent but CAN'T replace it
+
+  Lambda = ephemeral (no EBS, no AMI, no disk forensics)
+    → Evidence: CW Logs + X-Ray + CloudTrail + GD findings only
+```
+
+---
+
+> Total: 10 pages covering ~100% of SCS-C03 exam content.
+> Write by hand. Read before every drill. Cycle through daily (3-4 pages/day).
+> Exam day: skim all 10 pages in the 30 min before your appointment.
