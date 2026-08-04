@@ -926,5 +926,147 @@ kms:DescribeKey — WHEN is it needed?
 
 ---
 
-> Total: 6 pages covering 90%+ of 49 red-priority error patterns.
-> Write by hand. Read before every drill. Cycle through daily (2 pages/day).
+## PAGE 7: Connectivity + D3 Remaining Gaps
+
+```
+═══ CONNECTIVITY DECISION (5 options) ═══
+
+  ON-PREM → AWS (fixed networks):
+    Site-to-Site VPN   = IPsec over internet (quick, cheap, minutes)
+    Direct Connect     = dedicated fiber (fast, private, NOT encrypted!)
+    Transit Gateway    = hub connecting VPCs + VPN + DX (share via RAM)
+
+  REMOTE USERS → AWS:
+    Client VPN         = full network tunnel (all ports, VPN client needed)
+    Verified Access    = per-app, zero-trust, NO client, browser only
+
+  ENCRYPT DX:
+    Dedicated DX → MACsec (Layer 2, zero overhead, line-rate)
+    Hosted DX    → Site-to-Site VPN over DX (IPsec, Layer 3)
+    ❌ MACsec on hosted = IMPOSSIBLE
+
+  KEY TRAPS:
+    "DX alone" ≠ encrypted (private ≠ encrypted!)
+    "Layer 2 encryption" = MACsec = dedicated ONLY
+    "Full network access from laptop" = Client VPN
+    "Per-app, no client, identity+device" = Verified Access
+    "3 offices with routers" = Site-to-Site VPN (not Client VPN)
+    "Individual home workers" = Client VPN (not Site-to-Site)
+
+  DECISION TABLE:
+    | Signal                              | Answer            |
+    |-------------------------------------|-------------------|
+    | "Quick, over internet, on-prem"     | Site-to-Site VPN  |
+    | "Dedicated, high-throughput"         | Direct Connect    |
+    | "Layer 2 encrypt dedicated DX"      | MACsec            |
+    | "Encrypt hosted DX"                 | VPN over DX       |
+    | "Many VPCs + on-prem connected"     | Transit Gateway   |
+    | "Employees full VPC access"         | Client VPN        |
+    | "Specific apps, zero-trust, no VPN" | Verified Access   |
+
+═══ Inspector SBOM (failed 2x: Q1059, Q1119) ═══
+
+  Inspector SBOM export:
+    ❌ NO built-in scheduler (no Console option)
+    ✅ On-demand API only: CreateSbomExport
+
+  Schedule with: EventBridge rule → Lambda → CreateSbomExport API
+  Export format: CycloneDX or SPDX
+  Export dest: S3 bucket
+
+  Bucket policy needed:
+    Allow s3:PutObject for inspector2.amazonaws.com
+    (same Pattern 1 from Page 5 — service principal in bucket policy)
+
+  ❌ NOT SSM + custom scripts
+  ❌ NOT "enable scanning" (that's vulnerability scanning, different)
+
+═══ Verified Access (zero-trust per-app) ═══
+
+  WHAT: Access internal apps WITHOUT VPN. Browser-based.
+  HOW:  Evaluates identity (IdP) + device posture (MDM) PER REQUEST
+  
+  Components:
+    Trust providers = who checks identity + device
+      → Identity: Okta, Entra ID, Identity Center
+      → Device: CrowdStrike, Jamf, Intune
+    
+    Access groups = policies (which users/devices get in)
+    Endpoints = the apps being protected
+
+  vs Client VPN:
+    Client VPN = full tunnel, all ports, VPN client on device
+    Verified Access = per-app HTTPS, no client, zero-trust
+
+  EXAM SIGNALS:
+    "Stolen laptop, block ONE device" = mark non-compliant in device trust provider
+    "No VPN client" = Verified Access
+    "Zero-trust + device posture" = Verified Access
+    "Full network access needed" = Client VPN (not VA)
+
+═══ Network Firewall TLS inspection (failed 3x: Q35, Q87, Q152) ═══
+
+  HOW: Network Firewall decrypts → inspects → re-encrypts (MITM pattern)
+  NEEDS: Private CA certificate in ACM
+  
+  Users get cert warnings = Private CA NOT in client trust stores
+  Fix: distribute Private CA cert to ALL clients (GPO, MDM, manual)
+
+  This is NOT:
+    ❌ Public ACM cert (public CAs don't do MITM)
+    ❌ Self-signed on the firewall (clients won't trust it)
+    ✅ Private CA → distribute to clients → trusted MITM
+
+═══ Traffic Inspection — 3 patterns (failed 3x) ═══
+
+  PASSIVE (copy, no block):     Traffic Mirroring → NLB → IDS
+    Encapsulation: VXLAN
+    If it fails: production unaffected (copy stops, traffic fine)
+    "IDS" / "observe" / "full packet" / "without blocking"
+
+  INLINE third-party:           GWLB → Palo Alto / Fortinet
+    Encapsulation: GENEVE
+    If it fails: traffic STOPS
+    "Third-party appliance" / "Palo Alto" / "scale + health check"
+    TRAP: logs show GWLB IP → decapsulate GENEVE outer header
+
+  INLINE AWS-native:            Network Firewall (Suricata)
+    If it fails: traffic STOPS
+    "Suricata rules" / "IPS" / "TLS inspection"
+
+  NEVER CONFUSE:
+    "Full packet + passive" = Traffic Mirroring (NEVER Flow Logs)
+    "IDS/IPS + block" = Network Firewall or GWLB
+    VPC Flow Logs = METADATA ONLY (IP/port, no payload)
+
+═══ S3 Batch Operations (encrypt existing objects) ═══
+
+  "20TB unencrypted, encrypt with SSE-S3" = S3 Batch Operations COPY
+    → Copy object to itself with encryption specified
+    → Parallel processing, millions of objects
+    → No code, no Lambda
+
+  Default encryption only covers FUTURE objects
+  EXISTING unencrypted = Batch Operations COPY (to self + encrypt)
+
+  S3 Batch = REGIONAL (job + manifest + target = same region)
+
+═══ YOUR ERROR PATTERNS ═══
+
+  ❌ Picked GWLB for passive IDS (Q1126, 3x)
+     → RULE: passive = Traffic Mirroring. GWLB = inline (blocks).
+
+  ❌ Picked NF for "full packet + observe only" 
+     → RULE: NF = inline IPS. Mirroring = passive copy.
+
+  ❌ Inspector SBOM has built-in scheduler (Q1059, Q1119)
+     → RULE: On-demand API only. Schedule = EventBridge + Lambda.
+
+  ❌ MACsec on hosted DX (impossible)
+     → RULE: MACsec = dedicated ONLY. Hosted = VPN over DX.
+```
+
+---
+
+> Total: 7 pages covering 95%+ of 49 red-priority error patterns.
+> Write by hand. Read before every drill. Cycle through daily (2-3 pages/day).
