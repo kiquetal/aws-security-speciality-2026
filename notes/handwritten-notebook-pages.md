@@ -1463,6 +1463,98 @@ kms:DescribeKey — WHEN is it needed?
   Macie enabled ≠ scanning (automated discovery = sampling only)
   Full coverage = create discovery JOB
   SSE-KMS bucket "Unable to analyze" = key policy missing Macie SLR kms:Decrypt
+
+═══ BEDROCK GUARDRAILS (new in C03 — 1-2 questions guaranteed) ═══
+
+  Guardrails ≠ WAF (WAF = HTTP filtering, Guardrails = LLM content filtering)
+  Filters INPUT and OUTPUT (both directions, not just responses)
+
+  5 filter types:
+    Content filters (hate, violence, sexual, insults)
+    Denied topics (custom blocklist of subjects)
+    Word filters (exact match phrases)
+    PII filters (SSN, credit cards — mask in/out)
+    Contextual grounding (hallucination detection)
+
+  IAM enforcement:
+    Condition: bedrock:GuardrailIdentifier = mandatory per call
+    SCP deny InvokeModel unless guardrail attached = org-wide
+
+  ApplyGuardrail = STANDALONE API:
+    → Filter ANY text (even non-AWS LLMs on EC2)
+    → Does NOT need bedrock:InvokeModel permission
+    → "Filter content from self-hosted LLM" = ApplyGuardrail
+
+  Two VPC endpoints: bedrock (management) + bedrock-runtime (inference)
+  Data NOT used for training (opted out by default, no action needed)
+
+  EXAM SIGNALS:
+    "Prevent prompt injection" = Bedrock Guardrails
+    "Block PII in LLM responses" = Bedrock Guardrails
+    "Block model org-wide" = SCP deny InvokeModel on model ARN
+    "Filter non-AWS LLM" = ApplyGuardrail standalone
+
+═══ S3 ENCRYPTION DECISION ═══
+
+  | Signal | Answer |
+  |---|---|
+  | "Least overhead / default" | SSE-S3 (AES-256, free, zero config) |
+  | "Audit decryption / control who decrypts" | SSE-KMS (CMK) |
+  | "Keys never stored in AWS (server-side)" | SSE-C (you send key per request) |
+  | "AWS never sees plaintext at all" | Client-side encryption |
+
+  SSE-C: HTTPS mandatory (key in request headers)
+  SSE-KMS: caller needs kms:GenerateDataKey (upload) + kms:Decrypt (download)
+  SSE-S3: unique DEK per object automatically (envelope encryption built-in)
+
+  "Encrypt 20TB existing objects with SSE-S3" = S3 Batch Operations COPY
+  Default encryption = FUTURE objects only. Existing = Batch Ops.
+
+═══ CLOUDFORMATION SERVICE ROLE ═══
+
+  PROBLEM: CF uses CALLER's permissions → different devs = inconsistent results
+  FIX: CF service role = consistent permissions for everyone
+
+  Trust policy: cloudformation.amazonaws.com ONLY
+    (not composite with ec2/lambda/s3 — just CF)
+
+  Permission policy: targets ACTUAL resources CF creates
+    → ec2:RunInstances, lambda:CreateFunction, s3:CreateBucket
+    → NOT stack ARNs (arn:aws:cloudformation:...) ← TRAP
+
+  Developer needs ONLY:
+    → cloudformation:CreateStack/UpdateStack/DeleteStack
+    → iam:PassRole on the service role
+    → Does NOT need ec2:*/lambda:*/s3:* anymore
+
+  PassRole vs AssumeRole:
+    PassRole = "give car keys to valet" (hand role TO service)
+    AssumeRole = "drive the car yourself" (become the role)
+    PassRole can't escalate. AssumeRole can.
+
+  NESTED TRAP: if CF template creates IAM roles (execution roles):
+    → The CF service role itself needs iam:PassRole too!
+
+═══ SECRETS MANAGER vs PARAMETER STORE ═══
+
+  | Signal | Answer |
+  |---|---|
+  | "Rotation needed (RDS, Aurora)" | Secrets Manager (native rotation) |
+  | "No rotation, cheap, config values" | Parameter Store SecureString |
+  | "Cross-region DR for credentials" | Secrets Manager replication |
+  | "Cross-account secret access" | Secrets Manager resource policy |
+  | "API keys in CF template" | Secrets Manager + resolve:secretsmanager |
+
+  Parameter Store SecureString:
+    → ssm:GetParameter + kms:Decrypt (customer CMK)
+    → AWS managed key (aws/ssm) may auto-grant in some contexts
+    → Customer CMK = always explicit kms:Decrypt needed
+
+  Secrets Manager:
+    → $0.40/secret/month + $0.05/10K API calls
+    → 7-30 day deletion window (can't delete immediately)
+    → AWSCURRENT + AWSPREVIOUS (old password valid until next rotation)
+    → MRK NOT required for replication (SM re-encrypts with dest key)
 ```
 
 ---
