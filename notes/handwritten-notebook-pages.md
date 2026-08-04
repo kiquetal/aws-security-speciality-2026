@@ -544,48 +544,98 @@ kms:DescribeKey — WHEN is it needed?
   YOU calling S3 directly        → NOT needed (GenerateDataKey + Decrypt)
   AWS SERVICE writing to your bucket → NEEDED in key policy
     (Bedrock, Macie, Config, CloudTrail = validate key first)
-  Cross-account sharing          → NEEDED in key policy (always)
+  Cross-account KEY POLICY (on key OWNER side, granted TO external caller)
+    → NEEDED (AWS validates key metadata for external principals)
+    → Account A key policy grants Account B: Decrypt + GenerateDataKey + DescribeKey
   CreateGrant services (EBS, DDB) → NEEDED (validate before grant)
   Kinesis consumer/producer      → NOT needed (direct call, no grant)
+  CRR replication role           → NOT needed (D-G-F only, no DescribeKey)
   
   RULE: "Service delegates via grant" OR "service principal in key policy"
+        OR "cross-account key policy"
         → DescribeKey needed
-        "You call directly" → not needed
+        "You call directly (same-account)" → not needed
 
-CRR encryption context:
+═══ SIGN vs ENCRYPT (asymmetric KMS) ═══
+
+  Sign = PRIVATE key → verify = PUBLIC key
+    → Integrity + non-repudiation
+    → "Customers verify offline air-gapped" = download public key, OpenSSL
+    → Can't sign with public (anyone could forge — no non-repudiation)
+
+  Encrypt = PUBLIC key → decrypt = PRIVATE key
+    → Confidentiality
+    → Anyone can encrypt TO you. Only you can decrypt.
+
+  KMS: one key = one purpose at creation (sign OR encrypt, NOT both)
+  ECC keys = SIGNING ONLY (never encryption)
+  RSA keys = choose one at creation (SIGN_VERIFY or ENCRYPT_DECRYPT)
+
+  Mnemonic: "Sign = YOUR secret hand. Verify = everyone can look."
+
+═══ S3 VERSIONING REQUIREMENTS (what NEEDS versioning?) ═══
+
+  THESE REQUIRE S3 VERSIONING:
+    S3 Object Lock (Compliance/Governance/Legal Hold) → versioning mandatory
+    S3 CRR (Cross-Region Replication)                 → versioning on BOTH buckets
+    S3 SRR (Same-Region Replication)                  → versioning on BOTH buckets
+    API Gateway mTLS truststore                       → versioning + explicit object version
+    MFA Delete                                        → versioning must be enabled first
+
+  THESE DO NOT REQUIRE VERSIONING:
+    S3 server access logging target bucket            → no versioning needed
+    S3 default encryption                             → no versioning needed
+    S3 lifecycle policies                             → works with or without
+
+  API GW mTLS VERSIONING TRAP:
+    mTLS = custom domain + S3 truststore (PEM file)
+    S3 bucket MUST have versioning enabled
+    You MUST specify the exact object version (truststoreVersion)
+    No versioning = domain creation FAILS at setup
+    Update truststore = upload new PEM → reference new version
+
+═══ CRR encryption context ═══
+
   Rewrites to DEST bucket ARN (not source)
   Custom context from source = preserved → can cause mismatch
+  Dest key policy conditions must reference DEST bucket ARN
 
-S3 server access logging:
+═══ S3 server access logging ═══
+
   Bucket policy method → works with BucketOwnerEnforced ✅
   ACL method → BREAKS with BucketOwnerEnforced ❌
   Target bucket: NO SSE-KMS, NO Object Lock, NO Requester Pays
 
-Secrets Manager rotation fails:
+═══ Secrets Manager rotation fails ═══
+
   "Unable to log into database" = Lambda SG can't reach DB SG
   "Auth failed for new app" = rotation Lambda didn't ALTER USER
 
-Object Lock vs Vault Lock:
+═══ Object Lock vs Vault Lock ═══
+
   "Fixed retention, auto-expires" → Object Lock Compliance
   "24hr confirm, permanent forever" → Glacier Vault Lock
   "Indefinite, for litigation" → Legal Hold
 
-Sign = private key. Verify = public key (offline OK).
-  Can't sign with public (anyone could forge).
+═══ S3 Access Grants ═══
 
-S3 Access Grants: broadest prefix wins.
+  Broadest prefix wins.
   Root prefix grant (s3://bucket/) = access to everything.
   Overlap = #1 operational misconfiguration.
 
-Imported key = immediate delete (DeleteImportedKeyMaterial)
-  No 7-day wait. ScheduleKeyDeletion min = 7 days.
+═══ Imported key ═══
 
-EC2 + encrypted EBS:
+  Immediate delete (DeleteImportedKeyMaterial) — no 7-day wait
+  ScheduleKeyDeletion min = 7 days (different mechanism)
+
+═══ EC2 + encrypted EBS ═══
+
   Start existing = CreateGrant + Decrypt
   Create new     = CreateGrant + GenerateDataKeyWithoutPlaintext
   BOTH always need CreateGrant (delegates to EBS backend)
 
-EBS cross-account snapshot sharing:
+═══ EBS cross-account snapshot sharing ═══
+
   Default key (aws/ebs) can't share → copy with CMK first
   copy-snapshot = decrypt + re-encrypt in ONE API call (no volume needed)
   Target account needs on source CMK:
@@ -593,22 +643,26 @@ EBS cross-account snapshot sharing:
   Flow: copy-snapshot with CMK → share snapshot → grant key to target
   ❌ "Create volume" = unnecessary trap (copy-snapshot handles it directly)
 
-EBS vs RDS vs Aurora — encrypt unencrypted snapshot:
+═══ EBS vs RDS vs Aurora — encrypt unencrypted snapshot ═══
+
   EBS:    copy-snapshot + encrypt = ✅ direct (one step)
   RDS:    copy-db-snapshot + encrypt = ✅ direct (one step)
   Aurora: copy CANNOT encrypt ❌ → must restore → enable encryption → new snapshot
 
-CRR replication role (D-G-F mnemonic):
+═══ CRR replication role (D-G-F mnemonic) ═══
+
   Decrypt on source key
   GenerateDataKey on dest key (NOT Encrypt)
   GetObjectVersionForReplication on source bucket
+  (NO DescribeKey in replication role itself)
 
-Cron vs Rate vs PITR:
+═══ Cron vs Rate vs PITR ═══
+
   Specific calendar dates (10th, 20th) = cron
   Fixed interval (every 6hr)           = rate
   Continuous recovery window           = PITR (not scheduled backups)
 
-Services writing to YOUR S3 — two patterns:
+═══ Services writing to YOUR S3 — two patterns ═══
 
   Pattern 1: Service uses ITS OWN principal (you grant in bucket/key policy)
     CloudTrail    → cloudtrail.amazonaws.com
