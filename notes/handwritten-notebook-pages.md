@@ -636,9 +636,36 @@ kms:DescribeKey — WHEN is it needed?
 
 ═══ CRR encryption context ═══
 
-  Rewrites to DEST bucket ARN (not source)
-  Custom context from source = preserved → can cause mismatch
-  Dest key policy conditions must reference DEST bucket ARN
+  HOW CRR ACTUALLY WORKS (S3 assumes your replication role):
+
+  Source bucket (us-east-1)              Dest bucket (eu-west-1)
+  ┌─────────────────────┐               ┌─────────────────────┐
+  │ object.txt          │               │ object.txt          │
+  │ encrypted with      │               │ encrypted with      │
+  │ SOURCE CMK DEK      │               │ DEST CMK DEK (NEW!) │
+  └──────────┬──────────┘               └──────────▲──────────┘
+             │                                      │
+             │  Replication Role does:              │
+             │                                      │
+             ├── 1. kms:Decrypt (source CMK)        │
+             │      → gets plaintext                │
+             │                                      │
+             └── 2. kms:GenerateDataKey (dest CMK) ─┘
+                    → new DEK → re-encrypts → writes
+
+  = Decrypt + Re-encrypt (NOT key copy, NOT key share)
+  = Source and dest can use COMPLETELY DIFFERENT CMKs
+  = MRK NOT required (only DynamoDB Global Tables needs MRK)
+
+  ENCRYPTION CONTEXT at destination:
+    S3 REWRITES aws:s3:arn → DEST bucket ARN (not source)
+    Custom context from source → PRESERVED as-is
+    Dest key policy condition must reference DEST bucket ARN
+
+  WHERE TO PUT CONDITION:
+    Source CMK key policy → kms:Decrypt → NO condition needed
+    Dest CMK key policy   → kms:GenerateDataKey → ✅ HERE
+      Condition: "kms:EncryptionContext:aws:s3:arn": "arn:aws:s3:::DEST-BUCKET/*"
 
 ═══ S3 server access logging ═══
 
