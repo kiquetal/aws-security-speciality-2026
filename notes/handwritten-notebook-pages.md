@@ -546,7 +546,8 @@ kms:DescribeKey — WHEN is it needed?
     (Bedrock, Macie, Config, CloudTrail = validate key first)
   Cross-account KEY POLICY (on key OWNER side, granted TO external caller)
     → NEEDED (AWS validates key metadata for external principals)
-    → Account A key policy grants Account B: Decrypt + GenerateDataKey + DescribeKey
+    → Account A key policy grants Account B:
+      kms:Encrypt, kms:Decrypt, kms:ReEncrypt*, kms:GenerateDataKey*, kms:DescribeKey
   CreateGrant services (EBS, DDB) → NEEDED (validate before grant)
   Kinesis consumer/producer      → NOT needed (direct call, no grant)
   CRR replication role           → NOT needed (D-G-F only, no DescribeKey)
