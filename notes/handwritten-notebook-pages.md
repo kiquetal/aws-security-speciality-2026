@@ -1408,6 +1408,28 @@ kms:DescribeKey — WHEN is it needed?
   "Legitimate traffic blocked by Bot Control" = scope-down
   "Sophisticated distributed attack" = Targeted level
 
+  WAF RATE-BASED TYPES (failed Udemy — picked IP reputation):
+    Blanket       = all pages, one IP exceeds threshold
+    URI-specific  = one path (/login), one IP exceeds threshold
+    IP reputation = pre-built AWS threat intel blocklist
+
+    "Attack on /login"             = URI-specific (surgical, match scope)
+    "High volume one IP all pages" = blanket rate-based
+    "Known bad IPs from threat feeds" = IP reputation
+
+    RULE: match scope of RESPONSE to scope of ATTACK
+      Attack targets ONE endpoint → URI-specific (not blanket)
+      Attack from ONE known-bad source → IP reputation
+      Attack from MANY unknown IPs → rate-based + Bot Control Targeted
+
+  WAF PRIORITY (first match wins):
+    Lowest number = first evaluated
+    BLOCK/ALLOW = terminates evaluation
+    COUNT = continues to next rule
+
+    "Rate-based + Bot Control + geo-match together"
+      = three SEPARATE rules in same Web ACL, you set priority order
+
 ═══ CLOUDFRONT OAC + SSE-KMS ═══
 
   TWO policies needed (miss either = 403):
