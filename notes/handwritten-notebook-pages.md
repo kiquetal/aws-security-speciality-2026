@@ -1060,6 +1060,30 @@ kms:DescribeKey — WHEN is it needed?
     RAM CAN share WAF Web ACLs too (optional sharing pattern)
     But when FM enforces WAF → FM creates its own, doesn't use RAM
 
+═══ WHICH FIREWALL FOR WHAT ═══
+
+  DDoS / volumetric floods / cost protection  → Shield Advanced ($3K/month)
+  SQLi / XSS / rate-limit / bots / geo       → WAF (HTTP Layer 7)
+  Suricata / IDS/IPS / TLS inspection / DPI   → Network Firewall
+  Block DNS domains / exfil                   → DNS Firewall
+
+  Shield ≠ Suricata. WAF ≠ IPS. Don't mix.
+
+═══ NORTH/SOUTH vs EAST/WEST ═══
+
+  NORTH/SOUTH = traffic entering/leaving your VPC (internet ↔ VPC)
+    → Protect with: WAF, Shield, Network Firewall, CloudFront, NACLs
+    → "Ingress/egress" / "perimeter" / "internet-facing"
+
+  EAST/WEST = traffic BETWEEN services inside your network (VPC ↔ VPC, service ↔ service)
+    → Protect with: Security Groups, Network Firewall, VPC Lattice, TGW
+    → "Lateral movement" / "service-to-service" / "micro-segmentation"
+
+  EXAM SIGNALS:
+    "Block external attacks" = north/south (WAF, Shield, NF at perimeter)
+    "Prevent lateral movement" = east/west (SGs, NF between subnets, Lattice)
+    "Service mesh without sidecar" = VPC Lattice (east/west, IAM auth)
+
 ═══ Inspector SBOM (failed 2x: Q1059, Q1119) ═══
 
   Inspector SBOM export:
