@@ -977,6 +977,21 @@ kms:DescribeKey — WHEN is it needed?
     | "Employees full VPC access"         | Client VPN        |
     | "Specific apps, zero-trust, no VPN" | Verified Access   |
 
+═══ MANAGED PREFIX LISTS ═══
+
+  Prefix list = set of CIDRs under one ID (pl-xxx)
+  Use in: SGs, route tables, NF rules, TGW routes
+
+  AWS-managed: S3 + DynamoDB IPs (auto-updated by AWS)
+    → "Restrict SG to S3 only" = use pl-xxx (not individual IPs)
+    → Gateway endpoint auto-adds prefix list route to route table
+
+  Customer-managed: your own CIDR sets (on-prem, partner IPs)
+    → Share cross-account via RAM
+
+  "Only allow S3 from private subnet" = Gateway endpoint (removes NAT)
+    OR SG outbound → pl-xxx (prefix list for S3)
+
 ═══ CLIENT VPN AUTHENTICATION (3 options) ═══
 
   1. Mutual TLS (certificate-based):
