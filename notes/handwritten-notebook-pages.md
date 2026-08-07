@@ -1765,6 +1765,17 @@ kms:DescribeKey — WHEN is it needed?
   EventBridge rule for CreateUser/CreateAccessKey = must be in us-east-1
   Workload in eu-west-1 ≠ where IAM events appear
 
+═══ STS REGIONAL ENDPOINTS (opt-in regions trap) ═══
+
+  Opt-in regions (me-south-1, af-south-1, ap-east-1, eu-south-1):
+    → STS regional endpoint DISABLED by default
+    → Tokens from global endpoint may not work for opt-in region services
+    → Fix: IAM Console → Account Settings → Activate STS for that region
+
+  "STS tokens don't work in new region" = activate regional endpoint
+  "Reduce dependency on us-east-1" = use regional endpoints everywhere
+  Best practice: activate in ALL regions you operate
+
 ═══ ACM CERTS (regional trap) ═══
 
   CloudFront custom domain = cert in us-east-1 ALWAYS
