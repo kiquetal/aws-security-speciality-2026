@@ -1585,6 +1585,43 @@ kms:DescribeKey — WHEN is it needed?
     ✅ Identity Center enabled
     ❌ DISABLE existing trusted access for Config/CloudTrail (CT manages these)
 
+  CAN: landing zone, guardrails, Account Factory, drift detection
+  CAN'T: auto-fix drift, deploy WAF (FM), share resources (RAM), remediate (Config+SSM)
+
+═══ DELEGATED ADMIN (all services) ═══
+
+  WHAT: "This account manages the service on behalf of the org"
+  WHY: Don't run security tools in management account
+
+  Every security service supports it:
+    GuardDuty, Security Hub, Inspector, Macie, Detective,
+    Config, Access Analyzer, Firewall Manager, Security Lake,
+    Audit Manager, Identity Center
+
+  Delegated admin CAN:
+    ✅ Enable/disable service in members
+    ✅ View all findings org-wide
+    ✅ Auto-enable for new accounts
+    ✅ Manage org-wide policies/rules
+
+  Delegated admin CAN'T:
+    ❌ Modify SCPs/RCPs (management account only)
+    ❌ Create/delete AWS accounts (management account only)
+    ❌ Change OU structure (management account only)
+    ❌ Access management account resources (exempt)
+
+  Identity Center delegated admin:
+    ✅ Create/manage permission sets
+    ✅ Assign users/groups to accounts
+    ✅ Manage identity source (SCIM sync)
+    ❌ Can't change the delegated admin designation itself
+    ❌ Can't manage management account access
+
+  EXAM TRAP:
+    "Delegated admin" = WHO manages
+    "Regional" = WHERE it runs
+    These are INDEPENDENT. Delegated admin ≠ auto-covers all regions.
+
 ═══ DECLARATIVE POLICIES ═══
 
   "This STATE is impossible to violate, regardless of which API"
