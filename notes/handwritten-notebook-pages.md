@@ -1348,6 +1348,28 @@ kms:DescribeKey — WHEN is it needed?
     BoolIfExists: key absent = treated as match = Deny fires ✅
     RULE: MFA in Deny statements = ALWAYS BoolIfExists
 
+═══ IMPORTED KEY — AUTO-EXPIRATION (exam trap) ═══
+
+  ONLY imported keys support expiration:
+    → Set ValidTo at import time → material auto-deleted after that date
+    → Key ID remains (can re-import same or new material)
+    → "Key must auto-expire after 30 days" = imported + ValidTo
+
+  AWS-generated keys (default, Custom Key Store, XKS):
+    → NEVER expire. Exist until ScheduleKeyDeletion (7-30 day wait).
+    → "AWS-generated key that expires" = IMPOSSIBLE
+
+  Immediate delete:
+    → DeleteImportedKeyMaterial = instant (no wait)
+    → ScheduleKeyDeletion = 7-30 days minimum
+    → "Delete within 24 hours" = only imported material satisfies
+
+  Auto-rotation:
+    → AWS-generated symmetric = ✅ (90-2560 days configurable)
+    → Imported = ❌ NEVER (manual alias swap only)
+    → Custom Key Store / XKS = ❌ NEVER (manual only)
+    → Asymmetric / HMAC = ❌ NEVER (manual only)
+
 ═══ COGNITO + DYNAMODB ABAC (sub vs TenantId) ═══
 
   Per-USER DynamoDB access:
