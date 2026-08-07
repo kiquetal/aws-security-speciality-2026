@@ -1775,6 +1775,28 @@ kms:DescribeKey — WHEN is it needed?
   GetCallerIdentity = cannot be denied by ANY policy
     (IAM, SCP, boundary, session — nothing blocks it)
 
+═══ S3 ACCESS POINTS vs ACCESS GRANTS ═══
+
+  Access Points = named endpoints, each with OWN JSON policy
+    → "Multiple teams on shared bucket, simplify policies"
+    → Own DNS hostname per access point
+    → Can be VPC-only (NetworkOrigin: VPC = no internet)
+    → Bucket policy + AP policy = BOTH evaluated (intersection)
+    → AP can't grant MORE than bucket policy allows
+
+  Access Grants = declarative identity → prefix → permission level
+    → "Map corporate groups to folders WITHOUT writing JSON"
+    → Three levels only: READ, WRITE, READWRITE
+    → Identity sources: Identity Center or IAM principals
+    → App calls s3:GetDataAccess → gets temp scoped credentials
+    → Broadest prefix wins (overlap = #1 misconfiguration)
+
+  DECISION:
+    "Simplify bucket policy for multiple teams" = Access Points
+    "Map Identity Center groups to prefixes, no JSON" = Access Grants
+    "Restrict S3 to specific VPC" = Access Points (VPC-only)
+    "Temporary scoped credentials for prefix" = Access Grants
+
 ═══ OPERATIONAL TRAPS ═══
 
   EFS encryption = creation-time ONLY (can't enable on existing)
