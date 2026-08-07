@@ -1752,6 +1752,20 @@ kms:DescribeKey — WHEN is it needed?
   90 days   = CloudTrail Event History (free, management only)
   4 hours   = IAM Credential Report cache
 
+═══ STS ACTIONS IN TRUST POLICIES ═══
+
+  sts:AssumeRole                → cross-account, service roles (EC2, Lambda, CF)
+  sts:AssumeRoleWithSAML        → enterprise federation (ADFS, Okta SAML)
+  sts:AssumeRoleWithWebIdentity → OIDC federation (Cognito, Google, Facebook)
+  sts:TagSession                → pass session tags from IdP (ABAC)
+  sts:SetSourceIdentity         → track original human through role chains
+
+  PRINCIPAL in trust policy determines which Action:
+    "AWS": "arn:aws:iam::ACCOUNT:root"           → sts:AssumeRole
+    "Service": "ec2.amazonaws.com"                → sts:AssumeRole
+    "Federated": "arn:aws:iam::...:saml-provider" → sts:AssumeRoleWithSAML
+    "Federated": "cognito-identity.amazonaws.com" → sts:AssumeRoleWithWebIdentity
+
 ═══ CONDITION KEY OPERATORS (traps) ═══
 
   StringNotEquals + header check = Deny fires if header MISSING
