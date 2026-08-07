@@ -1836,6 +1836,18 @@ kms:DescribeKey — WHEN is it needed?
     "Federated": "arn:aws:iam::...:saml-provider" → sts:AssumeRoleWithSAML
     "Federated": "cognito-identity.amazonaws.com" → sts:AssumeRoleWithWebIdentity
 
+═══ ARN FORMATS — iam:: vs sts:: (failed Q1139) ═══
+
+  PERMANENT (exists in IAM) → iam::
+    IAM user:   arn:aws:iam::ACCOUNT:user/Name
+    IAM role:   arn:aws:iam::ACCOUNT:role/RoleName
+
+  TEMPORARY (created by STS) → sts::
+    Assumed role:    arn:aws:sts::ACCOUNT:assumed-role/RoleName/Session
+    Federated user:  arn:aws:sts::ACCOUNT:federated-user/Name
+
+  RULE: temporary identity = sts::. Permanent = iam::.
+
 ═══ CONDITION KEY OPERATORS (traps) ═══
 
   StringNotEquals + header check = Deny fires if header MISSING
