@@ -2015,6 +2015,117 @@ kms:DescribeKey — WHEN is it needed?
 
 ---
 
-> Total: 11 pages covering ~100% of SCS-C03 exam content.
+## PAGE 12: Condition Keys in Action (Examples)
+
+```
+═══ ViaService — restrict KMS to specific services ═══
+
+  SCP: "Deny kms:* unless ViaService = s3 or secretsmanager"
+
+  S3 GetObject (SSE-KMS):
+    → ViaService = "s3.us-east-1.amazonaws.com" → MATCH → allowed ✅
+  
+  Secrets Manager GetSecretValue:
+    → ViaService = "secretsmanager.us-east-1.amazonaws.com" → MATCH → allowed ✅
+
+  DynamoDB GetItem (CMK):
+    → ViaService = "dynamodb.us-east-1.amazonaws.com" → NO MATCH → denied ❌
+
+  Direct CLI: aws kms decrypt --ciphertext-blob ...
+    → ViaService = ABSENT → NO MATCH → denied ❌
+
+  RULE: ViaService = full endpoint string (service.region.amazonaws.com)
+        Must list EACH service you want to allow
+
+═══ TokenIssueTime — revoke old sessions ═══
+
+  Inline Deny on role:
+    "Condition": {"DateLessThan": {"aws:TokenIssueTime": "2026-08-08T00:00:00Z"}}
+
+  Session issued at 23:00 yesterday → DateLessThan → DENIED ❌
+  Session issued at 01:00 today     → NOT less than → allowed ✅
+  IMDS refreshes new creds (after timestamp) → new session → allowed ✅
+
+  RULE: kills all sessions BEFORE the timestamp. New ones work.
+
+═══ PrincipalOrgID — restrict to my org ═══
+
+  RCP on S3:
+    "Deny s3:* if PrincipalOrgID ≠ o-abc123"
+
+  Account in my org (o-abc123):     → matches → Deny doesn't fire ✅
+  External attacker (no org):       → doesn't match → DENIED ❌
+  AWS service (CloudTrail):         → no PrincipalOrgID key → need IfExists
+
+  ALWAYS pair with: BoolIfExists PrincipalIsAWSService: false
+    → Exempts AWS services that don't carry org context
+
+═══ RequestTag + Null — force tagging ═══
+
+  SCP: "Deny ec2:RunInstances if CostCenter tag MISSING"
+    "Condition": {"Null": {"aws:RequestTag/CostCenter": "true"}}
+
+  Launch with --tag CostCenter=Eng  → Null = false → Deny doesn't fire ✅
+  Launch WITHOUT tag                → Null = true  → DENIED ❌
+
+  RULE: Null:true = "key is absent" = deny if missing
+
+═══ ResourceTag — access only matching resources ═══
+
+  IAM policy: "Allow ec2:StartInstances + StopInstances"
+    "Condition": {"StringEquals": {"ec2:ResourceTag/Team": "${aws:PrincipalTag/Team}"}}
+
+  Role tagged Team=Backend, instance tagged Team=Backend → MATCH ✅
+  Role tagged Team=Backend, instance tagged Team=Frontend → NO MATCH ❌
+
+  RULE: ResourceTag = tag on the TARGET. PrincipalTag = tag on the CALLER.
+
+═══ SecureTransport — force HTTPS ═══
+
+  Bucket policy: "Deny s3:* if SecureTransport = false"
+    "Condition": {"Bool": {"aws:SecureTransport": "false"}}
+
+  HTTPS request → key = true  → condition false → Deny doesn't fire ✅
+  HTTP request  → key = false → condition true  → DENIED ❌
+
+  No BoolIfExists needed (SecureTransport ALWAYS present in every request)
+
+═══ ExternalId — confused deputy ═══
+
+  Trust policy on role in YOUR account:
+    "Condition": {"StringEquals": {"sts:ExternalId": "vendor-12345"}}
+
+  Vendor calls AssumeRole WITH ExternalId=vendor-12345 → MATCH ✅
+  Attacker calls AssumeRole WITHOUT ExternalId         → NO MATCH ❌
+  Attacker calls with wrong ExternalId                 → NO MATCH ❌
+
+  RULE: ExternalId = shared secret between you and vendor
+        Prevents other customers of same vendor from using your role
+
+═══ MultiFactorAuthPresent — require MFA (BoolIfExists!) ═══
+
+  IAM policy: "Deny s3:DeleteObject without MFA"
+    "Condition": {"BoolIfExists": {"aws:MultiFactorAuthPresent": "false"}}
+
+  Console with MFA:    key = true  → "false"? NO  → Deny doesn't fire ✅
+  Console without MFA: key = false → "false"? YES → DENIED ❌
+  CLI/SDK (no MFA key): key ABSENT → IfExists treats as MATCH → DENIED ❌
+
+  If you used plain Bool instead:
+  CLI/SDK: key ABSENT → condition SKIPPED → NO DENY → allowed ❌ HOLE!
+
+═══ MetadataHttpTokens — enforce IMDSv2 ═══
+
+  SCP: "Deny ec2:RunInstances unless IMDSv2"
+    "Condition": {"StringNotEquals": {"ec2:MetadataHttpTokens": "required"}}
+
+  Launch with --metadata-options HttpTokens=required → NOT "not required" → Deny doesn't fire ✅
+  Launch with HttpTokens=optional                   → "optional" ≠ "required" → DENIED ❌
+  Launch without specifying (default=optional)      → same as optional → DENIED ❌
+```
+
+---
+
+> Total: 12 pages covering ~100% of SCS-C03 exam content.
 > Write by hand. Read before every drill. Cycle through daily (3-4 pages/day).
-> Exam day: skim all 11 pages in the 30 min before your appointment.
+> Exam day: skim all pages in the 30 min before your appointment.
