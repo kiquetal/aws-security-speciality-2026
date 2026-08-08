@@ -1919,6 +1919,102 @@ kms:DescribeKey — WHEN is it needed?
 
 ---
 
-> Total: 10 pages covering ~100% of SCS-C03 exam content.
+## PAGE 11: Exam-Day Protocol + Final Traps
+
+```
+═══ READING PROTOCOL (your #1 error source) ═══
+
+  Read LAST sentence first (the constraint/requirement)
+  Then read the scenario
+
+  KEY WORDS THAT CHANGE EVERYTHING:
+    "least overhead"              = managed service (GuardDuty, not CT+filter)
+    "without affecting production" = read-only ONLY (Detective, not contain)
+    "zero code/infra"            = managed (not Lambda, not custom)
+    "all paths"                   = SCP (not Config proactive, not cfn-guard)
+    "immediately" + "active conn" = NACL (not SG)
+    "shared role"                = eliminate TokenIssueTime
+    "can't disrupt"              = eliminate deny-all SG
+    "before provisioned"         = Config proactive (not detective)
+    "independently provision"    = boundary (not Service Catalog)
+
+═══ COMMON DISTRACTOR PATTERNS (always wrong) ═══
+
+  "CloudTrail" as detection answer        → WRONG (log, not detector)
+  "Lambda" when managed service exists    → WRONG (more overhead)
+  "kms:Encrypt for S3"                   → ALWAYS WRONG (GenerateDataKey)
+  "AWS managed key for cross-account"    → ALWAYS WRONG (can't modify policy)
+  "Terraform + Config proactive catches" → WRONG (Terraform = direct API)
+  "Make ALB private" when CF needs it    → WRONG (CF can't reach private)
+  "Create volume from snapshot"          → WRONG (copy-snapshot handles it)
+  "Simple AD" + trusts/RDS SQL/IC        → ALWAYS WRONG (need Managed AD)
+  "GuardDuty fires on blocked attempts"  → ALWAYS WRONG (needs successful access)
+  "DNS Firewall generates findings"      → WRONG (just logs, GD generates findings)
+  "Security Hub remediates"              → WRONG (dashboard only, Config+SSM fixes)
+  "Trusted Advisor + Security Hub"       → WRONG (no integration)
+  "StackSets auto-remediates"            → WRONG (deploy and forget)
+
+═══ ONE-LINER TRAPS (high exam frequency) ═══
+
+  EKS Runtime Monitoring = needs agent (DaemonSet). Audit Log = agentless.
+    "Crypto miner in pod, no finding" = agent not deployed.
+
+  CloudFront headers (HSTS, CSP) = Response Headers Policy (managed, zero code)
+    NOT Lambda@Edge (that's for dynamic/conditional only)
+
+  S3 Batch cross-account = dest bucket policy must grant batch role
+    (same "both sides" rule as all cross-account S3)
+
+  EFS encryption = creation-time ONLY (can't enable on existing)
+  RDS encryption = creation-time ONLY (snapshot → copy → restore)
+  S3 Object Lock = must enable at BUCKET CREATION (can't add later)
+
+  Lambda = ephemeral (no EBS, no AMI, no disk forensics)
+    Evidence = CW Logs + X-Ray + CloudTrail + GD findings only
+
+  CW agent ships logs. SSM agent executes commands.
+    "Ship custom logs" = CW agent (NEVER SSM agent)
+
+  Config stopped = detection engine DEAD (rules can't fire)
+    Fix = SCP prevents StopConfigurationRecorder
+
+  Org trail = management account ONLY
+    Members can't stop/delete/modify it
+
+  S3 event notifications can't filter by ACL/permission values
+    Only: prefix, suffix, event type
+
+  "Object-level logging" = CloudTrail data events (same thing, different name)
+
+  Short-lived certs (hours/days) = no revocation needed (expire naturally)
+
+  Interface endpoint from on-prem via DX = works ✅ (private IP)
+  Gateway endpoint from on-prem via DX = DOESN'T work ❌ (route table only)
+
+  CloudFront custom header + ALB rule = "force traffic through CF"
+    (alternative to SG prefix list when "application-layer" is required)
+
+═══ ELIMINATION ORDER (when stuck between 2 options) ═══
+
+  1. Which has FEWER moving parts? (less overhead = usually correct)
+  2. Which is MANAGED vs custom? (managed wins for "least effort")
+  3. Which matches the VERB? (detect vs prevent vs investigate)
+  4. Which matches the SCOPE? (one account vs org-wide)
+  5. Which matches the TIMING? (before vs after creation)
+  6. Still stuck? Pick the one that DOESN'T require you to write code.
+
+═══ TIME MANAGEMENT (170 min, 65 questions) ═══
+
+  2.5 min per question average
+  Flag and move on after 3 min
+  First pass: answer all confident ones (40-45 questions)
+  Second pass: flagged questions with remaining time
+  Never leave blank (no penalty for wrong answer)
+  Last 10 min: review flagged, pick best guess, submit
+```
+
+---
+
+> Total: 11 pages covering ~100% of SCS-C03 exam content.
 > Write by hand. Read before every drill. Cycle through daily (3-4 pages/day).
-> Exam day: skim all 10 pages in the 30 min before your appointment.
+> Exam day: skim all 11 pages in the 30 min before your appointment.
