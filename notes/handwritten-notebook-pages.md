@@ -2122,6 +2122,62 @@ kms:DescribeKey — WHEN is it needed?
   Launch with --metadata-options HttpTokens=required → NOT "not required" → Deny doesn't fire ✅
   Launch with HttpTokens=optional                   → "optional" ≠ "required" → DENIED ❌
   Launch without specifying (default=optional)      → same as optional → DENIED ❌
+
+═══ SCP vs RCP — same goal, different sides ═══
+
+  GOAL: "No S3 access outside my org"
+
+  SCP (controls YOUR principals — blocks insiders going OUT):
+    "Effect": "Deny",
+    "Action": "s3:*",
+    "Resource": "*",
+    "Condition": {"StringNotEquals": {"aws:ResourceAccount": "${aws:PrincipalAccount}"}}
+    
+    = "Deny if my user writes to SOMEONE ELSE'S bucket"
+    = Blocks insiders from exfiltrating to external buckets
+
+  RCP (controls YOUR resources — blocks outsiders coming IN):
+    "Effect": "Deny",
+    "Principal": "*",
+    "Action": "s3:*",
+    "Resource": "*",
+    "Condition": {
+      "StringNotEqualsIfExists": {"aws:PrincipalOrgID": "o-abc123"},
+      "BoolIfExists": {"aws:PrincipalIsAWSService": "false"}
+    }
+
+    = "Deny if someone NOT in my org touches MY bucket"
+    = Blocks external attacker even if bucket policy says Principal:*
+
+  TOGETHER = full data perimeter:
+    SCP blocks OUT (insiders can't exfil)
+    RCP blocks IN (outsiders can't access)
+
+═══ TRUST POLICIES — 4 different principals ═══
+
+  Cross-account (another AWS account assumes your role):
+    "Principal": {"AWS": "arn:aws:iam::444455556666:root"},
+    "Action": "sts:AssumeRole"
+
+  Service role (AWS service assumes your role):
+    "Principal": {"Service": "ec2.amazonaws.com"},
+    "Action": "sts:AssumeRole"
+
+  SAML federation (enterprise IdP):
+    "Principal": {"Federated": "arn:aws:iam::123:saml-provider/OktaIdP"},
+    "Action": "sts:AssumeRoleWithSAML",
+    "Condition": {"StringEquals": {"SAML:aud": "https://signin.aws.amazon.com/saml"}}
+
+  OIDC federation (web/mobile apps):
+    "Principal": {"Federated": "cognito-identity.amazonaws.com"},
+    "Action": "sts:AssumeRoleWithWebIdentity",
+    "Condition": {"StringEquals": {"cognito-identity.amazonaws.com:aud": "us-east-1:pool-id"}}
+
+  RULE: Principal type determines which STS action:
+    "AWS":       → sts:AssumeRole
+    "Service":   → sts:AssumeRole
+    "Federated" + SAML → sts:AssumeRoleWithSAML
+    "Federated" + OIDC → sts:AssumeRoleWithWebIdentity
 ```
 
 ---
