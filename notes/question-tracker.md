@@ -314,6 +314,7 @@ Legend: 🔴 < 50% — 🟡 50–79% — 🟢 ≥ 80%
 | 117 | 2026-07-01 | Q1617–Q1637 | 17 | 1 | 3 | D2 Incident Response · D3 Infrastructure · D6 Governance · D1 Detection (killer uplift — novel forensics + enforcement + network) | [Jump](#session-117--2026-07-01) |
 | 118 | 2026-07-02 | Q1638–Q1645 | 4 | 0 | 4 | D2 Incident Response · D6 Governance · D1 Detection · D4 IAM (killer D2+D6 drill — novel operational containment + governance gaps) | [Jump](#session-118--2026-07-02) |
 | 119 | 2026-07-08 | Q1646–Q1670 | 19 | 1 | 5 | D1 Detection · D6 Governance · D3 Infrastructure (Week 3 drill — cfn-guard, Config proactive, State Manager, cross-domain killers) | [Jump](#session-119--2026-07-08) |
+| 120 | 2026-08-11 | Q1671–Q1679+ | 5 | 1 | 3 | All domains (Cross-domain killer drill — Week 9 never-seen gaps + red priorities) | [Jump](#session-120--2026-08-11) |
 | 4 | 2025-05-04 | Q26–Q35 | 8 | 1 | 1 | D3 Infrastructure Security (firewalls comparison) | [Jump](#session-4--2025-05-04) |
 | 5 | 2025-05-05 | Q36–Q38 | 1 | 2 | 0 | D4 Identity & Access Management (re-test) | [Jump](#session-5--2025-05-05) |
 | 6 | 2025-05-05 | Q39–Q43 | 3 | 0 | 2 | D4 Identity & Access Management (policy layers quiz) | [Jump](#session-6--2025-05-05) |
@@ -898,6 +899,25 @@ After adding a session:
 | 1668 | D1/D3 | State Manager OnBoot+rate(30min), admin stops CW agent manually — what happens? | B: Stays stopped until next rate run re-applies | ✅ | State Manager blind between runs. Next rate run fixes it. | Q1409 | State Manager re-applies on schedule |
 | 1669 | D6/D1 | Console S3 creation (no CF), cfn-guard+proactive+detective+SCP — which TWO fire? | C+D: SCP + Config detective | ✅ | Console direct = no CF = only SCP + detective. | Q1318, Q1429 | Console direct = SCP + Config detective only |
 | 1670 | D6 | ALL RDS via CF need DeletionProtection + ALL via CLI/Terraform + detect existing — minimum THREE? | B+C+D: Proactive + SCP + detective+SNS | ✅ | Minimum: proactive (CF) + SCP (all paths) + detective (existing). | — | Minimum enforcement architecture |
+
+---
+
+### Session 120 — 2026-08-11 (IN PROGRESS)
+
+**Domains:** All (Cross-domain killer drill — Week 9 never-seen gaps + red priorities)
+**Score (partial Q1-Q9):** 5 ✅ · 1 ⚠️ · 3 ❌ (56% correct so far)
+
+| # | Domain | Question / Scenario | Your Answer | Result | Correct Answer | Re-test of | Review Topic |
+|---|---|---|---|---|---|---|---|
+| 1671 | D5/D6 | DLM snapshot manually deleted by developer — what happens next cycle? | A: DLM recreates | ❌ | B: DLM continues normally — deleted snapshot gone permanently. DLM = scheduler only, no monitoring. | — | DLM = scheduler only (no monitoring, no replacement) |
+| 1672 | D5 | DataSync 80TB weekly NFS→S3: filtering + throttle + TLS — which THREE native? | A+C+D | ⚠️ | A+B+C: File filtering + bandwidth throttle + TLS. KMS at dest is configurable but wasn't a stated requirement. | — | DataSync native: TLS + filters + throttle |
+| 1673 | D6 | WAT Security Pillar 4 HRI→1 HRI, CISO wants automated Config/CT evidence — true? | B: Milestones show risk change, no automated evidence | ✅ | WAT = self-reported. Audit Manager = evidence. | Q1221 | WAT milestones = no automation |
+| 1674 | D5 | EMR TLS handshake fails between existing nodes after Private CA rotation, new nodes work — cause? | B: Existing nodes loaded old certs at boot | ✅ | S3 zip updated but existing nodes already loaded old certs. New nodes get new zip. | Q1030 | EMR in-transit = security config + PEM certs |
+| 1675 | D3/D2 | Step Functions forensics: deny-all SG → EBS snapshot → SSM RunCommand times out — why? | B: Deny-all blocks outbound to SSM endpoint ENIs | ✅ | Acquire before isolate. Deny-all = no outbound at all. | Q937 | Deny-all SG blocks ALL outbound |
+| 1676 | D2 | Investigate 12 accounts, custom Python, reusable Jupyter, query Lake + Security Lake — tool? | B: SageMaker AI notebooks | ✅ | Custom code + reusable + arbitrary queries = SageMaker. Detective = pre-built. | Q996 | SageMaker notebooks vs Detective (custom vs built-in) |
+| 1677 | D1/D6 | Terraform deploys RDS deletion_protection=false, cfn-guard+proactive+SCP+detective deployed — which fire? | B: Only SCP + Config detective | ✅ | Terraform = direct API (not CF). Only SCP + detective fire. | Q1541 | Terraform = direct API (not CF) |
+| 1678 | D5 | DLM snapshots + SCP denies DeleteSnapshot without caller tag, developer vs DLM retention — what happens? | A: Both denied | ❌ | C: Developer denied (no tag), DLM succeeds (role has the tag). SCP evaluates each caller's tags separately. | — | SCP condition evaluates per-caller (read the condition) |
+| 1679 | D2/D4 | OutsideAWS, shared role (4 instances), NLB, zero downtime SLA — containment? | D: NACL deny attacker IP | ❌ | C: Network Firewall DROP on attacker IP (most surgical, no collateral). | Q1638 | Shared role + zero disruption = NF DROP (surgical) |
 
 ---
 
