@@ -396,6 +396,11 @@ DELIVERY MECHANISM:
   ❌ Thought you can sign with public key (Q812, Q824)
      → RULE: sign = private. verify = public. Always.
 
+  ❌ SCP with condition = "both denied" without reading (Q1678)
+     → RULE: evaluate condition PER CALLER separately.
+       Developer (no tag) = denied. DLM role (has tag) = allowed.
+       SLR exemption = RCP only. SCPs evaluate ALL callers against condition.
+
 ═══ KMS KEY ORIGINS + CAPABILITIES ═══
 
                     │ Symmetric │ Asymmetric │ HMAC │ AWS Service │
@@ -524,6 +529,27 @@ C2Activity + hardcoded IP (no DNS):
   DNS Firewall useless (attacker doesn't need DNS)
   → Network Firewall DROP on C2 IP
   DGA (unpredictable domains) = flip to DNS Firewall ALLOW-LIST
+
+ERROR TYPE = LAYER (failed Q1681 today):
+  403 / Access Denied = PERMISSIONS (IAM, Resource Policy, key policy)
+  Timeout             = NETWORK (SG, NACL, routing, missing endpoint)
+
+  Same endpoint, Lambda A works, Lambda B gets 403:
+    → NOT SG (that would be timeout)
+    → Lambda B execution role missing permission (execute-api:Invoke)
+
+  Same endpoint, Lambda B times out:
+    → NOT IAM (that would be 403)
+    → SG: Lambda B missing outbound 443 OR endpoint SG missing inbound
+
+  RULE: read the ERROR TYPE FIRST, then pick the layer.
+
+WAF CHALLENGE PASS ≠ TERMINATE (failed Q1690 today):
+  Challenge/CAPTCHA PASS = "this rule didn't block you" → NEXT RULE
+  BLOCK/ALLOW = terminates (stops evaluation)
+  
+  Bot passes Challenge at priority 2 → geo-match at priority 3 STILL fires
+  "Passed all checks" is WRONG — only passed ONE rule, others still evaluate
 ```
 
 ---
