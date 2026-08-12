@@ -1498,6 +1498,11 @@ kms:DescribeKey — WHEN is it needed?
   "Detect C2 via DNS" = GuardDuty (reads DNS natively)
   "Block C2 domains" = DNS Firewall
 
+═══ NETWORK FIREWALL ACTIONS ═══
+
+  NF stateful: PASS (allow) | DROP (silent block) | ALERT (log only) | REJECT (block + RST)
+  NF stateless: pass (skip stateful) | drop | forward (send to stateful engine)
+
 ═══ WAF BOT CONTROL ═══
 
   Common level = signatures (User-Agent strings, known bot IPs)
