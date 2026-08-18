@@ -80,3 +80,4 @@
 | 123 | 2026-07-27 | 08:42 | | | Week 6 — consolidation + decay prevention |
 | 124 | 2026-08-03 | 21:07 | 23:47 | 160 | Page 5 review + corrections (DescribeKey, Sign/Encrypt, versioning, CRR flow, Kinesis endpoints, EMR) + 15-question rapid fire drill (13/15) |
 | 125 | 2026-08-04 | 09:47 | | | Page 6 review + Pages 7-10 creation (100% exam coverage) |
+| 126 | 2026-08-18 | 10:51 | 11:00 | 9 | Pages 1-4 rapid-fire recall (87%) — pre-Dojo warm-up |
