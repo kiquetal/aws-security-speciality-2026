@@ -204,3 +204,89 @@
 | ★★★ Core | 24 | ~35-45 | ~70% |
 | ★★ Important | 35 | ~15-20 | ~25% |
 | ★ Light | 7 | ~5-7 | ~5% |
+
+---
+
+## Final Checklist — My Answers (2026-08-23, 4 days before exam)
+
+### 1. Walk IAM policy evaluation flow
+
+```
+5 Gates: SCP → RCP → Boundary → Identity → Resource
+Gates 1-3 = ceilings (never grant). Gates 4-5 = grants.
+Effective = all ceilings allow + either grant authorizes.
+Explicit Deny in ANY gate = DENIED. Always.
+
+Same-account: identity OR resource policy can grant.
+Cross-account: BOTH sides must grant (except KMS = always both).
+Session policy bypass: same-account resource-based naming role = bypasses session ceiling.
+Cross-account: session ceiling ALWAYS applies (no bypass).
+```
+
+### 2. KMS key policy uniqueness + custody differences
+
+```
+KMS key policy = MANDATORY (unique — only service where resource policy is required).
+IAM alone grants NOTHING unless key policy enables IAM delegation (root statement).
+
+Custody:
+  AWS-generated: AWS manages durability. Auto-rotation ✅. No expiry.
+  Imported: YOU manage durability (keep a copy). No auto-rotation ❌. Optional expiry. Immediate delete possible.
+  XKS: Keys NEVER in AWS. KMS proxies every operation to your external HSM. 500ms timeout. No SLA.
+```
+
+### 3. EC2 containment + credential compromise sequence
+
+```
+EC2: Acquire FIRST → Isolate SECOND
+  1. No-reboot AMI (volatile memory)
+  2. EBS snapshot (disk)
+  3. Deny-all SG (isolate)
+  4. Tag for forensics
+  Never terminate before evidence capture.
+
+Credential leak (IAM user):
+  1. Deactivate exposed keys
+  2. Inline Deny * on user (covers 2nd key + console + sessions)
+  3. CloudTrail investigation
+  4. Detective for blast radius
+```
+
+### 4. Data source → analysis tool mapping
+
+```
+Who called the API         → CloudTrail
+What the network did       → VPC Flow Logs / TGW Flow Logs
+What DNS resolved          → Resolver Query Logs
+What the config was        → AWS Config
+What threat is active      → GuardDuty
+Where it all normalizes    → Security Lake (OCSF)
+Investigate a finding      → Detective
+Open-ended log query       → CW Logs Insights (CW data) or Athena (S3 data)
+```
+
+### 5. SSE type from one-line requirement
+
+```
+"Least overhead / default"                    → SSE-S3
+"Audit decryption / control who decrypts"     → SSE-KMS (CMK)
+"Keys never stored in AWS (server-side)"      → SSE-C
+"AWS never sees plaintext at all"             → Client-side encryption
+```
+
+### 6. Multi-account reference architecture
+
+```
+Management account: Organizations, SCPs/RCPs, Control Tower. NO workloads.
+Security Tooling account: delegated admin for GD/SH/Inspector/Macie/Detective/FM/Config.
+Log Archive account: centralized CloudTrail + VPC Flow Logs + Config. Object Lock. KMS.
+Workload OUs: Prod, Dev, Sandbox — each with appropriate SCPs.
+```
+
+### 7. Bedrock Guardrails + CW Logs data protection + Verified Access
+
+```
+Bedrock Guardrails: LLM content filtering (prompt injection, PII, denied topics). Input AND output.
+CW Logs data protection: mask PII in logs at ingestion. logs:Unmask permission controls who sees raw.
+Verified Access: zero-trust per-app access without VPN. Evaluates identity + device posture per request.
+```
