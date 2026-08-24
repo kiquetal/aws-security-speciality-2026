@@ -2213,6 +2213,311 @@ kms:DescribeKey — WHEN is it needed?
 
 ---
 
-> Total: 12 pages covering ~100% of SCS-C03 exam content.
+---
+
+## PAGE 13: S3 Immutability + Storage + Identity ARNs + STS Trust Actions
+
+```
+═══ OBJECT LOCK vs VAULT LOCK (YOUR #1 TRAP) ═══
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │ STOP. READ THE KEYWORDS BEFORE PICKING:                      │
+  │                                                              │
+  │ "24hr confirm"              → Glacier Vault Lock             │
+  │ "permanently irreversible"  → Glacier Vault Lock             │
+  │ "even AWS can't modify"     → Glacier Vault Lock             │
+  │ "X years + auto-expire"     → Object Lock Compliance         │
+  │ "root can't delete DURING"  → Object Lock Compliance         │
+  │ "until lawsuit ends"        → Legal Hold                     │
+  │ "admin can override"        → Governance Mode                │
+  │                                                              │
+  │ NEVER combine Legal Hold + "auto-expires"                    │
+  │ (Legal Hold PREVENTS auto-expiry!)                           │
+  └─────────────────────────────────────────────────────────────┘
+
+  | Mode | Expires? | Root delete? | Override? | Signal |
+  |------|----------|--------------|-----------|--------|
+  | Compliance | Fixed period | Nobody | Never | "X yr, auto-expire" |
+  | Governance | Fixed period | With permission | BypassGovernanceRetention | "Admin override" |
+  | Legal Hold | NEVER | Until removed | PutObjectLegalHold | "Lawsuit ends" |
+  | Vault Lock | PERMANENT | Nobody ever | Nothing | "24hr confirm" |
+
+  Object Lock vs Vault Lock:
+    Object Lock = per-OBJECT retention (S3, any storage class)
+    Vault Lock = per-VAULT permanent POLICY (legacy Glacier vaults)
+    Object Lock has NO confirm window (immediate)
+    Vault Lock has 24hr test window then PERMANENT
+
+  Prerequisites:
+    Object Lock → versioning mandatory + enable at BUCKET CREATION
+    Vault Lock → Initiate → 24hr test → Complete (or expires)
+
+═══ S3 STORAGE CLASSES (rarely tested, know the traps) ═══
+
+  | Class | Retrieval | Min Duration | Signal |
+  |-------|-----------|--------------|--------|
+  | Standard | Instant | None | Default |
+  | Intelligent-Tiering | Instant | None | "Unknown pattern" |
+  | Standard-IA | Instant | 30 days | "Infrequent, need fast" |
+  | One Zone-IA | Instant | 30 days | "Recreatable" |
+  | Glacier Instant | Instant (ms) | 90 days | "Archive + immediate" |
+  | Glacier Flexible | Min-hours | 90 days | "Archive + can wait" |
+  | Glacier Deep Archive | 12-48 hours | 180 days | "Cheapest, rarely" |
+
+  TRAPS:
+    "Access weekly" + Deep Archive → WRONG (12-48hr retrieval!)
+    "Compliance 7yr + never access" → Deep Archive ✅
+    All classes support: Object Lock, encryption, lifecycle rules
+    Min duration = early delete still charged full period
+
+═══ ARN PREFIXES: iam:: vs sts:: ═══
+
+  PERMANENT (exists in IAM) → iam::
+    IAM user:       arn:aws:iam::ACCT:user/Name
+    IAM role:       arn:aws:iam::ACCT:role/RoleName
+    Root:           arn:aws:iam::ACCT:root
+
+  TEMPORARY (created by STS) → sts::
+    Assumed role:   arn:aws:sts::ACCT:assumed-role/Role/Session
+    Federated user: arn:aws:sts::ACCT:federated-user/Name
+
+  RULE: "Does it persist after session ends?"
+    YES → iam::     NO → sts::
+
+═══ TRUST POLICY ACTIONS (5 total, ALL go in trust policy) ═══
+
+  | Action | Principal | Use |
+  |--------|-----------|-----|
+  | AssumeRole | "AWS": account/role OR "Service": ec2/lambda | Cross-account, service role |
+  | AssumeRoleWithSAML | "Federated": "...saml-provider/X" | Enterprise (ADFS, Okta SAML) |
+  | AssumeRoleWithWebIdentity | "Federated": "cognito-identity..." | Mobile/web (Google, EKS IRSA) |
+  | TagSession | (same principal as above) | Pass IdP tags into session (ABAC) |
+  | SetSourceIdentity | (same principal as above) | Track human through role chains |
+
+  RULE: SAML in the ARN → WithSAML. Cognito/OIDC → WithWebIdentity.
+  RULE: "With" = federated. No "With" = direct assume.
+  RULE: All 5 go in TRUST POLICY only. Never bucket/key/SCP.
+
+  WHO uses WHAT:
+    Employees → SAML (even if IdP is Okta)
+    App users → OIDC/WebIdentity (even if IdP is Okta)
+    ADFS = always SAML. Google/Facebook = always OIDC.
+    Okta/Entra = BOTH (depends on who is signing in)
+
+  Identity Center = SAML underneath but HIDDEN (you don't write trust policies)
+  Cognito Identity Pool = OIDC underneath but HIDDEN (managed STS)
+
+═══ CONDITION KEY PREFIXES ═══
+
+  sts: = caller PROVIDES at AssumeRole time (TRUST POLICY ONLY)
+    ExternalId, RoleSessionName, SourceIdentity, TransitiveTagKeys
+
+  aws: = AWS KNOWS automatically (ANY policy, ANY request)
+    PrincipalOrgID, TokenIssueTime, MultiFactorAuthPresent,
+    SourceVpce, RequestTag, ResourceTag, PrincipalTag
+
+  TRAP: aws:TokenIssueTime is aws: not sts: 
+        (evaluated AFTER assumption, in identity policy deny)
+
+═══ MFA — TWO KEYS ONLY ═══
+
+  aws:MultiFactorAuthPresent (Bool) = "Was MFA used?"
+  aws:MultiFactorAuthAge (Numeric, seconds) = "How long ago?"
+
+  "Require MFA" → BoolIfExists + "false" (in Deny statement)
+  "MFA max 3hr" → NumericGreaterThan + "10800" (in Deny statement)
+
+  Bool alone = CLI/SDK BYPASSES (key absent = condition skipped = HOLE)
+  BoolIfExists = CLI/SDK CAUGHT (key absent = treated as match = Deny fires)
+
+  RULE: MFA in Deny = ALWAYS BoolIfExists. Never plain Bool.
+
+═══ PRESIGNED URLs ═══
+
+  S3 Presigned URL:
+    → Signed by IAM role credentials
+    → One object, one operation (GET or PUT)
+    → Max 7 days (SigV4)
+    → Permissions checked at USE time (not creation)
+    → Can't revoke individually (rotate signing creds)
+    → Direct to S3 (no CDN, no caching)
+
+  CloudFront Signed URL:
+    → Signed by CloudFront Key Group
+    → Restrict by: IP, time, path (custom policy)
+    → No hard max expiry
+    → Edge-cached (fast, global)
+    → Use for: production content delivery
+
+  Presigned PUT:
+    → Backend generates URL → gives to user (no AWS creds)
+    → User uploads via plain HTTP PUT to S3
+    → URL = the permission (baked-in signature)
+
+  DECISION:
+    "Quick temp link, one file"           → S3 Presigned
+    "Global CDN + IP/time restriction"    → CloudFront Signed URL
+    "Entire site for subscribers"         → CloudFront Signed Cookies
+    "User uploads without AWS SDK"        → S3 Presigned PUT
+```
+
+---
+
+---
+
+## PAGE 14: 5 KILLER RULES — Your Repeat Error Patterns (WRITE FIRST)
+
+```
+═══ RULE 1: CONTAINMENT (failed 4x: Q1598, Q1633, Q1638, Q1640) ═══
+
+  ASK IN ORDER:
+
+  1. "SHARED role?"
+     YES → ELIMINATE TokenIssueTime (kills ALL instances)
+
+  2. "Can't DISRUPT traffic?"
+     YES → ELIMINATE deny-all SG (kills app)
+
+  BOTH eliminated → NF DROP on attacker IP (surgical)
+
+  ┌────────────────────────────────────────────┐
+  │ Dedicated + can disrupt  → TokenIssueTime  │
+  │ Dedicated + can't disrupt→ TokenIssueTime  │
+  │ Shared + can disrupt     → Deny-all SG     │
+  │ Shared + can't disrupt   → NF DROP on IP   │
+  │ InsideAWS (always)       → Deny-all SG     │
+  │ IAM user leaked          → Deny * on user  │
+  └────────────────────────────────────────────┘
+
+  ORDER: ACQUIRE first → ISOLATE second
+    (deny-all blocks SSM for memory capture)
+    Memory = No-reboot AMI (FIRST)
+    Disk = EBS snapshot
+    ASG = Detach FIRST
+
+═══ RULE 2: TIMEOUT vs ACCESS DENIED (failed 3x) ═══
+
+  TIMEOUT = NETWORK
+    → Missing SG outbound/inbound 443
+    → Missing endpoint
+    → Private API Resource Policy rejection (LOOKS like network!)
+
+  ACCESS DENIED = PERMISSIONS
+    → IAM / key policy / resource policy / endpoint policy
+
+  Interface endpoint = TWO SGs:
+    Lambda SG outbound 443 + Endpoint SG inbound 443
+    Miss EITHER = timeout
+
+  Private API timeout:
+    SGs correct + still timeout → Resource Policy (aws:SourceVpce)
+
+  Gateway endpoint = HIDDEN GATE:
+    All IAM correct + Access Denied → endpoint policy (allowlist)
+
+  SAME endpoint, Lambda A works, Lambda B:
+    Timeout → SG issue
+    403     → permissions issue (execution role)
+
+═══ RULE 3: DETECT vs PREVENT (failed 9x) ═══
+
+  "Anomalous + zero code"    → GuardDuty
+  "Specific API + fast"      → EventBridge
+  "Who COULD access"         → Access Analyzer
+  "Investigate + timeline"   → Detective
+  "No finding + open query"  → CW Logs Insights
+  "PREVENT / BLOCK"          → Policy (SCP/RCP)
+
+  GD DOES NOT fire on:
+    → Blocked attempts (RCP denied = no finding)
+    → Policy changes (= EventBridge)
+    → Misconfigurations (= Access Analyzer)
+
+  AA = STATIC (reads policy, fires immediately)
+  GD = DYNAMIC (needs successful + anomalous)
+
+  StopLogging:
+    CW filter = BLIND (kills own delivery)
+    EventBridge = seconds
+    Config = minutes
+
+═══ RULE 4: cfn-guard vs PROACTIVE vs SCP (failed 4x) ═══
+
+  Console direct (no CF):   SCP + detective ONLY
+  Console CF:               Proactive + Hook + SCP
+  Pipeline CF:              cfn-guard + Proactive + Hook + SCP
+  Terraform:                SCP + detective ONLY
+
+  cfn-guard = pipeline ONLY (bypassable)
+  Proactive = CF service-level (can't bypass)
+  SCP = ALL paths (can't bypass, but can't see template)
+
+  cfn-guard CANNOT: resolve !Ref, !If, !Sub
+  SCP CANNOT: inspect template content (DeletionProtection)
+  Proactive: fires BEFORE SCP in CF deploys
+
+═══ RULE 5: OBJECT LOCK vs VAULT LOCK (failed 3x) ═══
+
+  "24hr confirm"              → Vault Lock
+  "permanently irreversible"  → Vault Lock
+  "X years + auto-expire"     → Compliance
+  "until lawsuit ends"        → Legal Hold
+  "admin can override"        → Governance
+
+  NEVER: Legal Hold + "auto-expires" (Legal Hold prevents expiry)
+
+  Vault Lock: Initiate → 24hr test → Complete = PERMANENT
+  Object Lock: versioning + enable at BUCKET CREATION only
+
+═══ BACKUP VAULT LOCK (different from Glacier Vault Lock!) ═══
+
+  Glacier Vault Lock = permanent policy on legacy Glacier vaults
+  Backup Vault Lock  = WORM on AWS Backup recovery points (any service)
+
+  "Attacker deletes backups / ransomware protection" → Backup Vault Lock
+  Two modes (same as S3 Object Lock):
+    Compliance = root can't delete
+    Governance = privileged user can override
+
+═══ EXAM-DAY TACTICS (from the guide) ═══
+
+  1. Read LAST SENTENCE first (the actual question)
+     → then read the scenario
+     → prevents forming wrong opinion before knowing what's asked
+
+  2. Ordering questions = NO partial credit
+     → IR sequence must be automatic (acquire → isolate → investigate)
+     → Security Hub setup must be automatic (E-D-M-A)
+
+  3. Keyword → Service (instant mapping):
+     "immutable"           → Object Lock
+     "single-tenant HSM"   → CloudHSM
+     "without a VPN"       → Verified Access
+     "org-wide guardrail"  → SCP/RCP
+     "normalize logs"      → Security Lake / OCSF
+     "zero-trust per-app"  → Verified Access
+     "ransomware backups"  → Backup Vault Lock
+
+  4. Flag and move on. Unanswered = zero. Answer everything.
+
+  5. Most questions offer 4 answers that ALL work technically
+     → Pick: most secure, most automated, OR least operational cost
+     → Read what they're optimizing for
+
+═══ CREATION-TIME ONLY (can't enable after) ═══
+
+  RDS encryption      → snapshot + copy encrypted + restore
+  EFS encryption      → create new EFS + migrate
+  S3 Object Lock      → must enable at bucket creation
+  
+  CAN toggle after:
+  EBS encryption      → copy snapshot with CMK
+  S3 default encrypt  → enable anytime (future objects only)
+  DynamoDB encryption → can change key (always encrypted)
+```
+
+---
+
+> Total: 14 pages covering ~100% of SCS-C03 exam content.
 > Write by hand. Read before every drill. Cycle through daily (3-4 pages/day).
-> Exam day: skim all pages in the 30 min before your appointment.
+> Exam day: skim Page 14 FIRST (your errors), then Pages 1-4, then skim the rest.
